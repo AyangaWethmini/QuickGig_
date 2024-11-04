@@ -9,7 +9,7 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 	define('DBPASS', '');
 	define('DBDRIVER', '');
 	
-	define('ROOT', 'http://localhost/mvc/public');
+	define('URLROOT', 'http://localhost/mvc/public');
 
 }else
 {
@@ -23,6 +23,8 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 	define('ROOT', 'https://www.yourwebsite.com');
 
 }
+
+define('APPROOT', dirname(dirname(__FILE__)));
 
 define('APP_NAME', "QuickGig");
 define('APP_DESC', "On-Demand job searching platform");

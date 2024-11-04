@@ -1,19 +1,20 @@
 <?php 
 
 
-Trait Controller
+class Controller
 {
 
-	public function view($name)
+	protected $viewPath = "../app/views/";
+	
+	public function view($name, $data = [])
 	{
-		$filename = "../app/views/".$name.".view.php";
+		$filename = $this->viewPath.$name.".view.php";
 		if(file_exists($filename))
 		{
+			extract($data);
 			require $filename;
 		}else{
-
-			$filename = "../app/views/404.view.php";
-			require $filename;
+			$this->view('error/404', ["message" => "View not found"]);
 		}
 	}
 }

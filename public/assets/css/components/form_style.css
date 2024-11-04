@@ -1,0 +1,29 @@
+.form-container {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    width: 400px;
+    height: 600px;
+}
+
+input[type=text], input[type=password] {
+    border: 1px solid #D6DDEB;
+    width: 95%;
+    height: 45px;
+    padding-top: 13px;
+    padding-left: 15px;
+    font-size: 15px;
+    outline: none;
+    display: block;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    border: 1px solid rgb(70, 64, 222);
+}
+
+.form-input-title {
+    font-weight: bold; /* Make labels bold */
+}
