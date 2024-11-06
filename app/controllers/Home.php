@@ -9,4 +9,9 @@ class Home extends Controller
 		$this->view('home');
 	}
 
+	public function signup()
+	{
+		$this->view('signup');
+	}
+
 }

@@ -1,5 +1,8 @@
 /* CSS LIBRARY */
 
+/*VARIABLES*/
+@import url("variables.css");
+
 /* COMPONENTS */
 @import url('components/form_styles.css');
 @import url('components/buttons_styles.css');
@@ -9,6 +12,10 @@
 @import url('pages/signup_page.css');
 @import url('pages/admin_announcement.css');
 @import url('pages/admin_settings.css');
+
+
+/*HOME*/
+@import url('home/signup.css');
 
 /* FONTS */ 
 @font-face {

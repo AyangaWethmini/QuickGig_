@@ -1,3 +1,3 @@
 <?php
 
-    echo "home view";
+    echo "this is home view";
