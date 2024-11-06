@@ -40,7 +40,7 @@ body {
 }
 
 .btn-disabled{
-    background-color:var(--neutral-60);
+    background-color:var(--neutral-80);
 }
 
 .btn-del{

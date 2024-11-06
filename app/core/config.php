@@ -27,7 +27,7 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 
 define('APPROOT', dirname(dirname(__FILE__)));
 
-define('APP_NAME', "QuickGig");
+define('APP_NAME', "GuickGig");
 define('APP_DESC', "On-Demand job searching platform");
 
 /** true means show errors **/
