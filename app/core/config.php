@@ -9,7 +9,7 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 	define('DBPASS', '');
 	define('DBDRIVER', '');
 	
-	define('URLROOT', 'http://localhost/mvc/public');
+	define('ROOT', 'http://localhost/qg/public');
 
 }else
 {
@@ -23,6 +23,7 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 	define('ROOT', 'https://www.yourwebsite.com');
 
 }
+
 
 define('APPROOT', dirname(dirname(__FILE__)));
 
