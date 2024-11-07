@@ -1,7 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/signup.css">
-<div class="signup flex-row">
+<div class="signin-signup flex-row">
 
     <div class="image">
         <p class="logo">QuickGig.</p>

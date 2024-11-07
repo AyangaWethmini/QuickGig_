@@ -14,4 +14,8 @@ class Home extends Controller
 		$this->view('signup');
 	}
 
+	public function login()
+	{
+		$this->view('login');
+	}
 }
