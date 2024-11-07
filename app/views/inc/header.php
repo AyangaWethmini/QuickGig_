@@ -15,8 +15,6 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
         <!--Font : Inter -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Reem+Kufi:wght@400..700&display=swap" rel="stylesheet">
         <!--Font : Abel -->
-        <link href="https://fonts.googleapis.com/css2?family=Abel&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Reem+Kufi:wght@400..700&display=swap" rel="stylesheet">
-        <!--Font: Epilouge -->
-        <link href="https://fonts.googleapis.com/css2?family=Abel&family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Reem+Kufi:wght@400..700&display=swap" rel="stylesheet">
+        <!-- Font : League spartan - This is the font that is used for the logo -->
+        <link href="https://fonts.googleapis.com/css2?family=Abel&family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=League+Spartan:wght@100..900&family=Reem+Kufi:wght@400..700&display=swap" rel="stylesheet">

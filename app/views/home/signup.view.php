@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/signup.css">
 <div class="signup flex-row">
 
-
     <div class="image">
+        <p class="logo">QuickGig.</p>
         <img src="<?=ROOT?>/assets/images/home.png" alt="man holding files" class="img">
 
         <div class="stat container flex-col">
