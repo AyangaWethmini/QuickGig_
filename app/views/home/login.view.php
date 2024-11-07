@@ -42,12 +42,15 @@
                 <label for="password" class="lbl" style="color: var(--color-white);">Password :</label><br>
                 <input type="password" placeholder="Enter password"> <!----add the width to css file -->
             </div>
-            <p class="text-white">Remember me<input type="Checkbox"></p>
+            
+            
+            
             <button class="btn btn-accent signup-btn">Sign Up</button>
         </div>
             <div style="margin-left: 10px;">
-                <p class="text-white styled">Already have an account ? <a href="#">login</a></p>
-                <p class="text-white styled">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+                <p class="text-white">Remember me<input type="checkbox"></p>
+                <p class="text-white styled" style="font-size: 13px;">Already have an account ? <a href="#">login</a></p>
+                <p class="text-white styled" style="font-size: 13px;">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
             </div>
         </form>
     </div>

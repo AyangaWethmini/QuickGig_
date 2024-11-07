@@ -74,13 +74,11 @@ input:focus {
 }
 
 input[type="radio"] {
-    margin: 8px;
     accent-color: var(--brand-primary);
     transform: scale(1.5);
 }
 
 input[type="checkbox"] {
-    margin: 8px;
     accent-color: var(--brand-primary);
     transform: scale(1.5);
 }

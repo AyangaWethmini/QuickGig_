@@ -40,12 +40,14 @@ form{
     margin: 2px;
 }
 
+
+
 .lbl{
     color: var(--Neutrals-80, #515B6F);
     font-family: Epilogue;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 160%; 
 }
 
