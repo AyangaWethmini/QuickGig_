@@ -1,6 +1,6 @@
 /* CSS LIBRARY */
 
-/*VARIABLES*/
+/* VARIABLES */
 @import url("variables.css");
 
 /* COMPONENTS */
@@ -8,100 +8,99 @@
 @import url('components/buttons_styles.css');
 @import url('components/admin_sidebar.css');
 
-/*PAGES*/
+/* PAGES */
 @import url('pages/signup_page.css');
 @import url('pages/admin_announcement.css');
 @import url('pages/admin_settings.css');
 
-
-/*HOME*/
+/* HOME */
 @import url('home/signup.css');
 
-/* FONTS */ 
+/* FONTS */
 @font-face {
-    font-family: Monteserrat-Regular;
-    src: url(fonts/Montserrat-Regular.ttf);
+    font-family: "Monteserrat-Regular";
+    src: url("fonts/Montserrat-Regular.ttf");
 }
 
 body {
     margin: 0;
     padding: 0;
-    font-family: Monteserrat-Regular;
+    font-family: "Monteserrat-Regular";
 }
 
-/*button styles*/
-.btn{
+/* BUTTON STYLES */
+.btn {
     border: none;
-    padding : 12px;
-    color : var(--color-white);
+    padding: 12px;
+    color: var(--color-white);
 }
-.btn-accent{
+.btn-accent {
     background-color: var(--brand-primary);
 }
 
-.btn-disabled{
-    background-color:var(--neutral-80);
+.btn-disabled {
+    background-color: var(--neutral-80);
 }
 
-.btn-del{
+.btn-del {
     background-color: var(--color-red);
 }
 
-.btn-trans{
-    background-color:var(--color-white);
-    color :var(--brand-primary);
+.btn-trans {
+    background-color: var(--color-white);
+    color: var(--brand-primary);
     font-weight: bold;
     border: 2px solid var(--brand-primary);
 }
 
+/* INPUT STYLES */
 
-/*input styles */
-input[type="text"] {
+input[type="text"]{
     border: 1px solid var(--neutral-20);
     padding: 8px 12px;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
 }
 
-input[type="text"]:focus {
-    border-color:  var(--brand-primary);
-    /*box-shadow: 0 0 8px rgba(70, 64, 222, 0.3);*/
-    outline: none; 
-    background-color:var(--neutral-10); 
+input[type="password"]{
+    border: 1px solid var(--neutral-20);
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--brand-primary);
+    outline: none;
+    background-color: var(--neutral-10);
 }
 
 input[type="radio"] {
-    margin: 8px;
-    accent-color:var(--brand-primary);
-    transform: scale(1.5);
-}
-
-input[type="checkbox"]{
     margin: 8px;
     accent-color: var(--brand-primary);
     transform: scale(1.5);
 }
 
+input[type="checkbox"] {
+    margin: 8px;
+    accent-color: var(--brand-primary);
+    transform: scale(1.5);
+}
 
-/*container styles*/
-
+/* CONTAINER STYLES */
 .container {
     padding: 20px;
 }
 
-.flex-col{
+.flex-col {
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
 
-.flex-row{
+.flex-row {
     display: flex;
-    justify-content: center;
 }
 
-
-/*divs*/
-.div-shadow{
+/* DIV STYLES */
+.div-shadow {
     border: none;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -110,12 +109,11 @@ input[type="checkbox"]{
     align-items: center;
 }
 
-.border-box{
+.border-box {
     display: flex;
     padding: 24px;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
-    border: 1px solid #b3b7be
+    border: 1px solid #b3b7be;
 }
-
