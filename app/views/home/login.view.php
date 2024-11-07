@@ -28,36 +28,29 @@
             </div>  
         </div>
 
+    <div class="form-section">
     <div class="login-form">
         <div class="flex-col">
         <h3 style="color: var(--color-white); margin-top: 40px;">Get more oppertunities</h3>
         <form action="post" class="form-body" >
-            <div class="form-field" id="ind-name">
-                <label for="name" class="lbl"><span id="name">Name :</span></label><br>
-                <input type="text" placeholder="Enter your name">
-            </div>
-            <div class="form-field" id="com-name">
-                <label for="name" class="lbl"><span id="name">Name :</span></label><br>
-                <input type="text" placeholder="Enter your name">
-            </div>
-
             <div class="form-field">
-                <label for="email" class="lbl">Email : </label><br>
+                <label for="email" class="lbl" style="color: var(--color-white);">Email : </label><br>
                 <input type="text" placeholder="Enter Email">
             </div>
 
-            <div class="form-feild">
-                <label for="password" class="lbl">Password :</label><br>
-                <input type="password" placeholder="Enter password" width="250px"> <!----add the width to css file -->
+            <div class="form-field">
+                <label for="password" class="lbl" style="color: var(--color-white);">Password :</label><br>
+                <input type="password" placeholder="Enter password"> <!----add the width to css file -->
             </div>
-
+            <p class="text-white">Remember me<input type="Checkbox"></p>
             <button class="btn btn-accent signup-btn">Sign Up</button>
         </div>
             <div style="margin-left: 10px;">
-                <p class="grey">Already have an account ? <a href="#">login</a></p>
-                <p class="grey">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+                <p class="text-white styled">Already have an account ? <a href="#">login</a></p>
+                <p class="text-white styled">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
             </div>
         </form>
+    </div>
     </div>
 
 </div>

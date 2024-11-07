@@ -117,3 +117,21 @@ input[type="checkbox"] {
     gap: 16px;
     border: 1px solid #b3b7be;
 }
+
+/*TEXT STYLES*/
+
+.text-white{
+    color: var(--color-white);
+}
+
+.text-grey{
+    color: var(--neutral-80);
+}
+
+p.styled{
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    opacity: 0.5;
+}

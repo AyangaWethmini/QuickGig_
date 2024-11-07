@@ -1,9 +1,12 @@
-.login-form{
+.form-section {
     background-color: #25324B;
-    
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    flex-grow: 1;
 }
 
-.form-body{
-    height: fit-content;
+.login-form {
     width: 450px;
+    
 }

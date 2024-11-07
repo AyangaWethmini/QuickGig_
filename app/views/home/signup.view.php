@@ -10,7 +10,7 @@
         <div class="stat container flex-col">
             <img src="<?=ROOT?>/assets/icons/chart.svg" alt="stats image" width="56px" height="40px">
             <h4>100k+</h4>
-            <p>People got hired</p>
+            <p class="styled">People got hired</p>
         </div>
 
         <div class="testamonial container">
@@ -54,7 +54,7 @@
                 <input type="text" placeholder="Enter Email">
             </div>
 
-            <div class="form-feild">
+            <div class="form-field">
                 <label for="password" class="lbl">Password :</label><br>
                 <input type="password" placeholder="Enter password" width="250px"> <!----add the width to css file -->
             </div>
@@ -62,8 +62,8 @@
             <button class="btn btn-accent signup-btn">Sign Up</button>
         </div>
             <div style="margin-left: 10px;">
-                <p class="grey">Already have an account ? <a href="#">login</a></p>
-                <p class="grey">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+                <p class="text-grey">Already have an account ? <a href="<?APPROOT?>/views/home/login.view.php">login</a></p>
+                <p class="text-grey">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
             </div>
         </form>
     </div>
