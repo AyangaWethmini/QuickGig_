@@ -55,7 +55,7 @@ input{
     width: 250px;
 }
 
-h3 {
+h3.heading {
     color: var(--Color-Black, #202430);
     text-align: center;
     font-family: Abel;
@@ -98,120 +98,109 @@ h3 {
 }
 
 
-.image{
+.image {
     position: relative;
     margin-left: 40px;
     width: 50%;
     height: 100vh;
-    background-color: var(--brand-lavender);
 }
+
 
 .img {
-    position: absolute;
-    margin-bottom: 0px;
-    bottom : 0px;  
-    left: 148px;  
+    position: relative;
+    margin-bottom: 0;
+    left: 148px;
 }
 
-.stat{
+.stat {
     position: absolute;
     top: 150px;
-    left : 48px;
+    left: 48px;
     background-color: var(--color-white);
     border-radius: 20px;
     height: 140px;
-    width: 140px;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    padding: 10px;
 }
 
-h4 {
+
+.h4-stat {
     color: var(--color-black);
     font-family: Inter;
     font-size: 20px;
-    font-style: normal;
     font-weight: 700;
-    line-height: 100%; 
+    line-height: 100%;
     letter-spacing: -0.2px;
     margin-top: 8px;
 }
 
-p.stat , p.grey{
+p.sta {
     color: var(--color-text);
-    
-}
-
-p.grey{
-    font-size: 14px;
 }
 
 
-.signup-btn{
+
+.signup-btn {
     width: 300px;
     margin-top: 15px;
-    
 }
 
 .signup-btn:hover {
-    opacity: 0.9; 
-    transform: scale(1.05); 
+    opacity: 0.9;
+    transform: scale(1.05);
 }
 
 .signup-btn:focus {
-    outline: none; /* Remove outline on focus for better appearance */
+    outline: none;
 }
 
-.testamonial{
+.testamonial {
     position: absolute;
     bottom: 20px;
     background-color: var(--color-white);
     border-radius: 20px;
     width: 240px;
     height: 150px;
-    flex-shrink: 0;
-    left : 400px;
+    left: 400px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card > h5 {
     color: var(--color-text);
     font-family: Inter;
     font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
     opacity: 0.7;
     margin: 0;
 }
 
-.quote{
+.quote {
     color: var(--Brands-Primary, #4640DE);
     font-family: Abel;
     font-size: 64px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 80px; 
     margin-top: 10px;
     margin-left: 10px;
 }
 
-.comment{
+.comment {
     color: var(--Color-Black, #202430);
     font-family: Epilogue;
     font-size: 16px;
-    font-style: normal;
     font-weight: 600;
-    line-height: 160%; 
+    line-height: 160%;
     margin: 24px;
-
 }
 
-
-.profile{
+.profile {
     position: absolute;
     background-color: var(--brand-primary);
-    top : -20px;
+    top: -20px;
     right: 36px;
-    width: 58.566px;
-    height: 58.576px;
-    flex-shrink: 0;
+    height: 58.5px;
     border-radius: 50%;
     border: 5px solid var(--color-white);
 }

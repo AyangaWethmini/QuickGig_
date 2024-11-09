@@ -25,6 +25,7 @@
 body {
     margin: 0;
     padding: 0;
+    min-height: 100vh;
     font-family: "Monteserrat-Regular";
 }
 
@@ -34,6 +35,12 @@ body {
     padding: 12px;
     color: var(--color-white);
 }
+
+.btn:hover{
+    opacity: 110%;
+    cursor: pointer;
+}
+
 .btn-accent {
     background-color: var(--brand-primary);
 }

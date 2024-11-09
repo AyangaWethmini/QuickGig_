@@ -8,7 +8,9 @@
 
 .login-form {
     width: 450px;
-    
 }
 
+a.login{
+    color: var(--color-white);
+}
 

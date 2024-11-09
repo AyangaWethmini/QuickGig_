@@ -9,7 +9,7 @@
 
         <div class="stat container flex-col">
             <img src="<?=ROOT?>/assets/icons/chart.svg" alt="stats image" width="56px" height="40px">
-            <h4>100k+</h4>
+            <h4 class="h4-stat">100k+</h4>
             <p class="styled">People got hired</p>
         </div>
 
@@ -38,7 +38,7 @@
         </div>
 
         <div class="flex-col">
-        <h3>Get more oppertunities</h3>
+        <h3 class="heading">Get more oppertunities</h3>
         <form action="post">
             <div class="form-field" id="ind-name">
                 <label for="name" class="lbl"><span id="name">Name :</span></label><br>
