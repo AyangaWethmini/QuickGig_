@@ -1,0 +1,25 @@
+.header {
+    justify-content: space-between;    
+}
+
+.greeting > h3 {
+    font-family: Poppins;
+    padding: 0;
+    margin: 0;
+}
+
+.wrapper{
+    flex-grow: 1;
+}
+
+.overview{
+    margin: auto;
+    justify-content: center ;
+}
+
+.box{
+    margin: 10px;
+    background-color: var(--brand-lavender);
+    width: 200px;
+}
+
