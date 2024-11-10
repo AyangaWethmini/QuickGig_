@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/announcements.css"> 
 
 <div class="wrapper flex-row">
@@ -35,6 +35,16 @@
                 </select>
                 <button id="gridButton" onclick="toggleView()">☰</button>
                 </div>
+        </div>
+
+        <div class="create-ad-form div-shadow">
+            <button class="back"><</button> <p>Create Ad</p>
+
+            <form action="post">
+                <div class="form-field">
+                    
+                </div>
+            </form>
         </div>
     </div>
 

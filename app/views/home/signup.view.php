@@ -16,7 +16,7 @@
         <div class="testamonial container">
             <img src="<?=ROOT?>/assets/images/profile.png" alt="profile picture" class="profile">
             <div class="card">
-                <h5>Adam Slander</h5>
+                <h5 class="rev-name">Adam Slander</h5>
                 <h5>Lead Engineer at Canva</h5>
                 <div class=" flex-row">
                 <p class="quote">"</p>
@@ -30,7 +30,7 @@
 
 
 
-    <div class="form flex-col">
+    <div class="form flex-col" style="width: 450px;">
 
         <div class="buttons flex-row">
             <button class="form-btn btn" id="individual" onclick="individualSignUp()" >Individual</button>
@@ -61,6 +61,7 @@
 
             <button class="btn btn-accent signup-btn">Sign Up</button>
         </div>
+        <br>
             <div style="margin-left: 10px;">
                 <p class="text-grey">Already have an account ? <a href="<?APPROOT?>/views/home/login.view.php">login</a></p>
                 <p class="text-grey">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>

@@ -145,3 +145,110 @@ p.styled{
     font-weight: 400;
     opacity: 0.5;
 }
+
+
+/*FOR THE LOGO*/
+p.logo{
+    font-weight: 600;
+    font-size: 36px;
+    margin : 25px 144px;
+    color: var(--color-text);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; 
+    letter-spacing: -0.24px;
+}
+
+
+
+/*CSS for the serch bar*/
+
+
+/*        
+Use this in the code. Add relevent placeholder
+    <div class="search-container">
+            <input type="text" 
+                class="search-bar" 
+                placeholder="Search advertisements"
+                aria-label="Search">
+    </div>
+
+*/
+
+.search-container {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 0px 15px;
+  }
+  
+  .search-bar {
+    height: 30px;
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    outline: none;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center right 15px;
+    background-size: 20px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .search-bar:focus {
+    border-color: #999;
+  }
+  
+  .search-bar::placeholder {
+    color: #999;
+  }
+  
+  /*sort menu*/
+  .filter-container {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .filter-container span {
+    margin-right: 5px;
+  }
+  
+  #sortSelect {
+    border: none;
+    background: none;
+    color: blue;
+    cursor: pointer;
+  }
+  
+  #gridButton {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+
+/*FORM STYLES*/
+
+
+.form{
+    background-color: var(--color-white);
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    margin: auto 100px;
+    padding: 20px;
+
+}
+
+.lbl{
+    color: var(--Neutrals-80, #515B6F);
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 160%; 
+}
