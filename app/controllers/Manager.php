@@ -7,5 +7,8 @@
             $this->view('dashboard');
         }
 
+        function advertisements(){
+            $this->view('advertisements');
+        }
         
     }

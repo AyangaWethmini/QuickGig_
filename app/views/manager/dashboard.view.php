@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css"> 
 
 <div class=" wrapper flex-row">
     <div id="sidebar" style="width: 224px; height : 100vh; background-color : var(--brand-lavender)">

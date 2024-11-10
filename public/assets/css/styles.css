@@ -37,12 +37,12 @@ body {
 /* BUTTON STYLES */
 .btn {
     border: none;
-    padding: 12px;
+    padding: 18px 18px;
     color: var(--color-white);
 }
 
 .btn:hover{
-    opacity: 110%;
+    background-color: var(--btn-hover);
     cursor: pointer;
 }
 
