@@ -37,12 +37,33 @@
                 </div>
         </div>
 
-        <div class="create-ad-form div-shadow">
+        <div class="create-ad-formfrom" style="background-color: yellow;">
             <button class="back"><</button> <p>Create Ad</p>
 
             <form action="post">
                 <div class="form-field">
-                    
+                    <lable class="lbl">Name</lable><br>
+                    <input type="text" for="name">
+                </div>
+                <div class="form-field">
+                    <lable class="lbl">Name</lable><br>
+                    <input type="text" for="name">
+                </div>
+                <div class="form-field">
+                    <lable class="lbl">Name</lable><br>
+                    <input type="text" for="name">
+                </div>
+                <div class="form-field">
+                    <lable class="lbl">Name</lable><br>
+                    <input type="text" for="name">
+                </div>
+                <div class="form-field">
+                    <lable class="lbl">Name</lable><br>
+                    <input type="text" for="name">
+                </div>
+                <div class="form-field">
+                    <lable class="lbl">Name</lable><br>
+                    <input type="text" for="name">
                 </div>
             </form>
         </div>
