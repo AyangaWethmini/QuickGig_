@@ -10,7 +10,7 @@
     <div class="main-content container">
         <div class="header flex-row">
             <h3>Current Advertisements</h3>
-            <button class="btn btn-accent"> + Post Advertisement</button>
+            <button class="btn btn-accent" onclick="showForm()"> + Post Advertisement</button>
         </div>
         <hr>
         
@@ -37,8 +37,10 @@
                 </div>
         </div>
 
-        <div class="create-ad-form from" style="background-color: yellow;">
-            <button class="back"><</button> <p>Create Ad</p>
+        <div class="create-ad-form from container hidden"  id="create-ad">
+        <div class="title flex-row">
+        <i class="fa-solid fa-arrow-left"></i> <p class="title">Create Ad</p>
+        </div>
 
             <form action="post">
                 <div class="form-field">
@@ -55,7 +57,7 @@
                 </div>
                 <div class="form-field">
                     <lable class="lbl">Description</lable><br>
-                    <textarea id="description" name="description" rows="4" ></textarea>
+                    <textarea id="description" name="description" rows="6" ></textarea>
                 </div>
                 <div class="form-field">
                     <lable class="lbl">Category</lable><br>
@@ -69,17 +71,44 @@
                     <lable class="lbl">Tages</lable><br>
                     <input type="text" for="name">
                 </div>
-                <div class="form-field">
+                <div class="form-field radio-btns">
                     <input type="radio" name="paid"><label for="paid">Paid</label>
                     <input type="radio" name="pending"><label for="pending">Pending</label>
                 </div>
-                <div class="form-field">
+                <div class="links flex-col">
+                <div class="form-field img-link">
                     <a href="#">Add Image</a>
                 </div>
-                <button class="btn btn-accent">Post Ad</button>
+                <button class="btn btn-accent" onclick="postAd()">Post Ad</button>
+                </div>
             </form>
         </div>
     </div>
 
 </div>
+
+<script>
+
+const form = document.getElementById("create-ad");
+
+    function showForm() {
+    if (form.classList.contains("show")) {
+        form.classList.remove("show");
+        setTimeout(() => {
+            form.classList.add("hidden");
+        }, 500); // Delay to match the CSS transition
+    } else {
+        form.classList.remove("hidden");
+        form.classList.add("show");
+    }
+}
+
+    function postAd(){
+        form.classList.remove("show");
+        setTimeout(() => {
+            form.classList.add("hidden");
+        }, 500);
+    }
+
+</script>
 
