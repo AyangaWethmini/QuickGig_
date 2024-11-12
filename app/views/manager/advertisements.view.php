@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/announcements.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 
 <div class="wrapper flex-row">
     <div id="sidebar" style="width: 224px; height : 100vh; background-color : var(--brand-lavender)">
@@ -37,7 +37,7 @@
                 </div>
         </div>
 
-        <div class="create-ad-formfrom" style="background-color: yellow;">
+        <div class="create-ad-form from" style="background-color: yellow;">
             <button class="back"><</button> <p>Create Ad</p>
 
             <form action="post">
@@ -46,27 +46,40 @@
                     <input type="text" for="name">
                 </div>
                 <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
+                    <lable class="lbl">Advertiser</lable><br>
                     <input type="text" for="name">
                 </div>
                 <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
+                    <lable class="lbl">Advertiser contact no.</lable><br>
                     <input type="text" for="name">
                 </div>
                 <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
+                    <lable class="lbl">Description</lable><br>
+                    <textarea id="description" name="description" rows="4" ></textarea>
+                </div>
+                <div class="form-field">
+                    <lable class="lbl">Category</lable><br>
                     <input type="text" for="name">
                 </div>
                 <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
+                    <lable class="lbl">Expiry date</lable><br>
                     <input type="text" for="name">
                 </div>
                 <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
+                    <lable class="lbl">Tages</lable><br>
                     <input type="text" for="name">
                 </div>
+                <div class="form-field">
+                    <input type="radio" name="paid"><label for="paid">Paid</label>
+                    <input type="radio" name="pending"><label for="pending">Pending</label>
+                </div>
+                <div class="form-field">
+                    <a href="#">Add Image</a>
+                </div>
+                <button class="btn btn-accent">Post Ad</button>
             </form>
         </div>
     </div>
 
 </div>
+
