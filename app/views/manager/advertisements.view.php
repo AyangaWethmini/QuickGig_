@@ -92,16 +92,18 @@
 const form = document.getElementById("create-ad");
 
     function showForm() {
-    if (form.classList.contains("show")) {
-        form.classList.remove("show");
-        setTimeout(() => {
+        const bg = document.querySelector(".wrapper");
+        
+        if (form.classList.contains("hidden")) {
+            form.classList.remove("hidden");
+            setTimeout(() => {
+                form.classList.add("show");
+            }, 50); // Delay to match the CSS transition
+        } else {
+            form.classList.remove("show");
             form.classList.add("hidden");
-        }, 500); // Delay to match the CSS transition
-    } else {
-        form.classList.remove("hidden");
-        form.classList.add("show");
+        }
     }
-}
 
     function postAd(){
         form.classList.remove("show");

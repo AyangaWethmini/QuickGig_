@@ -15,7 +15,7 @@
     top: 100px;
     left: 200px;
     background-color: var(--color-white);
-    transition: opacity 0.5s ease-in-out; 
+    transition: opacity ease-in-out; 
     opacity: 0;
 }
 /* Style for WebKit browsers (Chrome, Safari, Edge) */
