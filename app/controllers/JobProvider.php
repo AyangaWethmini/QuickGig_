@@ -7,4 +7,8 @@
             $this->view('individualProfile');
         }
         
+        function jobListing(){
+            $this->view('jobListing');
+        }
+
     }
