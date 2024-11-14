@@ -15,4 +15,8 @@
             $this->view('viewEmployeeProfile');
         }
 
+        function subscription(){
+            $this->view('subscription');
+        }
+
     }
