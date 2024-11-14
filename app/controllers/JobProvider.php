@@ -6,5 +6,9 @@
         function index(){
             $this->view('individualProfile');
         }
+
+        function postJob(){
+            $this->view('postJob');
+        }
         
     }
