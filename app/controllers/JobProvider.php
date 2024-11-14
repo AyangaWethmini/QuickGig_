@@ -11,4 +11,8 @@
             $this->view('jobListing');
         }
 
+        function viewEmployeeProfile(){
+            $this->view('viewEmployeeProfile');
+        }
+
     }

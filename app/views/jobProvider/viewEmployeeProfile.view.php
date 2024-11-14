@@ -1,38 +1,69 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/viewEmployeeProfile.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
-<script src="<?=ROOT?>/assets/js/jobProvider/jobListing.js"></script>
 <div class="wrapper flex-row">
     <div id="sidebar"></div>
-    <div class="inclusion-container">
-        <div class="opener">
-            <p class="title-name">My Jobs</p>
-            <button class="post-job-btn">+ Post a job</button>
-        </div> <br> <hr>
-
-        <div class="expressionNselect-dates">
-            <p class="expression">Here We Go!!!</p>
-            <button class="select-dates-btn">Nov 18 - Nov 24</button>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-info">
+                <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture" class="profile-pic">
+                <div class="intro">
+                    <div class="profile-intro">
+                        <h2>Jake Gyll</h2><br>
+                        <p>Product Designer at Twitter</p><br>
+                        <p>Manchester, UK</p>
+                    </div>
+                    <div class="profile-rating">★★★★☆</div>
+                </div>
+                <button class="btn edit-profile">Edit Profile</button>
+            </div>
+            <div class="profile-contacts">
+                <div class="additional-details">
+                    <h2>Additional Details</h2> <br>
+                    <p class="title-items">Email</p> 
+                    <p class="detail-items">jakegyll@gmail.com</p><br>
+                    <p class="title-items">Phone</p>
+                    <p class="detail-items">+44 1245 572 135</p><br>
+                    <p class="title-items">Languages</p>
+                    <p class="detail-items">English, French</p>
+                </div>
+                <div class="social-links">
+                    <h2>Social Links</h2> <br>
+                        <p class="title-items">Instagram</p>
+                        <p class="detail-items">instagram.com/jakegyll</p><br>
+                        <p class="title-items">Twitter</p>
+                        <p class="detail-items">twitter.com/jakegyll</p><br>
+                        <p class="title-items">Website</p>
+                        <p class="detail-items">www.jakegyll.com</p>                  
+                </div>
+            </div>    
         </div>
-
-        <div class="category-container">
-            <div class="category">My Jobs (1)</div>
-            <div class="category">Received (3)</div>
-            <div class="category">Send (0)</div>
-            <div class="category">To be completed (0)</div>
-            <div class="category">Ongoing (0)</div>
-            <div class="category">Completed (1)</div>
-        </div> <hr> <br>
-
+        <div class="profile-about">
+            <h3>About Me</h3>
+            <p>With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
+        </div>
+        <div class="interested-categories-container">
+            <p class="interested-categories-title">Interested Categories</p>
+            <div class="interested-categories">
+                <div class="interested-category">Waiter</div>
+                <div class="interested-category">Bartender</div>
+                <div class="interested-category">Kitchen Helper</div>
+                <div class="interested-category">Cleaning</div>
+                <div class="interested-category">Cashier</div>
+                <div class="interested-category">Plumber</div>
+            </div>
+        </div> <br> <br>
         <div class="list-header">
             <p class="list-header-title">Job History</p>
             <input type="text" class="search-input" placeholder="Search..."> 
             <button class="filter-btn">Filter</button>
         </div> <br>
 
-        <div class="employee-list">
+        <div class="employee-list-view-employee">
             
             <div class="employee-item">
                 <span class="employee-id">1</span>
@@ -96,15 +127,6 @@
 
         </div>
 
-        <!--<div class="menu-overlay hidden">
-            <div class="menu">
-            <ul>
-                <li>View Profile</li>
-                <li>Edit Details</li>
-                <li>Delete Record</li>
-            </ul>
-            </div>
-        </div> -->
 
     </div>
-</body>
+</div>
