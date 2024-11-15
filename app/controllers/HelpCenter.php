@@ -1,11 +1,13 @@
-<?php
-    class JobProvider extends Controller {
-        protected $viewPath = "../app/views/";
+<?php 
 
+class HelpCenter extends Controller
+{
+	protected $viewPath = "../app/views/";
 
-        function index(){
-            $this->view('helpCenter');
-        }
+	public function index()
+	{
+		$this->view('helpCenter');
+	}
 
-       
-    }
+	
+}

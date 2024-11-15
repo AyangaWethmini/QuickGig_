@@ -1,14 +1,13 @@
-body {
-    font-family: Arial, sans-serif;
-}
 .wrapper {
     display: flex;
 }
+
 #sidebar {
     width: 224px;
     height: 100vh;
     background-color: var(--brand-lavender);
 }
+
 .profile-container {
     padding: 20px;
     width: 100%;
