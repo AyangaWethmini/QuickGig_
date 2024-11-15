@@ -11,4 +11,16 @@
             $this->view('postJob');
         }
         
+        function jobListing(){
+            $this->view('jobListing');
+        }
+
+        function viewEmployeeProfile(){
+            $this->view('viewEmployeeProfile');
+        }
+
+        function subscription(){
+            $this->view('subscription');
+        }
+
     }
