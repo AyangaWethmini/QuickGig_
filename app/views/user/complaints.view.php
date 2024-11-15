@@ -9,6 +9,7 @@
     <div class="main-content container">
     <div class="header">
         <h1 class="heading">Complaints</h1>
+        <button class="btn btn-accent">Submit complaint</button>
     </div>
     <hr>
     <div class="search-container">
@@ -51,4 +52,44 @@
         </div>
         </div>
     </div>
+</div>
+
+<div class="complaint-form">
+    <h1>Submit your Complaint</h1>
+    <p class="text-grey">Following details are required and will only be shared with Quickgig</p>
+    <hr>
+    <form action="post">
+        <div class="form-field">
+            <label for="full-name"><p class="lbl">Full name</p></label>
+            <input type="text" for="full-name" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-field">
+            <label for="email"><p class="lbl">Email address</p></label>
+            <input type="text" for="email" placeholder="Enter your email">
+        </div>
+
+        <div class="form-field">
+            <label for="number"><p class="lbl">Phone number</p></label>
+            <input type="text" for="number" placeholder="Enter your phone number">
+        </div>
+
+        <div class="form-field">
+            <label for="information"><p class="lbl">Information</p></label>
+            <input type="text" for="full-name" placeholder="Information regarding the complaint">
+        </div>
+        
+        <p class="evidance">Attach any evidance(not required)</p>
+        <div class="attachment">
+
+        </div>
+
+            <hr>
+
+            <button class="btn btn-accent">Submit Complaint</button>
+
+            <p class="text-grey">
+                By sending the request you can confirm that you accept our <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
+            </p>
+    </form>
 </div>
