@@ -1,0 +1,58 @@
+.heading{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilouge;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 120%;
+}
+
+.header {
+    padding: 24px;
+}
+
+.filter{
+    justify-content: space-between;
+}
+
+.complaint{
+    border: 1px solid var(--neutral-80);
+    margin: 20px;
+    width: 70%;
+    margin: auto;
+}
+
+.complaint h1{
+    color: #25324B;
+    font-family: Epilogue;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; 
+}
+
+.complaint p{
+    color: #7C8493;
+    font-family: Epilogue;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; 
+}
+
+.details{
+    justify-content: space-between;
+    margin-top: 10px;
+    
+}
+
+.details p{
+    color: var(--brand-primary);
+}
+
+.complaints-container{
+    display: flex;
+    flex-direction: column;
+    gap : 20px;
+    
+}
