@@ -23,4 +23,8 @@
             $this->view('subscription');
         }
 
+        function jobProvider_sidebar(){
+            $this->view('jobProvider_sidebar');
+        }
+
     }
