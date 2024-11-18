@@ -100,11 +100,11 @@
     
 </div>
 
-<div class="featured flex-row">
+<div class="featured flex-row" >
     <p class="typography" style="font-size: 48px;">
         Featured <span>Jobs</span>
     </p>
-    <a href="#">Show all jobs</a>
+    <a href="#" class="flex-row" style = "gap: 10px; padding-top:5px; " >Show all jobs<img style = "height: 15px; width: auto; padding-top: 5px;" src="<?=ROOT?>/assets/images/ArrowRight.svg"/></a>
 </div>
 
 
