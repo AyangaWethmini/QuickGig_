@@ -1,7 +1,16 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/home/home.css">
+<?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<nav class="navbar flex-row">
+<script>
+    // Include the toggleMenu function
+    function toggleMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('active');
+    }
+</script>
+
+<!-- <nav class="navbar flex-row">
     <div class="flex-row  nav-left">
         <div class="logo">QuickGig</div>
         <ul class="nav-links  flex-row">
@@ -19,7 +28,7 @@
         <span></span>
         <span></span>
     </div>
-</nav>
+</nav> -->
 
 <div class="hero-section flex-row">
     <div class="job-search">
@@ -91,11 +100,11 @@
     
 </div>
 
-<div class="featured flex-row">
+<div class="featured flex-row" >
     <p class="typography" style="font-size: 48px;">
         Featured <span>Jobs</span>
     </p>
-    <a href="#">Show all jobs</a>
+    <a href="#" class="flex-row" style = "gap: 10px; padding-top:5px; " >Show all jobs<img style = "height: 15px; width: auto; padding-top: 5px;" src="<?=ROOT?>/assets/images/ArrowRight.svg"/></a>
 </div>
 
 

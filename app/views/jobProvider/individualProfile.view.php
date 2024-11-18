@@ -4,7 +4,7 @@
 
 <body>
 <div class="wrapper flex-row">
-    <div id="sidebar"></div>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">

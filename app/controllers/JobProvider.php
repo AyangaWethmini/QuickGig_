@@ -1,9 +1,12 @@
 <?php
     class JobProvider extends Controller {
         protected $viewPath = "../app/views/jobProvider/";
-
-
+        
         function index(){
+            $this->view('findEmployees');
+        }
+
+        function profile(){
             $this->view('individualProfile');
         }
 
@@ -21,6 +24,10 @@
 
         function subscription(){
             $this->view('subscription');
+        }
+
+        function jobProvider_sidebar(){
+            $this->view('jobProvider_sidebar');
         }
 
     }
