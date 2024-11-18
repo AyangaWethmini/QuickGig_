@@ -1,10 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <div class="admin-layout">
-    <?php require APPROOT . '/views/inc/components/admin_sidebar.php'; ?>
     <div class="admin-container">
         <div class="admin-announcement-header">
             <h1>Current Announcements</h1>
-            <a href="<?php echo URLROOT; ?>/admin/admincreateannouncement">
+            <a>
                 <input type="submit" value="+ Post Announcement" class="form-btn">
             </a>
         </div>
