@@ -1,0 +1,199 @@
+.wrapper{
+    flex-grow: 1;
+}
+
+.main-content{
+    display: flex;
+    height: 786px;
+    align-items: flex-start;
+    flex-shrink: 0;
+    margin: auto;
+}
+
+.text{
+    color: var(--Neutrals-60, #7C8493);
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 160%;
+}
+
+.header{
+    flex-grow: 1;
+    justify-content: space-between;
+    gap: 800px;
+}
+    .sort-container {
+        font-size: 14px;
+        color: #606770;
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        margin: 10px;
+    }
+
+    .sort-container .label {
+        margin-right: 5px;
+        color: #606770;
+    }
+
+    .sort-container select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: transparent;
+        color: #1877F2;
+        font-weight: bold;
+        border: none;
+        padding-right: 20px;
+        cursor: pointer;
+        outline: none;
+    }
+
+    /* Dropdown arrow */
+    .sort-container::after {
+        content: "";
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+        border: solid #1877F2;
+        border-width: 0 1px 1px 0;
+        padding: 3px;
+        pointer-events: none;
+    }
+
+    /* Styling for the select options */
+    select option {
+        color: #000;
+        font-weight: normal;
+    }
+.forum{
+    gap: 10px
+}
+
+.article-card{
+    margin : 10px;
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    height: 248px;
+    width: 720px;
+    border: 1px solid var(--neutral-60);
+}
+
+.article-card h1, .my-qheading{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; 
+}
+
+.vote{
+    padding: 0;
+    gap: 20px;
+}
+
+.suggestions{
+    width: 384px;
+
+}
+
+.forum-links hr{
+    width : 80%;
+}
+
+.forum-links a{
+    color: var(--neutral-80);
+    display: block;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 160%; 
+    text-decoration: none;
+    padding: 10px;
+ }
+
+
+ .forum-links a:active{
+    color: var(--brand-pri-dark);
+ }
+
+ .forum-links a:hover{
+    color: var(--brand-primary);
+ }
+
+.suggestions .search-container input{
+    height: 20px;
+    width: 200px;
+}
+
+.customer-service{
+    position: relative;
+    background-color: var(--brand-primary);
+    height: 250px;
+    width: 250px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.customer-service h4{
+    color: var(--color-white, #FFF);
+    font-family: Epilogue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    margin: 13px auto;
+    padding: 10px;
+}
+
+.help-text , .tel-no , .email a{
+    color: var(--Neutrals-10i, #F8F8FD);
+    font-family: Epilogue;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; 
+}
+
+.suggestions input{
+    padding: 10px;
+    width: 200px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.my-questions{
+    border: 1px solid var(--neutral-80);
+    margin: 10px;
+}
+
+.my-questions h2{
+    color: var(--neutral-80, #25324B);
+    font-family: Epilogue;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+}
+
+.my-qheading{
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.header h3 {
+    color: var(--Neutrals-100, #25324B);
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+}

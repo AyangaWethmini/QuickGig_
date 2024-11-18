@@ -1,18 +1,61 @@
 <?php
-    class Admin extends Controller {
-        protected $viewPath = "../app/views/admin/";
+ class Admin extends Controller {
 
+        protected $viewpath = "../app/view/";
 
-        function index(){
-            $this->view('adminannouncement');
+        public function index(){
+            $this->view('admin/dashboard');
+        }
+        
+        public function announcement(){
+            $data = [];
+            
+            $this->view('admin/announcement');
         }
 
-        function admincomplaints(){
-            $this->view('adminancomplaints');
+        public function create_announcement(){
+            $data = [];
+            
+            $this->view('admin/create_announcement');
         }
 
-        function admincreateannouncement(){
-            $this->view('admincreateannouncement');
+        public function complaints(){
+            $data = [];
+            
+            $this->view('admin/complaints');
+        }
+
+        public function reviewcomplaints(){
+            $data = [];
+            
+            $this->view('admin/reviewcomplaint');
+        }
+
+        public function manageusers(){
+            $data = [];
+            
+            $this->view('users');
+        }
+
+        public function settings(){
+            $data = [];
+            
+            $this->view('admin/settings');
+        }
+
+        public function logindetails(){
+            $data = [];
+            
+            $this->view('admin/logindetails');
+        }
+
+        public function deleteaccount(){
+            $data = [];
+            
+            $this->view('admin/delete_account');
         }
         
     }
+
+
+

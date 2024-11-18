@@ -1,5 +1,11 @@
-.navbar {
-    display: flex; /* Make sure it's a flex container */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+/* .navbar {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 35px 60px;
@@ -7,12 +13,12 @@
 }
 
 .nav-left {
-    display: flex; /* Ensure this is also a flex container */
+    display: flex; 
     gap: 40px;
 }
 
 .nav-links {
-    display: flex; /* Ensure the links are displayed as a row */
+    display: flex; 
     gap: 20px;
 }
 .nav-links li a{
@@ -32,9 +38,9 @@
 }
 
 .sign-btns {
-    margin-left: auto; /* Push buttons to the right end */
-    display: flex; /* Make it a flex container for button alignment */
-    gap: 10px; /* Optional: to add space between buttons */
+    margin-left: auto; 
+    display: flex; 
+    gap: 10px;
 }
 
 @media (max-width: 768px) {
@@ -57,7 +63,7 @@
     .hamburger {
         display: flex;
     }
-}
+} */
 
 
 .typography{
@@ -73,7 +79,16 @@
 .typography span{
     color: var(--Accents-Blue, #26A4FF);
 }
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 150px 40px 20px 126px;
+    min-height: fit-content;
+    width: 100%; /* Makes it responsive */
+    max-width: 80vw; /* Restricts the maximum width */
 
+}
 .hero-text{
     color: var(--Neutrals-80, #515B6F);
     font-family: Epilogue;
@@ -83,34 +98,59 @@
     line-height: 160%;
 }
 
-.hero-search{
-    width: 852px;
+.hero-search{  
     padding: 16px;
+    display: flex;
+    justify-content: center;
     align-items: center;
     box-shadow: 0px 79px 128px 0px rgba(192, 192, 192, 0.09), 0px 28.836px 46.722px 0px rgba(192, 192, 192, 0.06), 0px 13.999px 22.683px 0px rgba(192, 192, 192, 0.05), 0px 6.863px 11.119px 0px rgba(192, 192, 192, 0.04), 0px 2.714px 4.397px 0px rgba(192, 192, 192, 0.03);
 }
 
 .hero-search .search-container{
+    
     display: flex;
-    padding-top: 20px;
     justify-content: space-between;
     align-items: flex-start;
+    padding-left: 16px;
+    padding-right: 16px;
+
+}
+.search-bar {
+    padding-left: 16px;
+    padding-right: 16px; 
+    width: 300px;
+    padding: 10px 15px;
+    border: 2px solid #ccc;
+    font-size: 1rem;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+
 }
 
+.search-bar:focus {
+    outline: none;
+    border-color: #26a4ff;
+} 
 
 .dropdown {
     position: relative;
-    display: inline-block;
+    display: flex;
+    padding: 14px 24px 14px 8px;
+    gap: 16px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+
   }
   
   .dropdown-button {
-    padding: 16px;
-    font-size: 16px;
     border: none;
+    font-size: 1rem;
+    color: #777;
+    background-color: white;
     cursor: pointer;
-    background-color: var(--color-white);
-  }
-  
+ 
+
+}
   .dropdown-content {
     display: none;
     position: absolute;
@@ -139,8 +179,9 @@
 
   .srch-btn{
     display: flex;
-    width: 209px;
+    width: 185px;
     padding: 14px 27px;
+    margin-left: 24px;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -156,8 +197,8 @@
 
 .job-search{
     display: flex;
-    width: 797px;
-    height: 542px;
+    width: 897px;
+    height: 342px;
     flex-direction: column;
     align-items: flex-start;
     gap: 23px;
@@ -173,10 +214,19 @@
 }
 
 .block {
-    width: 1192px;
+    width: 100%; /* Makes it responsive */
+    max-width: 80vw; /* Restricts the maximum width */
     height: 414px;
     flex-shrink: 0;
     background-color: var(--brand-primary);
+    clip-path: polygon(
+    160px 0,        /* Top-left corner, move inward horizontally by 20px */
+    100% 0,        /* Top-right corner remains untouched */
+    100% calc(100% - 80px), /* Bottom-right corner moves inward vertically by 20px */
+    calc(100% - 160px) 100%, /* Adjust bottom-right diagonal inward by 20px */
+    0 100%,        /* Bottom-left remains untouched */
+    0 80px         /* Top-left corner moves inward vertically by 20px */
+  );
     margin-bottom: 36px;
 }
 
@@ -199,10 +249,12 @@
     margin-left: 70px;
     margin-top: 10px;
 }
-
-.featured{
+.featured {
     justify-content: space-between;
-    padding: 0 124px;
+    padding: 0 134px;
+    width: 100%; /* Makes it responsive */
+    max-width: 80vw; /* Restricts the maximum width */
+    margin: 0 auto; /* Centers the element on the page */
 }
 
 

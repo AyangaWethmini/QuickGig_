@@ -1,18 +1,17 @@
-body {
-    font-family: Arial, sans-serif;
-}
 .wrapper {
     display: flex;
 }
+
 #sidebar {
     width: 224px;
     height: 100vh;
-    background-color: var(--brand-lavender);
+    background-color: white;
 }
+
 .profile-container {
     padding: 20px;
     width: 100%;
-    margin-left: 40px;;
+    margin-left: 300px;
 }
 
 /* Profile Header */
