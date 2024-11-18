@@ -9,6 +9,10 @@
         function profile(){
             $this->view('individualProfile');
         }
+
+        function postJob(){
+            $this->view('postJob');
+        }
         
         function jobListing(){
             $this->view('jobListing');
@@ -20,6 +24,10 @@
 
         function subscription(){
             $this->view('subscription');
+        }
+
+        function jobProvider_sidebar(){
+            $this->view('jobProvider_sidebar');
         }
 
     }

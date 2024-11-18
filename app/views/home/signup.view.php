@@ -39,7 +39,7 @@
 
         <div class="flex-col">
         <h3 class="heading">Get more oppertunities</h3>
-        <form action="post">
+        <form action="post" class="signup-form">
             <div class="form-field" id="ind-name">
                 <label for="name" class="lbl"><span id="name">Name :</span></label><br>
                 <input type="text" placeholder="Enter your name">

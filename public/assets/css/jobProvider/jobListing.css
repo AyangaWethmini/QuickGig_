@@ -9,6 +9,11 @@ body {
 .wrapper {
     display: flex;
 }
+
+.inclusion-container{
+  margin-left: 224px;
+}
+
 #sidebar {
     width: 224px;
     height: 100vh;
