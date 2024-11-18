@@ -5,7 +5,7 @@
 <body>
 <script src="<?=ROOT?>/assets/js/jobProvider/jobListing.js"></script>
 <div class="wrapper flex-row">
-    <div id="sidebar"></div>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="inclusion-container">
         <div class="opener">
             <p class="title-name">My Jobs</p>
