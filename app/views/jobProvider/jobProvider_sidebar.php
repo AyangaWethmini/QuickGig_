@@ -48,6 +48,10 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
                 <span class="sidebar-label">Help Centre</span>
             </div> 
+            <div class="sidebar-item" data-link="login-logout.php">
+                <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
+                <span class="sidebar-label">Log Out</span>
+            </div> 
         </div>
 
     </div>

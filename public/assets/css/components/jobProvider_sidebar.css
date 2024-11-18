@@ -6,7 +6,7 @@ body {
 .sidebar-container {
     width: 224px;
     height: 100vh;
-    background-color: var(--brand-lavender);
+    background-color: white;
     display: flex;
     flex-direction: column;
     padding: 20px;

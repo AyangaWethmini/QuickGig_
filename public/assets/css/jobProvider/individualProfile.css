@@ -5,7 +5,7 @@
 #sidebar {
     width: 224px;
     height: 100vh;
-    background-color: var(--brand-lavender);
+    background-color: white;
 }
 
 .profile-container {
