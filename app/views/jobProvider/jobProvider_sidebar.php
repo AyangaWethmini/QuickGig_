@@ -4,10 +4,6 @@
 <body>
     
     <div class="sidebar-container">
-        
-        <div class="logo-container">
-            <img src="<?=ROOT?>/assets/images/QuickGigLogo.png" alt="QuickGig-logo" class="logo">
-        </div>
 
         <div class="sidebar-items-container">
             <div class="sidebar-item" data-link="profile.php">
