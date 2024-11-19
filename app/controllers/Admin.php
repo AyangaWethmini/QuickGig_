@@ -1,60 +1,60 @@
 <?php
  class Admin extends Controller {
 
-        protected $viewpath = "../app/view/";
+        protected $viewPath = "../app/views/admin/";
 
-        public function index(){
-            $this->view('admin/dashboard');
+        function index(){
+            $this->view('adminannouncement');
+        }
+
+        function admincreateannouncement(){
+            $data = [];
+            
+            $this->view('admincreateannouncement');
+        }
+
+        function admincomplaints(){
+            $data = [];
+            
+            $this->view('admincomplaints');
+        }
+
+        function adminreviewcomplaints(){
+            $data = [];
+            
+            $this->view('adminreviewcomplaint');
+        }
+
+        function adminmanageusers(){
+            $data = [];
+            
+            $this->view('adminmanageusers');
+        }
+
+        function adminsettings(){
+            $data = [];
+            
+            $this->view('adminsettings');
+        }
+
+        function adminlogindetails(){
+            $data = [];
+            
+            $this->view('adminlogindetails');
+        }
+
+        function admindeleteaccount(){
+            $data = [];
+            
+            $this->view('admindeleteaccount');
         }
         
-        public function announcement(){
+        function adminadvertisements(){
             $data = [];
-            
-            $this->view('admin/announcement');
+
+            $this->view('adminadvertisements');
         }
 
-        public function create_announcement(){
-            $data = [];
-            
-            $this->view('admin/create_announcement');
-        }
-
-        public function complaints(){
-            $data = [];
-            
-            $this->view('admin/complaints');
-        }
-
-        public function reviewcomplaints(){
-            $data = [];
-            
-            $this->view('admin/reviewcomplaint');
-        }
-
-        public function manageusers(){
-            $data = [];
-            
-            $this->view('users');
-        }
-
-        public function settings(){
-            $data = [];
-            
-            $this->view('admin/settings');
-        }
-
-        public function logindetails(){
-            $data = [];
-            
-            $this->view('admin/logindetails');
-        }
-
-        public function deleteaccount(){
-            $data = [];
-            
-            $this->view('admin/delete_account');
-        }
-        
     }
 
 
