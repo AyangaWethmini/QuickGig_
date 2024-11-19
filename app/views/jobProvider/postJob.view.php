@@ -1,10 +1,10 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
 
 <div class="wrapper flex-row">
-    <div id="sidebar" style="width: 224px; height : auto; background-color : var(--brand-lavender)">
-    </div>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
 
     <div class="main-content container post-job-form">
         <p class="heading">

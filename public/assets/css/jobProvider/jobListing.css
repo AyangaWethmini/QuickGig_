@@ -5,9 +5,11 @@
 }
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
 }
 .wrapper {
     display: flex;
+    margin-top: 80px;
 }
 
 .inclusion-container{
