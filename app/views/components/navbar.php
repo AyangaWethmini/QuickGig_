@@ -12,8 +12,8 @@
     <span></span>
   </div>
   <ul class="nav-links">
-    <li><button class="login-btn">Log in</button></li>
+    <a href="<?php echo BASEURL; ?>/login"><button class="login-btn">Log in</button></a>
     <div class="divider"></div>
-    <li><button class="sign-up-btn">Sign Up</button></li>
+    <a href="<?php echo BASEURL; ?>/signup"><li><button class="sign-up-btn">Sign Up</button></li></a>
   </ul>
 </nav>

@@ -3,48 +3,54 @@
 
 class App
 {
-	private $controller = 'Home';
-	private $method 	= 'index';
+    private $controller = 'HomeController';
+    private $method = 'index';
 
-	private function splitURL()
-	{
-		$URL = $_GET['url'] ?? 'home';
-		$URL = explode("/", trim($URL,"/"));
-		return $URL;	
-	}
+    public function __construct()
+    {
+        // Get the requested URI
+        $this->processRoute();
+    }
 
-	public function loadController()
-	{
-		$URL = $this->splitURL();
+    private function processRoute()
+    {
+        global $routes; // Use routes defined in routes.php
 
-		/** select controller **/
-		$filename = "../app/controllers/".ucfirst($URL[0]).".php";
-		if(file_exists($filename))
-		{
-			require $filename;
-			$this->controller = ucfirst($URL[0]);
-			unset($URL[0]);
-		}else{
 
-			$filename = "../app/controllers/_404.php";
-			require $filename;
-			$this->controller = "_404";
-		}
 
-		$controller = new $this->controller;
+        // Get the requested URI
+        $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $requestUri = str_replace('/QuickGig/public', '', $requestUri);
+        if (array_key_exists($requestUri, $routes)) {
 
-		/** select method **/
-		if(!empty($URL[1]))
-		{
-			if(method_exists($controller, $URL[1]))
-			{
-				$this->method = $URL[1];
-				unset($URL[1]);
-			}	
-		}
+            $route = $routes[$requestUri];
+            $this->controller = $route[0];
+            $this->method = $route[1];
+        } else {
+            $this->controller = '_404';
+            $this->method = 'index';
+        }
+    }
+    
+    public function loadController()
+    {         
+        $controllerFile = APPROOT . "/controllers/{$this->controller}.php";
+        if (file_exists($controllerFile)) {
+            require_once $controllerFile;
+            $controllerInstance = new $this->controller;
 
-		call_user_func_array([$controller,$this->method], $URL);
+            if (method_exists($controllerInstance, $this->method)) {
+                call_user_func([$controllerInstance, $this->method]);
+            } else {
 
-	}	
+                echo "404 - Method {$this->method} not found!";
+            }
+
+        } else {
+
+            echo "404 - Controller {$this->controller} not found!";
+        }
+
+    }
 
 }

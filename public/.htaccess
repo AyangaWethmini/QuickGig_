@@ -1,8 +1,8 @@
 RewriteEngine On
 
-#loading files and directories that exists
+# Don't rewrite if the requested file or directory exists
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-#if not found any matching file or directory, loads index.php page
+# If no matching file or directory is found, load index.php
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
