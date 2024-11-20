@@ -4,7 +4,7 @@
 
 
         function index(){
-            $this->view('individualProfile');
+            $this->view('jobProvider');
         }
 
         function postJob(){
