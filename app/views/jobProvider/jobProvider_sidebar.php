@@ -10,10 +10,10 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
             </a>
-            <div class="sidebar-item" data-link="messages.php">
+            <a href="<?php echo ROOT;?>/user/messages" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
-            </div>
+            </a>
             <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>

@@ -7,6 +7,8 @@
             $this->view('complaints');
         }
 
-        
+        function messages(){
+            $this->view('messages');
+        }
         
     }
