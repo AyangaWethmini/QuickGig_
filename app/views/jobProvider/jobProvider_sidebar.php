@@ -40,10 +40,10 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </div>
-            <div class="sidebar-item" data-link="helpCentre.php">
+            <a href="<?php echo ROOT;?>/user/helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
-                <span class="sidebar-label">Help Centre</span>
-            </div> 
+                <span class="sidebar-label">Help Center</span>
+            </a> 
             <div class="sidebar-item" data-link="login-logout.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
                 <span class="sidebar-label">Log Out</span>
