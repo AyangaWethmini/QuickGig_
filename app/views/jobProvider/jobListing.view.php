@@ -1,11 +1,12 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
 <script src="<?=ROOT?>/assets/js/jobProvider/jobListing.js"></script>
 <div class="wrapper flex-row">
-    <div id="sidebar"></div>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="inclusion-container">
         <div class="opener">
             <p class="title-name">My Jobs</p>

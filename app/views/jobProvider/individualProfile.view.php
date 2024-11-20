@@ -1,10 +1,11 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
 
 <body>
 <div class="wrapper flex-row">
-    <div id="sidebar"></div>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">

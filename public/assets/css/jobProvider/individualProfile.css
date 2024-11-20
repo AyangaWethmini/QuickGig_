@@ -1,17 +1,18 @@
 .wrapper {
     display: flex;
+    margin-top: 100px;
 }
 
 #sidebar {
     width: 224px;
     height: 100vh;
-    background-color: var(--brand-lavender);
+    background-color: white;
 }
 
 .profile-container {
     padding: 20px;
     width: 100%;
-    margin-left: 40px;;
+    margin-left: 300px;
 }
 
 /* Profile Header */
@@ -30,7 +31,7 @@
     display:flex;
     flex-direction:row;
     border: 1px solid #D6DDEB;
-    margin-top:10px;
+
     padding: 10px;
     width:60%;
     align-items: first baseline;
