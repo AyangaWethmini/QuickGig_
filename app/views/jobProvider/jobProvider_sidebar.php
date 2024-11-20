@@ -6,18 +6,18 @@
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">
-            <div class="sidebar-item" data-link="profile.php">
+            <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
-            </div>
-            <div class="sidebar-item" data-link="messages.php">
+            </a>
+            <a href="<?php echo ROOT;?>/user/messages" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
-            </div>
-            <div class="sidebar-item" data-link="job_listing.php">
+            </a>
+            <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
-            </div>
+            </a>
             <div class="sidebar-item" data-link="announcements.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
@@ -31,19 +31,19 @@
                 <span class="sidebar-label">complains</span>
             </div>
              <br><br>
-            <div class="sidebar-item" data-link="subscription.php">
+             <a href="<?php echo ROOT;?>/jobProvider/subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>
                 <span class="sidebar-label">Subscription</span>
-            </div> 
+            </a>
             <br><br>
             <div class="sidebar-item" data-link="settings.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </div>
-            <div class="sidebar-item" data-link="helpCentre.php">
+            <a href="<?php echo ROOT;?>/user/helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
-                <span class="sidebar-label">Help Centre</span>
-            </div> 
+                <span class="sidebar-label">Help Center</span>
+            </a> 
             <div class="sidebar-item" data-link="login-logout.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
                 <span class="sidebar-label">Log Out</span>

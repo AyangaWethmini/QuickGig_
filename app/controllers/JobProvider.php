@@ -6,7 +6,7 @@
             $this->view('findEmployees');
         }
 
-        function profile(){
+        function individualProfile(){
             $this->view('individualProfile');
         }
 

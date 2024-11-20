@@ -1,6 +1,7 @@
 .dropdown, .tags-container, .add-btn {
     margin-top: 10px;
 }
+
 .dropdown select {
     width: 100%;
     padding: 8px;
