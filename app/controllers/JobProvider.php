@@ -38,4 +38,8 @@
             $this->view('individualEditProfile');
         }
 
+        function reviews(){
+            $this->view('reviews');
+        }
+
     }
