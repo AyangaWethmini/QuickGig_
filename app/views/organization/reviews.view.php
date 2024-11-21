@@ -4,7 +4,7 @@
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
       <div class="wrapper flex-row">
-      <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+      <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
       <div class="main-content">
         
       <div class="job-cards container flex-col">

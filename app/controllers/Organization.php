@@ -41,4 +41,9 @@
         function helpCenter(){
             $this->view('helpCenter');
         }
+
+        function reviews(){
+            $this->view('reviews');
+        }
+
     }

@@ -26,7 +26,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
             </a>
-            <div class="sidebar-item" data-link="reviews.php">
+            <a href="<?php echo ROOT;?>/organization/reviews" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
             </div>

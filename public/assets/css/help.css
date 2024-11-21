@@ -1,5 +1,6 @@
 .wrapper{
     flex-grow: 1;
+    margin-top: 100px;
 }
 
 .main-content{
@@ -196,4 +197,13 @@
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
+}
+
+.fa-paper-plane {
+    margin-left: 15px; 
+    transition: color 0.3s;
+}
+
+.fa-paper-plane:hover {
+    color: #3430bd;
 }

@@ -1,49 +1,43 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/findEmp.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmp.css">
 
+<!-- 
 <div class="header container">
     <p class="logo">Quickgig</p>
 </div>
 
-<div class="search-emp">
-        <div class="hero-search flex-row">
-            <div class="search-container">
-                <input type="text" 
-                    class="search-bar" 
-                    placeholder="Search Jobs"
-                    aria-label="Search">
-            </div>
 
-            <div class="dropdown">
-                <img src="<?=ROOT?>/assets/icons/location.svg" alt="location icon">
-                <button class="dropdown-button text-grey">Select location</button>
-                <div class="dropdown-content">
-                    <a href="#">Ampara</a>
-                    <a href="#">Anuradhapura</a>
-                    <a href="#">Badulla</a>
-                    <a href="#">Batticaloa</a>
-                    <a href="#">Colombo</a>
-                    <a href="#">Galle</a>
-                    <a href="#">Gampaha</a>
-                    <a href="#">Hambantota</a>
-                    <a href="#">Jaffna</a>
-                    <a href="#">Kandy</a>
-                    <a href="#">Kegalle</a>
-                    <a href="#">Kilinochchi</a>
-                    <a href="#">Kurunegala</a>
-                    <a href="#">Mannar</a>
-                    <a href="#">Matale</a>
-                    <a href="#">Matara</a>
-                    <a href="#">Monaragala</a>
-                    <a href="#">Mullaitivu</a>
-                    <a href="#">Nuwara Eliya</a>
-                    <a href="#">Polonnaruwa</a>
-                    <a href="#">Puttalam</a>
-                    <a href="#">Ratnapura</a>
-                    <a href="#">Trincomalee</a>
-                    <a href="#">Vavuniya</a>
 
+        <div class="job-card container">
+            <div class="job-card-left flex-row">
+                <div class="pfp">
+                  <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Picture" class="profile-pic">
+                </div>
+              
+                <div class="job-details">
+                    <h2>Noah Wick</h2>
+                    <p>Nomad · Paris, France</p>
+                    <div style="display:flex;flex-direction:column; gap:20px">
+                      <div class="rating">
+                          <span>
+                              <i class="fa fa-star star-active mx-1"></i>
+                              <i class="fa fa-star star-active mx-1"></i>
+                              <i class="fa fa-star star-active mx-1"></i>
+                              <i class="fa fa-star star-active mx-1"></i>
+                              <i class="fa fa-star star-active mx-1"></i>
+                          </span>
+                      </div>
+                      <div class="availability">
+                          <span>available: 8 a.m. - 4 p.m.</span>
+                      </div>
+                      <div class="tags">
+                          <span class="tag day">Day</span>
+                          <span class="tag waiter">Waiter</span>
+                          <span class="tag house-cleaning">House-Cleaning</span>
+                      </div>
+                    </div>
                 </div>
             </div>
             <button class="btn btn-accent srch-btn" >Search my job</button>
@@ -80,32 +74,103 @@
                 <button id="gridButton" onclick="toggleView()">☰</button>
         </div>
 
-        <div class="emp-card flex-row">
-            <img src="<?=ROOT?>/assets/images/person1.jpg" alt="profile-pic">
-            <div class="emp-details">
-                <p class="name">Gunapala</p>
-                <div id="rating-stars">
-                    <span data-value="1" class="star">★</span>
-                    <span data-value="2" class="star">★</span>
-                    <span data-value="3" class="star">★</span>
-                    <span data-value="4" class="star">★</span>
-                    <span data-value="5" class="star">★</span>
-                </div>
-
-                <p class="text-grey">Madawachchiya</p>
-
+         -->
+<div class="wrapper flex-row">
+        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+         <div class="job-cards container flex-col">
+    <!-- First Job Card -->
+     
+    <div class="job-card container">
+        <div class="job-card-left flex-row">
+            <div class="pfp">
+              <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-find-employee">
             </div>
-            <button class="btn btn-accent">Request</button>
+           
+            <div class="job-details">
+                <h2>Smith Greenwood</h2>
+                <p>Manchester, UK</p>
+                <div style="display:flex;flex-direction:column; gap:20px">
+                  <div class="rating">
+                      <span>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                      </span>
+                  </div>
+                  <div class="availability">
+                      <span>available: 8 a.m. - 4 p.m.</span>
+                  </div>
+                  <div class="tags">
+                      <span class="tag day">Day</span>
+                      <span class="tag waiter">Waiter</span>
+                      <span class="tag house-cleaning">Bartender</span>
+                  </div>
+                </div>
+            </div>
         </div>
-
+        <div class="job-card-right flex-row">
+            <button class="request-button btn btn-accent">Request</button>
+            <div class="dropdown">
+              <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Message</a></li>
+                <li><a href="<?php echo ROOT;?>/organization/viewEmployeeProfile">View Profile</a></li>
+              </ul>
+            </div>
+        </div>
     </div>
 
+
+
+    <div class="job-card container">
+        <div class="job-card-left flex-row">
+            <div class="pfp">
+              <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Picture" class="profile-pic">
+            </div>
+           
+            <div class="job-details">
+                <h2>Noah Wick</h2>
+                <p>Paris, France</p>
+                <div style="display:flex;flex-direction:column; gap:20px">
+                  <div class="rating">
+                      <span>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                      </span>
+                  </div>
+                  <div class="availability">
+                      <span>available: 8 a.m. - 4 p.m.</span>
+                  </div>
+                  <div class="tags">
+                      <span class="tag day">Day</span>
+                      <span class="tag waiter">Waiter</span>
+                      <span class="tag house-cleaning">House-Cleaning</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="job-card-right flex-row">
+            <button class="request-button btn btn-accent">Request</button>
+            <div class="dropdown">
+              <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Message</a></li>
+                <li><a href="#">View Profile</a></li>
+              </ul>
+            </div>
+        </div>
+    </div>
+
+    
 </div>
 
 
-
-
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
   const stars = document.querySelectorAll("#rating-stars .star");
   const ratingValue = document.getElementById("rating-value");
@@ -146,4 +211,4 @@
   }
 });
 
-</script>
+</script> -->

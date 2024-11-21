@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmp.css">
 
@@ -73,19 +74,20 @@
                 <button id="gridButton" onclick="toggleView()">☰</button>
         </div>
 
-         -->
-
+         -->       
+<div class="wrapper flex-row">
+        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
          <div class="job-cards container flex-col">
     <!-- First Job Card -->
     <div class="job-card container">
         <div class="job-card-left flex-row">
             <div class="pfp">
-              <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Picture" class="profile-pic">
+              <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-find-employee">
             </div>
            
             <div class="job-details">
-                <h2>Noah Wick</h2>
-                <p>Nomad · Paris, France</p>
+                <h2>Smith Greenwood</h2>
+                <p>Manchester, UK</p>
                 <div style="display:flex;flex-direction:column; gap:20px">
                   <div class="rating">
                       <span>
@@ -102,7 +104,7 @@
                   <div class="tags">
                       <span class="tag day">Day</span>
                       <span class="tag waiter">Waiter</span>
-                      <span class="tag house-cleaning">House-Cleaning</span>
+                      <span class="tag house-cleaning">Bartender</span>
                   </div>
                 </div>
             </div>
@@ -113,7 +115,7 @@
               <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
               <ul class="dropdown-menu">
                 <li><a href="#">Message</a></li>
-                <li><a href="#">View Profile</a></li>
+                <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
               </ul>
             </div>
         </div>
@@ -129,7 +131,7 @@
            
             <div class="job-details">
                 <h2>Noah Wick</h2>
-                <p>Nomad · Paris, France</p>
+                <p>Paris, France</p>
                 <div style="display:flex;flex-direction:column; gap:20px">
                   <div class="rating">
                       <span>
@@ -164,7 +166,7 @@
     </div>
 
     
-</div>
+</div> -->
 
 
 <!-- <script>
