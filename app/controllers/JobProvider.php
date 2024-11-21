@@ -34,8 +34,12 @@
             $this->view('announcements');
         }
 
-        function editProfile(){
+        function individualEditProfile(){
             $this->view('individualEditProfile');
+        }
+
+        function helpCenter(){
+            $this->view('helpCenter');
         }
 
     }

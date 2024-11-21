@@ -35,7 +35,7 @@
                 <span class="sidebar-label">complains</span>
             </div>
              <br><br>
-             <a href="<?php echo ROOT;?>/jobProvider/subscription" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/jobProvider/subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>
                 <span class="sidebar-label">Subscription</span>
             </a>
@@ -44,7 +44,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </div>
-            <a href="<?php echo ROOT;?>/user/helpCenter" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/jobProvider/helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
                 <span class="sidebar-label">Help Center</span>
             </a> 

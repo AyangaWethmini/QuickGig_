@@ -44,7 +44,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </div>
-            <a href="<?php echo ROOT;?>/user/helpCenter" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
                 <span class="sidebar-label">Help Center</span>
             </a> 

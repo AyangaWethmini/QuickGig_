@@ -33,4 +33,12 @@
         function announcements(){
             $this->view('announcements');
         }
+
+        function organizationEditProfile(){
+            $this->view('organizationEditProfile');
+        }
+
+        function helpCenter(){
+            $this->view('helpCenter');
+        }
     }

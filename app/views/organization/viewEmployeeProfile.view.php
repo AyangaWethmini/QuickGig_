@@ -20,7 +20,9 @@
                     </div>
                     <div class="profile-rating">★★★★☆</div>
                 </div>
-                <button class="btn edit-profile">Edit Profile</button>
+                <a href="<?php echo ROOT;?>/organization/organizationEditProfile" class="edit-profile-btn">
+                Edit Profile
+                </a>
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">

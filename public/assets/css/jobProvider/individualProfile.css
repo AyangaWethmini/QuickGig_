@@ -292,12 +292,19 @@ td {
 
 }
 
-.btn.edit-profile:hover{
-    background-color: #3430bd;
-    color: white;
+
+.edit-profile-btn{
+    background-color: white;
+    color:  #4640DE;
+    font-weight: bold;
+    border: 1px solid gray;
+    border-radius: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: 30%;
 }
 
-.role-btn:hover{
+.edit-profile-btn:hover{
     background-color: #3430bd;
     color: white;
 }

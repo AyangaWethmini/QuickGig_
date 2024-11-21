@@ -12,10 +12,12 @@
                 <img src="<?=ROOT?>/assets/images/organization1.png" alt="Profile Picture" class="profile-pic">
                 <div class="profile-intro">
                     <h2>Green Farm</h2><br>
-                    <p>Farming</p><br>
+                    <p>Farming Company</p><br>
                     <p>Yorkshire, UK</p>
                 </div>
-                <button class="btn edit-profile">Edit Profile</button>
+                <a href="<?php echo ROOT;?>/organization/organizationEditProfile" class="edit-profile-btn">
+                Edit Profile
+                </a>
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">
@@ -28,11 +30,11 @@
                 <div class="social-links">
                     <h2>Social Links</h2> <br>
                         <p class="title-items">Instagram</p>
-                        <p class="detail-items">instagram.com/greenFarm</p><br>
+                        <p class="detail-items">instagram.com/greenfarm</p><br>
                         <p class="title-items">Twitter</p>
                         <p class="detail-items">twitter.com/greenFarm</p><br>
                         <p class="title-items">Website</p>
-                        <p class="detail-items">www.greenFarm.com</p>                  
+                        <p class="detail-items">www.greenfarm.com</p>                  
                 </div>
             </div>    
         </div>
