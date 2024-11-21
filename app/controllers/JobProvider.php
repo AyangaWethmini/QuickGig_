@@ -30,4 +30,8 @@
             $this->view('jobProvider_sidebar');
         }
 
+        function editProfile(){
+            $this->view('individualEditProfile');
+        }
+
     }
