@@ -1,12 +1,3 @@
-.star {
-    font-size: 2rem;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-  
-  .star.hovered,
-  .star.selected {
-    color: #ffcc00;
-  }
-  
+.wrapper{
+  margin-top: 100px;
+}
