@@ -5,22 +5,22 @@
 
 /* COMPONENTS */
 @import url('components/form_styles.css');
-@import url('components/buttons_styles.css');
-@import url('components/admin_sidebar.css');
+@import url('components/button_styles.css');
 
 /* PAGES */
 @import url('pages/signup_page.css');
-@import url('pages/admin_announcement.css');
-@import url('pages/admin_settings.css');
+@import url('admin/admin_announcement.css');
+@import url('admin/admin_settings.css');
+@import url('admin/admin_sidebar.css');
+
 
 /* HOME */
 @import url('home/signup.css');
 
 /* FONTS */
-@font-face {
-    font-family: "Monteserrat-Regular";
+/* @font-face {
     src: url("fonts/Montserrat-Regular.ttf");
-}
+} */
 
 *{
     margin: 0;
