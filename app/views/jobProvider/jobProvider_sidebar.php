@@ -10,22 +10,18 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/messages" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/user/messages" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
-            </a>
-            <a href="<?php echo ROOT;?>/jobProvider/findEmployees" class="sidebar-item">
-                <span class="sidebar-icon"><i class="fa-solid fa-address-card"></i></span>
-                <span class="sidebar-label">Find Employees</span>
             </a>
             <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/announcements" class="sidebar-item">
+            <div class="sidebar-item" data-link="announcements.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
-            </a>
+            </div>
             <div class="sidebar-item" data-link="reviews.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/subscription.css">
 
 <body>
-
+<script src="<?=ROOT?>/assets/js/jobProvider/jobListing.js"></script>
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="inclusion-container-subscription">

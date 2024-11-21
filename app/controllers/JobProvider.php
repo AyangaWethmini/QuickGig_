@@ -3,11 +3,11 @@
         protected $viewPath = "../app/views/jobProvider/";
         
         function index(){
-            $this->view('individualProfile');
+            $this->view('findEmployees');
         }
 
-        function findEmployees(){
-            $this->view('findEmployees');
+        function individualProfile(){
+            $this->view('individualProfile');
         }
 
         function postJob(){
@@ -26,16 +26,8 @@
             $this->view('subscription');
         }
 
-        function messages(){
-            $this->view('messages');
-        }
-
-        function announcements(){
-            $this->view('announcements');
-        }
-
-        function editProfile(){
-            $this->view('individualEditProfile');
+        function jobProvider_sidebar(){
+            $this->view('jobProvider_sidebar');
         }
 
         function reviews(){
