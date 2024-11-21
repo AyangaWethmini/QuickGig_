@@ -30,4 +30,8 @@
             $this->view('jobProvider_sidebar');
         }
 
+        function announcements(){
+            $this->view('announcements');
+        }
+
     }

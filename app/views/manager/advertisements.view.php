@@ -116,6 +116,7 @@
 <script>
 
 const form = document.getElementById("create-ad");
+const body = document.querySelector("body");
 
     function showForm() {
         const bg = document.querySelector(".wrapper");
@@ -124,7 +125,9 @@ const form = document.getElementById("create-ad");
             form.classList.remove("hidden");
             setTimeout(() => {
                 form.classList.add("show");
-            }, 50); // Delay to match the CSS transition
+            }, 50); 
+            body.classList.add("overlay");
+            
         } else {
             form.classList.remove("show");
             form.classList.add("hidden");
@@ -137,6 +140,8 @@ const form = document.getElementById("create-ad");
             form.classList.add("hidden");
         }, 500);
     }
+
+    
 
 </script>
 

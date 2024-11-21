@@ -1,7 +1,8 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/findEmp.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmp.css">
 
+<!-- 
 <div class="header container">
     <p class="logo">Quickgig</p>
 </div>
@@ -80,32 +81,101 @@
                 <button id="gridButton" onclick="toggleView()">☰</button>
         </div>
 
-        <div class="emp-card flex-row">
-            <img src="<?=ROOT?>/assets/images/person1.jpg" alt="profile-pic">
-            <div class="emp-details">
-                <p class="name">Gunapala</p>
-                <div id="rating-stars">
-                    <span data-value="1" class="star">★</span>
-                    <span data-value="2" class="star">★</span>
-                    <span data-value="3" class="star">★</span>
-                    <span data-value="4" class="star">★</span>
-                    <span data-value="5" class="star">★</span>
-                </div>
+         -->
 
-                <p class="text-grey">Madawachchiya</p>
-
+         <div class="job-cards container flex-col">
+    <!-- First Job Card -->
+    <div class="job-card container">
+        <div class="job-card-left flex-row">
+            <div class="pfp">
+              <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Picture" class="profile-pic">
             </div>
-            <button class="btn btn-accent">Request</button>
+           
+            <div class="job-details">
+                <h2>Noah Wick</h2>
+                <p>Nomad · Paris, France</p>
+                <div style="display:flex;flex-direction:column; gap:20px">
+                  <div class="rating">
+                      <span>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                      </span>
+                  </div>
+                  <div class="availability">
+                      <span>available: 8 a.m. - 4 p.m.</span>
+                  </div>
+                  <div class="tags">
+                      <span class="tag day">Day</span>
+                      <span class="tag waiter">Waiter</span>
+                      <span class="tag house-cleaning">House-Cleaning</span>
+                  </div>
+                </div>
+            </div>
         </div>
-
+        <div class="job-card-right flex-row">
+            <button class="request-button btn btn-accent">Request</button>
+            <div class="dropdown">
+              <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Message</a></li>
+                <li><a href="#">View Profile</a></li>
+              </ul>
+            </div>
+        </div>
     </div>
 
+
+
+    <div class="job-card container">
+        <div class="job-card-left flex-row">
+            <div class="pfp">
+              <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Picture" class="profile-pic">
+            </div>
+           
+            <div class="job-details">
+                <h2>Noah Wick</h2>
+                <p>Nomad · Paris, France</p>
+                <div style="display:flex;flex-direction:column; gap:20px">
+                  <div class="rating">
+                      <span>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                          <i class="fa fa-star star-active mx-1"></i>
+                      </span>
+                  </div>
+                  <div class="availability">
+                      <span>available: 8 a.m. - 4 p.m.</span>
+                  </div>
+                  <div class="tags">
+                      <span class="tag day">Day</span>
+                      <span class="tag waiter">Waiter</span>
+                      <span class="tag house-cleaning">House-Cleaning</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="job-card-right flex-row">
+            <button class="request-button btn btn-accent">Request</button>
+            <div class="dropdown">
+              <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Message</a></li>
+                <li><a href="#">View Profile</a></li>
+              </ul>
+            </div>
+        </div>
+    </div>
+
+    
 </div>
 
 
-
-
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
   const stars = document.querySelectorAll("#rating-stars .star");
   const ratingValue = document.getElementById("rating-value");
@@ -146,4 +216,4 @@
   }
 });
 
-</script>
+</script> -->
