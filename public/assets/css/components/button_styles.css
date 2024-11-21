@@ -1,16 +1,57 @@
-.form-btn {
-    background-color: rgb(70, 64, 222);
-    color: aliceblue;
-    padding: 16px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    transition: .2s all;
-    font-size: larger;
+.admin_sidebar{
+    background-color: rgb(173, 173, 243);
+    width: 300px;
+    height: 100%;
 }
 
-.form-btn:hover {
-    background-color: rgb(124, 121, 221);
-    border-radius: 5px;
+.admin_sidebar hr {
+    color: rgb(204, 204, 245);
+}
+
+.admin-anchor-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; Align items to the start */
+}
+
+.admin-anchor-list a {
+    text-decoration: none;
+    color: #7C8493;
+    font-size: 16px;
+    display: flex;
+    align-items: center; /* Align icon and text vertically */
+    padding: 10px 0; /* Add vertical padding */
+}
+
+.admin-anchor-list a.active {
+    background-color: rgb(233, 235, 253); /* Background color for the active link */
+    color: rgb(70, 64, 222); /* Optional: Change text color for the active link */
+}
+
+.admin-anchor-list a.active i {
+    color: rgb(70, 64, 222); /* Change icon color for the active link */
+}
+
+.admin-anchor-list i {
+    color: #7C8493;
+    margin-right: 20px; /* Add space between icon and text */
+    margin-left: 50px;
+}
+
+/* LAYOUT */
+.admin-layout {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+}
+
+.admin-sidebar {
+    width: 300px;
+    background-color: rgb(248, 248, 253);
+    padding: 20px;
+}
+
+.admin-container {
+    flex: 1;
+    padding: 20px;
 }

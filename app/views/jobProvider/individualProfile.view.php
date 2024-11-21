@@ -12,12 +12,10 @@
                 <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture" class="profile-pic">
                 <div class="profile-intro">
                     <h2>Jake Gyll</h2><br>
-                    <p>Farm Owner</p><br>
+                    <p>Product Designer at Twitter</p><br>
                     <p>Manchester, UK</p>
                 </div>
-                <a href="<?php echo ROOT;?>/jobProvider/individualEditProfile" class="edit-profile-btn">
-                Edit Profile
-                </a>
+                <button class="btn edit-profile">Edit Profile</button>
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">

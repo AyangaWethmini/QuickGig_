@@ -1,10 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require APPROOT . '/views/components/navbar.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/help.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <div id="sidebar" style="width: 224px; height : auto; background-color : var(--brand-lavender)">
+    </div>
     <div class="main-content container flex-col">
         <div class="header container flex-row">
             <h3>Help Center</h3>
@@ -44,7 +43,7 @@
                 </div>
                 <div class="send-msg">
                     <p class="text-grey text">Type your question</p>
-                    <span><input type="text" for="question"><i class="fa-solid fa-paper-plane"></i></span>
+                    <input type="text" for="question">
                 </div>
 
             </div>

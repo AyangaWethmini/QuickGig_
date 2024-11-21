@@ -34,32 +34,6 @@
                     <option value="views">Highest views</option>
                 </select>
                 <button id="gridButton" onclick="toggleView()">☰</button>
-            </div>
-
-                <div class="ads">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="icon">
-                            <img src="path-to-your-icon.png" alt="Icon">
-                            </div>
-                            <div class="details">
-                            <h3>Combined maths classes</h3>
-                            <p>John Doe • Gampaha, Colombo</p>
-                            <div class="tags">
-                                <span class="tag orange">ALevel</span>
-                                <span class="tag blue">Maths</span>
-                            </div>
-                            </div>
-                            <div class="stats">
-                            <p>100 Views | 37 Clicks</p>
-                            <div class="actions">
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
         </div>
 
