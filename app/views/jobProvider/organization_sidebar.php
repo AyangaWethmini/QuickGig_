@@ -14,11 +14,15 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
             </a>
+            <a href="<?php echo ROOT;?>/organization/findEmployees" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-address-card"></i></span>
+                <span class="sidebar-label">Find Employees</span>
+            </a>
             <a href="<?php echo ROOT;?>/organization/jobListing" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/announcements" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/announcements" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
             </a>

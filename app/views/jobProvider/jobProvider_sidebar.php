@@ -14,6 +14,10 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
             </a>
+            <a href="<?php echo ROOT;?>/jobProvider/findEmployees" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-address-card"></i></span>
+                <span class="sidebar-label">Find Employees</span>
+            </a>
             <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
