@@ -34,4 +34,8 @@
             $this->view('announcements');
         }
 
+        function editProfile(){
+            $this->view('individualEditProfile');
+        }
+
     }

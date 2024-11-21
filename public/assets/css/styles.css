@@ -13,6 +13,8 @@
 @import url('admin/admin_settings.css');
 @import url('admin/admin_sidebar.css');
 
+/* USERS */
+@import url('user/editprofile.css');
 
 /* HOME */
 @import url('home/signup.css');

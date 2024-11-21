@@ -1,0 +1,60 @@
+.user-editprofile {
+    margin-top: 100px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.editprofile-section {
+    display: flex;
+}
+
+/* SECTION 1 */
+
+.section1-left {
+    flex: 1; /* 1/3 of the width */
+    padding: 20px; /* Adjust the padding as needed */
+}
+
+.section1-right {
+    flex: 2; /* 2/3 of the width */
+    padding: 20px; /* Adjust the padding as needed */
+}
+
+/* SECTION 2 */
+
+.section2-left {
+    flex: 1; /* 1/3 of the width */
+    padding: 20px; /* Adjust the padding as needed */
+}
+
+.section2-right {
+    flex: 2; /* 2/3 of the width */
+    padding: 20px; /* Adjust the padding as needed */
+}
+
+.custom-input {
+    width: 100%; /* Adjust the width as needed, e.g., 50%, 200px, etc. */
+    padding: 10px; /* Optional: Add padding for better appearance */
+    border: 1px solid #ccc; /* Optional: Add border style */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+.custom-input.part1{
+    width: 75%; /* Adjust the width as needed, e.g., 50%, 200px, etc. */
+}
+
+.custom-input.part2{
+    width: 50%; /* Adjust the width as needed, e.g., 50%, 200px, etc. */
+}
+
+.custom-input.part3{
+    width: 50%; /* Adjust the width as needed, e.g., 50%, 200px, etc. */
+}
+
+.form-btn.edit-profile{
+    width: 200px;
+}
+
+.edit-profile-btnsection {
+    text-align:  right;
+}
