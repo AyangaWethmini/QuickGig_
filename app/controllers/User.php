@@ -7,10 +7,6 @@
             $this->view('complaints');
         }
 
-        function messages(){
-            $this->view('messages');
-        }
-
         function helpCenter(){
             $this->view('helpCenter');
         }

@@ -7,7 +7,7 @@
 
 <div class="wrapper flex-row">
     
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
     
     <div class="no-messages-container">
         <img src="<?=ROOT?>/assets/images/no-announcement.png" alt="No Messages" class="no-messages-icon">

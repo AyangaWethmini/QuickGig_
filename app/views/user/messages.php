@@ -10,8 +10,8 @@
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     
     <div class="no-messages-container">
-        <img src="<?=ROOT?>/assets/images/no-announcement.png" alt="No Messages" class="no-messages-icon">
-        <p class="no-messages-text">No Announcements Yet</p>
+        <img src="<?=ROOT?>/assets/images/no-messages.png" alt="No Messages" class="no-messages-icon">
+        <p class="no-messages-text">No Messages Yet</p>
     </div>
 
 </div>

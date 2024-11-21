@@ -6,7 +6,8 @@
 <body>
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+
     <div class="inclusion-container-subscription">
         
         <div class="subscription-plan">
