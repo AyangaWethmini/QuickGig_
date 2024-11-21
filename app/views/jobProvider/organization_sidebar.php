@@ -18,10 +18,10 @@
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>
-            <div class="sidebar-item" data-link="announcements.php">
+            <a href="<?php echo ROOT;?>/jobProvider/announcements" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
-            </div>
+            </a>
             <div class="sidebar-item" data-link="reviews.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>

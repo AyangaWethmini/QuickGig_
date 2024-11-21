@@ -29,4 +29,8 @@
         function messages(){
             $this->view('messages');
         }
+
+        function announcements(){
+            $this->view('announcements');
+        }
     }
