@@ -5,17 +5,17 @@
 
 <body>
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">
-                <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture" class="profile-pic">
+                <img src="<?=ROOT?>/assets/images/organization1.png" alt="Profile Picture" class="profile-pic">
                 <div class="profile-intro">
-                    <h2>Jake Gyll</h2><br>
-                    <p>Farm Owner</p><br>
-                    <p>Manchester, UK</p>
+                    <h2>Green Farm</h2><br>
+                    <p>Farming Company</p><br>
+                    <p>Yorkshire, UK</p>
                 </div>
-                <a href="<?php echo ROOT;?>/jobProvider/individualEditProfile" class="edit-profile-btn">
+                <a href="<?php echo ROOT;?>/organization/organizationEditProfile" class="edit-profile-btn">
                 Edit Profile
                 </a>
             </div>
@@ -23,32 +23,25 @@
                 <div class="additional-details">
                     <h2>Additional Details</h2> <br>
                     <p class="title-items">Email</p> 
-                    <p class="detail-items">jakegyll@gmail.com</p><br>
+                    <p class="detail-items">GreenFarm@gmail.com</p><br>
                     <p class="title-items">Phone</p>
-                    <p class="detail-items">+44 1245 572 135</p><br>
-                    <p class="title-items">Languages</p>
-                    <p class="detail-items">English, French</p>
+                    <p class="detail-items">+44 1245 572 130</p><br>
                 </div>
                 <div class="social-links">
                     <h2>Social Links</h2> <br>
                         <p class="title-items">Instagram</p>
-                        <p class="detail-items">instagram.com/jakegyll</p><br>
+                        <p class="detail-items">instagram.com/greenfarm</p><br>
                         <p class="title-items">Twitter</p>
-                        <p class="detail-items">twitter.com/jakegyll</p><br>
+                        <p class="detail-items">twitter.com/greenFarm</p><br>
                         <p class="title-items">Website</p>
-                        <p class="detail-items">www.jakegyll.com</p>                  
+                        <p class="detail-items">www.greenfarm.com</p>                  
                 </div>
             </div>    
         </div>
         
         <div class="profile-about">
             <h3>About Me</h3>
-            <p>With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
-        </div>
-        
-        <div class="role-switch">
-            <button class="role-btn">Job Seeker Role</button>
-            <button class="role-btn">Job Provider Role</button>
+            <p>With years of experience in farming, We're seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
         </div>
 
         <div class="rating-reviews">
