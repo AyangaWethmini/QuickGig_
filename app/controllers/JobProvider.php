@@ -34,4 +34,8 @@
             $this->view('reviews');
         }
 
+        function announcements(){
+            $this->view('announcements');
+        }
+
     }
