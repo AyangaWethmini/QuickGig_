@@ -6,15 +6,15 @@
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">
-            <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/organizationProfile" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/messages" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/messages" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/jobListing" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>
@@ -31,7 +31,7 @@
                 <span class="sidebar-label">complains</span>
             </div>
              <br><br>
-             <a href="<?php echo ROOT;?>/jobProvider/subscription" class="sidebar-item">
+             <a href="<?php echo ROOT;?>/organization/subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>
                 <span class="sidebar-label">Subscription</span>
             </a>

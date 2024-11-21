@@ -7,7 +7,7 @@
 
 <body>
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">
@@ -37,7 +37,7 @@
                         <p class="title-items">Instagram</p>
                         <p class="detail-items">instagram.com/smithGreen</p><br>
                         <p class="title-items">Twitter</p>
-                        <p class="detail-items">twitter.com/SmithGreenwood</p><br>                 
+                        <p class="detail-items">twitter.com/SmithGreenwood</p><br>                   
                 </div>
             </div>    
         </div>
