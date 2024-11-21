@@ -1,9 +1,9 @@
 <?php
-    class JobProvider extends Controller {
-        protected $viewPath = "../app/views/jobProvider/";
+    class Organization extends Controller {
+        protected $viewPath = "../app/views/organization/";
         
         function index(){
-            $this->view('individualProfile');
+            $this->view('organizationProfile');
         }
 
         function findEmployees(){
@@ -33,5 +33,4 @@
         function announcements(){
             $this->view('announcements');
         }
-
     }
