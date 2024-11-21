@@ -5,9 +5,17 @@
 
       <div class="wrapper flex-row">
       <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+      <div class="main-content">
+        
+      <div class="job-cards container flex-col">
+      <h2>Find Employees</h2>
+      <hr style="width: 100%">
+      <div class="search-container">
+            <input type="text" 
+                class="search-bar" 
+                placeholder=" Find Employees"
+                aria-label="Search" style="height: 20px; width : 700px">
       </div>
-         <div class="job-cards container flex-col">
-    +
           <div class="job-card container">
               <div class="job-card-left flex-row">
                   <div class="pfp">
@@ -94,7 +102,11 @@
             </div>
         </div>
 
+      </div>
+      </div>
+         
+
     
-</div>
+
 
 
