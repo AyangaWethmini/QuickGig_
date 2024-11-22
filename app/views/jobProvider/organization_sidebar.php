@@ -10,23 +10,23 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/messages" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/org_messages" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/findEmployees" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/org_findEmployees" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-address-card"></i></span>
                 <span class="sidebar-label">Find Employees</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/jobListing" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/org_jobListing_received" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/announcements" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/org_announcements" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/reviews" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/org_reviews" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
             </div>
@@ -35,7 +35,7 @@
                 <span class="sidebar-label">complains</span>
             </div>
              <br><br>
-             <a href="<?php echo ROOT;?>/organization/subscription" class="sidebar-item">
+             <a href="<?php echo ROOT;?>/organization/org_subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>
                 <span class="sidebar-label">Subscription</span>
             </a>
@@ -44,7 +44,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </div>
-            <a href="<?php echo ROOT;?>/organization/helpCenter" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/org_helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
                 <span class="sidebar-label">Help Center</span>
             </a> 

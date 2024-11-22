@@ -116,7 +116,7 @@
               <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
               <ul class="dropdown-menu">
                 <li><a href="#">Message</a></li>
-                <li><a href="<?php echo ROOT;?>/organization/viewEmployeeProfile">View Profile</a></li>
+                <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
               </ul>
             </div>
         </div>

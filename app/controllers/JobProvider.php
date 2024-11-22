@@ -46,4 +46,24 @@
             $this->view('reviews');
         }
 
+        function jobListing_myJobs(){
+            $this->view('jobListing_myJobs');
+        }
+
+        function jobListing_send(){
+            $this->view('jobListing_send');
+        }
+
+        function jobListing_toBeCompleted(){
+            $this->view('jobListing_toBeCompleted');
+        }
+
+        function jobListing_ongoing(){
+            $this->view('jobListing_ongoing');
+        }
+
+        function jobListing_completed(){
+            $this->view('jobListing_completed');
+        }
+
     }

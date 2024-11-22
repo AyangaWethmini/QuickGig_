@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   const categories = document.querySelectorAll('.category');
 
-  // Set the "Received" category as active on page load
-  const receivedCategory = document.querySelector('.category[href*="received"]');
-  if (receivedCategory) {
-    receivedCategory.classList.add('active');
-  }
+  // Function to set the active category based on the current URL
+  const setActiveCategory = () => {
+    const currentURL = window.location.href;
+    categories.forEach(category => {
+      const categoryHref = category.getAttribute('href');
+      if (currentURL.includes(categoryHref) && categoryHref !== '#received') {
+        category.classList.add('active');
+      } else {
+        category.classList.remove('active');
+      }
+    });
+  };
+
+  // Set the active category on page load
+  setActiveCategory();
 
   categories.forEach(category => {
     category.addEventListener('click', () => {

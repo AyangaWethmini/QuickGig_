@@ -5,12 +5,12 @@
 
 <body>
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
     <div class="inclusion-container">
-        <?php require APPROOT . '/views/jobProvider/jobListingOpener.php'; ?>
+        <?php require APPROOT . '/views/organization/org_jobListingOpener.php'; ?>
 
         <div class="category-container">
-        <?php require APPROOT . '/views/jobProvider/categoryLinksJobListing.php'; ?>
+        <?php require APPROOT . '/views/organization/org_categoryLinksJobListing.php'; ?>
 
         </div> <hr> <br>
 
@@ -101,7 +101,7 @@
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
                         <li><a href="#">Message</a></li>
-                        <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                        <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
                     </ul>
                 </div>
             </div>
