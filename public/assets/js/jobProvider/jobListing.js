@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   const categories = document.querySelectorAll('.category');
 
+  // Set the "Received" category as active on page load
+  const receivedCategory = document.querySelector('.category[href*="received"]');
+  if (receivedCategory) {
+    receivedCategory.classList.add('active');
+  }
+
   categories.forEach(category => {
     category.addEventListener('click', () => {
       categories.forEach(cat => cat.classList.remove('active'));

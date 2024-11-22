@@ -14,8 +14,8 @@
             $this->view('postJob');
         }
         
-        function jobListing(){
-            $this->view('jobListing');
+        function jobListing_received(){
+            $this->view('jobListing_received');
         }
 
         function viewEmployeeProfile(){

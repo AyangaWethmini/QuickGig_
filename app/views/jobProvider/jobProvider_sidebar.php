@@ -18,7 +18,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-address-card"></i></span>
                 <span class="sidebar-label">Find Employees</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/jobProvider/jobListing_received" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>

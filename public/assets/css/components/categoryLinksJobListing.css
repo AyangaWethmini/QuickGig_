@@ -1,0 +1,30 @@
+.category-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-top: 30px;
+}
+
+.category {
+    cursor: pointer;
+    padding: 10px 50px;
+    border-bottom: 2px solid transparent;
+    font-size: 16px;
+    color: #7C8493;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.category:hover {
+    border-bottom: 4px solid #4640DE;
+    background-color: #D6DDEB;
+    color: black;
+}
+
+.category.active {
+    border-bottom: 4px solid #4640DE;
+    font-weight: bold;
+    color: black;
+}
