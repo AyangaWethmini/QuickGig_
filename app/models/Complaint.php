@@ -15,6 +15,11 @@ class Complaint {
         // $this->db = new Database; // PDO instance
     }
 
+    public function getComplaints() {
+        $query = 'SELECT * FROM complaint ORDER BY complaintDate ASC, complaintTime ASC';
+        return $this->query($query);
+    }
+
     public function create($data) {
         $query = "INSERT INTO complaint (complainantID, content, complaintDate, complaintTime, complaintStatus) 
                   VALUES (:complainantID, :content, :complaintDate, :complaintTime, :complaintStatus)";

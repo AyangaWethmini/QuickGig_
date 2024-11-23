@@ -1,5 +1,10 @@
 <?php
     class JobProvider extends Controller {
+
+        public function __construct(){
+            $this->complaintModel = $this->model('Complaint');
+        }
+
         protected $viewPath = "../app/views/jobProvider/";
         
         function index(){
@@ -72,7 +77,7 @@
 
         function submitComplaint(){
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $complainantID = 1; // Assuming user ID is stored in session
+                $complainantID = 1;
                 $content = trim($_POST['complainInfo']);
                 $complaintDate = date('Y-m-d');
                 $complaintTime = date('h:i A');
@@ -89,5 +94,18 @@
     
                 header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
             }
+        }
+
+
+
+        function complaints(){
+            $complaints = $this->complaintModel->getComplaints();
+
+            $data = [
+                'complaints' => $complaints
+            ];
+
+            $this->view('complaints', $data); 
+            
         }
     }

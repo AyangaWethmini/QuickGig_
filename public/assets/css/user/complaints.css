@@ -1,10 +1,17 @@
+.wrapper{
+    margin-top: 100px;
+}
+
+.main-content-complaints{
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
 .heading{
-    color: var(--Neutrals-100, #25324B);
-    font-family: Epilouge;
+    color: #000000;
     font-size: 24px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 120%;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
 }
 
 .header {
@@ -32,9 +39,8 @@
 }
 
 .complaint p{
-    color: #7C8493;
-    font-family: Epilogue;
-    font-size: 12px;
+    color: #000000;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 120%; 
@@ -43,7 +49,6 @@
 .details{
     justify-content: space-between;
     margin-top: 10px;
-    
 }
 
 .details p{
@@ -54,5 +59,63 @@
     display: flex;
     flex-direction: column;
     gap : 20px;
-    
+}
+
+.filter-container{
+    font-size: large;
+}
+
+.complaint-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.complaint-details{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.complaint-text{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: fit-content;
+}
+
+.complaint-status{
+    align-self: center;
+    color: var(--brand-primary);
+    font-weight: bold;
+}
+
+.complaint-actions{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-update{
+    background-color: #4640DE;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete{
+    background-color: #c11b1b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-update:hover{
+    background-color: #3430bd;
+}
+
+.btn-delete:hover{
+    background-color: #a00f0f;
 }
