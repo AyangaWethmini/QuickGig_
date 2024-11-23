@@ -66,4 +66,8 @@
             $this->view('jobListing_completed');
         }
 
+        function makeComplaint(){
+            $this->view('makeComplaint');
+        }
+
     }

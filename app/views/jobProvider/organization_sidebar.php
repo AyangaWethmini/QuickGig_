@@ -29,7 +29,7 @@
             <a href="<?php echo ROOT;?>/organization/org_reviews" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
-            </div>
+            </a>
             <div class="sidebar-item" data-link="complains.php">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
                 <span class="sidebar-label">complains</span>

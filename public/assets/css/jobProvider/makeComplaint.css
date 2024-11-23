@@ -1,0 +1,104 @@
+/* Modernize the font */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.wrapper {
+    display: flex;
+    margin-top: 100px;
+}
+
+.make-complain-container {
+    padding: 30px;
+    background-color: #ffffff;
+    margin-left: 250px;
+    align-items: center;
+}
+
+.complain-form-container {
+    padding: 150px;
+    width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: calc(100% - 300px);
+}
+
+.employee-details {
+    margin-bottom: 20px;
+}
+
+.employee-details p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.complain-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-section {
+    margin-bottom: 20px;
+    width: 600px;
+}
+
+.form-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-section input,
+.form-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-btn,
+.discard-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.discard-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.discard-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}

@@ -47,7 +47,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#">Message</a></li>
                         <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
-                        <li><a href="<?php echo ROOT;?>/jobProvider/complainEmployee">Complain</a></li>
+                        <li><a href="<?php echo ROOT;?>/jobProvider/makeComplaint">Complain</a></li>
                     </ul>
                 </div>
             </div>
