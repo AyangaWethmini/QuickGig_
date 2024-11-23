@@ -70,4 +70,24 @@
             $this->view('makeComplaint');
         }
 
+        function submitComplaint(){
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $complainantID = 1; // Assuming user ID is stored in session
+                $content = trim($_POST['complainInfo']);
+                $complaintDate = date('Y-m-d');
+                $complaintTime = date('h:i A');
+                $complaintStatus = 1;
+    
+                $complaintModel = $this->model('Complaint');
+                $complaintModel->create([
+                    'complainantID' => $complainantID,
+                    'content' => $content,
+                    'complaintDate' => $complaintDate,
+                    'complaintTime' => $complaintTime,
+                    'complaintStatus' => $complaintStatus
+                ]);
+    
+                header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
+            }
+        }
     }
