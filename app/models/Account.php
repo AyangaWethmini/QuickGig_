@@ -64,4 +64,14 @@ class Account
         
         return $stmt->execute();
     }
+
+    public function login($email, $password){
+        $query = "SELECT * FROM account WHERE email = :email";
+        $this->db->query($query);
+        $this->db->bind(':email', $email);
+
+        $row = $this->db->get_row();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

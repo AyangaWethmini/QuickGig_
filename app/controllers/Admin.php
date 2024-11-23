@@ -1,17 +1,94 @@
 <?php
  class Admin extends Controller {
 
+        public function __construct(){
+            $this->adminModel = $this->model('AdminModel');
+        }
+
         protected $viewPath = "../app/views/admin/";
 
         function index(){
-            $this->view('adminannouncement');
+            $this->view('adminannouncement');        
         }
 
-        function admincreateannouncement(){
-            $data = [];
+        function adminannouncement(){
+            // Fetch announcements from the database
+            $announcements = $this->adminModel->getAnnouncements();
+
+            // Ensure the announcements key is always defined
+            $data = [
+                'announcements' => $announcements
+            ];
+
+            $this->view('adminannouncement', $data); 
             
-            $this->view('admincreateannouncement');
         }
+
+        function admincreateannouncement() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanitize and validate the input
+                $data = [
+                    'announcementID' => trim($_POST['announcementID']),
+                    'announcementDate' => trim($_POST['announcementDate']),
+                    'announcementTime' => trim($_POST['announcementTime']),
+                    'content' => trim($_POST['body']),
+                    'announcementID_error' => '',
+                    'announcementDate_error' => '',
+                    'announcementTime_error' => '',
+                    'content_error' => '',
+                ];
+        
+                // Validate inputs
+                if (empty($data['announcementID'])) {
+                    $data['announcementID_error'] = 'Announcement ID cannot be empty.';
+                }
+                if (empty($data['announcementDate'])) {
+                    $data['announcementDate_error'] = 'Announcement date cannot be empty.';
+                }
+                if (empty($data['announcementTime'])) {
+                    $data['announcementTime_error'] = 'Announcement time cannot be empty.';
+                }
+                if (empty($data['content'])) {
+                    $data['content_error'] = 'Content cannot be empty.';
+                }
+        
+                // Check for no errors
+                if (
+                    empty($data['announcementID_error']) && 
+                    empty($data['announcementDate_error']) && 
+                    empty($data['announcementTime_error']) && 
+                    empty($data['content_error'])
+                ) {
+                    // Insert into the database using the model
+                    if ($this->adminModel->createAnnouncement($data)) {
+                        // Redirect to announcements page
+                        header('Location: ' . ROOT . '/admin/adminannouncement');
+                        exit;
+                    } else {
+                        // die('Something went wrong.');
+                        header('Location: ' . ROOT . '/admin/adminannouncement');
+                    }
+                } else {
+                    // Load the view with errors
+                    $this->view('admincreateannouncement', $data);
+                }
+            } else {
+                $data = [
+                    'announcementID' => '',
+                    'announcementDate' => '',
+                    'announcementTime' => '',
+                    'content' => '',
+                    'announcementID_error' => '',
+                    'announcementDate_error' => '',
+                    'announcementTime_error' => '',
+                    'content_error' => '',
+                ];
+        
+                $this->view('admincreateannouncement', $data);
+            }
+        }
+        
+        
 
         function admincomplaints(){
             $data = [];
@@ -55,51 +132,6 @@
             $this->view('adminadvertisements');
         }
 
-        function adminlogin(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                //Form is submitting
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                $data = [
-                    'email' => trim($_POST['email']),
-                    'password' => trim($_POST['password']),
-
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-
-                //validate the email
-                if(empty($data['email'])){
-                    $data['email_err'] = 'Please enter email';
-                } else {
-                    if($this->userModel->findUserByEmail($data['email'])){
-                        //User found
-                    } else {
-                        $data['email_err'] = 'No user found';
-                    }
-                }
-
-                //validate the password
-                if(empty($data['password'])){
-                    $data['password_err'] = 'Please enter password';
-                }
-
-                //If no error found, login the user
-                
-            }
-            else {
-                //Initial Form
-
-                $data = [
-                    'email' => '',
-                    'password' => '',
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-
-                //Load view
-                $this->view('adminlogin', $data);
-            }
-        }
 
     }
 

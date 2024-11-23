@@ -83,7 +83,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 150px 40px 20px 126px;
+    padding: 70px 40px 20px 126px;
     min-height: fit-content;
     width: 100%; /* Makes it responsive */
     max-width: 80vw; /* Restricts the maximum width */

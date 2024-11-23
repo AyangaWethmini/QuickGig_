@@ -1,10 +1,17 @@
 <?php 
 
-class Controller
+class Controller 
 {
 
 	protected $viewPath = "../app/views/";
 	
+	public function model($model) {
+        // Require model file
+        require_once '../app/models/' . $model . '.php';
+        // Instantiate model
+        return new $model();
+    }
+
 	public function view($name, $data = [])
 	{
 		$filename = $this->viewPath.$name.".view.php";

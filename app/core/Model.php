@@ -13,6 +13,7 @@ Trait Model
 	protected $order_column = "id";
 	public $errors 		= [];
 
+	// Purpose: Retrieves all rows from the table, respecting the limit, offset, order_column, and order_type properties.
 	public function findAll()
 	{
 	 
@@ -21,6 +22,7 @@ Trait Model
 		return $this->query($query);
 	}
 
+	// Purpose: Fetches rows that match specified conditions.
 	public function where($data, $data_not = [])
 	{
 		$keys = array_keys($data);
@@ -43,6 +45,7 @@ Trait Model
 		return $this->query($query, $data);
 	}
 
+	// Purpose: Fetches the first row matching the specified conditions.
 	public function first($data, $data_not = [])
 	{
 		$keys = array_keys($data);
@@ -69,6 +72,7 @@ Trait Model
 		return false;
 	}
 
+	// Purpose: Inserts a new row into the table.
 	public function insert($data)
 	{
 		
@@ -92,6 +96,7 @@ Trait Model
 		return false;
 	}
 
+	// Purpose: Updates an existing row in the table.
 	public function update($id, $data, $id_column = 'id')
 	{
 
@@ -125,6 +130,7 @@ Trait Model
 
 	}
 
+	// Purpose: Deletes a row from the table.
 	public function delete($id, $id_column = 'id')
 	{
 
@@ -133,8 +139,5 @@ Trait Model
 		$this->query($query, $data);
 
 		return false;
-
 	}
-
-	
 }
