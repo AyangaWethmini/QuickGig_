@@ -34,4 +34,10 @@ class Complaint {
         
         return $this->query($query, $params);
     }
+
+    public function delete($id) {
+        $query = "DELETE FROM complaint WHERE complaintID = :id";
+        $params = ['id' => $id];
+        return $this->query($query, $params);
+    }
 }

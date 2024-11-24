@@ -108,4 +108,11 @@
             $this->view('complaints', $data); 
             
         }
+
+        public function deleteComplaint($id) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->complaintModel->delete($id);
+                header('Location: ' . ROOT . '/jobProvider/complaints');
+            }
+        }
     }

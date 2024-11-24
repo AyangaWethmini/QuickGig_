@@ -37,7 +37,7 @@
                     </div>
                     <div class="complaint-actions flex-row">
                         <button class="btn btn-update">Update</button>
-                        <button class="btn btn-delete">Delete</button>
+                        <button class="btn btn-delete" onclick="confirmDelete(<?php echo $complaint->complaintID ?>)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -45,3 +45,32 @@
         </div>
     </div>
 </div>
+
+<div id="delete-confirmation" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p>Are you sure you want to delete this complaint?</p>
+        <button id="confirm-yes" class="popup-btn-delete-complaint">Yes</button>
+        <button id="confirm-no" class="popup-btn-delete-complaint">No</button>
+    </div>
+</div>
+
+<form id="delete-form" method="POST" style="display: none;"></form>
+
+<script>
+function confirmDelete(id) {
+    var modal = document.getElementById('delete-confirmation');
+    modal.style.display = 'flex';
+
+    document.getElementById('confirm-yes').onclick = function() {
+        var form = document.getElementById('delete-form');
+        form.action = '<?=ROOT?>/jobProvider/deleteComplaint/' + id;
+        modal.style.display = 'none';
+
+        form.submit();
+    };
+
+    document.getElementById('confirm-no').onclick = function() {
+        modal.style.display = 'none';
+    };
+}
+</script>

@@ -14,7 +14,8 @@
                 <p><strong>Job Date:</strong> 2023-10-01</p>
                 <p><strong>Job Location:</strong> Manchester, UK</p>
             </div>
-            <form action="<?=ROOT?>/jobProvider/submitComplaint" method="post" class="complain-form">               <div class="form-section">
+            <form action="<?=ROOT?>/jobProvider/submitComplaint" method="post" class="complain-form">               
+                <div class="form-section">
                     <label for="complainInfo">Complain Information:</label>
                     <textarea id="complainInfo" name="complainInfo" rows="10" required></textarea>
                 </div>
