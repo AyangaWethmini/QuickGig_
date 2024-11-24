@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/user/complaints.css">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
     
     <div class="main-content-complaints">
         <div class="header">
@@ -25,28 +25,25 @@
             </div>
         </div>
         <div class="complaints-container container">
-            <?php foreach($data['complaints'] as $complaint): ?>
+        
                 <div class="complaint container">
                     <div class="complaint-content flex-col">
                         <div class="complaint-details flex-row">
                             <div class="complaint-text flex-col">
-                                <div class="the-complaint"><?php echo $complaint->content ?></div>   
+                                <div class="the-complaint">he didn't arrive on time. Didn't finish the work completely. Ask for more money than we agreed. I was threatened to killed. When he left the home kicked my dog so bad. Broke the side mirror of my bike too.</div>   
                                 <div class="text-grey">
-                                    <?php 
-                                    $formattedTime = date('h:i A', strtotime($complaint->complaintTime)); 
-                                    echo $complaint->complaintDate . ' | ' . $formattedTime; 
-                                    ?>
+                                    2021-11-21 | 12:00 PM
                                 </div>
                             </div>
                             <div class="complaint-status">Pending</div>
                         </div>
                         <div class="complaint-actions flex-row">
-                        <button class="btn btn-update" onClick="window.location.href='<?=ROOT?>/jobProvider/updateComplaint/<?= $complaint->complaintID ?>';">Update</button>
-                            <button class="btn btn-delete" onclick="confirmDelete(<?php echo $complaint->complaintID ?>)">Delete</button>
+                            <button class="btn btn-update">Update</button>
+                            <button class="btn btn-delete" onclick="confirmDelete()">Delete</button>
                         </div>
                     </div>
                 </div>
-            <?php endforeach;?>
+            
         </div>
     </div>
 </div>
@@ -59,19 +56,18 @@
     </div>
 </div>
 
-<form id="delete-form" method="POST" style="display: none;"></form>
+
 
 <script>
-function confirmDelete(id) {
+function confirmDelete() {
     var modal = document.getElementById('delete-confirmation');
     modal.style.display = 'flex';
 
     document.getElementById('confirm-yes').onclick = function() {
-        var form = document.getElementById('delete-form');
-        form.action = '<?=ROOT?>/jobProvider/deleteComplaint/' + id;
+        
         modal.style.display = 'none';
 
-        form.submit();
+    
     };
 
     document.getElementById('confirm-no').onclick = function() {

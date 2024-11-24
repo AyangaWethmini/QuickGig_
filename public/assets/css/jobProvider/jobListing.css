@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f6f9;
+  background-color: #ffffff;
 }
 .wrapper {
   display: flex;
@@ -109,7 +109,7 @@ hr {
   color: #333;
 }
 
-.job-title, .date-applied, .jobId-applied, .date-available, .time-available {
+.job-title, .date-applied, .jobId-applied, .date-available, .time-available, .time-applied, .hourly-pay {
   color: #25324B;
   font-size: 16px;
 }

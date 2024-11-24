@@ -29,8 +29,9 @@
                 <div class="employee-details">
                     <span class="employee-name">Kane Smith</span>
                     <span class="job-title">Plumber</span>
-                    <span class="date-available">21 July 2024</span>
-                    <span class="time-available">3.00 P.M. - 5.00 P.M.</span>
+                    <span class="date-available">2024-11-30</span>
+                    <span class="time-available">03:00 PM - 05:00 PM</span>
+                    <span class="hourly-pay">$10/hour</span>
                     <div class="ratings">
                     <span class="star">★</span>
                     <span class="star">★</span>
@@ -39,7 +40,7 @@
                     <span class="star">★</span>
                     </div>
                     <hr>
-                    <span class="date-applied">20 July 2024</span>
+                    <span class="date-applied">2024-11-22</span>
                 </div>
             <!--    <button class="accept-jobReq-button btn btn-accent">Accept</button>  -->
                 <button class="reject-jobReq-button btn btn-danger">Cancel</button>

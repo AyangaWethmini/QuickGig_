@@ -29,7 +29,8 @@
                 <div class="employee-details">
                     <span class="employee-name">Nomad Nova</span>
                     <span class="job-title">Bartender</span>
-                    <span class="date-applied">24 July 2024</span>
+                    <span class="date-applied">2024-07-24</span>
+                    <span class="time-applied">03:22 PM</span>
                     <span class="jobId-applied">#5</span>
                     <div class="ratings">
                     <span class="star">★</span>
@@ -57,7 +58,8 @@
                 <div class="employee-details">
                     <span class="employee-name">Clara Zue</span>
                     <span class="job-title">Waiter</span>
-                    <span class="date-applied">23 July 2024</span>
+                    <span class="date-applied">2024-07-25</span>
+                    <span class="time-applied">10:22 AM</span>
                     <span class="jobId-applied">#2</span>
                     <div class="ratings">
                     <span class="star">★</span>
@@ -85,7 +87,8 @@
                 <div class="employee-details">
                     <span class="employee-name">Kane Smith</span>
                     <span class="job-title">Plumber</span>
-                    <span class="date-applied">20 July 2024</span>
+                    <span class="date-applied">2024-07-26</span>
+                    <span class="time-applied">04:42 PM</span>
                     <span class="jobId-applied">#6</span>
                     <div class="ratings">
                     <span class="star">★</span>
