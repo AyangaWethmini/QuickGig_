@@ -31,12 +31,17 @@
                     <div class="complaint-details flex-row">
                         <div class="complaint-text flex-col">
                             <div class="the-complaint"><?php echo $complaint->content ?></div>   
-                            <div class="text-grey"><?php echo $complaint->complaintDate ?> | <?php echo $complaint->complaintTime ?></div>
+                            <div class="text-grey">
+                                <?php 
+                                $formattedTime = date('h:i A', strtotime($complaint->complaintTime)); 
+                                echo $complaint->complaintDate . ' | ' . $formattedTime; 
+                                ?>
+                            </div>
                         </div>
                         <div class="complaint-status">Pending</div>
                     </div>
                     <div class="complaint-actions flex-row">
-                        <button class="btn btn-update">Update</button>
+                    <button class="btn btn-update" onClick="window.location.href='<?=ROOT?>/jobProvider/updateComplaint/<?= $complaint->complaintID ?>';">Update</button>
                         <button class="btn btn-delete" onclick="confirmDelete(<?php echo $complaint->complaintID ?>)">Delete</button>
                     </div>
                 </div>

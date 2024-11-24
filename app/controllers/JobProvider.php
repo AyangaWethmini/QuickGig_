@@ -115,4 +115,28 @@
                 header('Location: ' . ROOT . '/jobProvider/complaints');
             }
         }
+
+        public function updateComplaint($id = null) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $content = trim($_POST['complainInfo']);
+                $complaintDate = date('Y-m-d');
+                $complaintTime = date('h:i A');
+        
+                $this->complaintModel->update($id, [
+                    'content' => $content,
+                    'complaintDate' => $complaintDate,
+                    'complaintTime' => $complaintTime
+                ]);
+        
+                header('Location: ' . ROOT . '/jobProvider/complaints');
+            } else {
+                $complaint = $this->complaintModel->getComplaintById($id);
+        
+                $data = [
+                    'complaint' => $complaint
+                ];
+        
+                $this->view('updateComplaint', $data);
+            }
+        }
     }

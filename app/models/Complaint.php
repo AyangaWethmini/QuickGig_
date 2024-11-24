@@ -16,7 +16,7 @@ class Complaint {
     }
 
     public function getComplaints() {
-        $query = 'SELECT * FROM complaint ORDER BY complaintDate ASC, complaintTime ASC';
+        $query = 'SELECT * FROM complaint where complainantID=1 ORDER BY complaintDate DESC, complaintTime DESC';
         return $this->query($query);
     }
 
@@ -38,6 +38,26 @@ class Complaint {
     public function delete($id) {
         $query = "DELETE FROM complaint WHERE complaintID = :id";
         $params = ['id' => $id];
+        return $this->query($query, $params);
+    }
+
+    public function getComplaintById($id) {
+        $query = "SELECT * FROM complaint WHERE complaintID = :id";
+        $params = ['id' => $id];
+        $result = $this->query($query, $params);
+    
+        return isset($result[0]) ? $result[0] : null;
+    }
+    
+    
+    public function update($id, $data) {
+        $query = "UPDATE complaint SET content = :content, complaintDate = :complaintDate, complaintTime = :complaintTime WHERE complaintID = :id";
+        $params = [
+            'id' => $id,
+            'content' => $data['content'],
+            'complaintDate' => $data['complaintDate'],
+            'complaintTime' => $data['complaintTime']
+        ];
         return $this->query($query, $params);
     }
 }
