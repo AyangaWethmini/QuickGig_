@@ -1,10 +1,20 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+
+<script>
+    // Include the toggleMenu function
+    function toggleMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('active');
+    }
+</script>
+
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/signup.css">
+
 <div class="signin-signup flex-row">
 
     <div class="image">
-        <p class="logo">QuickGig.</p>
         <img src="<?=ROOT?>/assets/images/home.png" alt="man holding files" class="img">
 
         <div class="stat container flex-col">

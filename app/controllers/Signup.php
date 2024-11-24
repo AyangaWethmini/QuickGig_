@@ -41,7 +41,7 @@ class Signup extends Controller
                 return false;
             }
 
-            // Hash the password
+            // Hash the password 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Generate a unique ID for the account
