@@ -114,10 +114,20 @@
     margin-bottom: 20px;
     margin-left: 40%;
 }
-.role-switch .btn {
+.role-btn {
     padding: 10px 15px;
     margin-right: 10px;
     cursor: pointer;
+}
+
+.role-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.role-btn.active {
+    background-color: #007bff;
+    color: white;
 }
 
 /* Rating & Reviews */

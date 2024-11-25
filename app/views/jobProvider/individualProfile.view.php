@@ -47,8 +47,8 @@
         </div>
         
         <div class="role-switch">
-            <button class="role-btn">Job Seeker Role</button>
-            <button class="role-btn">Job Provider Role</button>
+        <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
+        <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
         </div>
 
         <div class="rating-reviews">

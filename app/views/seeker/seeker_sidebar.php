@@ -6,7 +6,7 @@
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">
-            <a href="<?php echo ROOT;?>/seeker/individualProfile" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
             </a>

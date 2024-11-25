@@ -4,7 +4,7 @@
         protected $viewPath = "../app/views/seeker/";
         
         function index(){
-            $this->view('individualProfile');
+            $this->view('seekerProfile');
         }
 
         function findEmployees(){
