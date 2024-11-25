@@ -15,4 +15,8 @@
             $this->view('helpCenter');
         }
         
+        function settings(){
+            $this->view('settings');
+        }
+        
     }

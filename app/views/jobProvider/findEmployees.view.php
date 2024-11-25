@@ -1,149 +1,172 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/findEmp.css">
 
-<div class="header container">
-    <p class="logo">Quickgig</p>
-</div>
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
 
-<div class="search-emp">
-        <div class="hero-search flex-row">
-            <div class="search-container">
-                <input type="text" 
-                    class="search-bar" 
-                    placeholder="Search Jobs"
-                    aria-label="Search">
-            </div>
-
-            <div class="dropdown">
-                <img src="<?=ROOT?>/assets/icons/location.svg" alt="location icon">
-                <button class="dropdown-button text-grey">Select location</button>
-                <div class="dropdown-content">
-                    <a href="#">Ampara</a>
-                    <a href="#">Anuradhapura</a>
-                    <a href="#">Badulla</a>
-                    <a href="#">Batticaloa</a>
-                    <a href="#">Colombo</a>
-                    <a href="#">Galle</a>
-                    <a href="#">Gampaha</a>
-                    <a href="#">Hambantota</a>
-                    <a href="#">Jaffna</a>
-                    <a href="#">Kandy</a>
-                    <a href="#">Kegalle</a>
-                    <a href="#">Kilinochchi</a>
-                    <a href="#">Kurunegala</a>
-                    <a href="#">Mannar</a>
-                    <a href="#">Matale</a>
-                    <a href="#">Matara</a>
-                    <a href="#">Monaragala</a>
-                    <a href="#">Mullaitivu</a>
-                    <a href="#">Nuwara Eliya</a>
-                    <a href="#">Polonnaruwa</a>
-                    <a href="#">Puttalam</a>
-                    <a href="#">Ratnapura</a>
-                    <a href="#">Trincomalee</a>
-                    <a href="#">Vavuniya</a>
-
-                </div>
-            </div>
-            <button class="btn btn-accent srch-btn" >Search my job</button>
+<div class="wrapper flex-row">
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    
+    <div class="main-content-jobs">
+        <div class="header">
+            <div class="heading">Find Employees</div>
         </div>
-    </div>
-</div>
-
-<div class="emp-suggestions flex-row">
-    <div class="filter-emp">
-        <p>Type of Employment</p>
-        <input type="checkbox">Daytime
-        <input type="checkbox">Night-time
-        <input type="checkbox">Weekend
-
-        <p>Categories</p>
-        <input type="checkbox">Gardening
-        <input type="checkbox">Helper
-        <input type="checkbox">Baby sitting
-        <input type="checkbox">Delivery
-        <input type="checkbox">Tutoring
-        <input type="checkbox">Cooking
-        <input type="checkbox">Cleaning
-        <input type="checkbox">Rent Vehicle
-        <input type="checkbox">Pet sitting
-        <input type="checkbox">Eldery care
-    </div>
-    <div class="employees flex-col">
-        <div class="filter-container">
-                <span>Employee Suggestions</span>
+        <hr>
+        <div class="search-container">
+            <input type="text" 
+                class="search-bar" 
+                placeholder="Find emplyees (e.g. waiter, bartender, etc. or by name)"
+                aria-label="Search">
+            <br><br>
+            <div class="filter-container">
+                <span>Sort by:</span>
                 <select id="sortSelect" onchange="sortContent()">
-                    <option value="recent">Most recent</option>
-                    <option value="views">Highest views</option>
+                    <option value="recent">Latest</option>
+                    <option value="views">Oldest</option>
+                    <option value="views">Highest rated</option>
+                    <option value="views">Highest jobs done</option>
                 </select>
-                <button id="gridButton" onclick="toggleView()">☰</button>
-        </div>
-
-        <div class="emp-card flex-row">
-            <img src="<?=ROOT?>/assets/images/person1.jpg" alt="profile-pic">
-            <div class="emp-details">
-                <p class="name">Gunapala</p>
-                <div id="rating-stars">
-                    <span data-value="1" class="star">★</span>
-                    <span data-value="2" class="star">★</span>
-                    <span data-value="3" class="star">★</span>
-                    <span data-value="4" class="star">★</span>
-                    <span data-value="5" class="star">★</span>
-                </div>
-
-                <p class="text-grey">Madawachchiya</p>
-
             </div>
-            <button class="btn btn-accent">Request</button>
         </div>
+        <div class="job-cards-container">
+            <div class="job-card container">
+                <div class="job-card-left flex-row">
+                  <div class="pfp">
+                    <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-find-employee">
+                  </div>           
+                    <div class="job-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Manchester, UK</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                        <div class="rating">
+                            <span>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            </span>
+                        </div>
+                        <div class="availability">
+                            <div class="availability-time">
+                                <span>Available: 08:00 AM - 04:00 PM </span>
+                            </div>
+                            <div class="availability-date">
+                                <span>2024-11-30</span>
+                            </div>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">Day</span>
+                            <span class="tag">Waiter</span>
+                            <span class="tag">Bartender</span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="job-card-right flex-row">
+                  <button class="request-button btn btn-accent">Request</button>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Message</a></li>
+                            <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
+            <div class="job-card container">
+                <div class="job-card-left flex-row">
+                  <div class="pfp">
+                    <img src="<?=ROOT?>/assets/images/person4.jpg" alt="Profile Picture" class="profile-pic-find-employee">
+                  </div>           
+                    <div class="job-details">
+                        <h2>Zedd Alexis</h2>
+                        <p>London, UK</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                        <div class="rating">
+                            <span>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            </span>
+                        </div>
+                        <div class="availability">
+                            <div class="availability-time">
+                                <span>Available: 08:00 AM - 04:00 PM </span>
+                            </div>
+                            <div class="availability-date">
+                                <span>2024-11-30</span>
+                            </div>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">Day</span>
+                            <span class="tag">Waiter</span>
+                            <span class="tag">Bartender</span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="job-card-right flex-row">
+                  <button class="request-button btn btn-accent">Request</button>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Message</a></li>
+                            <li><a href="#">View Profile</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>   
+
+            <div class="job-card container">
+                <div class="job-card-left flex-row">
+                  <div class="pfp">
+                    <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture" class="profile-pic-find-employee">
+                  </div>           
+                    <div class="job-details">
+                        <h2>Sarah Eve</h2>
+                        <p>London, UK</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                        <div class="rating">
+                            <span>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            <i class="fa fa-star star-active mx-1"></i>
+                            </span>
+                        </div>
+                        <div class="availability">
+                            <div class="availability-time">
+                                <span>Available: 08:00 AM - 04:00 PM </span>
+                            </div>
+                            <div class="availability-date">
+                                <span>2024-11-30</span>
+                            </div>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">Day</span>
+                            <span class="tag">Waiter</span>
+                            <span class="tag">Baby-Sitter</span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="job-card-right flex-row">
+                  <button class="request-button btn btn-accent">Request</button>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Message</a></li>
+                            <li><a href="#">View Profile</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>   
+
+        </div>
     </div>
-
 </div>
-
-
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-  const stars = document.querySelectorAll("#rating-stars .star");
-  const ratingValue = document.getElementById("rating-value");
-  let currentRating = 0;
-
-  stars.forEach((star) => {
-    // Highlight stars on hover
-    star.addEventListener("mouseover", () => {
-      resetStars();
-      highlightStars(star.dataset.value);
-    });
-
-    // Reset stars when not hovering
-    star.addEventListener("mouseout", () => {
-      resetStars();
-      highlightStars(currentRating);
-    });
-
-    // Set rating on click
-    star.addEventListener("click", () => {
-      currentRating = star.dataset.value;
-      ratingValue.textContent = `Rating: ${currentRating}`;
-      resetStars();
-      highlightStars(currentRating);
-    });
-  });
-
-  function resetStars() {
-    stars.forEach((star) => star.classList.remove("hovered", "selected"));
-  }
-
-  function highlightStars(rating) {
-    stars.forEach((star) => {
-      if (star.dataset.value <= rating) {
-        star.classList.add(rating == currentRating ? "selected" : "hovered");
-      }
-    });
-  }
-});
-
-</script>
