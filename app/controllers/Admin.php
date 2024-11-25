@@ -11,13 +11,13 @@
         public function announcement(){
             $data = [];
             
-            $this->view('admin/announcement');
+            $this->view('admin/adminannouncement');
         }
 
-        public function create_announcement(){
+        public function create announcement(){
             $data = [];
             
-            $this->view('admin/create_announcement');
+            $this->view('admin/admincreateannouncement');
         }
 
         public function complaints(){
