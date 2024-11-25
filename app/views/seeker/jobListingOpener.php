@@ -2,7 +2,7 @@
 
 <div class="opener">
             <p class="title-name">My Jobs</p>
-            <a href="<?php echo ROOT;?>/jobProvider/postJob" class="post-job-btn">
+            <a href="<?php echo ROOT;?>/seeker/postJob" class="post-job-btn">
                 + Post a job
             </a>
         </div> <br> <hr>

@@ -30,7 +30,7 @@
                     <div class="complaint-content flex-col">
                         <div class="complaint-details flex-row">
                             <div class="complaint-text flex-col">
-                                <div class="the-complaint">he didn't arrive on time. Didn't finish the work completely. Ask for more money than we agreed. I was threatened to killed. When he left the home kicked my dog so bad. Broke the side mirror of my bike too.</div>   
+                                <div class="the-complaint">He wasn't at home when I went there. I had to wait about 20 minutes. He refused to pay the agreed amount of money. Had to debate for while.</div>   
                                 <div class="text-grey">
                                     2021-11-21 | 12:00 PM
                                 </div>

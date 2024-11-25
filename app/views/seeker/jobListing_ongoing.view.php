@@ -5,12 +5,12 @@
 
 <body>
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
     <div class="inclusion-container">
-        <?php require APPROOT . '/views/jobProvider/jobListingOpener.php'; ?>
+        <?php require APPROOT . '/views/seeker/jobListingOpener.php'; ?>
 
         <div class="category-container">
-        <?php require APPROOT . '/views/jobProvider/categoryLinksJobListing.php'; ?>
+        <?php require APPROOT . '/views/seeker/categoryLinksJobListing.php'; ?>
 
         </div> <hr> <br>
 
