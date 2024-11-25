@@ -1,11 +1,13 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; ?>
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+
 
 <div class="signin-signup flex-row">
 
     <div class="image">
-        <p class="logo">QuickGig.</p>
             <img src="<?=ROOT?>/assets/images/home.png" alt="man holding files" class="img">
 
             <div class="stat container flex-col">
@@ -32,20 +34,20 @@
     <div class="login-form">
         <div class="flex-col">
         <h3 style="color: var(--color-white); margin-top: 40px;">Get more oppertunities</h3>
-        <form action="post" class="form-body" >
+        <form action="<?php echo ROOT; ?>/login/verify" method="POST" class="form-body">
             <div class="form-field">
                 <label for="email" class="lbl" style="color: var(--color-white);">Email : </label><br>
-                <input type="text" placeholder="Enter Email">
+                <input type="text" name="email" placeholder="Enter Email">
             </div>
 
             <div class="form-field">
                 <label for="password" class="lbl" style="color: var(--color-white);">Password :</label><br>
-                <input type="password" placeholder="Enter password"> <!----add the width to css file -->
+                <input type="password" name="password" placeholder="Enter password"> <!----add the width to css file -->
             </div>
-            <p class="text-white rem">Remember me<input type="checkbox"></p>
+            <p class="text-white rem flex-row" style="gap: 10px;">Remember me<input type="checkbox"></p>
             
             
-            <button class="btn btn-accent signup-btn">Sign Up</button>
+            <button class="btn btn-accent signup-btn" type = "submit" >Log In</button>
         </div>
             <div style="margin-left: 10px;">
                 
@@ -54,7 +56,7 @@
             </div>
         </form>
     </div>
-    </div>
+    </div> 
 
 </div>
 

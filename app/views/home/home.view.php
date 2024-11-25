@@ -3,13 +3,7 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/home/home.css">
 <?php include APPROOT . '/views/components/janusha_nav.php'; ?>
 
-<script>
-    // Include the toggleMenu function
-    function toggleMenu() {
-      const navLinks = document.querySelector('.nav-links');
-      navLinks.classList.toggle('active');
-    }
-</script>
+
 
 <!-- <nav class="navbar flex-row">
     <div class="flex-row  nav-left">
