@@ -14,6 +14,7 @@
         function advertisements() {
             $data = $this->advertisementModel->getAdvertisements();
             $this->view('advertisements', ['advertisements' => $data]);
+
         }
 
 

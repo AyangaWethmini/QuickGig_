@@ -1,6 +1,5 @@
 <?php
 // models/Account.php
-
 class Account
 {
     private $db;
@@ -25,6 +24,14 @@ class Account
     // Method to create a new account
     public function create()
     {
+        // Set optional fields to NULL if they are not provided
+        $this->district = $this->district ?: 'None';
+        $this->addressLine1 = $this->addressLine1 ?: 'None';
+        $this->addressLine2 = $this->addressLine2 ?: 'None';
+        $this->city = $this->city ?: 'None';
+        $this->planID = $this->planID ?: -1;  // -1 no plan
+
+        // Prepare the SQL query to insert data
         $query = "INSERT INTO account (accountID, email, planID, password, district, addressLine1, addressLine2, city, accStatus) 
                   VALUES (:accountID, :email, :planID, :password, :district, :addressLine1, :addressLine2, :city, :accStatus)";
         
@@ -41,6 +48,7 @@ class Account
         $stmt->bindParam(':city', $this->city);
         $stmt->bindParam(':accStatus', $this->accStatus);
 
+        // Execute the query
         return $stmt->execute();
     }
 
@@ -64,4 +72,14 @@ class Account
         
         return $stmt->execute();
     }
+    public function findRole($user_id)
+    {
+        $query = "SELECT roleID FROM account_role WHERE accountID = :user_id LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
+
