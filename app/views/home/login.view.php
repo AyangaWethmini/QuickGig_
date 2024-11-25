@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; ?>
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
