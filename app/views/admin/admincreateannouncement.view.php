@@ -4,7 +4,7 @@
     <div class="admin-container">
         <div class="post-container">
             <div class="announcement-header">
-                <a href="<?php echo URLROOT; ?>/admin/adminannouncement" class="back-link">
+                <a href="<?php echo ROOT; ?>/admin/adminannouncement" class="back-link">
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
                 <h1>Create Announcement</h1>

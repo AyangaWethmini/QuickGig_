@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/admin/admin_announcement.css">
+
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">

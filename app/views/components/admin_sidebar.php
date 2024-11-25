@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/admin/admin_sidebar.css">
     <div class="admin-sidebar">
         <div class="signup_logo">
             <img src="<?php echo ROOT; ?>/public/assets/images/QuickGigLogo.png" alt="Description of image">
