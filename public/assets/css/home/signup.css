@@ -177,3 +177,8 @@ h5.rev-name{
     border-radius: 50%;
     border: 5px solid var(--color-white);
 }
+.error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
