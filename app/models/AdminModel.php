@@ -2,7 +2,9 @@
 // models/Admin.php
 
 class AdminModel{
-    use Database;
+    use Model;
+
+    protected $table = 'announcement';
 
     public $adminId;
     public $name;
@@ -37,4 +39,41 @@ class AdminModel{
         // Execute the query
         return $this->query($query, $params);
     }
+
+    
+    public function getAnnouncementById($announcementID){
+        $query = "SELECT * FROM announcement where announcementID = :announcementID";
+        $params = [
+            ':announcementID' => $announcementID
+        ];
+
+        return $this->get_row($query, $params);
+    }
+
+    public function delete($announcementID) {
+        $query = "DELETE FROM announcement WHERE announcementID = :announcementID";
+        $params = [
+            ':announcementID' => $announcementID,
+        ];
+        return $this->query($query, $params);
+    }
+
+    public function updateAnnouncements($announcementID, $data) {
+        $query = "UPDATE announcement SET 
+                  announcementDate = :announcementDate, 
+                  announcementTime = :announcementTime, 
+                  content = :content 
+                  WHERE announcementID = :announcementID";
+    
+        $params = [
+            ':announcementID' => $announcementID,
+            ':announcementDate' => $data['announcementDate'],
+            ':announcementTime' => $data['announcementTime'],
+            ':content' => $data['content'],
+        ];
+    
+        return $this->query($query, $params);
+    }
+    
+
 }

@@ -14,3 +14,21 @@
     background-color: rgb(124, 121, 221);
     border-radius: 5px;
 }
+
+/* ANNOUNCEMENT UPDATE BUTTON */
+.post-control-btn1 {
+    background-color: rgb(70, 64, 222);
+    color: aliceblue;
+    padding: 5px 5px;
+    margin-left: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: .2s all;
+    font-size: larger;
+}
+
+.post-control-btn1:hover {
+    background-color: rgb(124, 121, 221);
+    border-radius: 5px;
+}
