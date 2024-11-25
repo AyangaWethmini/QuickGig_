@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/viewEmployeeProfile.css">
@@ -6,26 +7,26 @@
 
 <body>
 <div class="wrapper flex-row">
-    <div id="sidebar"></div>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">
-                <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture" class="profile-pic">
+                <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic">
                 <div class="intro">
                     <div class="profile-intro">
-                        <h2>Jake Gyll</h2><br>
-                        <p>Product Designer at Twitter</p><br>
+                        <h2>Smith Greenwood</h2><br>
+                        <p>Bartender</p><br>
                         <p>Manchester, UK</p>
                     </div>
-                    <div class="profile-rating">★★★★☆</div>
+                    <div class="profile-rating">★★★★★</div>
                 </div>
-                <button class="btn edit-profile">Edit Profile</button>
+                
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">
                     <h2>Additional Details</h2> <br>
                     <p class="title-items">Email</p> 
-                    <p class="detail-items">jakegyll@gmail.com</p><br>
+                    <p class="detail-items">smithGreen@gmail.com</p><br>
                     <p class="title-items">Phone</p>
                     <p class="detail-items">+44 1245 572 135</p><br>
                     <p class="title-items">Languages</p>
@@ -34,11 +35,9 @@
                 <div class="social-links">
                     <h2>Social Links</h2> <br>
                         <p class="title-items">Instagram</p>
-                        <p class="detail-items">instagram.com/jakegyll</p><br>
+                        <p class="detail-items">instagram.com/smithGreen</p><br>
                         <p class="title-items">Twitter</p>
-                        <p class="detail-items">twitter.com/jakegyll</p><br>
-                        <p class="title-items">Website</p>
-                        <p class="detail-items">www.jakegyll.com</p>                  
+                        <p class="detail-items">twitter.com/SmithGreenwood</p><br>                 
                 </div>
             </div>    
         </div>

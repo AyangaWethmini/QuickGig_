@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
-<script src="<?=ROOT?>/assets/js/jobProvider/jobListing.js"></script>
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="inclusion-container">
@@ -19,16 +18,12 @@
         </div>
 
         <div class="category-container">
-            <div class="category">My Jobs (1)</div>
-            <div class="category">Received (3)</div>
-            <div class="category">Send (0)</div>
-            <div class="category">To be completed (0)</div>
-            <div class="category">Ongoing (0)</div>
-            <div class="category">Completed (1)</div>
+        <?php require APPROOT . '/views/jobProvider/categoryLinksJobListing.php'; ?>
+
         </div> <hr> <br>
 
         <div class="list-header">
-            <p class="list-header-title">Job History</p>
+            <p class="list-header-title">Received History</p>
             <input type="text" class="search-input" placeholder="Search..."> 
             <button class="filter-btn">Filter</button>
         </div> <br>
@@ -52,7 +47,15 @@
                     <span class="star">★</span>
                     </div>
                 </div>
-                <button class="more-options">⋮</button>
+                <button class="accept-jobReq-button btn btn-accent">Accept</button>
+                <button class="reject-jobReq-button btn btn-danger">Reject</button>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="#">View Profile</a></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="employee-item">
@@ -72,7 +75,15 @@
                     <span class="star">★</span>
                     </div>
                 </div>
-                <button class="more-options">⋮</button>
+                <button class="accept-jobReq-button btn btn-accent">Accept</button>
+                <button class="reject-jobReq-button btn btn-danger">Reject</button>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="#">View Profile</a></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="employee-item">
@@ -92,20 +103,50 @@
                     <span class="star">★</span>
                     </div>
                 </div>
-                <button class="more-options">⋮</button>
+                <button class="accept-jobReq-button btn btn-accent">Accept</button>
+                <button class="reject-jobReq-button btn btn-danger">Reject</button>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                    </ul>
+                </div>
             </div>
 
         </div>
 
-        <!--<div class="menu-overlay hidden">
-            <div class="menu">
-            <ul>
-                <li>View Profile</li>
-                <li>Edit Details</li>
-                <li>Delete Record</li>
-            </ul>
+        <div id="popup" class="popup hidden">
+            <div class="popup-content">
+                <p id="popup-message">Are you sure to accept the request?</p>
+                <button id="popup-yes" class="popup-button-jobReq">Yes</button>
+                <button id="popup-no" class="popup-button-jobReq">No</button>
             </div>
-        </div> -->
+        </div>
 
     </div>
 </body>
+<script>
+document.querySelectorAll('.accept-jobReq-button').forEach(button => {
+    button.addEventListener('click', () => {
+        document.getElementById('popup-message').textContent = 'Are you sure to accept the request?';
+        document.getElementById('popup').classList.remove('hidden');
+    });
+});
+
+document.querySelectorAll('.reject-jobReq-button').forEach(button => {
+    button.addEventListener('click', () => {
+        document.getElementById('popup-message').textContent = 'Are you sure to reject the request?';
+        document.getElementById('popup').classList.remove('hidden');
+    });
+});
+
+document.getElementById('popup-yes').addEventListener('click', () => {
+    document.getElementById('popup').classList.add('hidden');
+});
+
+document.getElementById('popup-no').addEventListener('click', () => {
+    document.getElementById('popup').classList.add('hidden');
+});
+</script>
+</html>

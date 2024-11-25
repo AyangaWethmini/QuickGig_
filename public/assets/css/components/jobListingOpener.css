@@ -1,0 +1,55 @@
+.opener {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 30px;
+  }
+  
+  .title-name {
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .post-job-btn {
+    background-color: #4640DE;
+    color: white;
+    font-weight: bold;
+    border: 1px solid gray;
+    border-radius: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: large;
+    margin-left: 146vh;
+  }
+  
+  .post-job-btn:hover {
+    background-color: #3430bd;
+  }
+  
+  .expressionNselect-dates {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 30px;
+  }
+  
+  .expression {
+    font-size: 24px;
+    font-weight: 500;
+    color: #25324B;
+  }
+  
+  .select-dates-btn {
+    background-color: #ffffff;
+    color: #25324B;
+    border: 1px solid #D6DDEB;
+    border-radius: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 145vh;
+  }
+  
+  .select-dates-btn:hover {
+    background-color: #D6DDEB;
+  }

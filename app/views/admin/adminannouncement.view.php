@@ -7,7 +7,7 @@ require_once APPROOT . '/views/inc/protectedRoute.php';
     <div class="admin-container">
         <div class="admin-announcement-header">
             <h1>Current Announcements</h1>
-            <a href="<?php echo ROOT; ?>/admin/admincreateannouncement">
+            <a href="<?php echo URLROOT; ?>/admin/admincreateannouncement">
                 <input type="submit" value="+ Post Announcement" class="form-btn">
             </a>
         </div>
