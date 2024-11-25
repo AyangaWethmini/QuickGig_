@@ -6,7 +6,16 @@ class Home extends Controller
 
 	public function index()
 	{
-		$this->view('home');
+		$this->adminModel = $this->model('AdminModel');
+		// Fetch announcements from the database
+		$announcements = $this->adminModel->getAnnouncements();
+
+		// Ensure the announcements key is always defined
+		$data = [
+			'announcements' => $announcements
+		];
+
+		$this->view('home', $data);
 	}
 
 	public function signup()
@@ -16,6 +25,6 @@ class Home extends Controller
 
 	public function login()
 	{
-		$this->view('login');
-	}
+		
+	}	
 }
