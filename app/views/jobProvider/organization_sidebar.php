@@ -30,10 +30,10 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
             </a>
-            <div class="sidebar-item" data-link="complains.php">
+            <a href="<?php echo ROOT;?>/organization/org_complaints" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
-                <span class="sidebar-label">complains</span>
-            </div>
+                <span class="sidebar-label">complaints</span>
+            </a>
              <br><br>
              <a href="<?php echo ROOT;?>/organization/org_subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>

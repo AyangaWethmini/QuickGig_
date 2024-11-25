@@ -17,7 +17,7 @@
         <br>
 
         <div class="list-header">
-            <p class="list-header-title">Send History</p>
+            <p class="list-header-title">Completed History</p>
             <input type="text" class="search-input" placeholder="Search..."> 
             <button class="filter-btn">Filter</button>
         </div> 
@@ -31,8 +31,8 @@
                 <div class="employee-details">
                     <span class="employee-name">Kane Smith</span>
                     <span class="job-title">Plumber</span>
-                    <span class="date-available">21 July 2024</span>
-                    <span class="time-available">3.00 P.M. - 5.00 P.M.</span>
+                    <span class="date-available">2024-11-25</span>
+                    <span class="time-available">03:00 PM - 05:00 PM</span>
                     <span class="jobId-applied">#6</span>
                     <div class="ratings">
                         <span class="star">★</span>

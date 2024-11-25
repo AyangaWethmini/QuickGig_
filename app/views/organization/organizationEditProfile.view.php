@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="<?=ROOT?>/assets/css/user/editprofile.css">
     
     <div class="wrapper flex-row">
-        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+        <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
         <div class="user-editprofile">
             <div class="editprofile-section 1">
                 <div class="section1-left">

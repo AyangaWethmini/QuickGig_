@@ -66,4 +66,8 @@
             $this->view('org_jobListing_completed');
         }
 
+        function org_complaints(){
+            $this->view('org_complaints');
+        }
+
     }
