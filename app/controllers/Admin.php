@@ -5,7 +5,7 @@
             $this->adminModel = $this->model('AdminModel');
         }
 
-        protected $viewpath = "../app/view/";
+        protected $viewPath = "../app/views/admin/";
 
         function index(){
             $this->view('adminannouncement');        
@@ -179,95 +179,46 @@
         
         
 
-        public function create_announcement(){
+        function admincomplaints(){
             $data = [];
             
-            $this->view('admin/create_announcement');
+            $this->view('admincomplaints');
         }
 
-        public function complaints(){
+        function adminreviewcomplaints(){
             $data = [];
             
-            $this->view('admin/complaints');
+            $this->view('adminreviewcomplaint');
         }
 
-        public function reviewcomplaints(){
+        function adminmanageusers(){
             $data = [];
             
-            $this->view('admin/reviewcomplaint');
+            $this->view('adminmanageusers');
         }
 
-        public function manageusers(){
+        function adminsettings(){
             $data = [];
             
-            $this->view('users');
+            $this->view('adminsettings');
         }
 
-        public function settings(){
+        function adminlogindetails(){
             $data = [];
             
-            $this->view('admin/settings');
+            $this->view('adminlogindetails');
         }
 
-        public function logindetails(){
+        function admindeleteaccount(){
             $data = [];
             
-            $this->view('admin/logindetails');
+            $this->view('admindeleteaccount');
         }
-
-        public function deleteaccount(){
+        
+        function adminadvertisements(){
             $data = [];
 
             $this->view('adminadvertisements');
         }
 
-        function adminlogin(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                //Form is submitting
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                $data = [
-                    'email' => trim($_POST['email']),
-                    'password' => trim($_POST['password']),
-
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-
-                //validate the email
-                if(empty($data['email'])){
-                    $data['email_err'] = 'Please enter email';
-                } else {
-                    if($this->userModel->findUserByEmail($data['email'])){
-                        //User found
-                    } else {
-                        $data['email_err'] = 'No user found';
-                    }
-                }
-
-                //validate the password
-                if(empty($data['password'])){
-                    $data['password_err'] = 'Please enter password';
-                }
-
-                //If no error found, login the user
-                
-            }
-            else {
-                //Initial Form
-
-                $data = [
-                    'email' => '',
-                    'password' => '',
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-
-                //Load view
-                $this->view('adminlogin', $data);
-            }
-        }
-
-    }
-
-
-
+}
