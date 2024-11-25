@@ -18,7 +18,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-address-card"></i></span>
                 <span class="sidebar-label">Find Employees</span>
             </a>
-            <a href="<?php echo ROOT;?>/jobProvider/jobListing" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/jobProvider/jobListing_received" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-clipboard"></i></span>
                 <span class="sidebar-label">Job Listing</span>
             </a>
@@ -26,14 +26,14 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
             </a>
-            <div class="sidebar-item" data-link="reviews.php">
+            <a href="<?php echo ROOT;?>/jobProvider/reviews" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
-            </div>
-            <div class="sidebar-item" data-link="complains.php">
+            </a>
+            <a href="<?php echo ROOT;?>/jobProvider/complaints" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
-                <span class="sidebar-label">complains</span>
-            </div>
+                <span class="sidebar-label">complaints</span>
+            </a>
              <br><br>
             <a href="<?php echo ROOT;?>/jobProvider/subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>

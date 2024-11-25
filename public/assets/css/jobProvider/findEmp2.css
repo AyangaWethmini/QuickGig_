@@ -1,0 +1,226 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    margin-top: 100px;
+    display: flex;
+}
+
+.content-container {
+    margin-left: 224px;
+    padding: 20px;
+    width: calc(100% - 525px);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+}
+
+.title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.search-sort-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 25%;
+    width: 100%;
+    max-width: 800px; /* Limit the width of the search and sort container */
+}
+
+.search-box {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.sort-dropdown {
+    width: 20%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.job-cards {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px; /* Limit the width of the job cards container */
+}
+
+.job-card {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pfp {
+    width: 80px;
+    margin-right: 20px;
+}
+
+.job-card-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.job-details h2 {
+    color: #3430bd;
+    font-family: Epilogue;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+}
+
+.job-details p {
+    color: #7C8493;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+}
+
+.rating i {
+    color: #f2ce1e;
+    height: 16px;
+    width: 16px;
+    margin-right: 4px;
+}
+
+.availability {
+    color: #530980;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #530980;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-top: 5px;
+}
+
+.tag {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border: 1px solid #103478;
+    background-color: #acbfe2;
+    border-radius: 15px;
+    z-index: inherit;
+}
+
+.job-card-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.request-button {
+    height: 40px;
+    width: 100px;
+    background-color: #3430bd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.request-button:hover {
+    background-color: #4640de;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    color: black;
+    padding: 10px 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Dropdown Menu Items */
+.dropdown-menu li {
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.dropdown-menu li:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+/* Hover Effect */
+.dropdown-menu li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show Menu on Hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.profile-pic-find-employee {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.profile-pic-reviewed-employee {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}

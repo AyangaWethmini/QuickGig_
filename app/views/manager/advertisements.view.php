@@ -34,32 +34,6 @@
                     <option value="views">Highest views</option>
                 </select>
                 <button id="gridButton" onclick="toggleView()">☰</button>
-            </div>
-
-                <div class="ads">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="icon">
-                            <img src="path-to-your-icon.png" alt="Icon">
-                            </div>
-                            <div class="details">
-                            <h3>Combined maths classes</h3>
-                            <p>John Doe • Gampaha, Colombo</p>
-                            <div class="tags">
-                                <span class="tag orange">ALevel</span>
-                                <span class="tag blue">Maths</span>
-                            </div>
-                            </div>
-                            <div class="stats">
-                            <p>100 Views | 37 Clicks</p>
-                            <div class="actions">
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
         </div>
 
@@ -116,6 +90,7 @@
 <script>
 
 const form = document.getElementById("create-ad");
+const body = document.querySelector("body");
 
     function showForm() {
         const bg = document.querySelector(".wrapper");
@@ -124,7 +99,9 @@ const form = document.getElementById("create-ad");
             form.classList.remove("hidden");
             setTimeout(() => {
                 form.classList.add("show");
-            }, 50); // Delay to match the CSS transition
+            }, 50); 
+            body.classList.add("overlay");
+            
         } else {
             form.classList.remove("show");
             form.classList.add("hidden");
@@ -137,6 +114,8 @@ const form = document.getElementById("create-ad");
             form.classList.add("hidden");
         }, 500);
     }
+
+    
 
 </script>
 

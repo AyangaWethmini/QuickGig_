@@ -1,106 +1,61 @@
 <?php
- class Admin extends Controller {
 
-        protected $viewPath = "../app/views/admin/";
+    class Admin extends Controller {
 
-        function index(){
-            $this->view('adminannouncement');
-        }
+        protected $viewpath = "../app/view/";
 
-        function admincreateannouncement(){
-            $data = [];
-            
-            $this->view('admincreateannouncement');
-        }
-
-        function admincomplaints(){
-            $data = [];
-            
-            $this->view('admincomplaints');
-        }
-
-        function adminreviewcomplaints(){
-            $data = [];
-            
-            $this->view('adminreviewcomplaint');
-        }
-
-        function adminmanageusers(){
-            $data = [];
-            
-            $this->view('adminmanageusers');
-        }
-
-        function adminsettings(){
-            $data = [];
-            
-            $this->view('adminsettings');
-        }
-
-        function adminlogindetails(){
-            $data = [];
-            
-            $this->view('adminlogindetails');
-        }
-
-        function admindeleteaccount(){
-            $data = [];
-            
-            $this->view('admindeleteaccount');
+        public function index(){
+            $this->view('admin/dashboard');
         }
         
-        function adminadvertisements(){
+        public function announcement(){
             $data = [];
-
-            $this->view('adminadvertisements');
+            
+            $this->view('admin/announcement');
         }
 
-        function adminlogin(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                //Form is submitting
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                $data = [
-                    'email' => trim($_POST['email']),
-                    'password' => trim($_POST['password']),
-
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-
-                //validate the email
-                if(empty($data['email'])){
-                    $data['email_err'] = 'Please enter email';
-                } else {
-                    if($this->userModel->findUserByEmail($data['email'])){
-                        //User found
-                    } else {
-                        $data['email_err'] = 'No user found';
-                    }
-                }
-
-                //validate the password
-                if(empty($data['password'])){
-                    $data['password_err'] = 'Please enter password';
-                }
-
-                //If no error found, login the user
-                
-            }
-            else {
-                //Initial Form
-
-                $data = [
-                    'email' => '',
-                    'password' => '',
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-
-                //Load view
-                $this->view('adminlogin', $data);
-            }
+        public function create_announcement(){
+            $data = [];
+            
+            $this->view('admin/create_announcement');
         }
 
+        public function complaints(){
+            $data = [];
+            
+            $this->view('admin/complaints');
+        }
+
+        public function reviewcomplaints(){
+            $data = [];
+            
+            $this->view('admin/reviewcomplaint');
+        }
+
+        public function manageusers(){
+            $data = [];
+            
+            $this->view('users');
+        }
+
+        public function settings(){
+            $data = [];
+            
+            $this->view('admin/settings');
+        }
+
+        public function logindetails(){
+            $data = [];
+            
+            $this->view('admin/logindetails');
+        }
+
+        public function deleteaccount(){
+            $data = [];
+            
+            $this->view('admin/delete_account');
+        }
+        
     }
 
 

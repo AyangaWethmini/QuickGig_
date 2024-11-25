@@ -8,7 +8,7 @@
 
     <div class="main-content container post-job-form">
         <p class="heading">
-            <i class="fa-solid fa-arrow-left"></i> Post a Job
+            Post a Job
         </p>
 
         <div class="form-section container">
@@ -44,7 +44,6 @@
             <div class="user-input">
                 <p class="lbl">Daytime <input type="checkbox"> </p><br>
                 <p class="lbl">Night time<input type="checkbox"> </p> <br>
-                <p class="lbl"> Weekend<input type="checkbox"> </p><br>
             </div>
         </div>
         <hr>
@@ -59,41 +58,55 @@
             </div>
             <div class="user-input">
                 <div class="salary-ph flex-row">
-                <input type="text" id="salary-per-hr">
-                <label for="salary-per-hr" id="salary-per-hr"><p class="lbl" style="margin-left: 10px;">Rs</p></label>
+                    <input type="text" id="salary-per-hr">
+                    <select id="currency-select" class="currency-select">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="LKR">LKR</option>
+                        <!-- Add more currencies as needed -->
+                    </select>
                 </div>
-                
-                <div class="duration flex-row">
-                    <div class="start-time flex-col">
-                        <div class="label">
-                            <label for="start-time-select"><p class="lbl">Start Time</p></label>
-                        </div>
-                        <div class="input-boxes">
-                            <select id="start-time-select" class="time-select"></select>
-                            <select id="start-ampm-select" class="am-pm">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
+            </div>
+        </div>
+        <hr>
+        <div class="form-section flex-row container">
+            <div class="container right-container">
+                <p class="title">
+                    Duration
+                </p>
+                <p class="text-grey desc">
+                    Specify the start and end time for the job.
+                </p>
+            </div>
+            <div class="user-input duration flex-row">
+                <div class="start-time flex-col">
+                    <div class="label">
+                        <label for="start-time-select"><p class="lbl">Start Time</p></label>
                     </div>
-
-                    <div class="end-time flex-col">
-                        <div class="label">
-                            <label for="end-time-select"><p class="lbl">End Time</p></label>
-                        </div>
-                        <div class="input-boxes">
-                            <select id="end-time-select" class="time-select"></select>
-                            <select id="end-ampm-select" class="am-pm">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
+                    <div class="input-boxes">
+                        <select id="start-time-select" class="time-select"></select>
+                        <select id="start-ampm-select" class="am-pm">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="end-time flex-col">
+                    <div class="label">
+                        <label for="end-time-select"><p class="lbl">End Time</p></label>
+                    </div>
+                    <div class="input-boxes">
+                        <select id="end-time-select" class="time-select"></select>
+                        <select id="end-ampm-select" class="am-pm">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
         <hr>
-
         <div class="form-section flex-row container">
             <div class="container right-container">
                 <p class="title">
@@ -114,7 +127,6 @@
             </div>
         </div>
         <hr>
-
         <div class="form-section flex-row container">
             <div class="container right-container">
                 <p class="title">
@@ -133,7 +145,6 @@
             </div>
         </div>
         <hr>
-
         <div class="form-section flex-row container">
             <div class="container right-container">
                 <p class="title">
@@ -180,7 +191,6 @@
   populateTimeDropdown(startTimeSelect);
   populateTimeDropdown(endTimeSelect);
 
-
   function addTag(type) {
         const tagText = prompt(`Enter ${type === 'skill' ? 'Skill' : 'Language'}`);
         if (tagText) {
@@ -206,4 +216,3 @@
     }
 
 </script>
-

@@ -18,9 +18,9 @@
                         <p>Bartender</p><br>
                         <p>Manchester, UK</p>
                     </div>
-                    <div class="profile-rating">★★★★☆</div>
+                    <div class="profile-rating">★★★★★</div>
                 </div>
-                <button class="btn edit-profile">Edit Profile</button>
+                
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">

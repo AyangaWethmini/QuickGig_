@@ -6,39 +6,68 @@
             $this->view('organizationProfile');
         }
 
-        function findEmployees(){
-            $this->view('findEmployees');
+        function org_findEmployees(){
+            $this->view('org_findEmployees');
         }
 
-        function postJob(){
-            $this->view('postJob');
+        function org_postJob(){
+            $this->view('org_postJob');
         }
         
-        function jobListing(){
-            $this->view('jobListing');
+        function org_jobListing_received(){
+            $this->view('org_jobListing_received');
         }
 
-        function viewEmployeeProfile(){
-            $this->view('viewEmployeeProfile');
+        function org_viewEmployeeProfile(){
+            $this->view('org_viewEmployeeProfile');
         }
 
-        function subscription(){
-            $this->view('subscription');
+        function org_subscription(){
+            $this->view('org_subscription');
         }
 
-        function messages(){
-            $this->view('messages');
+        function org_messages(){
+            $this->view('org_messages');
         }
 
-        function announcements(){
-            $this->view('announcements');
+        function org_announcements(){
+            $this->view('org_announcements');
         }
 
         function organizationEditProfile(){
             $this->view('organizationEditProfile');
         }
 
-        function helpCenter(){
-            $this->view('helpCenter');
+        function org_helpCenter(){
+            $this->view('org_helpCenter');
         }
+
+        function org_reviews(){
+            $this->view('org_reviews');
+        }
+
+        function org_jobListing_myJobs(){
+            $this->view('org_jobListing_myJobs');
+        }
+
+        function org_jobListing_send(){
+            $this->view('org_jobListing_send');
+        }
+
+        function org_jobListing_toBeCompleted(){
+            $this->view('org_jobListing_toBeCompleted');
+        }
+
+        function org_jobListing_ongoing(){
+            $this->view('org_jobListing_ongoing');
+        }
+
+        function org_jobListing_completed(){
+            $this->view('org_jobListing_completed');
+        }
+
+        function org_complaints(){
+            $this->view('org_complaints');
+        }
+
     }
