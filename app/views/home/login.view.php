@@ -3,14 +3,6 @@
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<script>
-    // Include the toggleMenu function
-    function toggleMenu() {
-      const navLinks = document.querySelector('.nav-links');
-      navLinks.classList.toggle('active');
-    }
-</script>
-
 
 <div class="signin-signup flex-row">
 

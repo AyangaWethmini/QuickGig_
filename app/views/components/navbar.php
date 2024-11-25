@@ -1,19 +1,19 @@
 <nav class="navbar">
   <div class="nav-left">
-    <a href="<?=ROOT?>/home"><img class="logo" src="<?=ROOT?>/assets/images/QuickGiglLogo.png" alt="Logo"></a>
-    <ul class="nav-left-links">
+    <div class="hamburger" onclick="toggleMenu()">
+    <img src= "<?=ROOT?>/assets/images/hamburger.png" alt="Hamburger Icon">
+     
+    </div>
+    <a href="<?=ROOT?>/home"><img class="logo nav-left-links" src="<?=ROOT?>/assets/images/QuickGiglLogo.png" alt="Logo"></a>
+    <ul class="nav-left-links mobile-menu">
+      <li class="nav-links-home"><a href="<?=ROOT?>/home">Home</a></li>
       <li><a href="#">About</a></li>
       <li><a href="#">Contact Us</a></li>
     </ul>
   </div>
-  <div class="hamburger" style="margin-right: 30px;" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+
   <ul class="nav-links">
     <?php 
-      // Check if the user is on the login or signup page
       $current_page = basename($_SERVER['REQUEST_URI']);
       if ($current_page !== 'login' && $current_page !== 'signup') : 
     ?>
@@ -21,7 +21,7 @@
         <a href="<?=ROOT?>/home/login">
           <li><button class="login-btn">Log in</button></li>
         </a>
-        <div class="divider"></div>
+        <!-- Sign Up Button visible on larger screens only -->
         <a href="<?=ROOT?>/home/signup">
           <li><button class="sign-up-btn">Sign Up</button></li>
         </a>
@@ -30,13 +30,17 @@
           <form action="<?=ROOT?>/login/logout" method="POST" style="display: inline;">
             <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;">Log Out</button>
           </form>
-          <li>
+          <a href="<?=ROOT?>/jobProvider/individualProfile">
+            <button class="profile-btn" style="background-image: url('<?=ROOT?>/assets/images/default.jpg');"></button>
+          </a>
         </div>
-        <a href="<?=ROOT?>/jobProvider/individualProfile">
-          <button class="profile-btn" style="background-image: url('<?=ROOT?>/assets/images/default.jpg');"></button>
-        </a>
-      </li>
       <?php endif; ?>
     <?php endif; ?>
   </ul>
 </nav>
+<script>
+  function toggleMenu() {
+    const mobileMenu = document.querySelector('.nav-left-links.mobile-menu');
+    mobileMenu.classList.toggle('active');
+  }
+</script>
