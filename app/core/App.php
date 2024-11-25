@@ -14,37 +14,42 @@ class App
 	}
 
 	public function loadController()
-	{
-		$URL = $this->splitURL();
+    {
+        $URL = $this->splitURL();
 
-		/** select controller **/
-		$filename = "../app/controllers/".ucfirst($URL[0]).".php";
-		if(file_exists($filename))
-		{
-			require $filename;
-			$this->controller = ucfirst($URL[0]);
-			unset($URL[0]);
-		}else{
+		print_r($URL);
 
-			$filename = "../app/controllers/_404.php";
-			require $filename;
-			$this->controller = "_404";
-		}
+        /** select controller **/
+        $filename = "../app/controllers/".ucfirst($URL[0]).".php";
+        if(file_exists($filename))
+        {
+            require $filename;
+            $this->controller = ucfirst($URL[0]);
+            unset($URL[0]);
+        }else{
 
-		$controller = new $this->controller;
+            $filename = "../app/controllers/_404.php";
+            require $filename;
+            $this->controller = "_404";
+        }
 
-		/** select method **/
-		if(!empty($URL[1]))
-		{
-			if(method_exists($controller, $URL[1]))
-			{
-				$this->method = $URL[1];
-				unset($URL[1]);
-			}	
-		}
+        $controller = new $this->controller;
 
-		call_user_func_array([$controller,$this->method], $URL);
+        /** select method **/
+        if(!empty($URL[1]))
+        {
+            if(method_exists($controller, $URL[1]))
+            {
+                $this->method = $URL[1];
+                unset($URL[1]);
+            }    
+        }
 
-	}	
+        // Pass the remaining URL segments as arguments to the method
+        $params = $URL ? array_values($URL) : [];
+		// print_r($params);
+
+        call_user_func_array([$controller, $this->method], $params);
+    } 	
 
 }

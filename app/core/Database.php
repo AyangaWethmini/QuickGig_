@@ -2,7 +2,7 @@
 
 Trait Database
 {
-
+	// Purpose: Establishes a connection to the database.
 	private function connect()
 	{
 		$string = "mysql:hostname=".DBHOST.";dbname=".DBNAME;
@@ -10,6 +10,7 @@ Trait Database
 		return $con;
 	}
 
+	// Purpose: Executes a SQL query and fetches all matching rows.
 	public function query($query, $data = [])
 	{
 
@@ -29,6 +30,7 @@ Trait Database
 		return false;
 	}
 
+	// Purpose: Executes a SQL query and fetches a single row.
 	public function get_row($query, $data = [])
 	{
 
