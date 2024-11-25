@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="flex-row buttons">
-            <button class="btn btn-accent">Post Advertisement</button>
+            <button class="btn btn-accent" onclick="window.location.href='<?=APPROOT?>views/manager/advertisement.view.php'">Post Advertisement</button>
             <button class="btn btn-accent">Review Ads</button>
         </div>
     </div>
@@ -192,3 +192,6 @@
 </script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+
+

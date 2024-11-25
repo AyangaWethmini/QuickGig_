@@ -38,109 +38,65 @@
         <br><br>
 
         <div class="ads">
-            <div class="ad-card flex-row container">
-                <div class="image">
-                    <img src="https://via.placeholder.com/150" alt="ad image">
-                </div>
-                <div class="details flex-col">
-                    <p class="ad-title">Exclusive Summer Sale</p>
-                    <p class="advertiser">Advertiser: Jane's Boutique</p>
-                    <p class="description">Get up to 50% off on summer collections. Limited time offer!</p>
-                    <p class="contact">Contact: +123-456-7890</p>
-                    <div class="status flex-row">
-                        <span class="badge active">Active</span>
-                    </div>
-                </div>
-                <div class="ad-actionbtns flex-col">
-                    <button class="btn btn-accent">Edit</button>
-                    <button class="btn btn-del">Delete</button>
+        <?php foreach ($advertisements as $ad): ?> 
+        <div class="ad-card flex-row container">
+            <div class="image">
+                <img src="<?= htmlspecialchars($ad->img) ?>" alt="ad image">
+            </div>
+            <div class="details flex-col">
+                <p class="ad-title"><?= htmlspecialchars($ad->adTitle) ?></p>
+                <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
+                <p class="description"><?= htmlspecialchars($ad->adDescription) ?></p>
+                <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
+                <div class="status flex-row">
+                    <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
+                        <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
+                    </span>
                 </div>
             </div>
-
-
-
-            <div class="ad-card flex-row container">
-                <div class="image">
-                    <img src="https://via.placeholder.com/150" alt="ad image">
-                </div>
-                <div class="details flex-col">
-                    <p class="ad-title">Exclusive Summer Sale</p>
-                    <p class="advertiser">Advertiser: Jane's Boutique</p>
-                    <p class="description">Get up to 50% off on summer collections. Limited time offer!</p>
-                    <p class="contact">Contact: +123-456-7890</p>
-                    <div class="status flex-row">
-                        <span class="badge active">Active</span>
-                    </div>
-                </div>
-                <div class="ad-actionbtns flex-col">
-                    <button class="btn btn-accent">Edit</button>
-                    <button class="btn btn-del">Delete</button>
-                </div>
+            <div class="ad-actionbtns flex-col">
+                <button class="btn btn-accent" onclick="editAd(<?= htmlspecialchars($ad->advertisementID) ?>)">Edit</button>
+                <button class="btn btn-del" onclick="deleteAd(<?= htmlspecialchars($ad->advertisementID) ?>)">Delete</button>
             </div>
+        </div>
+    <?php endforeach ?>
 
-
-
-
-            <div class="ad-card flex-row container">
-                <div class="image">
-                    <img src="https://via.placeholder.com/150" alt="ad image">
-                </div>
-                <div class="details flex-col">
-                    <p class="ad-title">Exclusive Summer Sale</p>
-                    <p class="advertiser">Advertiser: Jane's Boutique</p>
-                    <p class="description">Get up to 50% off on summer collections. Limited time offer!</p>
-                    <p class="contact">Contact: +123-456-7890</p>
-                    <div class="status flex-row">
-                        <span class="badge active">Active</span>
-                    </div>
-                </div>
-                <div class="ad-actionbtns flex-col">
-                    <button class="btn btn-accent">Edit</button>
-                    <button class="btn btn-del">Delete</button>
-                </div>
             </div>
 
         </div>
 
-        
-    </div>
 
-
-<div class="create-ad-form from container hidden"  id="create-ad">
+        <div class="create-ad-form from container hidden"  id="create-ad">
         <div class="title flex-row">
         <i class="fa-solid fa-arrow-left" onclick="postAd()" style="cursor : pointer;"></i> <p class="title">Create Ad</p>
         </div>
 
             <form action="post">
                 <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
-                    <input type="text" for="name">
+                    <lable class="lbl">Title</lable><br>
+                    <input type="text" for="title">
                 </div>
                 <div class="form-field">
                     <lable class="lbl">Advertiser</lable><br>
-                    <input type="text" for="name">
+                    <input type="text" for="advertiser">
                 </div>
                 <div class="form-field">
                     <lable class="lbl">Advertiser contact no.</lable><br>
-                    <input type="text" for="name">
+                    <input type="text" for="contact">
                 </div>
                 <div class="form-field">
                     <lable class="lbl">Description</lable><br>
                     <textarea id="description" name="description" rows="6" ></textarea>
                 </div>
                 <div class="form-field">
-                    <lable class="lbl">Category</lable><br>
-                    <input type="text" for="name">
+                    <lable class="lbl">Link</lable><br>
+                    <input type="text" for="link">
                 </div>
                 <div class="form-field">
                     <lable class="lbl">Expiry date</lable><br>
                     <input type="text" for="name">
                 </div>
-                <div class="form-field">
-                    <lable class="lbl">Tages</lable><br>
-                    <input type="text" for="name">
-                </div>
-                <div class="form-field radio-btns">
+                <div class="form-field radio-btns flex-row" style="gap : 10px">
                     <input type="radio" name="paid"><label for="paid">Paid</label>
                     <input type="radio" name="pending"><label for="pending">Pending</label>
                 </div>
@@ -152,6 +108,12 @@
                 </div>
             </form>
         </div>
+
+
+        
+    </div>
+
+
 
 <script>
 
