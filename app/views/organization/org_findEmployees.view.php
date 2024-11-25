@@ -72,14 +72,19 @@
                     <option value="views">Highest views</option>
                 </select>
                 <button id="gridButton" onclick="toggleView()">☰</button>
-        </div>
-
-         -->
+        </div>-->       
 <div class="wrapper flex-row">
         <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
          <div class="job-cards container flex-col">
     <!-- First Job Card -->
-     
+    <h1>Find Employees</h1>
+      <hr style="width: 100%">
+      <div class="search-container">
+            <input type="text" 
+                class="search-bar" 
+                placeholder=" Find Employees"
+                aria-label="Search" style="height: 20px; width : 700px">
+      </div>
     <div class="job-card container">
         <div class="job-card-left flex-row">
             <div class="pfp">
@@ -116,7 +121,7 @@
               <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
               <ul class="dropdown-menu">
                 <li><a href="#">Message</a></li>
-                <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
+                <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
               </ul>
             </div>
         </div>

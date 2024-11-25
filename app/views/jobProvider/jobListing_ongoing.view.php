@@ -15,7 +15,7 @@
         </div> <hr> <br>
 
         <div class="list-header">
-            <p class="list-header-title">Send History</p>
+            <p class="list-header-title">Ongoing List</p>
             <input type="text" class="search-input" placeholder="Search..."> 
             <button class="filter-btn">Filter</button>
         </div> <br>
@@ -30,10 +30,11 @@
                 <div class="employee-details">
                     <span class="employee-name">Clara Zue</span>
                     <span class="job-title">Baby-Sitter</span>
-                    <span class="date-available">21 July 2024</span>
-                    <span class="time-available">3.00 P.M. - 7.00 P.M.</span>
+                    <span class="date-available">2024-11-30</span>
+                    <span class="time-available">03:00 PM - 07:00 PM</span>
+                    <span class="hourly-pay">$13/hour</span>
                     <hr>
-                    <span class="date-applied">20 July 2024</span>
+                    <span class="date-applied">2024-11-22</span>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>

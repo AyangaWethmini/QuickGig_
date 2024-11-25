@@ -15,7 +15,7 @@
         </div> <hr> <br>
 
         <div class="list-header">
-            <p class="list-header-title">My Job Listings</p>
+            <p class="list-header-title">My Jobs</p>
             <input type="text" class="search-input" placeholder="Search..."> 
             <button class="filter-btn">Filter</button>
         </div> <br>
@@ -26,14 +26,14 @@
                 <div class="job-details">
                     <span class="job-title">Waiter for a bar</span>
                     <span class="employment-type">Night-time</span>
-                    <span class="duration">Duration: 06.00 p.m. to 01.30 a.m.</span>
+                    <span class="duration">Duration: 06:00 PM - 01:30 AM</span>
                     <span class="myjobs-category">Category: Waiter</span>
-                    <span class="skills">Skills: diligent, English</span>
+                    <span class="skills">Skills: Diligent, English</span>
                     <span class="location">Location: Dehiwala-Mount Lavinia</span>
                     <span class="salary">Salary: 500 LKR per hour</span>
                     <hr>
-                    <span class="date-posted">Posted on: 20 July 2024</span>
-                    <span class="time-posted">Posted at: 13:37 P.M.</span>
+                    <span class="date-posted">Posted on: 2024-11-26</span>
+                    <span class="time-posted">Posted at: 03:37 PM</span>
                     <span class="my-job-id">Job id: #1</span>
 
                 </div>
