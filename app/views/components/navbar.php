@@ -1,3 +1,4 @@
+<?php $path = allocatePathBasedOnRole(); ?>
 <nav class="navbar">
   <div class="nav-left">
     <div class="hamburger" onclick="toggleMenu()">
@@ -30,7 +31,7 @@
           <form action="<?=ROOT?>/login/logout" method="POST" style="display: inline;">
             <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;">Log Out</button>
           </form>
-          <a href="<?=ROOT?>/jobProvider/individualProfile">
+          <a href="<?php echo $path; ?>">
             <button class="profile-btn" style="background-image: url('<?=ROOT?>/assets/images/default.jpg');"></button>
           </a>
         </div>
@@ -44,3 +45,27 @@
     mobileMenu.classList.toggle('active');
   }
 </script>
+
+<?php
+function allocatePathBasedOnRole() {
+    // Default path in case roleID is not set or invalid
+    $defaultPath = ROOT . "/home";
+
+    // Check if roleID is set in the session
+    if (isset($_SESSION['user_role'])) {
+        switch ($_SESSION['user_role']) {
+            case 0:
+                return ROOT . "/admin/announcement";
+            case 1:
+                return ROOT . "/user/home";
+            case 2:
+                return ROOT . "/jobProvider";
+            case 3:
+                return ROOT . "/organization";
+            default:
+                return $defaultPath;
+        }
+    }
+    return $defaultPath; // Redirect to login if roleID is not set
+}
+?>

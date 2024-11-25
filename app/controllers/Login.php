@@ -37,13 +37,15 @@ class Login extends Controller
             }
 
             $user = $this->model->findByEmail($email);
+            $userRole = $this->model->findRole($user['accountID']);
+
 
             if ($user && password_verify($password, $user['password'])) {
                 // Login successful
                 $_SESSION['user_id'] = $user['accountID']; // Store user ID in the session
                 $_SESSION['user_email'] = $user['email']; // Store user email in the session
+                $_SESSION['user_role'] = $userRole['roleID']; 
                 $_SESSION['user_logged_in'] = true; // Store user email in the session
-                show($_SESSION);
                 header("Location: " . ROOT . "/home");
                 exit;
             }else {

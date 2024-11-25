@@ -72,5 +72,14 @@ class Account
         
         return $stmt->execute();
     }
+    public function findRole($user_id)
+    {
+        $query = "SELECT roleID FROM account_role WHERE accountID = :user_id LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 

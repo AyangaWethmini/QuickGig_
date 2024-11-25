@@ -8,6 +8,7 @@
         }
 
         function advertisements(){
+            
             $this->view('advertisements');
         }
         
