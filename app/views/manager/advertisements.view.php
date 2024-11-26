@@ -1,8 +1,10 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
+<?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<div class="wrapper flex-row">
+
+<div class="wrapper flex-row" style="margin-top: 100px;">
 
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
@@ -37,7 +39,7 @@
         </div>
         <br><br>
 
-        <div class="ads">
+        <div class="ads container">
         <?php foreach ($advertisements as $ad): ?> 
             <div class="ad-card flex-row container">
                 <div class="image" >
@@ -74,7 +76,7 @@
 
         <div class="create-ad-form container hidden" id="create-ad">
             <div class="title flex-row">
-                <i class="fa-solid fa-arrow-left" onclick="hideForm()" style="cursor: pointer;"></i>
+                <i class="fa-solid fa-arrow-left" onclick="hideForm('create-ad')" style="cursor: pointer;"></i>
                 <p class="title">Create Ad</p>
             </div>
 
@@ -118,11 +120,11 @@
         <!-- update ad form -->
         <div class="update-ad-form container hidden" id="update-ad">
             <div class="title flex-row">
-                <i class="fa-solid fa-arrow-left" onclick="hideForm()" style="cursor: pointer;"></i>
+                <i class="fa-solid fa-arrow-left" onclick="hideForm('update-ad')" style="cursor: pointer;"></i>
                 <p class="title">Update Ad</p>
             </div>
 
-            <form action="<?=ROOT?>/manager/updateAdvertisement" method="POST" enctype="multipart/form-data">
+            <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $ad->advertisementID ?>" method="POST" enctype="multipart/form-data">
                 <div class="form-field">
                     <label class="lbl">Title</label><br>
                     <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>">
@@ -135,7 +137,7 @@
                 
                 <div class="form-field">
                     <label class="lbl">Link</label><br>
-                    <input type="url" name="link" required disabled placeholder="<?= htmlspecialchars($ad->link) ?>">
+                    <input type="url" name="link" required  placeholder="<?= htmlspecialchars($ad->link) ?>">
                 </div>
                 
                 <div class="form-field radio-btns flex-row" style="gap: 10px">
@@ -149,7 +151,7 @@
                 <div class="links flex-col">
                     <div class="form-field img-link">
                         <label class="lbl">Advertisement Image</label><br>
-                        <input type="file" name="adImage" accept="image/*" required>
+                        <input type="file" name="adImage" accept="image/*">
                     </div>
                     
                     <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
@@ -195,10 +197,11 @@ function showForm() {
     }
 }
 
-function hideForm() {
-    form.classList.remove("show");
+function hideForm(formId) {
+    const selectedForm = document.getElementById(formId);
+    selectedForm.classList.remove("show");
     setTimeout(() => {
-        form.classList.add("hidden");
+        selectedForm.classList.add("hidden");
     }, 500);
 }
 

@@ -1,10 +1,11 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/dashboard.css">
 
 <!-- Chart.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
-<div class="wrapper flex-row">
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+<div class="wrapper flex-row" style="margin-top: 100px;">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
     
     <div class="main-content container">

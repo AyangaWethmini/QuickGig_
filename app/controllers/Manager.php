@@ -11,6 +11,10 @@ class Manager extends Controller {
         $this->view('dashboard');
     }
 
+    public function profile(){
+        $this->view('profile');
+    }
+
     public function advertisements() {
         $data = $this->advertisementModel->getAdvertisements();
         $this->view('advertisements', ['advertisements' => $data]);
@@ -18,9 +22,9 @@ class Manager extends Controller {
 
     public function postAdvertisement() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Basic form validation
+            //form validation
             if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_FILES['adImage'])) {
-                // Handle error - redirect with error message
+
                 header('Location: ' . ROOT . '/manager/advertisements');
                 return;
             }
@@ -58,18 +62,56 @@ class Manager extends Controller {
                 'adDescription' => $adDescription,
                 'link' => $link,
                 'adStatus' => $adStatus,
-                'img' => $imageData, // Binary image data
+                'img' => $imageData,
                 'adDate' => $adDate,
                 'adTime' => $adTime,
-                'clicks' => 0 // Default clicks count
+                'clicks' => 0 
             ]);
 
             header('Location: ' . ROOT . '/manager/advertisements');
         }
     }
-
+    // delete advertisement
     public function deleteAdvertisement($id) {
         $this->advertisementModel->delete($id);
         header('Location: ' . ROOT . '/manager/advertisements');
+    }
+
+
+    // update advertisement
+    public function updateAdvertisement($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Validation
+            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus'])) {
+                header('Location: ' . ROOT . '/manager/advertisements');
+                return;
+            }
+
+            $adTitle = trim($_POST['adTitle']);
+            $adDescription = trim($_POST['adDescription']);
+            $link = trim($_POST['link']);
+            $adStatus = intval($_POST['adStatus']);
+
+            //  updateData without the image field
+            $updateData = [
+                'adTitle' => $adTitle,
+                'adDescription' => $adDescription,
+                'link' => $link,
+                'adStatus' => $adStatus
+            ];
+
+            // Only update image if a new one was uploaded
+            if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
+                
+                if (in_array($fileType, $allowedTypes)) {
+                    $updateData['img'] = file_get_contents($_FILES['adImage']['tmp_name']);
+                }
+            }
+
+            $this->advertisementModel->update($id, $updateData);
+            header('Location: ' . ROOT . '/manager/advertisements');
+        }
     }
 }
