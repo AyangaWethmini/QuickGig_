@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/reviews.css">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
     
     <div class="main-content-reviews">
         <div class="header">

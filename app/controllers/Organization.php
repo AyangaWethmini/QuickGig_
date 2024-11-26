@@ -70,4 +70,8 @@
             $this->view('org_complaints');
         }
 
+        function settings(){
+            $this->view('settings');
+        }
+
     }
