@@ -81,5 +81,81 @@ class Account
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function createIndividual($data)
+{
+    try {
+        $this->db->beginTransaction();
+
+        // Insert into individual table
+        $sqlIndividual = "INSERT INTO individual (accountID, fname, lname, nic, gender, Phone) 
+                          VALUES (:accountID, :fname, :lname, :nic, :gender, :Phone)";
+        $stmtIndividual = $this->db->prepare($sqlIndividual);
+
+        $stmtIndividual->bindParam(':accountID', $data['accountID']);
+        $stmtIndividual->bindParam(':fname', $data['fname']);
+        $stmtIndividual->bindParam(':lname', $data['lname']);
+        $stmtIndividual->bindParam(':nic', $data['nic']);
+        $stmtIndividual->bindParam(':gender', $data['gender']);
+        $stmtIndividual->bindParam(':Phone', $data['Phone']);
+
+        $stmtIndividual->execute();
+
+        // Insert into account_role table
+        $sqlRole = "INSERT INTO account_role (accountID, roleID) 
+                    VALUES (:accountID, :roleID)";
+        $stmtRole = $this->db->prepare($sqlRole);
+
+        $stmtRole->bindParam(':accountID', $data['accountID']);
+        $roleID = 2; // Role ID for individual
+        $stmtRole->bindParam(':roleID', $roleID);
+
+        $stmtRole->execute();
+
+        $this->db->commit();
+        return true;
+    } catch (PDOException $e) {
+        $this->db->rollBack();
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
 }
+
+public function createOrganization($data)
+{
+    try {
+        $this->db->beginTransaction();
+
+        // Insert into organization table
+        $sqlOrganization = "INSERT INTO organization (accountID, orgName, BRN) 
+                            VALUES (:accountID, :orgName, :brn)";
+        $stmtOrganization = $this->db->prepare($sqlOrganization);
+
+        $stmtOrganization->bindParam(':accountID', $data['accountID']);
+        $stmtOrganization->bindParam(':orgName', $data['orgName']);
+        $stmtOrganization->bindParam(':brn', $data['brn']);
+
+        $stmtOrganization->execute();
+
+        // Insert into account_role table
+        $sqlRole = "INSERT INTO account_role (accountID, roleID) 
+                    VALUES (:accountID, :roleID)";
+        $stmtRole = $this->db->prepare($sqlRole);
+
+        $stmtRole->bindParam(':accountID', $data['accountID']);
+        $roleID = 3; // Role ID for organization
+        $stmtRole->bindParam(':roleID', $roleID);
+
+        $stmtRole->execute();
+
+        $this->db->commit();
+        return true;
+    } catch (PDOException $e) {
+        $this->db->rollBack();
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+}
+
 

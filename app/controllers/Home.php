@@ -18,4 +18,8 @@ class Home extends Controller
 	{
 		$this->view('login');
 	}
+	public function nextSign()
+	{
+		$this->view('nextSign');
+	}
 }

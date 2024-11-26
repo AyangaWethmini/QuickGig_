@@ -80,7 +80,7 @@
                 <input type="password" name="password" placeholder="Enter password" width="250px" required> <!----add the width to css file -->
             </div>
 
-            <button class="btn btn-accent signup-btn" type = "submit" >Sign Up</button>
+            <button class="btn btn-accent signup-btn" type = "submit" >Next</button>
         </div>
         <br>
             <div style="margin-left: 10px;">

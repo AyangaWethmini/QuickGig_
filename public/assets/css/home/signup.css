@@ -108,7 +108,9 @@ p.sta {
     color: var(--color-text);
 }
 
-
+.userType{
+    width: 250px;
+}
 
 .signup-btn {
     width: 300px;
