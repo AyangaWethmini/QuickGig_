@@ -2,8 +2,10 @@
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/reviews.css">
 
 <body>
+<script src="<?=ROOT?>/assets/js/jobProvider/individualProfile.js"></script>
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="profile-container">
@@ -130,15 +132,35 @@
         </div>
 
         <div class="reviews-section">
-            <!-- Sample review -->
-            <div class="review">
-                <h4>Marcus Trevor</h4>
-                <p>Waiter - Paris, France</p>
-                <div class="review-rating">★★★★☆</div>
-                <p>Nomad is a software platform...</p>
-                <button class="btn blue">See more</button>
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- Add more reviews as needed -->
         </div>
     </div>
 </div>
