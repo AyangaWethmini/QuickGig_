@@ -256,7 +256,7 @@ td {
 
 /* Reviews Section */
 .reviews-section {
-    max-height: 600px;
+    max-height: 300px;
     overflow-y: auto;
     align-items: left;
     max-width: 900px;

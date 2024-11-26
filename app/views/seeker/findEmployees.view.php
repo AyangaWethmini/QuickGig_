@@ -36,9 +36,8 @@
                   </div>           
                     <div class="job-details">
                         <h2>Waiter for a bar</h2>
-                        <br>
-                        <h4>Miami, USA</h4>
-                        <h4>$14.50/hour</h4>
+                        <p>Miami, USA</p>
+                        <p>$14.50/hour</p>
                         <div style="display:flex;flex-direction:column; gap:20px">
                         <div class="rating">
                             <span>
@@ -90,9 +89,8 @@
                   </div>           
                     <div class="job-details">
                         <h2>Need fruitpickers</h2>
-                        <br>
-                        <h4>Texas, USA</h4>
-                        <h4>$16.75/hour</h4>
+                        <p>Texas, USA</p>
+                        <p>$16.75/hour</p>
                         <div style="display:flex;flex-direction:column; gap:20px">
                         <div class="rating">
                             <span>
