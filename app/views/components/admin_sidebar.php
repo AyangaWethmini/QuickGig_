@@ -8,6 +8,11 @@
         <div class="sidebar-items-container">
             <a href="<?php echo ROOT; ?>/admin/adminadvertisements" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-rectangle-ad"></i></span>
+                <span class="sidebar-label">Dashboard</span>
+            </a>
+
+            <a href="<?php echo ROOT; ?>/admin/adminadvertisements" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-rectangle-ad"></i></span>
                 <span class="sidebar-label">Advertisements</span>
             </a>
             <a href="<?php echo ROOT; ?>/admin/adminannouncement" class="sidebar-item">

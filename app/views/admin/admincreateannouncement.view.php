@@ -15,7 +15,7 @@
                 
                 <div class="form-container">
                     <!-- Announcement ID -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="announcementID">Announcement ID</label>
                         <input 
                             type="text" 
@@ -25,7 +25,7 @@
                             value="<?php echo $data['announcementID'] ?? ''; ?>"
                         >
                         <span class="form-invalid"><?php echo $data['announcementID_error'] ?? ''; ?></span>
-                    </div>
+                    </div> -->
 
                     <!-- Announcement Date -->
                     <div class="form-group">

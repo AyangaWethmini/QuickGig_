@@ -110,20 +110,14 @@ class Admin extends Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Sanitize and validate the input
                 $data = [
-                    'announcementID' => trim($_POST['announcementID']),
                     'announcementDate' => trim($_POST['announcementDate']),
                     'announcementTime' => trim($_POST['announcementTime']),
                     'content' => trim($_POST['body']),
-                    'announcementID_error' => '',
                     'announcementDate_error' => '',
                     'announcementTime_error' => '',
                     'content_error' => '',
                 ];
         
-                // Validate inputs
-                if (empty($data['announcementID'])) {
-                    $data['announcementID_error'] = 'Announcement ID cannot be empty.';
-                }
                 if (empty($data['announcementDate'])) {
                     $data['announcementDate_error'] = 'Announcement date cannot be empty.';
                 }
@@ -136,7 +130,6 @@ class Admin extends Controller {
         
                 // Check for no errors
                 if (
-                    empty($data['announcementID_error']) && 
                     empty($data['announcementDate_error']) && 
                     empty($data['announcementTime_error']) && 
                     empty($data['content_error'])
@@ -156,11 +149,9 @@ class Admin extends Controller {
                 }
             } else {
                 $data = [
-                    'announcementID' => '',
                     'announcementDate' => '',
                     'announcementTime' => '',
                     'content' => '',
-                    'announcementID_error' => '',
                     'announcementDate_error' => '',
                     'announcementTime_error' => '',
                     'content_error' => '',
@@ -170,7 +161,11 @@ class Admin extends Controller {
             }
         }
         
-        
+        function admindashboard(){
+            $data = [];
+            
+            $this->view('admindashboard', $data);
+        }
 
         function admincomplaints(){
             $data = [];
