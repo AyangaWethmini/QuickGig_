@@ -15,6 +15,10 @@ class Manager extends Controller {
         $this->view('profile');
     }
 
+    public function plans(){
+        $this->view('plans');
+    }
+
     public function helpCenter(){
         $this->view('helpCenter');
     }

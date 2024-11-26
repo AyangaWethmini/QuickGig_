@@ -4,9 +4,6 @@
 
 }
 
-
-
-
 .create-ad-form, .update-ad-form{
     position: absolute;
     width: 700px;
@@ -132,7 +129,7 @@
 .status{
     padding: 5px;
     background-color: green;
-    width: 70px;
+    width: fit-content;
     height: 20px;
     color: var(--color-white);
     text-align: center;

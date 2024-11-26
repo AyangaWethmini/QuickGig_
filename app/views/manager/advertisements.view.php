@@ -61,7 +61,7 @@
                     <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
                     <div class="status flex-row">
                         <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
-                            <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
+                            <?= $ad->adStatus == 1 ? 'Paid' : 'Payment Pending' ?>
                         </span>
                     </div>
                 </div>
