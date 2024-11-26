@@ -17,7 +17,7 @@ class App
     {
         $URL = $this->splitURL();
 
-		print_r($URL);
+		// print_r($URL);
 
         /** select controller **/
         $filename = "../app/controllers/".ucfirst($URL[0]).".php";

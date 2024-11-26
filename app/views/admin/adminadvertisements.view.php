@@ -4,9 +4,9 @@
     <div class="admin-container">
         <div class="admin-announcement-header">
             <h1>Current Advertisements</h1>
-            <a href="<?php echo ROOT; ?>/admin/admincreateannouncement">
+            <!-- <a href="<?php echo ROOT; ?>/admin/admincreateannouncement">
                 <input type="submit" value="+ Post Advertisements" class="form-btn">
-            </a>
+            </a> -->
         </div>
         <br><hr><br>
         <div class="admin-announcement-searchbar">
