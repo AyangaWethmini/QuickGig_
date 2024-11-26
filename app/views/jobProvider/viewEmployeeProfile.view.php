@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/viewEmployeeProfile.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/reviews.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+
 
 <body>
 <div class="wrapper flex-row">

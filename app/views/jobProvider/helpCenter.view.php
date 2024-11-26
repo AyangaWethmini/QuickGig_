@@ -8,7 +8,7 @@
     <div class="main-content container flex-col">
         <div class="header container flex-row">
             <h3>Help Center</h3>
-            <button class="btn btn-trans">Back To homepage</button>
+
         </div>
 
         <div class="help-dashboard flex-row">

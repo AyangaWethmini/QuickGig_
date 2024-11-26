@@ -4,11 +4,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
     <div class="main-content container flex-col">
         <div class="header container flex-row">
             <h3>Help Center</h3>
-            <button class="btn btn-trans">Back To homepage</button>
+            
         </div>
 
         <div class="help-dashboard flex-row">

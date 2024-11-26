@@ -1,8 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile1.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/reviews.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
 <script src="<?=ROOT?>/assets/js/jobProvider/individualProfile.js"></script>
@@ -124,12 +125,13 @@
                     </div>
                 </div>
             </div>
-            <select class="sort-dropdown">
-                <option>Latest</option>
-                <option>Highest Rated</option>
-                <option>Lowest Rated</option>
-            </select>
         </div>
+
+        <div class="list-header">
+            <p class="list-header-title">Job History</p>
+            <input type="text" class="search-input" placeholder="Search..."> 
+            <button class="filter-btn">Filter</button>
+        </div> <br>
 
         <div class="reviews-section">
             <div class="review-card container">
@@ -161,6 +163,67 @@
                     </div>
                 </div>
             </div>
+
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

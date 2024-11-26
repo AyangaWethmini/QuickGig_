@@ -74,5 +74,9 @@
         function complaints(){
             $this->view('complaints');
         }
+
+        function settings(){
+            $this->view('settings');
+        }
  
     }

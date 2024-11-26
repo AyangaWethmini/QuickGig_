@@ -258,8 +258,8 @@ td {
 .reviews-section {
     max-height: 600px;
     overflow-y: auto;
-    align-items: left;
     max-width: 900px;
+    align-content: center;
 }
 .review {
     border-bottom: 1px solid #ddd;
@@ -319,8 +319,4 @@ td {
 .edit-profile-btn:hover{
     background-color: #3430bd;
     color: white;
-}
-
-body{
-    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
