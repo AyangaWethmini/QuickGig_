@@ -27,7 +27,7 @@ Trait Database
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	// Purpose: Executes a SQL query and fetches a single row.

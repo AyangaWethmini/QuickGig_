@@ -1,7 +1,7 @@
 
 .admin-container {
   margin-top: 20px;;
-    /* margin-left: 300px; Shift content to the right for sidebar space */
+    margin-left: 300px; 
     width: calc(100% - 300px); /* Adjust the width to fit after the margin */
 }
 
