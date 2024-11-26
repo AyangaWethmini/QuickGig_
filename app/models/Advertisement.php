@@ -3,13 +3,13 @@ class Advertisement {
     use Database;
 
     public function getAdvertisements() {
-        $query = 'SELECT * FROM advertisement ORDER BY adDate DESC, adTime DESC';
+        $query = 'SELECT * FROM advertisement WHERE deleted = 0 ORDER BY adDate DESC, adTime DESC';
         return $this->query($query);
     }
 
     public function createAdvertisement($data) {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus) 
-                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus)";
+        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus, duration) 
+                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus, :duration)";
         
         $params = [
             'advertiserID' => $data['advertiserID'],
@@ -20,7 +20,8 @@ class Advertisement {
             'img' => $data['img'],
             'adDescription' => $data['adDescription'],
             'link' => $data['link'],
-            'adStatus' => $data['adStatus']
+            'adStatus' => $data['adStatus'],
+            'duration' => $data['duration']
         ];
         
         return $this->query($query, $params);
@@ -46,7 +47,8 @@ class Advertisement {
                       img = :img, 
                       adDate = :adDate, 
                       adTime = :adTime, 
-                      adStatus = :adStatus 
+                      adStatus = :adStatus,
+                      duration = :duration
                   WHERE advertisementID = :id";
     
         $params = [
@@ -56,7 +58,8 @@ class Advertisement {
             'img' => $data['img'],
             'adDate' => $data['adDate'],
             'adTime' => $data['adTime'],
-            'adStatus' => $data['adStatus']
+            'adStatus' => $data['adStatus'],
+            'duration' => $data['duration']
         ];
     
         return $this->query($query, $params);

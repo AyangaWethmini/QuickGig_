@@ -41,16 +41,16 @@
                 <div><p>Ads Posted</p></div>    
             </div>
             <div class="flex-row box container" style="background-color: #56CDAD;">
-                <div><h1>23</h1></div>
-                <div><p>Ads Posted</p></div> 
+                <div><h1>400</h1></div>
+                <div><p>New Subscribers</p></div> 
             </div>
             <div class="flex-row box container" style="background-color: #26A4FF;">
-                <div><h1>23</h1></div>
-                <div><p>Ads Posted</p></div> 
+                <div><h1>156k</h1></div>
+                <div><p>Revenue</p></div> 
             </div>
             <div class="flex-row box container" style="background-color: #FFB836;">
-                <div><h1>23</h1></div>
-                <div><p>Ads Posted</p></div> 
+                <div><h1>3</h1></div>
+                <div><p>Active Plans</p></div> 
             </div>
         </div>
         <hr><br>

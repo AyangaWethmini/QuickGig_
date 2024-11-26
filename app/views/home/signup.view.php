@@ -42,21 +42,21 @@
         <form action="post" class="signup-form">
             <div class="form-field" id="ind-name">
                 <label for="name" class="lbl"><span id="name">Name :</span></label><br>
-                <input type="text" placeholder="Enter your name">
+                <input type="text" placeholder="Enter your name" style="width: 250px; padding: 10px;">
             </div>
             <div class="form-field" id="com-name">
                 <label for="name" class="lbl"><span id="name">Name :</span></label><br>
-                <input type="text" placeholder="Enter your name">
+                <input type="text" placeholder="Enter your name" style="width: 250px; padding: 10px;">
             </div>
 
             <div class="form-field">
                 <label for="email" class="lbl">Email : </label><br>
-                <input type="text" placeholder="Enter Email">
+                <input type="text" placeholder="Enter Email" style="width: 250px; padding: 10px;">
             </div>
 
             <div class="form-field">
                 <label for="password" class="lbl">Password :</label><br>
-                <input type="password" placeholder="Enter password" width="250px"> <!----add the width to css file -->
+                <input type="password" placeholder="Enter password" style="width: 250px; padding: 10px;"> <!----add the width to css file -->
             </div>
 
             <button class="btn btn-accent signup-btn">Sign Up</button>

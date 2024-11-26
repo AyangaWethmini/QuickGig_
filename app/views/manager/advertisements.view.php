@@ -95,6 +95,11 @@
                     <label class="lbl">Link</label><br>
                     <input type="url" name="link" required>
                 </div>
+
+                <div class="form-field">
+                    <label class="lbl">Duration(Hours)</label><br>
+                    <input type="number" name="duration" required>
+                </div>
                 
                 <div class="form-field radio-btns flex-row" style="gap: 10px">
                     <input type="radio" id="status-paid" name="adStatus" value="1" required>
