@@ -6,8 +6,8 @@
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">
-            <a href="<?php echo ROOT; ?>/admin/adminadvertisements" class="sidebar-item">
-                <span class="sidebar-icon"><i class="fa-solid fa-rectangle-ad"></i></span>
+            <a href="<?php echo ROOT; ?>/admin/admindashboard" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-chart-line"></i></span>
                 <span class="sidebar-label">Dashboard</span>
             </a>
 

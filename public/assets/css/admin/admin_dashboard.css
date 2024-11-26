@@ -1,0 +1,47 @@
+.admin-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Soft light gray for the dashboard background */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for the dashboard */
+}
+
+.dashboard-card {
+    background: #ffffff; /* Clean white background for the cards */
+    color: #333; /* Dark gray text for good contrast */
+    border: 1px solid #eaeaea; /* Light border for card definition */
+    border-radius: 12px; /* Rounded corners for a modern look */
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.dashboard-card h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #555; /* Medium gray for a balanced text tone */
+}
+
+.dashboard-card p {
+    font-size: 2em;
+    margin: 0;
+    font-weight: bold;
+    color: #748175; /* Soft green for positive emphasis */
+}
+
+.dashboard-card p::after {
+    content: ""; /* Removed the "+" sign for a cleaner look */
+}
+
+.admin-dashboard {
+    padding-top: 20px;
+}
