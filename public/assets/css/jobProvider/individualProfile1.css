@@ -33,7 +33,7 @@
     border: 1px solid #D6DDEB;
 
     padding: 10px;
-    width:60%;
+    width:50%;
     align-items: first baseline;
     height: 400px;
 }
@@ -100,8 +100,8 @@
     margin-bottom: 20px;
     border: 1px solid #D6DDEB;
     padding: 10px;
-    width:60%;
-    height: fit-content;
+    width:50%;
+    height: 20%;
     font-size:large;
 }
 .profile-about h3 {
