@@ -57,6 +57,12 @@
             </div>
         </div> <br> <br>
 
+        <div class="list-header">
+            <p class="list-header-title">Job History</p>
+            <input type="text" class="search-input" placeholder="Search..."> 
+            <button class="filter-btn">Filter</button>
+        </div> <br>
+
         <div class="reviews-section">
             <div class="review-card container">
                 <div class="review-card-left flex-row">

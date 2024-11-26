@@ -48,10 +48,10 @@
             <p>With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
         </div>
         
-        <div class="role-switch">
+        <span class="role-switch">
         <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
         <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
-        </div>
+</span>
 
         <div class="rating-reviews">
             <h3>Rating and Reviews</h3>

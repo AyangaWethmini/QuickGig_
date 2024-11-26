@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/reviews.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -116,12 +117,13 @@
                     </div>
                 </div>
             </div>
-            <select class="sort-dropdown">
-                <option>Latest</option>
-                <option>Highest Rated</option>
-                <option>Lowest Rated</option>
-            </select>
         </div>
+
+        <div class="list-header">
+            <p class="list-header-title">Job History</p>
+            <input type="text" class="search-input" placeholder="Search..."> 
+            <button class="filter-btn">Filter</button>
+        </div> <br>
 
         <div class="reviews-section">
             <div class="review-card container">
@@ -214,6 +216,5 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 </body>
