@@ -25,6 +25,11 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </a>
+
+            <a href="<?php echo ROOT; ?>/admin/adminsettings" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
+                <span class="sidebar-label">Logout</span>
+            </a>
             
         </div>
 
