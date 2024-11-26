@@ -82,4 +82,43 @@ class Account
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+public function createIndividual($data)
+{
+    try {
+        $sql = "INSERT INTO individuals (accountID, firstName, lastName, dob, phone) 
+                VALUES (:accountID, :firstName, :lastName, :dob, :phone)";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindParam(':accountID', $data['accountID']);
+        $stmt->bindParam(':firstName', $data['firstName']);
+        $stmt->bindParam(':lastName', $data['lastName']);
+        $stmt->bindParam(':dob', $data['dob']);
+        $stmt->bindParam(':phone', $data['phone']);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+public function createOrganization($data)
+{
+    try {
+        $sql = "INSERT INTO organizations (accountID, orgName, contactPerson, contactPhone, address) 
+                VALUES (:accountID, :orgName, :contactPerson, :contactPhone, :address)";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindParam(':accountID', $data['accountID']);
+        $stmt->bindParam(':orgName', $data['orgName']);
+        $stmt->bindParam(':contactPerson', $data['contactPerson']);
+        $stmt->bindParam(':contactPhone', $data['contactPhone']);
+        $stmt->bindParam(':address', $data['address']);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
 
