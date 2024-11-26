@@ -126,7 +126,7 @@
         </div> <br>
 
         <div class="reviews-section">
-            <div class="review-card container">
+        <div class="review-card container">
                 <div class="review-card-left flex-row">
                     <div class="pfp">
                         <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
