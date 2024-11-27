@@ -23,22 +23,27 @@ class Signup extends Controller
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
 
+            $_SESSION['signup_errors'] = [];
+
             // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Invalid email format.";
+                $_SESSION['signup_errors'][] = "Wrong Email.";
+                header("Location: " . ROOT . "/home/signup");
                 return false;
             }
 
             // Check if email is already registered
             if ($this->model->findByEmail($email)) {
-                echo "Email is already registered.";
+                $_SESSION['signup_errors'][] = "User Exists";
+                header("Location: " . ROOT . "/home/signup");
                 return false;
             }
 
             // Validate password length
             if (strlen($password) < 6) {
-                echo "Password must be at least 6 characters long.";
-                return false;
+                $_SESSION['signup_errors'][] = "Password length must be exceeding 6";
+                header("Location: " . ROOT . "/home/signup");
+                exit;
             }
 
             // Hash the password 
