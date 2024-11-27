@@ -27,6 +27,11 @@
                 <span class="sidebar-label">Subscriptions</span>
             </a>
 
+            <a href="<?php echo ROOT;?>/manager/announcements" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                <span class="sidebar-label">Announcements</span>
+            </a>
+
             
             <hr>
             <br><br><br>

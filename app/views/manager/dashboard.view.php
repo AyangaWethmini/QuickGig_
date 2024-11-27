@@ -56,7 +56,7 @@
         <hr><br>
         <div class="manager-sections flex-row">
             <div class="chart-overview container flex-row">
-                <canvas id="myChart" style="width:100%; max-width:700px"></canvas>
+                <canvas id="ads-chart" style="width:100%; max-width:700px"></canvas>
                 <div class="count flex-col">
                     <div class="views">
                         <p class="title">
@@ -71,10 +71,10 @@
                     </div>
                     <div class="clicks">
                     <p class="ctitle">
-                            Ads views
+                            Ads clicks
                         </p>
                         <p class="number">
-                            2135
+                            1500
                         </p>
                         <p class="grey-text">
                             this week
@@ -99,13 +99,16 @@
                         <p class="name">John Doe</p><hr>
                     </div>
                 </span>
-                <a href="#" class="email">Check Emails</a>
+                <a href="https://mail.google.com/" class="email">Check Emails</a>
             </div>
         </div>
-        <div class="flex-row buttons">
-            <button class="btn btn-accent" onclick="window.location.href='<?=APPROOT?>views/manager/advertisement.view.php'">Post Advertisement</button>
-            <button class="btn btn-accent">Review Ads</button>
-        </div>
+        
+
+        <!-- <div class="section-revenue">
+            <div class="chart-overview container flex-row">
+                <canvas id="rev-chart" style="width: 700px; max-width:700px"></canvas>
+            </div>
+        </div> -->
     </div>
 </div>
 
@@ -139,7 +142,7 @@
 
     // Chart.js functionality
     document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('ads-chart').getContext('2d');
 
     new Chart(ctx, {
         type: 'line', // Line chart
@@ -188,6 +191,69 @@
         }
     });
 });
+
+
+
+
+const createStackedBarChart = () => {
+      const ctx = document.getElementById('rev-chart').getContext('2d');
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['January', 'February', 'March', 'April', 'May'], // Example labels
+          datasets: [
+            {
+              label: 'Ads Revenue',
+              data: [3000, 4000, 3500, 5000, 4500], // Example data for Ads
+              backgroundColor: 'rgba(75, 192, 192, 0.6)', // Light teal
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+            {
+              label: 'Subscription Revenue',
+              data: [2000, 2500, 2200, 3000, 2800], // Example data for Subscriptions
+              backgroundColor: 'rgba(153, 102, 255, 0.6)', // Light purple
+              borderColor: 'rgba(153, 102, 255, 1)',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Total Revenue Breakdown',
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            },
+          },
+          scales: {
+            x: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Months',
+              },
+            },
+            y: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Revenue (USD)',
+              },
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          },
+        },
+      });
+    };
+    createStackedBarChart();
 
     
 </script>

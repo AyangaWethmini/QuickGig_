@@ -34,16 +34,12 @@
 }
 
 .box{
-    width: 250px;
+    width: 200px;
     color: var(--color-white);
     padding: 30px;
     margin: 20px 40px;
 }
 
-.buttons {
-    justify-content: space-between;
-    padding: 5px;
-}
 
 .chart-overview,  .messages{
   border: 1px solid var(--neutral-60);

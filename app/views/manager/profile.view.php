@@ -30,7 +30,7 @@
                 </div>
 
                 <!-- Form to Update Email -->
-                <form class="profile-form" method="POST" action="<?=ROOT?>/manager/updateEmail">
+                <form class="profile-form" id="emailForm" method="POST" action="<?=ROOT?>/manager/updateEmail">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="email"><p class="lbl">Change Email:</p></label>
@@ -42,13 +42,13 @@
                                 placeholder="Enter your new email" 
                                 required 
                                 class="form-input">
-                            <button type="submit" class="btn btn-accent">Change</button>
+                            <button class="btn btn-accent" onclick="showConfirmation()">Change</button>
                         </div>
                     </div>
                 </form>
 
                 <!-- Form to Update Password -->
-                <form class="profile-form" method="POST" action="<?=ROOT?>/manager/updatePassword">
+                <form class="profile-form" id="passwordForm" method="POST" action="<?=ROOT?>/manager/updatePassword">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="password"><p class="lbl">Change Password</p></label>
@@ -61,7 +61,7 @@
                                 required 
                                 minlength="6" 
                                 class="form-input">
-                            <button type="submit" class="btn btn-accent">Change</button>
+                            <button class="btn btn-accent" onclick="showConfirmation()">Change</button>
                         </div>
                     </div>
                 </form>
@@ -77,9 +77,7 @@
 
 
 
-        
-
-        
+         
         
 
 
@@ -87,6 +85,29 @@
     
 </div>
 
+
+<div class="confirmation-modal">
+    <h3>Confirmation</h3>
+    <p id="confirmation-message">Are you sure you want to proceed?</p>
+    <button class="btn btn-accent" type="submit" >Yes</button>
+    <button class="btn btn-accent">No</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const emailForm = document.getElementById('emailForm');
+        const passwordForm = document.getElementById('passwordForm');
+        const confirmationMessage = document.getElementById('confirmation-message');
+
+        emailForm.addEventListener('submit', function(e) {
+            confirmationMessage.textContent = 'Are you sure you want to change your email?';
+        });
+
+        passwordForm.addEventListener('submit', function(e) {
+            confirmationMessage.textContent = 'Are you sure you want to change your password?';
+        });
+    });
+</script>
 
 
 

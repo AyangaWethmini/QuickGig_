@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/help.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/helpCenter.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
 <div class="wrapper flex-row">
@@ -8,90 +8,64 @@
         <div class="header container flex-row">
             <h3>Help Center</h3>
         </div>
-
-        <div class="help-dashboard flex-row">
-            <div class="suggestions">
-                <label for="search-prompt"><p class="text-grey lbl">Type your question or search keyword</p></label><br>
-                <div class="search-container">
-                    <input type="text" 
-                        class="search-bar" 
-                        placeholder="Search"
-                        aria-label="Search">
-                </div>
-                <div class="forum-links">
-                    <a href="#" class="">Getting Started</a>
-                    <hr>
-                    <a href="#" class="">My Profile</a>
-                    <hr>
-                    <a href="#" class="">Request for an employee</a>
-                    <hr>
-                    <a href="#" class="">Getting Started</a>
-                    <hr>
-                    <a href="#" class="">Getting Started</a>
-                    <hr>
-                </div>
-                <div class="customer-service text-white container">
-                    <h4>Didn't find what your were looking for?</h4>
-                    <p class="help-text">
-                        Contanct our customer service or <br>send your questions using the <br> message button
-                    </p>
-                    <p class="tel-no">
-                        +94 713757631 - Thimindu
-                    </p>
-                    <p class="email"><a href="" class="">quickgig@gmail.com</a></p>
-                </div>
-                <div class="send-msg">
-                    <p class="text-grey text">Type your question</p>
-                    <input type="text" for="question">
-                </div>
-
-            </div>
-            <hr>
-            <div class="forum">
-                <div class="sort-container">
-                    <span class="label">Sort by:</span>
-                    <select>
-                        <option value="most-relevant">Most relevant</option>
-                        <option value="latest">Latest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="top-rated">Top rated</option>
-                    </select>
-                </div>
-
-                <div class="article-card">
-                    <h1>What is My Applications?</h1>
-                    <p class="text-grey text">
-                    My Applications is a way for you to track jobs as you move through the application process. Depending on the job you applied to, you may also receive notifications indicating that an application has been actioned by an employer.
-                    </p>
-                    <hr>
-                    <div class="vote flex-row">
-                        <p class="text-grey">Was this article helpful</p>
-                        <button class="btn btn-trans">Yes</button>
-                        <button class="btn btn-trans">No</button>
-                    </div>
-                </div>
-
-                <div class="article-card">
-                    <h1>What is My Applications?</h1>
-                    <p class="text-grey text">
-                    My Applications is a way for you to track jobs as you move through the application process. Depending on the job you applied to, you may also receive notifications indicating that an application has been actioned by an employer.
-                    </p>
-                    <hr>
-                    <div class="vote flex-row">
-                        <p class="text-grey">Was this article helpful</p>
-                        <button class="btn btn-trans">Yes</button>
-                        <button class="btn btn-trans">No</button>
-                    </div>
-                </div>
-                <hr>
-                <h1 class="my-qheading">My Questions</h1>
-                <div class="my-questions container">
-                    <h2>Questions i sent previously</h2>
-                </div>
+        <hr>
+        <div class="help-overview container flex-col">
+            <div class="card flex-row">
+                <h1>12</h1>
+                <p>Questions to be answered</p>
             </div>
         </div>
+
+        <div class="help-questions container flex-col">
+            <div class="question flex-col">
+                <h3>Question Title</h3>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
+                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                    <p>2024-01-01</p>
+                    <p> at 12:00:00</p>
+                </div>
+                <textarea placeholder="send a reply"></textarea>
+                <button class="btn btn-accent">Reply</button>
+            </div>
+
+
+            <div class="question flex-col">
+                <h3>Question Title</h3>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
+                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                    <p>2024-01-01</p>
+                    <p> at 12:00:00</p>
+                </div>
+                <textarea placeholder="send a reply"></textarea>
+                <button class="btn btn-accent">Reply</button>
+            </div>
+
+
+            <div class="question flex-col">
+                <h3>Question Title</h3>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
+                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                    <p>2024-01-01</p>
+                    <p> at 12:00:00</p>
+                </div>
+                <textarea placeholder="send a reply"></textarea>
+                <button class="btn btn-accent">Reply</button>
+            </div>
+
+
+            <div class="question flex-col">
+                <h3>Question Title</h3>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
+                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                    <p>2024-01-01</p>
+                    <p> at 12:00:00</p>
+                </div>
+                <textarea placeholder="send a reply"></textarea>
+                <button class="btn btn-accent">Reply</button>
+            </div>
+        </div>
+
         
-    
     </div>
 
 </div>
