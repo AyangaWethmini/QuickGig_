@@ -1,15 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php include APPROOT . '/views/components/navbar.php'; ?>
-
-<script>
-    // Include the toggleMenu function
-    function toggleMenu() {
-      const navLinks = document.querySelector('.nav-links');
-      navLinks.classList.toggle('active');
-    }
-</script>
-
-
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/signup.css">
 
 <div class="signin-signup flex-row">
@@ -41,12 +31,6 @@
 
 
     <div class="form flex-col" style="width: 450px;">
-
-        <div class="buttons flex-row">
-            <button class="form-btn btn" id="individual" onclick="individualSignUp()" >Individual</button>
-            <button class="form-btn btn" id="company" onclick="companySignUp()">Company</button>
-        </div>
-
         <div class="flex-col">
         <h3 class="heading">Get more oppertunities</h3>
 
@@ -61,14 +45,7 @@
             <?php endif; ?>
             
         <form action="<?php echo ROOT; ?>/signup/register" method="POST" class="signup-form">
-            <!-- <div class="form-field" id="ind-name">
-                <label for="name" class="lbl"><span id="name">Name :</span></label><br>
-                <input type="text" placeholder="Enter your name">
-            </div>
-            <div class="form-field" id="com-name">
-                <label for="name" class="lbl"><span id="name">Name :</span></label><br>
-                <input type="text" placeholder="Enter your name">
-            </div> -->
+            
 
             <div class="form-field">
                 <label for="email" class="lbl">Email : </label><br>
@@ -80,7 +57,7 @@
                 <input type="password" name="password" placeholder="Enter password" width="250px" required> <!----add the width to css file -->
             </div>
 
-            <button class="btn btn-accent signup-btn" type = "submit" >Sign Up</button>
+            <button class="btn btn-accent signup-btn" type = "submit" >Next</button>
         </div>
         <br>
             <div style="margin-left: 10px;">
@@ -90,36 +67,6 @@
         </form>
     </div>
 </div>
-
-<script>
-
-
-    const companyButton = document.getElementById("company");
-    const individualButton = document.getElementById("individual");
-
-    const nameLabel = document.getElementById("name");
-
-    companyButton.addEventListener("click", function() {
-        companySignUp();
-    });
-
-    individualButton.addEventListener("click", function() {
-        individualSignUp();
-    });
-
-    function companySignUp() {
-        nameLabel.innerHTML = "Organization name"; label
-        companyButton.classList.add('active');      
-        individualButton.classList.remove('active'); }
-
-    function individualSignUp() {
-        nameLabel.innerHTML = "Name";               
-        individualButton.classList.add('active');   
-        companyButton.classList.remove('active');  
-    }
-
-
-</script>
 
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

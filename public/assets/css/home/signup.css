@@ -23,6 +23,7 @@ form{
     width: 250px;
 }
 
+
 h3.heading {
     color: var(--Color-Black, #202430);
     text-align: center;
@@ -104,11 +105,13 @@ h3.heading {
     margin-top: 8px;
 }
 
-p.sta {
+p.stat {
     color: var(--color-text);
 }
 
-
+.userType{
+    width: 250px;
+}
 
 .signup-btn {
     width: 300px;

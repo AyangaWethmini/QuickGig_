@@ -23,22 +23,27 @@ class Signup extends Controller
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
 
+            $_SESSION['signup_errors'] = [];
+
             // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Invalid email format.";
+                $_SESSION['signup_errors'][] = "Wrong Email.";
+                header("Location: " . ROOT . "/home/signup");
                 return false;
             }
 
             // Check if email is already registered
             if ($this->model->findByEmail($email)) {
-                echo "Email is already registered.";
+                $_SESSION['signup_errors'][] = "User Exists";
+                header("Location: " . ROOT . "/home/signup");
                 return false;
             }
 
             // Validate password length
             if (strlen($password) < 6) {
-                echo "Password must be at least 6 characters long.";
-                return false;
+                $_SESSION['signup_errors'][] = "Password length must be exceeding 6";
+                header("Location: " . ROOT . "/home/signup");
+                exit;
             }
 
             // Hash the password 
@@ -61,9 +66,11 @@ class Signup extends Controller
             // Attempt to create the account
             if ($this->model->create()) {
                 // Redirect to the homepage
+                $_SESSION['accountID'] = $accountID;
                 header("Location: " . ROOT . "/home/nextSign");
                  exit; // Prevent further script execution after redirect
             } else {
+                header("Location: " . ROOT . "/home/signup");
                 echo "Failed to create account.";
                 return false;
             }
@@ -71,71 +78,64 @@ class Signup extends Controller
     }
     public function registerMore()
 {
-    // Check if the form data exists
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $accountID = trim($_POST['accountID']); // Assuming accountID is passed as hidden input
-        $userType = trim($_POST['userType']);  // Either 'individual' or 'organization'
+        $accountID = isset($_SESSION['accountID']) ? $_SESSION['accountID'] : null;
 
-        if (empty($accountID)) {
-            echo "Account ID is missing.";
-            return false;
+        if (!$accountID) {
+            $_SESSION['signup_errors'][] = "Session expired. Please complete the signup process again.";
+            header("Location: " . ROOT . "/home/signup");
+            exit;
         }
+
+        $userType = trim($_POST['userType']);
 
         if ($userType === 'individual') {
             // Process individual user data
-            $firstName = trim($_POST['firstName']);
-            $lastName = trim($_POST['lastName']);
-            $dob = trim($_POST['dob']); // Date of birth
-            $phone = trim($_POST['phone']);
+            $firstName = trim($_POST['fname']);
+            $lastName = trim($_POST['lname']);
+            $nic = trim($_POST['nic']);
+            $gender = trim($_POST['gender']);
+            $phone = trim($_POST['Phone']);
 
-            // Validate inputs
-            if (empty($firstName) || empty($lastName) || empty($dob) || empty($phone)) {
+            if (empty($firstName) || empty($lastName) || empty($nic) || empty($gender) || empty($phone)) {
                 echo "All individual user fields are required.";
                 return false;
             }
 
-            // Insert into the individual table
             $individualData = [
                 'accountID' => $accountID,
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'dob' => $dob,
-                'phone' => $phone
+                'fname' => $firstName,
+                'lname' => $lastName,
+                'nic' => $nic,
+                'gender' => $gender,
+                'Phone' => $phone
             ];
 
             if ($this->model->createIndividual($individualData)) {
-                echo "Individual registration successful.";
-                header("Location: " . ROOT . "/home");
+                // header("Location: " . ROOT . "/home/login");
                 exit;
             } else {
                 echo "Failed to register individual.";
                 return false;
             }
         } elseif ($userType === 'organization') {
-            // Process organization data
+            // Process organization user data
             $orgName = trim($_POST['orgName']);
-            $contactPerson = trim($_POST['contactPerson']);
-            $contactPhone = trim($_POST['contactPhone']);
-            $address = trim($_POST['address']);
+            $BRN = trim($_POST['brn']);
 
-            // Validate inputs
-            if (empty($orgName) || empty($contactPerson) || empty($contactPhone) || empty($address)) {
+            if (empty($orgName) || empty($BRN)) {
                 echo "All organization fields are required.";
                 return false;
             }
 
-            // Insert into the organization table
             $organizationData = [
                 'accountID' => $accountID,
                 'orgName' => $orgName,
-                'contactPerson' => $contactPerson,
-                'contactPhone' => $contactPhone,
-                'address' => $address
+                'brn' => $BRN,
             ];
 
             if ($this->model->createOrganization($organizationData)) {
-                echo "Organization registration successful.";
-                header("Location: " . ROOT . "/home");
+                // header("Location: " . ROOT . "/home/login");
                 exit;
             } else {
                 echo "Failed to register organization.";
@@ -146,4 +146,6 @@ class Signup extends Controller
             return false;
         }
     }
+}
+
 }

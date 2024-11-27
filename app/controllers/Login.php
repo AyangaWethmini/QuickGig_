@@ -23,6 +23,8 @@ class Login extends Controller
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
 
+            $_SESSION['login_errors'] = [];
+
             // Validate inputs
             if (empty($email) || empty($password)) {
                 $_SESSION['login_errors'][] = "Email and password are required.";
