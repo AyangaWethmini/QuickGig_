@@ -25,6 +25,7 @@
             </div>
         </div>
         <div class="complaints-container container">
+
             <?php foreach($data['complaints'] as $complaint): ?>
                 <div class="complaint container">
                     <div class="complaint-content flex-col">
