@@ -53,16 +53,7 @@
             </div>
 
 
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
-                </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
+            
         </div>
 
         

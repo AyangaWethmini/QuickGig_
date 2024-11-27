@@ -35,12 +35,12 @@
         <form action="post" class="form-body" >
             <div class="form-field">
                 <label for="email" class="lbl" style="color: var(--color-white);">Email : </label><br>
-                <input type="text" placeholder="Enter Email" style="width: 250px; padding: 10px;">
+                <input type="text" placeholder="Enter Email">
             </div>
 
             <div class="form-field">
                 <label for="password" class="lbl" style="color: var(--color-white);">Password :</label><br>
-                <input type="password" placeholder="Enter password" style="width: 250px; padding: 10px;"> <!----add the width to css file -->
+                <input type="password" placeholder="Enter password"> <!----add the width to css file -->
             </div>
             <p class="text-white rem">Remember me<input type="checkbox"></p>
             
