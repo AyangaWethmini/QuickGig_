@@ -1,13 +1,7 @@
 
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/admin/admin_sidebar.css">
-    <div class="admin-sidebar">
-        <div class="signup_logo">
-            <img src="<?php echo ROOT; ?>/public/assets/images/QuickGigLogo.png" alt="Description of image">
-        </div>
-        <div class="admin-anchor-list">
-            
-            <a href="<?php echo ROOT; ?>/admin/adminadvertisements"><i class="fa-solid fa-building" style="padding-right: 3px;"></i>Advertisements</a>
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/Components/jobProvider_sidebar.css">
+    
 <body>
     
     <div class="sidebar-container">

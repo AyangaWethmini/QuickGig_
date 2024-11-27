@@ -11,7 +11,7 @@ require_once APPROOT . '/views/inc/protectedRoute.php';
             <h1>Current Announcements</h1>
 
             <a href="<?php echo ROOT; ?>/admin/createannouncement">
-                <button class="form-btn">+ Post Announcement</button>
+                <button class="btn btn-accent srch-btn">+ Post Announcement</button>
             </a>
         </div>
         <br><hr><br>
