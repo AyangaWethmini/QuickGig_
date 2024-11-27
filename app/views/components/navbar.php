@@ -59,9 +59,9 @@ function allocatePathBasedOnRole() {
             case 1:
                 return ROOT . "/user/home";
             case 2:
-                return ROOT . "/jobProvider";
+                return ROOT . "/jobProvider/jobListing_received";
             case 3:
-                return ROOT . "/organization";
+                return ROOT . "/organization/organizationProfile";
             default:
                 return $defaultPath;
         }
