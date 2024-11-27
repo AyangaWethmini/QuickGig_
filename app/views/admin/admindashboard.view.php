@@ -10,7 +10,7 @@
         <div class="admin-dashboard">
             <div class="dashboard-card">
                 <h2>Total Job Seekers</h2>
-                <p>23</p>
+                <p>25</p>
             </div>
             <div class="dashboard-card">
                 <h2>Total Organizations</h2>
