@@ -1,3 +1,4 @@
+
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/admin/admin_sidebar.css">
     <div class="admin-sidebar">
@@ -7,17 +8,43 @@
         <div class="admin-anchor-list">
             
             <a href="<?php echo ROOT; ?>/admin/adminadvertisements"><i class="fa-solid fa-building" style="padding-right: 3px;"></i>Advertisements</a>
+<body>
+    
+    <div class="sidebar-container">
 
-            <a href="<?php echo ROOT; ?>/admin/adminannouncement" class="<?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/adminannouncement') !== false || strpos($_SERVER['REQUEST_URI'], '/admin/admincreateannouncement') !== false) ? 'active' : ''; ?>"><i class="fa-solid fa-building" style="padding-right: 3px;"></i>Announcements</a>
+        <div class="sidebar-items-container">
+            <a href="<?php echo ROOT; ?>/admin/admindashboard" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="sidebar-label">Dashboard</span>
+            </a>
 
-            <a href="<?php echo ROOT; ?>/admin/admincomplaints" class="<?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/admincomplaints') !== false) ? 'active' : ''; ?>"><i class="fa-solid fa-users" style="padding-right: 3px;"></i>Complaints</a>
+            <a href="<?php echo ROOT; ?>/admin/adminadvertisements" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-rectangle-ad"></i></span>
+                <span class="sidebar-label">Advertisements</span>
+            </a>
+            <a href="<?php echo ROOT; ?>/admin/adminannouncement" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                <span class="sidebar-label">Announcements</span>
+            </a>
+            <a href="<?php echo ROOT; ?>/admin/admincomplaints" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
+                <span class="sidebar-label">Complaints</span>
+            </a>
             
             <br><hr><br>
-            
-            <a href="<?php echo ROOT; ?>/admin/adminsettings" class="<?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/adminsettings') !== false || strpos($_SERVER['REQUEST_URI'], '/admin/admindeleteaccount') !== false || strpos($_SERVER['REQUEST_URI'], '/admin/adminlogindetails') !== false) ? 'active' : ''; ?>"><i class="fa-solid fa-user" style="padding-right: 3px;"></i>Settings</a>       
 
+            <a href="<?php echo ROOT; ?>/admin/adminsettings" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
+                <span class="sidebar-label">Settings</span>
+            </a>
+
+            <a href="<?php echo ROOT; ?>/admin/adminsettings" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
+                <span class="sidebar-label">Logout</span>
+            </a>
+            
         </div>
 
     </div>
-    
-<?php require APPROOT . '/views/inc/footer.php'; ?>
+
+</body>

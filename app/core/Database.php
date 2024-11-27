@@ -2,6 +2,7 @@
 
 trait Database
 {
+	
     // Change connect method to protected
     protected function connect()
     {

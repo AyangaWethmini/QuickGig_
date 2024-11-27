@@ -29,7 +29,7 @@ class AdminModel{
         
         // Adding adminID to the params array with a fixed value of 1
         $params = [
-            'announcementID' => $data['announcementID'],
+            'announcementID' => NULL,
             'announcementDate' => $data['announcementDate'],
             'announcementTime' => $data['announcementTime'],
             'content' => $data['content'],

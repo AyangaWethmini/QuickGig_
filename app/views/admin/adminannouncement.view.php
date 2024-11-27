@@ -1,3 +1,4 @@
+
 <?php require APPROOT . '/views/inc/header.php'; 
 require_once APPROOT . '/views/inc/protectedRoute.php';
     protectRoute([0]);
@@ -8,6 +9,7 @@ require_once APPROOT . '/views/inc/protectedRoute.php';
     <div class="admin-container">
         <div class="admin-announcement-header">
             <h1>Current Announcements</h1>
+
             <a href="<?php echo ROOT; ?>/admin/createannouncement">
                 <button class="form-btn">+ Post Announcement</button>
             </a>
@@ -19,27 +21,36 @@ require_once APPROOT . '/views/inc/protectedRoute.php';
         <div class="admin-announcement-filterheader">
             <h1>All Announcements</h1>
         </div>
-        <?php foreach($data['announcements'] as $announcement): ?>
-            <div class="announcement-index-container">
-                <div class="announcement-header">
-                    <div class="announcement-created-date"><?php echo $announcement->announcementDate ?></div>
-                    <div class="announcement-created-at"><?php echo $announcement->announcementTime ?></div>
-                    <div class="post-control-btns">
-                        <a href="<?php echo ROOT; ?>/admin/admineditannouncement/<?php echo $announcement->announcementID; ?>">
-                            <button class="post-control-btn1">EDIT</button>
-                        </a>
-                        <a href="<?php echo ROOT; ?>/admin/deleteAnnouncement/<?php echo $announcement->announcementID; ?>" 
-                           onclick="return confirm('Are you sure you want to delete this announcement?')">
-                            <button class="post-control-btn1">DELETE</button>
-                        </a>
-
+        <div class="complaints-container container">
+    <?php foreach($data['announcements'] as $announcement): ?>
+        <div class="complaint container">
+            <div class="complaint-content flex-col">
+                <div class="complaint-details flex-row">
+                    <div class="complaint-text flex-col">
+                        <div class="the-complaint"><?php echo $announcement->content ?></div>   
+                        <div class="text-grey">
+                            <?php 
+                            $formattedTime = date('h:i A', strtotime($announcement->announcementTime)); 
+                            echo $announcement->announcementDate . ' | ' . $formattedTime; 
+                            ?>
+                        </div>
                     </div>
                 </div>
-                <div class="announcement-body">
-                    <div class="announcement-body"><?php echo $announcement->content ?></div>
+                <div class="complaint-actions flex-row">
+                    <a href="<?php echo ROOT; ?>/admin/admineditannouncement/<?php echo $announcement->announcementID; ?>">
+                        <button class="btn btn-update" >Update</button>
+
+                    </a>
+
+                    <a href="<?php echo ROOT; ?>/admin/deleteAnnouncement/<?php echo $announcement->announcementID; ?>" 
+                           onclick="return confirm('Are you sure you want to delete this announcement?')">
+                        <button class="btn btn-delete" >Delete</button>
+                    </a>    
                 </div>
             </div>
-        <?php endforeach;?>
+        </div>
+    <?php endforeach;?>
+</div>
     </div>
 </div>
 <?php require APPROOT . '/views/inc/footer.php'; ?>

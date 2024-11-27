@@ -1,5 +1,5 @@
 <?php
- class Admin extends Controller {
+class Admin extends Controller {
 
         public function __construct(){
             $this->adminModel = $this->model('AdminModel');
@@ -28,13 +28,6 @@
     function admineditannouncement($announcementID) {
         $announcement = $this->adminModel->getAnnouncementById($announcementID);
 
-        if (!$announcement) {
-            // Redirect if announcement not found
-            flash('announcement_message', 'Announcement not found', 'alert alert-danger');
-            header('Location: ' . ROOT . '/admin/adminannouncement');
-            exit;
-        }
-
         $data = [
             'announcementID' => $announcementID,
             'announcementDate' => $announcement->announcementDate,
@@ -48,11 +41,16 @@
         $this->view('admineditannouncement', $data);
     }
 
+
     function updateAnnouncement($announcementID) {
+        echo "Checkpoint 1: Function start"; // Add at the start of the function
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            echo "Checkpoint 2: Inside POST check"; // Add after the POST check
+
             // Sanitize input
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    
+
             $data = [
                 'announcementID' => $announcementID,  // Use the ID from the URL
                 'announcementDate' => trim($_POST['announcementDate']),
@@ -62,7 +60,7 @@
                 'announcementTime_error' => '',
                 'content_error' => '',
             ];
-    
+
             // Validate input
             if (empty($data['announcementDate'])) {
                 $data['announcementDate_error'] = 'Announcement date cannot be empty.';
@@ -73,7 +71,7 @@
             if (empty($data['content'])) {
                 $data['content_error'] = 'Content cannot be empty.';
             }
-    
+
             // Check if there are no validation errors
             if (empty($data['announcementDate_error']) && empty($data['announcementTime_error']) && empty($data['content_error'])) {
                 // Update the announcement
@@ -82,23 +80,18 @@
                     'announcementTime' => $data['announcementTime'],
                     'content' => $data['content'],
                 ])) {
-                    // Redirect with success message
-                    // flash('announcement_message', 'Announcement updated successfully');
+                    
                     header('Location: ' . ROOT . '/admin/adminannouncement');
-                    exit;
+
                 } else {
-                    // Handle database error
-                    // flash('announcement_message', 'Error updating the announcement', 'alert alert-danger');
+                    die("Checkpoint 4: Database failed");
+
                 }
             }
-    
+
             // Reload the view with errors
             $this->view('admineditannouncement', $data);
-        } else {
-            // Redirect to announcements if accessed without POST
-            header('Location: ' . ROOT . '/admin/adminannouncement');
-            exit;
-        }
+        } 
     }
     
     public function deleteAnnouncement($announcementID) {
@@ -123,20 +116,14 @@
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Sanitize and validate the input
                 $data = [
-                    'announcementID' => trim($_POST['announcementID']),
                     'announcementDate' => trim($_POST['announcementDate']),
                     'announcementTime' => trim($_POST['announcementTime']),
                     'content' => trim($_POST['body']),
-                    'announcementID_error' => '',
                     'announcementDate_error' => '',
                     'announcementTime_error' => '',
                     'content_error' => '',
                 ];
         
-                // Validate inputs
-                if (empty($data['announcementID'])) {
-                    $data['announcementID_error'] = 'Announcement ID cannot be empty.';
-                }
                 if (empty($data['announcementDate'])) {
                     $data['announcementDate_error'] = 'Announcement date cannot be empty.';
                 }
@@ -149,7 +136,6 @@
         
                 // Check for no errors
                 if (
-                    empty($data['announcementID_error']) && 
                     empty($data['announcementDate_error']) && 
                     empty($data['announcementTime_error']) && 
                     empty($data['content_error'])
@@ -169,11 +155,9 @@
                 }
             } else {
                 $data = [
-                    'announcementID' => '',
                     'announcementDate' => '',
                     'announcementTime' => '',
                     'content' => '',
-                    'announcementID_error' => '',
                     'announcementDate_error' => '',
                     'announcementTime_error' => '',
                     'content_error' => '',
@@ -183,7 +167,11 @@
             }
         }
         
-        
+        function admindashboard(){
+            $data = [];
+            
+            $this->view('admindashboard', $data);
+        }
 
         function admincomplaints(){
             $data = [];
