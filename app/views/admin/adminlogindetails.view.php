@@ -25,7 +25,7 @@
                 <p>Your email address is verified</p>
                 <h3>Update Email</h3>
                 <input type="text" name="update-email" id="update-email" placeholder="Enter your new email" value="">
-                <input type="submit" value="Update Email" class="form-btn">
+                <button class="btn btn-accent srch-btn">Update Email</button>
             </div>
         </div>
         <br><hr>
@@ -39,7 +39,7 @@
                 <input type="text" name="enter-old-password" id="enter-old-password" placeholder="Enter your old password" value="">
                 <h3><b>New Password</b></h3>
                 <input type="text" name="enter-new-password" id="enter-new-password" placeholder="Enter your new password" value="">
-                <input type="submit" value="Update Password" class="form-btn">
+                <button class="btn btn-accent srch-btn">Update Password</button>
             </div>
         </div>
         <br><hr>

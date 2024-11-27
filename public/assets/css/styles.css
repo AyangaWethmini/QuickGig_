@@ -8,7 +8,6 @@
 @import url('components/button_styles.css');
 
 /* PAGES */
-@import url('pages/signup_page.css');
 @import url('admin/admin_announcement.css');
 @import url('admin/admin_settings.css');
 @import url('admin/admin_sidebar.css');

@@ -21,7 +21,7 @@
             </div>
             <div class="update-container-two">
                 <input type="text" name="delete-password" id="delete-password" placeholder="Enter password" value="">
-                <input type="submit" value="Delete Account" class="form-btn">
+                <button class="btn btn-accent srch-btn">Delete Account</button>
             </div>
         </div>
         <br><hr>
