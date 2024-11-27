@@ -1,28 +1,24 @@
-/* CSS LIBRARY */
 
 /* VARIABLES */
 @import url("variables.css");
 
 /* COMPONENTS */
 @import url('components/form_styles.css');
-@import url('components/button_styles.css');
+@import url('components/buttons_styles.css');
+@import url('components/admin_sidebar.css');
 
 /* PAGES */
 @import url('pages/signup_page.css');
-@import url('admin/admin_announcement.css');
-@import url('admin/admin_settings.css');
-@import url('admin/admin_sidebar.css');
+@import url('pages/admin_announcement.css');
+@import url('pages/admin_settings.css');
 
-/* USERS */
-@import url('user/editprofile.css');
 
-/* HOME */
-@import url('home/signup.css');
 
 /* FONTS */
-/* @font-face {
+@font-face {
+    font-family: "Monteserrat-Regular";
     src: url("fonts/Montserrat-Regular.ttf");
-} */
+}
 
 *{
     margin: 0;
@@ -73,20 +69,26 @@ body {
 
 /* INPUT STYLES */
 
-input[type="text"] + textarea{
+input[type="text"]{
     border: 1px solid var(--neutral-20);
     padding: 8px 12px;
     transition: all 0.3s ease;
 }
-
+textarea{
+  border: 1px solid var(--neutral-20);
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
 input[type="password"]{
     border: 1px solid var(--neutral-20);
     padding: 8px 12px;
     transition: all 0.3s ease;
+    border-color: #a490ff;
+
 }
 
 input:focus {
-    border-color: var(--brand-primary);
+    border-color: #90D6FF;
     outline: none;
     background-color: var(--neutral-10);
 }
@@ -262,153 +264,214 @@ Use this in the code. Add relevent placeholder
 /* nav bar css */
 /* General Navbar Styling */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    position: fixed; /* Fix the navbar to the top */
-    top: 0;
-    left: 0;
-    width: 100%; /* Make the navbar span the full width */
-    z-index: 1000; /* Ensure navbar stays on top */
-    background-color: rgb(255, 255, 255,0.8);
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px); /* Apply blur effect */
-    -webkit-backdrop-filter: blur(10px); /* Safari support */
-    height: 80px;
-  }
-  .logo {
-    height: 40px; /* Set the height of the logo */
-    width: auto; /* Keep the aspect ratio intact */
-    object-fit: contain; /* Ensure the logo image fits within the container */
-  }
-  
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  /* Left-side links for Home and Categories */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed; /* Fix the navbar to the top */
+  top: 0;
+  left: 0;
+  width: 100%; /* Make the navbar span the full width */
+  z-index: 1000; /* Ensure navbar stays on top */
+  background-color: rgb(255, 255, 255, 0.8);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); /* Apply blur effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  height: 80px;
+}
+
+.logo {
+  height: 40px; /* Set the height of the logo */
+  width: auto; /* Keep the aspect ratio intact */
+  object-fit: contain; /* Ensure the logo image fits within the container */
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-left-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  margin-left: 10px;
+}
+
+.nav-left-links li {
+  list-style: none;
+}
+
+.nav-left-links li a {
+  text-decoration: none;
+  color: #002366; /* Navy blue for the text */
+  font-size: 18px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-left-links li a:hover {
+  color: #4640DE; /* Change color on hover to match branding */
+}
+
+/* Right-side Links (Login, Sign Up) */
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin-right: 30px;
+}
+
+.nav-links .login-btn,
+.nav-links .sign-up-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px; /* Consistent width */
+  height: 40px; /* Consistent height */
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Divider Between Buttons */
+.nav-links .divider {
+  height: 20px; /* Height of the divider */
+  width: 1px;
+  background-color: #ccc; /* Light gray color */
+  margin: 0 8px; /* Space on either side of the divider */
+}
+
+/* Login Button */
+.nav-links .login-btn {
+  background-color: rgb(255, 255, 255);
+  color: #002366;
+  border: none;
+}
+
+.nav-links .login-btn:hover {
+  background-color: #4640DE;
+  color: white;
+}
+
+/* Sign Up Button */
+.nav-links .sign-up-btn {
+  background-color: #010165;
+  color: white;
+  border: none; /* No border for Sign Up button */
+}
+
+.nav-links .sign-up-btn:hover {
+  background-color: #4640DE; /* Slightly lighter blue for hover */
+}
+
+/* Hamburger Menu Styling */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #002366;
+  border-radius: 3px;
+}
+.nav-links-home{
+  display: none;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  /* Hide Home and Categories for small screens */
   .nav-left-links {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    margin-left: 10px;
+    display: none;
   }
-  
-  .nav-left-links li {
-    list-style: none;
-  }
-  
-  .nav-left-links li a {
-    text-decoration: none;
-    color: #002366; /* Navy blue for the text */
-    font-size: 18px;
-    font-family: 'Arial', sans-serif;
-    font-weight: 600;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .nav-left-links li a:hover {
-    color: #4640DE; /* Change color on hover to match branding */
-  }
-  
-  /* Right-side Links (Login, Sign Up) */
+
+  /* Right-side menu items (Login) stays visible */
   .nav-links {
     display: flex;
     align-items: center;
-    list-style: none;
     margin-right: 30px;
   }
-  
-  .nav-links .login-btn,
-  .nav-links .sign-up-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px; /* Consistent width */
-    height: 40px; /* Consistent height */
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+  .nav-links-home{
+    display: block;
   }
-  
-  /* Divider Between Buttons */
-  .nav-links .divider {
-    height: 20px; /* Height of the divider */
-    width: 1px;
-    background-color: #ccc; /* Light gray color */
-    margin: 0 8px; /* Space on either side of the divider */
-  }
-  
-  /* Login Button */
+
   .nav-links .login-btn {
-    background-color: rgb(255, 255, 255);
-    color: #002366;
-    border: none;
+    display: block; /* Keep Login visible */
   }
-  
-  .nav-links .login-btn:hover {
-    background-color: #4640DE;
-    color: white;
-  }
-  
-  /* Sign Up Button */
+
+  /* Hide the Sign Up button on small screens */
   .nav-links .sign-up-btn {
-    background-color: #010165;
-    color: white;
-    border: none; /* No border for Sign Up button */
-  }
-  
-  .nav-links .sign-up-btn:hover {
-    background-color: #4640DE; /* Slightly lighter blue for hover */
-  }
-  
-  /* Hamburger Menu Styling */
-  .hamburger {
     display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
   }
-  
-  .hamburger span {
-    width: 25px;
-    height: 3px;
-    background-color: #002366;
-    border-radius: 3px;
+
+  .nav-links .divider {
+    display: none; /* Hide divider */
   }
-  
-  /* Mobile View */
-  @media (max-width: 768px) {
-    .nav-left-links {
-      display: none; /* Hide Home and Categories for small screens */
-    }
-  
-    .nav-links {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      flex-direction: column;
-      background-color: white;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      padding: 10px;
-      z-index: 10;
-    }
-  
-    .nav-links.active {
-      display: flex;
-    }
-  
-    .hamburger {
-      display: flex;
-    }
+
+  /* Show Hamburger menu on small screens */
+  .hamburger {
+    display: flex;
   }
-  
+  .hamburger img {
+    width: 40px; /* Adjust the size as needed */
+    height: auto; /* Maintain the aspect ratio */
+  }
+
+  /* Mobile Menu Dropdown */
+  .nav-left-links.mobile-menu {
+    display: none;
+  }
+
+  .nav-left-links.mobile-menu.active {
+    display: block;
+    position: absolute;
+    top: 80px; /* Below the navbar */
+    left: 0;
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+  .nav-left-links.mobile-menu.active li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .nav-left-links.mobile-menu.active li a {
+    color: #002366;
+    font-weight: 600;
+  }
+}
+
+/* Profile Button Styling */
+.profile-btn {
+  width: 60px; /* Adjust the size as needed */
+  height: 60px; /* Adjust the size as needed */
+  background-size: cover; /* Ensures the image covers the entire button */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents image repetition */
+  border-radius: 50%; /* Makes the button circular */
+  cursor: pointer; /* Changes the cursor to pointer on hover */
+  overflow: hidden; /* Ensures no overflow if image is larger than the button */
+  display: inline-block; /* Keeps the button inline with text or other elements */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+}
+
+.profile-btn:hover {
+  transform: scale(1.1); /* Slight zoom-in effect on hover */
+  transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
   /* nav bar css */

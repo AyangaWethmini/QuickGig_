@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
   const categories = document.querySelectorAll('.category');
 
+  // Function to set the active category based on the current URL
+  const setActiveCategory = () => {
+    const currentURL = window.location.href;
+    categories.forEach(category => {
+      const categoryHref = category.getAttribute('href');
+      if (currentURL.includes(categoryHref) && categoryHref !== '#received') {
+        category.classList.add('active');
+      } else {
+        category.classList.remove('active');
+      }
+    });
+  };
+
+  // Set the active category on page load
+  setActiveCategory();
+
   categories.forEach(category => {
     category.addEventListener('click', () => {
       categories.forEach(cat => cat.classList.remove('active'));

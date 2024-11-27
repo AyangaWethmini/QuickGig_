@@ -23,6 +23,7 @@ form{
     width: 250px;
 }
 
+
 h3.heading {
     color: var(--Color-Black, #202430);
     text-align: center;
@@ -104,11 +105,13 @@ h3.heading {
     margin-top: 8px;
 }
 
-p.sta {
+p.stat {
     color: var(--color-text);
 }
 
-
+.userType{
+    width: 250px;
+}
 
 .signup-btn {
     width: 300px;
@@ -176,4 +179,9 @@ h5.rev-name{
     height: 58.5px;
     border-radius: 50%;
     border: 5px solid var(--color-white);
+}
+.error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 5px;
 }

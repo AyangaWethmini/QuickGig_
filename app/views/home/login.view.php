@@ -1,11 +1,13 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; ?>
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
+<?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<div class="signin-signup flex-row">
+
+<div class="login-login flex-row">
 
     <div class="image">
-        <p class="logo">QuickGig.</p>
             <img src="<?=ROOT?>/assets/images/home.png" alt="man holding files" class="img">
 
             <div class="stat container flex-col">
@@ -31,21 +33,32 @@
     <div class="form-section">
     <div class="login-form">
         <div class="flex-col">
-        <h3 style="color: var(--color-white); margin-top: 40px;">Get more oppertunities</h3>
-        <form action="post" class="form-body" >
+        <h3 class="heading">WELLCOME BACK!</h3>
+        <form action="<?php echo ROOT; ?>/login/verify" method="POST" class="form-body">
+            <!-- Display errors -->
+            <?php if (isset($_SESSION['login_errors']) && !empty($_SESSION['login_errors'])): ?>
+                <div class="error-messages">
+                    <?php foreach ($_SESSION['login_errors'] as $error): ?>
+                        <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
+                </div>
+                <?php unset($_SESSION['login_errors']); ?>
+            <?php endif; ?>
+            
             <div class="form-field">
-                <label for="email" class="lbl" style="color: var(--color-white);">Email : </label><br>
-                <input type="text" placeholder="Enter Email">
+                <label for="email" class="lbl">Email : </label><br>
+                <input type="text" name="email" placeholder="Enter Email">
             </div>
 
             <div class="form-field">
-                <label for="password" class="lbl" style="color: var(--color-white);">Password :</label><br>
-                <input type="password" placeholder="Enter password"> <!----add the width to css file -->
+                <label for="password" class="lbl">Password :</label><br>
+                <input type="password" name="password" placeholder="Enter password"> <!----add the width to css file -->
             </div>
-            <p class="text-white rem">Remember me<input type="checkbox"></p>
+            <div class="rem">
+                <input type="checkbox"><p class="lbl">Remember me</p>
+            </div>
             
-            
-            <button class="btn btn-accent signup-btn">Sign Up</button>
+            <button class="btn btn-accent login-btn" type = "submit" >Log In</button>
         </div>
             <div style="margin-left: 10px;">
                 
@@ -54,7 +67,7 @@
             </div>
         </form>
     </div>
-    </div>
+    </div> 
 
 </div>
 

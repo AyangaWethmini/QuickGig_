@@ -1,5 +1,6 @@
 .main-content{
     position: relative;
+    margin-left: 300px;
 }
 
 .create-ad-form{
@@ -77,4 +78,62 @@
 .show {
     display: block;
     opacity: 1;
+}
+
+
+.ad-card{
+    height: 150px;
+    width: 700px;
+    gap : 20px;
+    margin: 20px;
+    padding: 5px;
+    border: 1px solid var(--neutral-80);
+
+}
+
+.ad-card .details{
+    justify-content: flex-start;
+    margin-left: 10px;
+}
+
+.ad-title{
+    color: var(--Neutrals-100, #25324B);
+    text-align: left;
+    font-feature-settings: 'cv11' on;
+    font-family: Epilogue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+}
+
+.advertiser, .description , .contact{
+    color: var(--Neutrals-60, #7C8493);
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 160%;
+}
+
+.status{
+    padding: 5px;
+    background-color: green;
+    width: 70px;
+    height: 20px;
+    color: var(--color-white);
+    text-align: center;
+}
+
+
+.ads{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+.ad-actionbtns{
+    gap: 10px;
+    padding: 10px 20px;
 }

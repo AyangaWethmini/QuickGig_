@@ -1,6 +1,5 @@
 <?php
 // models/Account.php
-
 class Account
 {
     private $db;
@@ -25,6 +24,14 @@ class Account
     // Method to create a new account
     public function create()
     {
+        // Set optional fields to NULL if they are not provided
+        $this->district = $this->district ?: 'None';
+        $this->addressLine1 = $this->addressLine1 ?: 'None';
+        $this->addressLine2 = $this->addressLine2 ?: 'None';
+        $this->city = $this->city ?: 'None';
+        $this->planID = $this->planID ?: -1;  // -1 no plan
+
+        // Prepare the SQL query to insert data
         $query = "INSERT INTO account (accountID, email, planID, password, district, addressLine1, addressLine2, city, accStatus) 
                   VALUES (:accountID, :email, :planID, :password, :district, :addressLine1, :addressLine2, :city, :accStatus)";
         
@@ -41,6 +48,7 @@ class Account
         $stmt->bindParam(':city', $this->city);
         $stmt->bindParam(':accStatus', $this->accStatus);
 
+        // Execute the query
         return $stmt->execute();
     }
 
@@ -64,14 +72,89 @@ class Account
         
         return $stmt->execute();
     }
-
-    public function login($email, $password){
-        $query = "SELECT * FROM account WHERE email = :email";
-        $this->db->query($query);
-        $this->db->bind(':email', $email);
-
-        $row = $this->db->get_row();
+    public function findRole($user_id)
+    {
+        $query = "SELECT roleID FROM account_role WHERE accountID = :user_id LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function createIndividual($data)
+{
+    try {
+        $this->db->beginTransaction();
+
+        // Insert into individual table
+        $sqlIndividual = "INSERT INTO individual (accountID, fname, lname, nic, gender, Phone) 
+                          VALUES (:accountID, :fname, :lname, :nic, :gender, :Phone)";
+        $stmtIndividual = $this->db->prepare($sqlIndividual);
+
+        $stmtIndividual->bindParam(':accountID', $data['accountID']);
+        $stmtIndividual->bindParam(':fname', $data['fname']);
+        $stmtIndividual->bindParam(':lname', $data['lname']);
+        $stmtIndividual->bindParam(':nic', $data['nic']);
+        $stmtIndividual->bindParam(':gender', $data['gender']);
+        $stmtIndividual->bindParam(':Phone', $data['Phone']);
+
+        $stmtIndividual->execute();
+
+        // Insert into account_role table
+        $sqlRole = "INSERT INTO account_role (accountID, roleID) 
+                    VALUES (:accountID, :roleID)";
+        $stmtRole = $this->db->prepare($sqlRole);
+
+        $stmtRole->bindParam(':accountID', $data['accountID']);
+        $roleID = 2; // Role ID for individual
+        $stmtRole->bindParam(':roleID', $roleID);
+
+        $stmtRole->execute();
+
+        $this->db->commit();
+        return true;
+    } catch (PDOException $e) {
+        $this->db->rollBack();
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
 }
+public function createOrganization($data)
+{
+    try {
+        $this->db->beginTransaction();
+
+        // Insert into organization table
+        $sqlOrganization = "INSERT INTO organization (accountID, orgName, BRN) 
+                            VALUES (:accountID, :orgName, :brn)";
+        $stmtOrganization = $this->db->prepare($sqlOrganization);
+
+        $stmtOrganization->bindParam(':accountID', $data['accountID']);
+        $stmtOrganization->bindParam(':orgName', $data['orgName']);
+        $stmtOrganization->bindParam(':brn', $data['brn']);
+
+        $stmtOrganization->execute();
+
+        // Insert into account_role table
+        $sqlRole = "INSERT INTO account_role (accountID, roleID) 
+                    VALUES (:accountID, :roleID)";
+        $stmtRole = $this->db->prepare($sqlRole);
+
+        $stmtRole->bindParam(':accountID', $data['accountID']);
+        $roleID = 3; // Role ID for organization
+        $stmtRole->bindParam(':roleID', $roleID);
+
+        $stmtRole->execute();
+
+        $this->db->commit();
+        return true;
+    } catch (PDOException $e) {
+        $this->db->rollBack();
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+}
+
+

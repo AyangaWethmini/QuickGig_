@@ -1,15 +1,8 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/home/home.css">
-<?php include APPROOT . '/views/components/janusha_nav.php'; ?>
+<?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<script>
-    // Include the toggleMenu function
-    function toggleMenu() {
-      const navLinks = document.querySelector('.nav-links');
-      navLinks.classList.toggle('active');
-    }
-</script>
+
 
 <!-- <nav class="navbar flex-row">
     <div class="flex-row  nav-left">
@@ -30,20 +23,6 @@
         <span></span>
     </div>
 </nav> -->
-
-<?php if (!empty($data['announcements'])): ?>
-    <?php $latestAnnouncement = $data['announcements'][0]; // Assuming array is sorted by date and time ?>
-    <div class="announcement-index-container home-page">
-        <div class="announcement-header">
-            <div class="announcement-created-date"><?php echo $latestAnnouncement->announcementDate ?></div>
-            <div class="announcement-created-at"><?php echo $latestAnnouncement->announcementTime ?></div>
-        </div>
-        <div class="announcement-body">
-            <div class="announcement-body"><?php echo $latestAnnouncement->content ?></div>
-        </div>
-    </div>
-<?php endif; ?>
-
 
 <div class="hero-section flex-row">
     <div class="job-search">
@@ -147,10 +126,5 @@
     <p class="copyright">&copy; 2024 @ QuickGig. All rights reserved.</p>
      </footer>
 </div>
-
-
-
-<script src="<?=ROOT?>/assets/js/navbar.js"></script>
-
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

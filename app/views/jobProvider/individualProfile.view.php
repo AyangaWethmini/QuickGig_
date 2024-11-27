@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
 
@@ -11,10 +12,12 @@
                 <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture" class="profile-pic">
                 <div class="profile-intro">
                     <h2>Jake Gyll</h2><br>
-                    <p>Product Designer at Twitter</p><br>
+                    <p>Farm Owner</p><br>
                     <p>Manchester, UK</p>
                 </div>
-                <button class="btn edit-profile">Edit Profile</button>
+                <a href="<?php echo ROOT;?>/jobProvider/individualEditProfile" class="edit-profile-btn">
+                Edit Profile
+                </a>
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">
