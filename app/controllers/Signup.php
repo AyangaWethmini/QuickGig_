@@ -112,7 +112,7 @@ class Signup extends Controller
             ];
 
             if ($this->model->createIndividual($individualData)) {
-                // header("Location: " . ROOT . "/home/login");
+                header("Location: " . ROOT . "/home/login");
                 exit;
             } else {
                 echo "Failed to register individual.";
@@ -135,7 +135,7 @@ class Signup extends Controller
             ];
 
             if ($this->model->createOrganization($organizationData)) {
-                // header("Location: " . ROOT . "/home/login");
+                header("Location: " . ROOT . "/home/login");
                 exit;
             } else {
                 echo "Failed to register organization.";
