@@ -127,9 +127,4 @@
      </footer>
 </div>
 
-
-
-<script src="<?=ROOT?>/assets/js/navbar.js"></script>
-
-
 <?php require APPROOT . '/views/inc/footer.php'; ?>
