@@ -2,13 +2,13 @@
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/reviews.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/reviews.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
 <script src="<?=ROOT?>/assets/js/jobProvider/individualProfile.js"></script>
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">
@@ -18,7 +18,7 @@
                     <p>Farm Owner</p><br>
                     <p>Manchester, UK</p>
                 </div>
-                <a href="<?php echo ROOT;?>/jobProvider/individualEditProfile" class="edit-profile-btn">
+                <a href="<?php echo ROOT;?>/seeker/individualEditProfile" class="edit-profile-btn">
                 Edit Profile
                 </a>
             </div>
@@ -49,10 +49,10 @@
             <p>With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
         </div>
         
-        <span class="role-switch">
-        <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
-        <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
-</span>
+        <div class="role-switch">
+            <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
+            <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
+        </div>
 
         <div class="rating-reviews">
             <h3>Rating and Reviews</h3>
@@ -134,6 +134,7 @@
         </div> <br>
 
         <div class="reviews-section">
+            <!-- Sample review -->
             <div class="review-card container">
                 <div class="review-card-left flex-row">
                     <div class="pfp">
@@ -224,6 +225,36 @@
                 </div>
             </div>
 
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more reviews as needed -->
         </div>
     </div>
 </div>

@@ -40,10 +40,10 @@
                 <span class="sidebar-label">Subscription</span>
             </a>
             <br><br>
-            <div class="sidebar-item" data-link="settings.php">
+            <a href="<?php echo ROOT;?>/jobProvider/settings" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
-            </div>
+            </a>
             <a href="<?php echo ROOT;?>/jobProvider/helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
                 <span class="sidebar-label">Help Center</span>

@@ -1,71 +1,32 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/viewEmployeeProfile.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/reviews.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/reviews.css">
 
-
-<body>
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
-    <div class="profile-container">
-        <div class="profile-header">
-            <div class="profile-info">
-                <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic">
-                <div class="intro">
-                    <div class="profile-intro">
-                        <h2>Smith Greenwood</h2><br>
-                        <p>Bartender</p><br>
-                        <p>Manchester, UK</p>
-                    </div>
-                    <div class="profile-rating">★★★★★</div>
-                </div>
-                
-            </div>
-            <div class="profile-contacts">
-                <div class="additional-details">
-                    <h2>Additional Details</h2> <br>
-                    <p class="title-items">Email</p> 
-                    <p class="detail-items">smithGreen@gmail.com</p><br>
-                    <p class="title-items">Phone</p>
-                    <p class="detail-items">+44 1245 572 135</p><br>
-                    <p class="title-items">Languages</p>
-                    <p class="detail-items">English, French</p>
-                </div>
-                <div class="social-links">
-                    <h2>Social Links</h2> <br>
-                        <p class="title-items">Instagram</p>
-                        <p class="detail-items">instagram.com/smithGreen</p><br>
-                        <p class="title-items">Twitter</p>
-                        <p class="detail-items">twitter.com/SmithGreenwood</p><br>                 
-                </div>
-            </div>    
+    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
+    
+    <div class="main-content-reviews">
+        <div class="header">
+            <div class="heading">Reviews</div>
         </div>
-        <div class="profile-about">
-            <h3>About Me</h3>
-            <p>With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
-        </div>
-        <div class="interested-categories-container">
-            <p class="interested-categories-title">Interested Categories</p>
-            <div class="interested-categories">
-                <div class="interested-category">Waiter</div>
-                <div class="interested-category">Bartender</div>
-                <div class="interested-category">Kitchen Helper</div>
-                <div class="interested-category">Cleaning</div>
-                <div class="interested-category">Cashier</div>
-                <div class="interested-category">Plumber</div>
+        <hr>
+        <div class="search-container">
+            <input type="text" 
+                class="search-bar" 
+                placeholder="Search reviews"
+                aria-label="Search">
+            <br><br>
+            <div class="filter-container">
+                <span>Sort by:</span>
+                <select id="sortSelect" onchange="sortContent()">
+                    <option value="recent">Latest</option>
+                    <option value="views">Oldest</option>
+                </select>
             </div>
-        </div> <br> <br>
-
-        <div class="list-header">
-            <p class="list-header-title">Job History</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
-            <button class="filter-btn">Filter</button>
-        </div> <br>
-
-        <div class="reviews-section">
+        </div>
+        <div class="reviews-container container">
+            
             <div class="review-card container">
                 <div class="review-card-left flex-row">
                     <div class="pfp">
@@ -99,13 +60,13 @@
             <div class="review-card container">
                 <div class="review-card-left flex-row">
                     <div class="pfp">
-                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                        <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
                     </div>
                 
                     <div class="review-details">
-                        <h2>Smith Greenwood</h2>
+                        <h2>Sarah Ken</h2>
                         <p>Bartender</p>
-                        <p>2024-11-27</p>
+                        <p>2024-11-24</p>
                         <p>03:30 PM</p>
                         <div style="display:flex;flex-direction:column; gap:20px">
                             <div class="rating">
@@ -129,14 +90,14 @@
             <div class="review-card container">
                 <div class="review-card-left flex-row">
                     <div class="pfp">
-                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                        <img src="<?=ROOT?>/assets/images/person4.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
                     </div>
                 
                     <div class="review-details">
-                        <h2>Smith Greenwood</h2>
+                        <h2>Samson Waltz</h2>
                         <p>Bartender</p>
-                        <p>2024-11-27</p>
-                        <p>03:30 PM</p>
+                        <p>2024-11-19</p>
+                        <p>05:37 PM</p>
                         <div style="display:flex;flex-direction:column; gap:20px">
                             <div class="rating">
                                 <span>
@@ -155,8 +116,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
-
-
     </div>
 </div>

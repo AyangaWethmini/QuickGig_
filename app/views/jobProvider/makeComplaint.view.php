@@ -14,10 +14,11 @@
                 <p><strong>Job Date:</strong> 2023-10-01</p>
                 <p><strong>Job Location:</strong> Manchester, UK</p>
             </div>
-            <form action="<?=ROOT?>/jobProvider/submitComplaint" method="post" class="complain-form">               
+            <form id="complainForm" action="<?=ROOT?>/jobProvider/submitComplaint" method="post" class="complain-form">               
                 <div class="form-section">
                     <label for="complainInfo">Complain Information:</label>
                     <textarea id="complainInfo" name="complainInfo" rows="10" required></textarea>
+                    <p id="error-msg" style="color: red; display: none;">Complaint information cannot be empty or spaces only.</p>
                 </div>
                 <div class="form-section button-group">
                     <button type="submit" class="submit-btn">Submit</button>
@@ -27,5 +28,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Add event listener to validate the form before submission
+    document.getElementById('complainForm').addEventListener('submit', function(event) {
+        const complainInfo = document.getElementById('complainInfo').value.trim();
+        const errorMsg = document.getElementById('error-msg');
+
+        // Check if the complainInfo is empty or only contains spaces
+        if (!complainInfo) {
+            errorMsg.style.display = 'block';
+            event.preventDefault(); // Prevent form submission
+        } else {
+            errorMsg.style.display = 'none'; // Hide error message
+        }
+    });
+</script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

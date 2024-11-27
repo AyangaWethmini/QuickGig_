@@ -139,4 +139,8 @@
                 $this->view('updateComplaint', $data);
             }
         }
+
+        function settings(){
+            $this->view('settings');
+        }
     }

@@ -33,7 +33,7 @@
     border: 1px solid #D6DDEB;
 
     padding: 10px;
-    width:60%;
+    width:50%;
     align-items: first baseline;
     height: 400px;
 }
@@ -100,8 +100,8 @@
     margin-bottom: 20px;
     border: 1px solid #D6DDEB;
     padding: 10px;
-    width:60%;
-    height: fit-content;
+    width:50%;
+    height: 20%;
     font-size:large;
 }
 .profile-about h3 {
@@ -258,8 +258,8 @@ td {
 .reviews-section {
     max-height: 600px;
     overflow-y: auto;
+    align-items: left;
     max-width: 900px;
-    align-content: center;
 }
 .review {
     border-bottom: 1px solid #ddd;
@@ -319,4 +319,8 @@ td {
 .edit-profile-btn:hover{
     background-color: #3430bd;
     color: white;
+}
+
+body{
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
