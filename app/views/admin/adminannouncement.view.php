@@ -1,13 +1,17 @@
-<?php require APPROOT . '/views/inc/header.php';?>
 
-<link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/admin/admin_announcement.css">
+<?php require APPROOT . '/views/inc/header.php'; 
+require_once APPROOT . '/views/inc/protectedRoute.php';
+    protectRoute([0]);
+?>
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/admin/admin_announcement.css">
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
         <div class="admin-announcement-header">
             <h1>Current Announcements</h1>
-            <a href="<?php echo ROOT; ?>/admin/admincreateannouncement">
-                <button class="btn btn-accent srch-btn">+ Post Announcement"</button>
+
+            <a href="<?php echo ROOT; ?>/admin/createannouncement">
+                <button class="btn btn-accent srch-btn">+ Post Announcement</button>
             </a>
         </div>
         <br><hr><br>

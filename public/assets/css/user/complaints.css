@@ -1,10 +1,17 @@
+.wrapper{
+    margin-top: 100px;
+}
+
+.main-content-complaints{
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
 .heading{
-    color: var(--Neutrals-100, #25324B);
-    font-family: Epilouge;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 120%;
+    color: #000000;
+    font-size: 36px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
 }
 
 .header {
@@ -32,9 +39,8 @@
 }
 
 .complaint p{
-    color: #7C8493;
-    font-family: Epilogue;
-    font-size: 12px;
+    color: #000000;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 120%; 
@@ -43,7 +49,6 @@
 .details{
     justify-content: space-between;
     margin-top: 10px;
-    
 }
 
 .details p{
@@ -54,5 +59,130 @@
     display: flex;
     flex-direction: column;
     gap : 20px;
-    
 }
+
+.filter-container{
+    font-size: large;
+}
+
+.complaint-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.complaint-details{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.complaint-text{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: fit-content;
+}
+
+.complaint-status{
+    align-self: center;
+    color: var(--brand-primary);
+    font-weight: bold;
+}
+
+.complaint-actions{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-update{
+    background-color: #4640DE;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete{
+    background-color: #c11b1b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-update:hover{
+    background-color: #3430bd;
+}
+
+.btn-delete:hover{
+    background-color: #a00f0f;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.popup-btn-delete-complaint{
+    border: none;
+    padding: 15px 30px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#confirm-yes {
+    background-color: #c11b1b;
+    color: white;
+}
+
+#confirm-no {
+    background-color: #4640DE;
+    color: white;
+}
+
+#confirm-yes:hover {
+    background-color: #a00f0f;
+}
+
+#confirm-no:hover {
+    background-color: #3430bd;
+}
+
+.complaint{
+    border: 1px solid #D6DDEB;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.complaint:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }

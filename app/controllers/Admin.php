@@ -106,6 +106,12 @@ class Admin extends Controller {
         }
     }
 
+    function createannouncement(){
+        $data = [];
+        $this->view('admincreateannouncement', $data);
+
+    }
+
         function admincreateannouncement() {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Sanitize and validate the input

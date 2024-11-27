@@ -1,0 +1,28 @@
+.announcements{
+    margin-left: 300px;
+    margin-top: 100px;
+    gap: 20px;
+    background-color: var(--brand-lavender);
+    padding: 40px;
+    justify-content: space-between;
+    width: 800px;
+}
+
+
+.announcement-title{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; 
+}
+
+.announcement-text{
+    color: var(--Neutrals-60, #7C8493);
+    font-family: Epilogue;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+}

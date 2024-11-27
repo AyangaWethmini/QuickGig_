@@ -40,6 +40,7 @@
                 <h3><b>New Password</b></h3>
                 <input type="text" name="enter-new-password" id="enter-new-password" placeholder="Enter your new password" value="">
                 <button class="btn btn-accent srch-btn">Update Password</button>
+                <button class="btn btn-accent srch-btn">Update Password</buutton>
             </div>
         </div>
         <br><hr>

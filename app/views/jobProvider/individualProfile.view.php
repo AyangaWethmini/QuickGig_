@@ -1,8 +1,12 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/reviews.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
 
 <body>
+<script src="<?=ROOT?>/assets/js/jobProvider/individualProfile.js"></script>
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
     <div class="profile-container">
@@ -11,10 +15,12 @@
                 <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture" class="profile-pic">
                 <div class="profile-intro">
                     <h2>Jake Gyll</h2><br>
-                    <p>Product Designer at Twitter</p><br>
+                    <p>Farm Owner</p><br>
                     <p>Manchester, UK</p>
                 </div>
-                <button class="btn edit-profile">Edit Profile</button>
+                <a href="<?php echo ROOT;?>/jobProvider/individualEditProfile" class="edit-profile-btn">
+                Edit Profile
+                </a>
             </div>
             <div class="profile-contacts">
                 <div class="additional-details">
@@ -43,10 +49,10 @@
             <p>With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities.</p>
         </div>
         
-        <div class="role-switch">
-            <button class="role-btn">Job Seeker Role</button>
-            <button class="role-btn">Job Provider Role</button>
-        </div>
+        <span class="role-switch">
+        <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
+        <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
+</span>
 
         <div class="rating-reviews">
             <h3>Rating and Reviews</h3>
@@ -119,23 +125,105 @@
                     </div>
                 </div>
             </div>
-            <select class="sort-dropdown">
-                <option>Latest</option>
-                <option>Highest Rated</option>
-                <option>Lowest Rated</option>
-            </select>
         </div>
 
+        <div class="list-header">
+            <p class="list-header-title">Job History</p>
+            <input type="text" class="search-input" placeholder="Search..."> 
+            <button class="filter-btn">Filter</button>
+        </div> <br>
+
         <div class="reviews-section">
-            <!-- Sample review -->
-            <div class="review">
-                <h4>Marcus Trevor</h4>
-                <p>Waiter - Paris, France</p>
-                <div class="review-rating">★★★★☆</div>
-                <p>Nomad is a software platform...</p>
-                <button class="btn blue">See more</button>
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- Add more reviews as needed -->
+
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card container">
+                <div class="review-card-left flex-row">
+                    <div class="pfp">
+                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                    </div>
+                
+                    <div class="review-details">
+                        <h2>Smith Greenwood</h2>
+                        <p>Bartender</p>
+                        <p>2024-11-27</p>
+                        <p>03:30 PM</p>
+                        <div style="display:flex;flex-direction:column; gap:20px">
+                            <div class="rating">
+                                <span>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                    <i class="fa fa-star star-active mx-1"></i>
+                                </span>
+                            </div>
+                        
+                            <p class="review-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

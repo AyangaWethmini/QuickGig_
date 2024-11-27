@@ -14,12 +14,6 @@ body {
     position: fixed;
 }
 
-.logo{
-    width: 224px;
-    height: 200px;
-    margin-top: -30px;
-}
-
 .sidebar-items-container{
     margin-top: 0px;
 }
@@ -33,6 +27,7 @@ body {
     background-color: #ffffff;
     border-radius: 6px;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 

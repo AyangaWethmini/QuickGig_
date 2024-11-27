@@ -1,5 +1,6 @@
+<?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/Components/jobProvider_sidebar.css">
-
+    
 <body>
     
     <div class="sidebar-container">

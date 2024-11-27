@@ -1,6 +1,7 @@
 .dropdown, .tags-container, .add-btn {
     margin-top: 10px;
 }
+
 .dropdown select {
     width: 100%;
     padding: 8px;
@@ -42,7 +43,6 @@
     font-size: 16px;
 }
 
-
 .form-section .title{
     color: var(--Color-Black, #202430);
     font-family: Epilogue;
@@ -76,9 +76,14 @@
     width: 184px;
 }
 
+.currency-select {
+    width: 100px;
+    height: 40px;
+    margin-left: 10px;
+}
+
 .post-job-form{
     margin: 0 30px;
-
 }
 .form-section{
     gap: 118px;
@@ -91,7 +96,6 @@
 
 .user-input input[type="checkbox"]{
     margin-left: 10px;
-
 }
 
 .time-select{
@@ -118,18 +122,24 @@
    font-size: 16px;
 }
 
-
 p.heading{
     display: flex;
     width: 1167px;
     padding: 32px;
     align-items: center;
     gap: 8px;
-    color: var(--Neutrals-100, #25324B);
-    font-family: "Red Hat Display";
+    color: var(--Neutrals-100, #000000);
     font-size: 32px;
     font-style: normal;
     font-weight: 700;
     line-height: 120%;
 }
 
+.main-content{
+    margin-left: 250px;
+}
+
+.wrapper{
+    display: flex;
+    margin-top: 100px;
+}

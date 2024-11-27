@@ -5,9 +5,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 <div class="wrapper flex-row">
-    <div id="sidebar" style="width: 224px; height: 100vh; background-color: var(--brand-lavender)"></div>
+    <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
     
-    <div class="main-content">
+    <div class="main-content container">
         <div class="header flex-row">
             <span class="greeting container">
                 <h3>Good morning! Maria</h3>
@@ -36,36 +36,73 @@
 
         <div class="overview flex-row">
             <div class="flex-row box container" style="background-color: var(--brand-primary);">
-                <h1>23</h1>
-                <p>Ads posted</p>    
+                <div><h1>23</h1></div>
+                <div><p>Ads Posted</p></div>    
             </div>
             <div class="flex-row box container" style="background-color: #56CDAD;">
-                <h1>23</h1>
-                <p>Ads posted</p> 
+                <div><h1>23</h1></div>
+                <div><p>Ads Posted</p></div> 
             </div>
             <div class="flex-row box container" style="background-color: #26A4FF;">
-                <h1>23</h1>
-                <p>Ads posted</p> 
+                <div><h1>23</h1></div>
+                <div><p>Ads Posted</p></div> 
             </div>
             <div class="flex-row box container" style="background-color: #FFB836;">
-                <h1>23</h1>
-                <p>Ads posted</p> 
+                <div><h1>23</h1></div>
+                <div><p>Ads Posted</p></div> 
             </div>
         </div>
-        <hr>
+        <hr><br>
         <div class="manager-sections flex-row">
-            <div class="chart-overview container">
+            <div class="chart-overview container flex-row">
                 <canvas id="myChart" style="width:100%; max-width:700px"></canvas>
+                <div class="count flex-col">
+                    <div class="views">
+                        <p class="title">
+                            Ads views
+                        </p>
+                        <p class="number">
+                            2135
+                        </p>
+                        <p class="grey-text">
+                            this week
+                        </p>
+                    </div>
+                    <div class="clicks">
+                    <p class="ctitle">
+                            Ads views
+                        </p>
+                        <p class="number">
+                            2135
+                        </p>
+                        <p class="grey-text">
+                            this week
+                        </p>
+                    </div>
+                </div>
             </div>
             <div class="messages container flex-col">
                 <p>All Requests</p>
                 <p class="text-grey">Pending</p>
-                <span class="requests"></span>
+                <span class="requests">
+                    <div class="request flex-row">
+                        <img src="<?=ROOT?>/assets/images/profile.png" alt="profile pic">
+                        <p class="name">John Doe</p><hr>
+                    </div>
+                    <div class="request flex-row">
+                        <img src="<?=ROOT?>/assets/images/profile.png" alt="profile pic">
+                        <p class="name">John Doe</p><hr>
+                    </div>
+                    <div class="request flex-row">
+                        <img src="<?=ROOT?>/assets/images/profile.png" alt="profile pic">
+                        <p class="name">John Doe</p><hr>
+                    </div>
+                </span>
                 <a href="#" class="email">Check Emails</a>
             </div>
         </div>
         <div class="flex-row buttons">
-            <button class="btn btn-accent">Post Advertisement</button>
+            <button class="btn btn-accent" onclick="window.location.href='<?=APPROOT?>views/manager/advertisement.view.php'">Post Advertisement</button>
             <button class="btn btn-accent">Review Ads</button>
         </div>
     </div>
@@ -101,45 +138,60 @@
 
     // Chart.js functionality
     document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('myChart').getContext('2d');
 
-        new Chart(ctx, {
-            type: 'bar', // Chart type: 'bar', 'line', 'pie', etc.
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], // X-axis labels
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3], // Y-axis data
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+    new Chart(ctx, {
+        type: 'line', // Line chart
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], // X-axis labels (days of the week)
+            datasets: [
+                {
+                    label: 'Views',
+                    data: [10, 15, 8, 12, 20, 25, 18], // Y-axis data for Views
+                    borderColor: 'rgba(0, 200, 0, 1)', // Green line
+                    tension: 0.4, // Smooth curve
+                    pointStyle: 'circle',
+                    pointRadius: 5,
+                },
+                {
+                    label: 'Clicks',
+                    data: [5, 8, 6, 10, 12, 10, 12], // Y-axis data for Clicks
+                    borderColor: 'rgba(255, 150, 50, 1)', // Orange line
+                    tension: 0.4, // Smooth curve
+                    pointStyle: 'circle',
+                    pointRadius: 5,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom', // Legend at the bottom
+                }
             },
-            options: {
-                scales: {
-                    yAxes: [{ // Adjust for Chart.js 2.x compatibility
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                    }
                 }
             }
-        });
+        }
     });
+});
+
+    
 </script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+
+

@@ -1,5 +1,6 @@
 .wrapper {
     display: flex;
+    margin-top: 100px;
 }
 
 #sidebar {
@@ -30,13 +31,13 @@
     display:flex;
     flex-direction:row;
     border: 1px solid #D6DDEB;
-    margin-top:10px;
+
     padding: 10px;
     width:60%;
     align-items: first baseline;
     height: 400px;
-
 }
+
 .profile-info img {
     width: 150px;
     height: 150px;
@@ -100,7 +101,7 @@
     border: 1px solid #D6DDEB;
     padding: 10px;
     width:60%;
-    height: 20%;
+    height: fit-content;
     font-size:large;
 }
 .profile-about h3 {
@@ -111,12 +112,22 @@
 /* Role Switch */
 .role-switch {
     margin-bottom: 20px;
-    margin-left: 40%;
+    margin-left: 30%;
 }
-.role-switch .btn {
+.role-btn {
     padding: 10px 15px;
     margin-right: 10px;
     cursor: pointer;
+}
+
+.role-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.role-btn.active {
+    background-color: #007bff;
+    color: white;
 }
 
 /* Rating & Reviews */
@@ -245,8 +256,10 @@ td {
 
 /* Reviews Section */
 .reviews-section {
-    max-height: 300px;
+    max-height: 600px;
     overflow-y: auto;
+    max-width: 900px;
+    align-content: center;
 }
 .review {
     border-bottom: 1px solid #ddd;
@@ -291,12 +304,19 @@ td {
 
 }
 
-.btn.edit-profile:hover{
-    background-color: #3430bd;
-    color: white;
+
+.edit-profile-btn{
+    background-color: white;
+    color:  #4640DE;
+    font-weight: bold;
+    border: 1px solid gray;
+    border-radius: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: 30%;
 }
 
-.role-btn:hover{
+.edit-profile-btn:hover{
     background-color: #3430bd;
     color: white;
 }
