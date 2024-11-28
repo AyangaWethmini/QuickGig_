@@ -178,7 +178,7 @@
 </div>
 
 
-
+</body>
 <script>
     const form = document.getElementById("create-ad");
     const updateForm = document.getElementById("update-ad");
@@ -189,6 +189,7 @@
     }
 
     function showForm() {
+        console.log("showForm function triggered");
         if (form.classList.contains("hidden")) {
 
             form.classList.remove("hidden");
