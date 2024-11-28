@@ -177,3 +177,7 @@ a.login{
     font-size: 14px;
     margin-bottom: 5px;
 }
+#togglePassword {
+    font-size: 16px;
+    color: #555;
+}

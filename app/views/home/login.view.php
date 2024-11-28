@@ -52,7 +52,12 @@
 
             <div class="form-field">
                 <label for="password" class="lbl">Password :</label><br>
-                <input type="password" name="password" placeholder="Enter password"> <!----add the width to css file -->
+                <div style="position: relative;">
+                    <input type="password" name="password" id="password" placeholder="Enter password" style="padding-right: 30px;">
+                    <button type="button" id="togglePassword" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer;">
+                        👁️
+                     </button>
+                </div>
             </div>
             <div class="rem">
                 <input type="checkbox"><p class="lbl">Remember me</p>
@@ -70,5 +75,15 @@
     </div> 
 
 </div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const isPassword = passwordField.type === 'password';
+        passwordField.type = isPassword ? 'text' : 'password';
+        // Change the button text/icon
+        this.textContent = isPassword ? '🙈' : '👁️';
+    });
+</script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
