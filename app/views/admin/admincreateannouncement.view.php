@@ -67,7 +67,8 @@
 
             
                 <!-- Submit Button -->
-                <input type="submit" value="Post" class="btn btn-accent srch-btn" style="width: 900px;">    
+                <button class="btn btn-accent srch-btn" style="margin-left: 215px; width: 940px;">Post</button>
+                <!-- <input type="submit" value="Post" class="btn btn-accent srch-btn" style="width: 900px;">     -->
             </form>
  
 

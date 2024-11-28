@@ -63,7 +63,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button class="btn btn-accent srch-btn" style="width:900px;">Update</button>   
+                <button class="btn btn-accent srch-btn" style="margin-left: 215px; width:945px;">Update</button>   
             </form>
         </div>
     </div>
