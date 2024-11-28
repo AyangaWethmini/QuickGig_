@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require APPROOT . '/views/components/navbar.php';
+<?php require APPROOT . '/views/components/navbar.php'; 
 $userID = $_SESSION['user_id'];
 $availableModel = $this->model('Available'); // Get the Available model
 $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
@@ -15,7 +15,6 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
 
             <div class="category-container">
                 <?php require APPROOT . '/views/seeker/categoryLinksJobListing.php'; ?>
-
             </div>
             <hr> <br>
 
@@ -29,7 +28,6 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
                 <?php foreach ($jobs as $job): ?>
                     <div class="myjob-item">
                         <div class="job-details">
-
                             <span class="job-title"><?= htmlspecialchars($job->description) ?></span>
                             <span class="employment-type"><?= htmlspecialchars($job->shift) ?></span>
                             <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
@@ -41,67 +39,49 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
                             <span class="date-posted">Posted on: <?= htmlspecialchars($job->availableDate) ?></span>
                             <span class="time-posted">Posted at: <?= htmlspecialchars($job->timeFrom) ?></span>
                             <span class="my-job-id">Job id: #<?= htmlspecialchars($job->availableID) ?></span>
-
                         </div>
-                        <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?=ROOT?>/seeker/updateAvailability/<?= $job->availableID ?>';">Update</button>
-                        <button class="delete-jobReq-button btn btn-danger">Delete</button>
+                        <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/seeker/updateAvailability/<?= $job->availableID ?>';">Update</button>
+                        <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->availableID ?>" onclick="confirmDelete(this)">Delete</button>
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <div id="popup" class="popup hidden">
-                <div class="popup-content">
-                    <p id="popup-message">Are you sure you want to delete this job?</p>
-                    <button id="popup-yes" class="popup-button-jobReq">Yes</button>
-                    <button id="popup-no" class="popup-button-jobReq">No</button>
+            <!-- Delete Confirmation Modal -->
+            <div id="delete-confirmation" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>Are you sure you want to delete this job?</p>
+                    <button id="confirm-yes" class="popup-btn-delete-complaint">Yes</button>
+                    <button id="confirm-no" class="popup-btn-delete-complaint">No</button>
                 </div>
             </div>
 
+            <form id="delete-form" method="POST" style="display: none;"></form>
+
         </div>
+    </div>
+
 </body>
+
 <script>
-    document.querySelectorAll('.delete-jobReq-button').forEach(button => {
-        button.addEventListener('click', () => {
-            document.getElementById('popup-message').textContent = 'Are you sure you want to delete this job?';
-            document.getElementById('popup').classList.remove('hidden');
-        });
-    });
+    // Open modal and set the job id for deletion
+    function confirmDelete(button) {
+        var jobId = button.getAttribute('data-jobid'); // Get the job ID from the clicked button
+        var modal = document.getElementById('delete-confirmation');
+        modal.style.display = 'flex'; // Show modal
 
-    document.getElementById('popup-yes').addEventListener('click', () => {
-        document.getElementById('popup').classList.add('hidden');
-        // Add your delete logic here
-    });
+        // Handle the Yes button
+        document.getElementById('confirm-yes').onclick = function() {
+            var form = document.getElementById('delete-form');
+            form.action = '<?= ROOT ?>/seeker/deleteAvailability/' + jobId; // Set the form action URL
+            modal.style.display = 'none'; // Hide modal
+            form.submit(); // Submit the form
+        };
 
-    document.getElementById('popup-no').addEventListener('click', () => {
-        document.getElementById('popup').classList.add('hidden');
-    });
-    document.querySelectorAll('.delete-jobReq-button').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const jobId = event.target.dataset.id;
-            document.getElementById('popup-message').textContent = `Are you sure you want to delete job ID #${jobId}?`;
-            document.getElementById('popup').classList.remove('hidden');
-
-            // Add logic to delete the job
-            document.getElementById('popup-yes').addEventListener('click', () => {
-                fetch(`<?= ROOT ?>/seeker/deleteJob/${jobId}`, {
-                        method: 'DELETE'
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload(); // Refresh the page after deletion
-                        } else {
-                            alert('Failed to delete the job.');
-                        }
-                    });
-                document.getElementById('popup').classList.add('hidden');
-            });
-
-            document.getElementById('popup-no').addEventListener('click', () => {
-                document.getElementById('popup').classList.add('hidden');
-            });
-        });
-    });
+        // Handle the No button
+        document.getElementById('confirm-no').onclick = function() {
+            modal.style.display = 'none'; // Hide modal
+        };
+    }
 </script>
 
 </html>

@@ -186,5 +186,13 @@ class Seeker extends Controller
             $this->view('updateJob', $data);
         }
     }
+    public function deleteAvailability($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->availabilityModel = $this->model('Available');
+            $this->availabilityModel->delete($id);
+            header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
+        }
+    }
+    
     
 }

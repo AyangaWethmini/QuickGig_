@@ -88,4 +88,9 @@ class Available
     
         return isset($result[0]) ? $result[0] : null;
     }
+    public function delete($id) {
+        $query = "DELETE FROM makeavailable WHERE availableID = :id";
+        $params = ['id' => $id];
+        return $this->query($query, $params);
+    }
 }

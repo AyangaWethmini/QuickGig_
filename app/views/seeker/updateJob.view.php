@@ -32,10 +32,10 @@
                 </div>
                 <div class="user-input" style=" margin-top:10px;">
                     <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Daytime 
-                        <input type="radio" name="shift" value="Daytime" <?= $availability->shift === 'Day' ? 'checked' : '' ?>> 
+                        <input type="radio" name="shift" value="Day" <?= $availability->shift === 'Day' ? 'checked' : '' ?>> 
                     </p><br>
                     <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night time
-                        <input type="radio" name="shift" value="Night time" <?= $availability->shift === 'Night' ? 'checked' : '' ?>> 
+                        <input type="radio" name="shift" value="Night" <?= $availability->shift === 'Night' ? 'checked' : '' ?>> 
                     </p><br>
                 </div>
             </div>
