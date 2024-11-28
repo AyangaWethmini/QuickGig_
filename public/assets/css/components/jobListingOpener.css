@@ -20,9 +20,10 @@
     padding: 10px 20px;
     cursor: pointer;
     font-size: large;
-    margin-left: 146vh;
   }
-  
+  .bar{
+    justify-content: space-between;
+  }
   .post-job-btn:hover {
     background-color: #3430bd;
   }
@@ -54,3 +55,4 @@
   .select-dates-btn:hover {
     background-color: #D6DDEB;
   }
+  
