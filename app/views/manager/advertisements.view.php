@@ -25,7 +25,7 @@
         <div class="filter flex-row">
             <span>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing <?= count($advertisements) ?> results</p>
+                <p class="text-grey">Showing 73 results</p>
             </span>
 
             <div class="filter-container">
@@ -61,7 +61,7 @@
                     <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
                     <div class="status flex-row">
                         <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
-                            <?= $ad->adStatus == 1 ? 'Paid' : 'Payment Pending' ?>
+                            <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
                         </span>
                     </div>
                 </div>
@@ -94,11 +94,6 @@
                 <div class="form-field">
                     <label class="lbl">Link</label><br>
                     <input type="url" name="link" required>
-                </div>
-
-                <div class="form-field">
-                    <label class="lbl">Duration(Hours)</label><br>
-                    <input type="number" name="duration" required>
                 </div>
                 
                 <div class="form-field radio-btns flex-row" style="gap: 10px">
@@ -233,4 +228,3 @@ function deleteAd(adId) {
 }
 
 </script>
-

@@ -15,17 +15,14 @@ class Manager extends Controller {
         $this->view('profile');
     }
 
-    public function plans(){
-        $this->view('plans');
-    }
-
     public function announcements(){
         $this->view('announcements');
-    }   
+    }
 
     public function helpCenter(){
         $this->view('helpCenter');
     }
+
 
     public function advertisements() {
         $data = $this->advertisementModel->getAdvertisements();
@@ -46,7 +43,6 @@ class Manager extends Controller {
             $advertiserID = 2; // Default for now
             $adDescription = trim($_POST['adDescription']);
             $link = trim($_POST['link']);
-            $duration = intval($_POST['duration']);
             $adStatus = intval($_POST['adStatus']);
             $adDate = date('Y-m-d');
             $adTime = date('H:i:s');
@@ -74,7 +70,6 @@ class Manager extends Controller {
                 'advertiserID' => $advertiserID,
                 'adDescription' => $adDescription,
                 'link' => $link,
-                'duration' => $duration,
                 'adStatus' => $adStatus,
                 'img' => $imageData,
                 'adDate' => $adDate,
@@ -96,7 +91,7 @@ class Manager extends Controller {
     public function updateAdvertisement($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Validation
-            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_POST['duration'])) {
+            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus'])) {
                 header('Location: ' . ROOT . '/manager/advertisements');
                 return;
             }
@@ -104,7 +99,6 @@ class Manager extends Controller {
             $adTitle = trim($_POST['adTitle']);
             $adDescription = trim($_POST['adDescription']);
             $link = trim($_POST['link']);
-            $duration = intval($_POST['duration']);
             $adStatus = intval($_POST['adStatus']);
 
             //  updateData without the image field
@@ -112,7 +106,6 @@ class Manager extends Controller {
                 'adTitle' => $adTitle,
                 'adDescription' => $adDescription,
                 'link' => $link,
-                'duration' => $duration,
                 'adStatus' => $adStatus
             ];
 
