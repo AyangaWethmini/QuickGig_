@@ -37,20 +37,20 @@
 
         <div class="overview flex-row">
             <div class="flex-row box container" style="background-color: var(--brand-primary);">
-                <div><h1>23</h1></div>
-                <div><p>Ads Posted</p></div>    
+                <div><h3>23 Ads Posted</h3></div>
+                    
             </div>
             <div class="flex-row box container" style="background-color: #56CDAD;">
-                <div><h1>400</h1></div>
-                <div><p>New Subscribers</p></div> 
+                <div><h3>400 New Subscribers</h3></div>
+                
             </div>
             <div class="flex-row box container" style="background-color: #26A4FF;">
-                <div><h1>156k</h1></div>
-                <div><p>Revenue</p></div> 
+                <div><h3>156k New Subscribers</h3></div>
+                
             </div>
             <div class="flex-row box container" style="background-color: #FFB836;">
-                <div><h1>3</h1></div>
-                <div><p>Active Plans</p></div> 
+                <div><h3>3 Active Plans</h3></div>
+                
             </div>
         </div>
         <hr><br>

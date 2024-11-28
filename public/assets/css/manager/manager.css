@@ -40,6 +40,10 @@
     margin: 20px 40px;
 }
 
+.box h1{
+  font-size: 20px;
+}
+
 
 .chart-overview,  .messages{
   border: 1px solid var(--neutral-60);

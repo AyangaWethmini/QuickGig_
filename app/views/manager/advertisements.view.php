@@ -25,7 +25,7 @@
         <div class="filter flex-row">
             <span>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing 73 results</p>
+                <p class="text-grey">Showing <?= count($advertisements) ?> results</p>
             </span>
 
             <div class="filter-container">

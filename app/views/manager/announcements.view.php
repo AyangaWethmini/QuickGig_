@@ -24,8 +24,8 @@
 
         <div class="filter flex-row">
             <span>
-                <h3>All Ads</h3>
-                <p class="text-grey">Showing 73 results</p>
+                <h3>All Announcements</h3>
+                <p class="text-grey">Showing 0 results</p>
             </span>
 
             <div class="filter-container">
