@@ -84,7 +84,8 @@ class Admin extends Controller {
                     header('Location: ' . ROOT . '/admin/adminannouncement');
 
                 } else {
-                    die("Checkpoint 4: Database failed");
+                    // die("Checkpoint 4: Database failed");
+                    header('Location: ' . ROOT . '/admin/adminannouncement');
 
                 }
             }
@@ -140,8 +141,10 @@ class Admin extends Controller {
                     empty($data['announcementTime_error']) && 
                     empty($data['content_error'])
                 ) {
+                    // Get the adminID from the session
+                    $adminID = $_SESSION['user_id'];
                     // Insert into the database using the model
-                    if ($this->adminModel->createAnnouncement($data)) {
+                    if ($this->adminModel->createAnnouncement($data, $adminID)) {
                         // Redirect to announcements page
                         header('Location: ' . ROOT . '/admin/adminannouncement');
                         exit;
