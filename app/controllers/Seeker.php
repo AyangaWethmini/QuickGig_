@@ -98,6 +98,10 @@ class Seeker extends Controller
     {
         $this->view('settings');
     }
+    function updateJob()
+    {
+        $this->view('updateJob');
+    }
     public function availability()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -138,4 +142,49 @@ class Seeker extends Controller
             }
         }
     }
+    public function updateAvailability($id = null) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+    
+            // Prepare data for updating
+            $description = trim($_POST['description']);
+            $shift = $_POST['shift'];
+            $salary = trim($_POST['salary']);
+            $currency = $_POST['currency'];
+            $timeFrom = $_POST['timeFrom'];
+            $timeTo = $_POST['timeTo'];
+            $availableDate = $_POST['availableDate'];
+            $location = trim($_POST['location']);
+    
+            // Update availability in the database
+            $this->availabilityModel = $this->model('Available');
+            $this->availabilityModel->update($id, [
+                'description' => $description,
+                'shift' => $shift,
+                'salary' => $salary,
+                'currency' => $currency,
+                'timeFrom' => $timeFrom,
+                'timeTo' => $timeTo,
+                'availableDate' => $availableDate,
+                'location' => $location
+            ]);
+    
+            // Redirect to the availability page or another appropriate page
+            header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
+        } else {
+            // Get the current availability details for the given ID
+            $this->availabilityModel = $this->model('Available');
+            $availability = $this->availabilityModel->getAvailabilityById($id);
+    
+            // Pass the current availability data to the view
+            $data = [
+                'availability' => $availability
+            ];
+    
+            // Load the update form view
+            $this->view('updateJob', $data);
+        }
+    }
+    
 }

@@ -34,8 +34,8 @@
                     </p>
                 </div>
                 <div class="user-input" style=" margin-top:10px;">
-                    <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Daytime <input type="radio" name="shift"> </p><br>
-                    <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night time<input type="radio" name="shift"> </p> <br>
+                    <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Day time <input type="radio" name="shift" value="Day"> </p><br>
+                    <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night time<input type="radio" name="shift" value="Night"> </p> <br>
                 </div>
             </div>
             <hr>

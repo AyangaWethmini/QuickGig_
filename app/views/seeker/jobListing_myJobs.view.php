@@ -43,7 +43,7 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
                             <span class="my-job-id">Job id: #<?= htmlspecialchars($job->availableID) ?></span>
 
                         </div>
-                        <button class="update-jobReq-button btn btn-accent">Update</button>
+                        <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?=ROOT?>/seeker/updateAvailability/<?= $job->availableID ?>';">Update</button>
                         <button class="delete-jobReq-button btn btn-danger">Delete</button>
                     </div>
                 <?php endforeach; ?>
