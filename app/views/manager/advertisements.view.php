@@ -228,4 +228,21 @@ function deleteAd(adId) {
     }
 }
 
+
+function previewImage(input, previewId) {
+    const preview = document.getElementById(previewId);
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Image preview" style="max-width: 200px; margin-top: 10px;">`;
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.innerHTML = '';
+    }
+}
+
 </script>
