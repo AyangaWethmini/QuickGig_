@@ -90,7 +90,6 @@
 
 function deleteAd(adId) {
     if (confirm('Are you sure you want to delete this advertisement?')) {
-        // Using POST instead of DELETE
         fetch(`<?=ROOT?>/manager/deleteAdvertisement/${adId}`, {
             method: 'POST',
             headers: {
@@ -108,28 +107,5 @@ function deleteAd(adId) {
     }
 }
 
-// function updateAd(adId, data) {
-//     fetch(`<?=ROOT?>/manager/updateAd/${adId}`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             status: newStatus
-//         })
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//             alert('Advertisement status updated successfully');
-//             window.location.reload();
-//         } else {
-//             alert('Failed to update advertisement status');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('An error occurred while updating the advertisement');
-//     });
-// }
 
 </script>

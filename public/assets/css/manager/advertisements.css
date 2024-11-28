@@ -94,6 +94,7 @@
 .ad-card .details{
     justify-content: flex-start;
     margin-left: 10px;
+    width: 300px;
 }
 
 .ad-title{
