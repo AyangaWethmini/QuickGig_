@@ -9,7 +9,7 @@
     height: 600px;
 }
 
-input[type=text], input[type=password] {
+.form-field input[type=text], .form-field input[type=password] {
     border: 1px solid #D6DDEB;
     width: 95%;
     height: 45px;
@@ -20,7 +20,7 @@ input[type=text], input[type=password] {
     display: block;
 }
 
-input[type=text]:focus, input[type=password]:focus {
+.form-field input[type=text]:focus, .form-field input[type=password]:focus {
     border: 1px solid rgb(70, 64, 222);
 }
 

@@ -19,8 +19,9 @@ form{
     margin: 2px;
 }
 
-.signup-form input{
+.form-field input[type="text"], .form-field input[type="password"]{
     width: 250px;
+    padding: 10px;
 }
 
 

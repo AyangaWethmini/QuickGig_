@@ -1,8 +1,10 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
+<?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<div class="wrapper flex-row">
+
+<div class="wrapper flex-row" style="margin-top: 100px;">
 
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
@@ -23,7 +25,7 @@
         <div class="filter flex-row">
             <span>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing 73 results</p>
+                <p class="text-grey">Showing <?= count($advertisements) ?> results</p>
             </span>
 
             <div class="filter-container">
@@ -37,116 +39,192 @@
         </div>
         <br><br>
 
-        <div class="ads">
+        <div class="ads container">
         <?php foreach ($advertisements as $ad): ?> 
-        <div class="ad-card flex-row container">
-            <div class="image">
-                <img src="<?= htmlspecialchars($ad->img) ?>" alt="ad image">
-            </div>
-            <div class="details flex-col">
-                <p class="ad-title"><?= htmlspecialchars($ad->adTitle) ?></p>
-                <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                <p class="description"><?= htmlspecialchars($ad->adDescription) ?></p>
-                <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
-                <div class="status flex-row">
-                    <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
-                        <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
-                    </span>
+            <div class="ad-card flex-row container">
+                <div class="image" >
+                    <?php if ($ad->img): ?>
+                        <?php 
+                            // Get the mime type from the first few bytes of the BLOB
+                            $finfo = new finfo(FILEINFO_MIME_TYPE);
+                            $mimeType = $finfo->buffer($ad->img);
+                        ?>
+                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Advertisement image">
+                    <?php else: ?>
+                        <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available">
+                    <?php endif; ?>
+                </div>
+                <div class="details flex-col">
+                    <p class="ad-title"><?= htmlspecialchars($ad->adTitle) ?></p>
+                    <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
+                    <p class="description"><?= htmlspecialchars($ad->adDescription) ?></p>
+                    <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
+                    <div class="status flex-row">
+                        <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
+                            <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="ad-actionbtns flex-col">
+                    <button class="btn btn-accent" onclick="showUpdateForm(<?php echo $ad->advertisementID ?>)">Edit</button>
+                    <button class="btn btn-del" onclick="deleteAd(<?php echo $ad->advertisementID ?>)">Delete</button>
                 </div>
             </div>
-            <div class="ad-actionbtns flex-col">
-                <button class="btn btn-accent" onclick="editAd(<?= htmlspecialchars($ad->advertisementID) ?>)">Edit</button>
-                <button class="btn btn-del" onclick="deleteAd(<?= htmlspecialchars($ad->advertisementID) ?>)">Delete</button>
-            </div>
+        <?php endforeach ?>
+
         </div>
-    <?php endforeach ?>
 
+        <div class="create-ad-form container hidden" id="create-ad">
+            <div class="title flex-row">
+                <i class="fa-solid fa-arrow-left" onclick="hideForm('create-ad')" style="cursor: pointer;"></i>
+                <p class="title">Create Ad</p>
             </div>
 
-        </div>
-
-
-        <div class="create-ad-form from container hidden"  id="create-ad">
-        <div class="title flex-row">
-        <i class="fa-solid fa-arrow-left" onclick="postAd()" style="cursor : pointer;"></i> <p class="title">Create Ad</p>
-        </div>
-
-            <form action="post">
+            <form action="<?=ROOT?>/manager/postAdvertisement" method="POST" enctype="multipart/form-data">
                 <div class="form-field">
-                    <lable class="lbl">Title</lable><br>
-                    <input type="text" for="title">
+                    <label class="lbl">Title</label><br>
+                    <input type="text" name="adTitle" required style="width: 400px; padding: 0px;">
                 </div>
+                
                 <div class="form-field">
-                    <lable class="lbl">Advertiser</lable><br>
-                    <input type="text" for="advertiser">
+                    <label class="lbl">Description</label><br>
+                    <textarea name="adDescription" rows="6" required></textarea>
                 </div>
+                
                 <div class="form-field">
-                    <lable class="lbl">Advertiser contact no.</lable><br>
-                    <input type="text" for="contact">
+                    <label class="lbl">Link</label><br>
+                    <input type="url" name="link" required>
                 </div>
-                <div class="form-field">
-                    <lable class="lbl">Description</lable><br>
-                    <textarea id="description" name="description" rows="6" ></textarea>
+                
+                <div class="form-field radio-btns flex-row" style="gap: 10px">
+                    <input type="radio" id="status-paid" name="adStatus" value="1" required>
+                    <label for="status-paid">Paid</label>
+                    <input type="radio" id="status-pending" name="adStatus" value="0">
+                    <label for="status-pending">Pending</label>
                 </div>
-                <div class="form-field">
-                    <lable class="lbl">Link</lable><br>
-                    <input type="text" for="link">
-                </div>
-                <div class="form-field">
-                    <lable class="lbl">Expiry date</lable><br>
-                    <input type="text" for="name">
-                </div>
-                <div class="form-field radio-btns flex-row" style="gap : 10px">
-                    <input type="radio" name="paid"><label for="paid">Paid</label>
-                    <input type="radio" name="pending"><label for="pending">Pending</label>
-                </div>
+                <br>
+                
                 <div class="links flex-col">
-                <div class="form-field img-link">
-                    <a href="#">Add Image</a>
-                </div>
-                <button class="btn btn-accent" onclick="postAd()" href="#">Post Ad</button>
+                    <div class="form-field img-link">
+                        <label class="lbl">Advertisement Image</label><br>
+                        <input type="file" name="adImage" accept="image/*" required>
+                    </div>
+                    
+                    <button class="btn btn-accent" type="submit" name="createAdvertisement">Post Ad</button>
                 </div>
             </form>
         </div>
+
+
+
+        <!-- update ad form -->
+        <div class="update-ad-form container hidden" id="update-ad">
+            <div class="title flex-row">
+                <i class="fa-solid fa-arrow-left" onclick="hideForm('update-ad')" style="cursor: pointer;"></i>
+                <p class="title">Update Ad</p>
+            </div>
+
+            <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $ad->advertisementID ?>" method="POST" enctype="multipart/form-data">
+                <div class="form-field">
+                    <label class="lbl">Title</label><br>
+                    <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>" style="width: 400px; padding: 0px;">
+                </div>
+                
+                <div class="form-field">
+                    <label class="lbl">Description</label><br>
+                    <textarea name="adDescription" rows="6" required><?= htmlspecialchars($ad->adDescription) ?></textarea>
+                </div>
+                
+                <div class="form-field">
+                    <label class="lbl">Link</label><br>
+                    <input type="url" name="link"   placeholder="<?= htmlspecialchars($ad->link) ?>">
+                </div>
+                
+                <div class="form-field radio-btns flex-row" style="gap: 10px">
+                    <input type="radio" id="status-paid" name="adStatus" value="1" required <?= $ad->adStatus == 1 ? 'checked' : '' ?>>
+                    <label for="status-paid">Paid</label>
+                    <input type="radio" id="status-pending" name="adStatus" value="0" <?= $ad->adStatus == 0 ? 'checked' : '' ?>>
+                    <label for="status-pending">Pending</label>
+                </div>
+                <br>
+                
+                <div class="links flex-col">
+                    <div class="form-field img-link">
+                        <label class="lbl">Advertisement Image</label><br>
+                        <input type="file" name="adImage" accept="image/*">
+                    </div>
+                    
+                    <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
+                </div>
+            </form>
+        </div>
+
+        </div>
+
+
+        
 
 
         
     </div>
 
 
+    <div id="delete-confirmation" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this advertisement?</p>
+            <button id="confirm-yes" class="popup-btn-delete-ad">Yes</button>
+            <button id="confirm-no" class="popup-btn-delete-ad">No</button>
+        </div>
+</div>
+
+
 
 <script>
-
 const form = document.getElementById("create-ad");
+const updateForm = document.getElementById("update-ad");
 
-    function showForm() {
-        
-        if (form.classList.contains("hidden")) {
-            form.classList.remove("hidden");
-            setTimeout(() => {
-                form.classList.add("show");
-            }, 50); 
-            
-        } else {
-            form.classList.remove("show");
-            form.classList.add("hidden");
-        }
-    }
+function showUpdateForm(ad) {
+    updateForm.classList.remove("hidden");
+    updateForm.classList.add("show");
+}
 
-    function postAd(){
-        form.classList.remove("show");
+function showForm() {
+    if (form.classList.contains("hidden")) {
+        form.classList.remove("hidden");
         setTimeout(() => {
-            form.classList.add("hidden");
-        }, 500);
+            form.classList.add("show");
+        }, 50);
     }
+}
+
+function hideForm(formId) {
+    const selectedForm = document.getElementById(formId);
+    selectedForm.classList.remove("show");
+    setTimeout(() => {
+        selectedForm.classList.add("hidden");
+    }, 500);
+}
 
 
-    form.addEventListener("submit", function(event) {
-        event.preventDefault(); 
-        console.log("Form submission prevented!");
-    });
 
-    
+function deleteAd(adId) {
+    if (confirm('Are you sure you want to delete this advertisement?')) {
+        // Using POST instead of DELETE
+        fetch(`<?=ROOT?>/manager/deleteAdvertisement/${adId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Advertisement deleted successfully');
+                window.location.reload();
+            } else {
+                alert('Failed to delete advertisement');
+            }
+        })
+    }
+}
 
 </script>
-

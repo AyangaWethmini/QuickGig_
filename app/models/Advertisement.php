@@ -1,32 +1,15 @@
 <?php
-
 class Advertisement {
     use Database;
-
-    public $advertiserID;
-    public $adTitle;
-    public $adDate;
-    public $adTime;
-    public $clicks;
-    public $img;
-    public $adDescription;
-    public $link;
-    public $status;
-    
-
-    public function __construct()
-    {
-        // $this->db = new Database; // PDO instance
-    }
 
     public function getAdvertisements() {
         $query = 'SELECT * FROM advertisement ORDER BY adDate DESC, adTime DESC';
         return $this->query($query);
     }
 
-    public function create($data) {
-        $query = "INSERT INTO advertisement (advertiserId, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus) 
-                  VALUES (:advertiserId, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus)";
+    public function createAdvertisement($data) {
+        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus) 
+                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus)";
         
         $params = [
             'advertiserID' => $data['advertiserID'],
@@ -53,30 +36,29 @@ class Advertisement {
         $query = "SELECT * FROM advertisement WHERE advertisementID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
-    
-        return isset($result[0]) ? $result[0] : null;
+        return $result[0] ?? null;
     }
-    
-    
+
     public function update($id, $data) {
         $query = "UPDATE advertisement 
-                  SET adDescription = :adDescription, 
+                  SET adTitle = :adTitle, 
+                      adDescription = :adDescription, 
                       img = :img, 
-                      adTitle = :adTitle, 
-                      complaintDate = :complaintDate, 
-                      complaintTime = :complaintTime 
-                  WHERE complaintID = :id";
+                      adDate = :adDate, 
+                      adTime = :adTime, 
+                      adStatus = :adStatus 
+                  WHERE advertisementID = :id";
     
         $params = [
             'id' => $id,
+            'adTitle' => $data['adTitle'],
             'adDescription' => $data['adDescription'],
             'img' => $data['img'],
-            'adTitle' => $data['adTitle'],
-            'complaintDate' => $data['complaintDate'],
-            'complaintTime' => $data['complaintTime']
+            'adDate' => $data['adDate'],
+            'adTime' => $data['adTime'],
+            'adStatus' => $data['adStatus']
         ];
     
         return $this->query($query, $params);
     }
-    
 }
