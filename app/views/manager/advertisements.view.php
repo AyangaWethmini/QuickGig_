@@ -57,7 +57,7 @@
                 <div class="details flex-col">
                     <p class="ad-title"><?= htmlspecialchars($ad->adTitle) ?></p>
                     <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                    <p class="description"><?= htmlspecialchars($ad->adDescription) ?></p>
+                    <p class="description"><?= htmlspecialchars(implode(' ', array_slice(explode(' ', $ad->adDescription), 0, 10))) . (str_word_count($ad->adDescription) > 10 ? '...' : '') ?></p>
                     <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
                     <div class="status flex-row">
                         <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
@@ -83,7 +83,7 @@
             <form action="<?=ROOT?>/manager/postAdvertisement" method="POST" enctype="multipart/form-data">
                 <div class="form-field">
                     <label class="lbl">Title</label><br>
-                    <input type="text" name="adTitle" required>
+                    <input type="text" name="adTitle" required style="width: 400px; padding: 0px;">
                 </div>
                 
                 <div class="form-field">
@@ -107,7 +107,8 @@
                 <div class="links flex-col">
                     <div class="form-field img-link">
                         <label class="lbl">Advertisement Image</label><br>
-                        <input type="file" name="adImage" accept="image/*" required>
+                        <input type="file" name="adImage" accept="image/*" required onchange="previewImage(this, 'createImagePreview')">
+                        <div id="createImagePreview" class="image-preview"></div>
                     </div>
                     
                     <button class="btn btn-accent" type="submit" name="createAdvertisement">Post Ad</button>
@@ -151,7 +152,7 @@
                 <div class="links flex-col">
                     <div class="form-field img-link">
                         <label class="lbl">Advertisement Image</label><br>
-                        <input type="file" name="adImage" accept="image/*">
+                        <input type="file" name="adImage" accept="image/*" onchange="previewImage(this, 'imagePreview')">
                         <div id="imagePreview" class="image-preview"></div>
                     </div>
                     
@@ -244,5 +245,8 @@ function previewImage(input, previewId) {
         preview.innerHTML = '';
     }
 }
+
+
+
 
 </script>
