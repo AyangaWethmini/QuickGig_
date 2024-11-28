@@ -35,7 +35,7 @@
             
             <hr>
             <br><br><br>
-            <a href="<?php echo ROOT;?>/admin/settings" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/admin/adminsettings" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-sharp fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </a>

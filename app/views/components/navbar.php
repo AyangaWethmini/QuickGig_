@@ -57,7 +57,7 @@ function allocatePathBasedOnRole() {
             case 0:
                 return ROOT . "/admin/announcement";
             case 1:
-                return ROOT . "/user/home";
+                return ROOT . "/manager/dashboard";
             case 2:
                 return ROOT . "/jobProvider/jobListing_received";
             case 3:
