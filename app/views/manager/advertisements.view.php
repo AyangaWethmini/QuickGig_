@@ -152,6 +152,7 @@
                     <div class="form-field img-link">
                         <label class="lbl">Advertisement Image</label><br>
                         <input type="file" name="adImage" accept="image/*">
+                        <div id="imagePreview" class="image-preview"></div>
                     </div>
                     
                     <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
