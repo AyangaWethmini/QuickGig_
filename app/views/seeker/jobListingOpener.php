@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/jobListingOpener.css">
 
 <div class="opener">
-            <p class="title-name">My Jobs</p>
+            <p class="title-name">My Availabilities</p>
             <a href="<?php echo ROOT;?>/seeker/postJob" class="post-job-btn">
-                + Post a job
+                + availability
             </a>
         </div> <br> <hr>
 

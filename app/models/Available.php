@@ -23,12 +23,11 @@ class Available
     }
 
     public function getJobsByUser($userID)
-    {
-        $query = "SELECT * FROM makeavailable WHERE accountID = :accountID ORDER BY availableDate DESC LIMIT 50";
-
-        $params = ['accountID' => $userID];
-        return $this->query($query, $params);
-    }
+{
+    $query = "SELECT * FROM makeavailable WHERE accountID = :accountID ORDER BY availableDate DESC, timeFrom DESC";
+    $params = ['accountID' => $userID];
+    return $this->query($query, $params);
+}
 
     public function create($data)
     {

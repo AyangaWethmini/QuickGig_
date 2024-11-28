@@ -1,5 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require APPROOT . '/views/components/navbar.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php';
+$userID = $_SESSION['user_id'];
+$availableModel = $this->model('Available'); // Get the Available model
+$jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
+?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing_myJobs.css">
 
@@ -22,26 +26,27 @@
             </div> <br>
 
             <div class="job-list">
+                <?php foreach ($jobs as $job): ?>
+                    <div class="myjob-item">
+                        <div class="job-details">
 
-                <div class="myjob-item">
-                    <div class="job-details">
-                        <span class="job-title"><?= htmlspecialchars($job->description) ?></span>
-                        <span class="employment-type"><?= htmlspecialchars($job->shift) ?></span>
-                        <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
-                        <span class="myjobs-category">Category: <?= htmlspecialchars($job->category ?? 'N/A') ?></span>
-                        <span class="skills">Skills: <?= htmlspecialchars($job->skills ?? 'N/A') ?></span>
-                        <span class="location">Location: <?= htmlspecialchars($job->location) ?></span>
-                        <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?> per hour</span>
-                        <hr>
-                        <span class="date-posted">Posted on: <?= htmlspecialchars($job->availableDate) ?></span>
-                        <span class="time-posted">Posted at: <?= htmlspecialchars($job->timeFrom) ?></span>
-                        <span class="my-job-id">Job id: #<?= htmlspecialchars($job->availableID) ?></span>
+                            <span class="job-title"><?= htmlspecialchars($job->description) ?></span>
+                            <span class="employment-type"><?= htmlspecialchars($job->shift) ?></span>
+                            <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
+                            <span class="myjobs-category">Category: <?= htmlspecialchars($job->category ?? 'N/A') ?></span>
+                            <span class="skills">Skills: <?= htmlspecialchars($job->skills ?? 'N/A') ?></span>
+                            <span class="location">Location: <?= htmlspecialchars($job->location) ?></span>
+                            <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?> per hour</span>
+                            <hr>
+                            <span class="date-posted">Posted on: <?= htmlspecialchars($job->availableDate) ?></span>
+                            <span class="time-posted">Posted at: <?= htmlspecialchars($job->timeFrom) ?></span>
+                            <span class="my-job-id">Job id: #<?= htmlspecialchars($job->availableID) ?></span>
 
+                        </div>
+                        <button class="update-jobReq-button btn btn-accent">Update</button>
+                        <button class="delete-jobReq-button btn btn-danger">Delete</button>
                     </div>
-                    <button class="update-jobReq-button btn btn-accent">Update</button>
-                    <button class="delete-jobReq-button btn btn-danger">Delete</button>
-                </div>
-
+                <?php endforeach; ?>
             </div>
 
             <div id="popup" class="popup hidden">
@@ -78,7 +83,9 @@
 
             // Add logic to delete the job
             document.getElementById('popup-yes').addEventListener('click', () => {
-                fetch(`<?= ROOT ?>/seeker/deleteJob/${jobId}`, { method: 'DELETE' })
+                fetch(`<?= ROOT ?>/seeker/deleteJob/${jobId}`, {
+                        method: 'DELETE'
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
