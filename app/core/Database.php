@@ -22,6 +22,7 @@ trait Database
             if (is_array($result) && count($result)) {
                 return $result;
             }
+            
         }
         return false;
     }
