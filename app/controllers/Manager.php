@@ -118,6 +118,8 @@ class Manager extends Controller {
                 }
             }
 
+            
+
             $this->advertisementModel->update($id, $updateData);
             header('Location: ' . ROOT . '/manager/advertisements');
         }
