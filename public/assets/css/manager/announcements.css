@@ -1,0 +1,78 @@
+.wrapper{
+    margin-top: 100px;
+}
+
+.main-content{
+    position: relative;
+    margin-left: 300px;
+}
+
+.create-announcement-form{
+    flex-grow: 1;
+    border-right: 1px solid var(--neutral-80);
+    height: 500px;
+    justify-content: center;
+
+}
+
+.create-announcement-form h3{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%;
+    align-self: center;
+}
+
+.create-announcement-form input{
+    width: 400px;
+    padding: 8px;
+    height: 40px;
+}
+
+.create-announcement-form textarea{
+    width: 400px;
+    height: 150px;
+}
+
+.create-announcement-form button{
+    width: 300px;
+    height: 40px;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.announcements{
+    flex-grow: 2;
+    margin: 10px;
+    gap: 20px;
+}
+
+.announcement-card{
+    display: flex;
+    border: 1px solid #d6ddeb;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.announcement-card:hover{
+    transform: translateY(-5px);
+}
+ .announcement-card h3{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%;
+ }
+.announcement-card p{
+    color: var(--Neutrals-80, #515B6F);
+    font-family: Epilogue;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 160%;
+}
+

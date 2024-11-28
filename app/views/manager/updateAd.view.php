@@ -8,7 +8,7 @@
     <div class="main-content">
     <div class="update-ad-form container" id="update-ad">
         <div class="title flex-row">
-            <i class="fa-solid fa-arrow-left" onclick="hideForm('update-ad')" style="cursor: pointer;"></i>
+            <i class="fa-solid fa-arrow-left" onclick="window.location.href='<?=ROOT?>/manager/advertisements'" style="cursor: pointer;"></i>
             <p class="title">Update Ad</p>
             </div>
 
@@ -25,7 +25,13 @@
                 
                 <div class="form-field">    
                     <label class="lbl">Link</label><br>
-                    <input type="url" name="link"   placeholder="<?= $data['ad']->link ?>">
+                    <input type="url" name="link"  value="<?= $data['ad']->link ?>">
+                </div>
+
+                <div class="form-field flex-col">
+                    <label class="lbl">Duration (hours)</label><br>
+                    <input type="number" name="duration" min="1" required style="width: 400px; padding: 0px; height: 35px;" value="<?= $data['ad']->duration ?>" disabled>
+                    <span class="text-grey" style="font-size: 14px; margin-top: 3px; color:var(--brand-primary)"> *Duration cannot be changed</span>
                 </div>
                 
                 <div class="form-field radio-btns flex-row" style="gap: 10px">
