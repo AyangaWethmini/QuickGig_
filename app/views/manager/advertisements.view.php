@@ -25,7 +25,7 @@
         <div class="filter flex-row">
             <span>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing 73 results</p>
+                <p class="text-grey">Showing <?= count($advertisements) ?> results</p>
             </span>
 
             <div class="filter-container">
@@ -83,7 +83,7 @@
             <form action="<?=ROOT?>/manager/postAdvertisement" method="POST" enctype="multipart/form-data">
                 <div class="form-field">
                     <label class="lbl">Title</label><br>
-                    <input type="text" name="adTitle" required>
+                    <input type="text" name="adTitle" required style="width: 400px; padding: 0px;">
                 </div>
                 
                 <div class="form-field">
@@ -127,7 +127,7 @@
             <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $ad->advertisementID ?>" method="POST" enctype="multipart/form-data">
                 <div class="form-field">
                     <label class="lbl">Title</label><br>
-                    <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>">
+                    <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>" style="width: 400px; padding: 0px;">
                 </div>
                 
                 <div class="form-field">
@@ -137,7 +137,7 @@
                 
                 <div class="form-field">
                     <label class="lbl">Link</label><br>
-                    <input type="url" name="link" required  placeholder="<?= htmlspecialchars($ad->link) ?>">
+                    <input type="url" name="link"   placeholder="<?= htmlspecialchars($ad->link) ?>">
                 </div>
                 
                 <div class="form-field radio-btns flex-row" style="gap: 10px">
