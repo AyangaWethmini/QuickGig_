@@ -32,6 +32,15 @@ class Manager extends Controller {
         $this->view('advertisements', ['advertisements' => $data]);
     }
 
+
+    public function createAd(){
+        $this->view('createAd');
+    }
+
+    public function updateAd(){
+        $this->view('updateAd');
+    }
+
     public function postAdvertisement() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //form validation
@@ -43,7 +52,7 @@ class Manager extends Controller {
 
             // Get form data
             $adTitle = trim($_POST['adTitle']);
-            $advertiserID = 2; // Default for now
+            $advertiserID = 1; // Default for now
             $adDescription = trim($_POST['adDescription']);
             $link = trim($_POST['link']);
             $adStatus = intval($_POST['adStatus']);

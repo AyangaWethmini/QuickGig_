@@ -20,8 +20,7 @@
     top: 100px;
     left: 200px;
     background-color: var(--color-white);
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
+    transition: opacity 0.3s ease-in-out;;
 }
 /* Style for WebKit browsers (Chrome, Safari, Edge) */
 .create-ad-form::-webkit-scrollbar , .update-ad-form::-webkit-scrollbar {
@@ -72,19 +71,6 @@
     gap: 10px;
 }
 
-
-
-.hidden {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.show {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-}
 
 
 .ad-card{
@@ -169,19 +155,4 @@
     border-radius: 5px;
 }
 
-.pagination {
-    margin-top: 20px;
-    justify-content: center;
-    gap: 10px;
-}
 
-.pagination .btn {
-    padding: 8px 16px;
-    text-decoration: none;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.pagination .btn:hover {
-    background-color: #f0f0f0;
-}

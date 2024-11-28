@@ -11,7 +11,7 @@
     <div class="main-content container">
         <div class="header flex-row">
             <h3>Current Advertisements</h3>
-            <button class="btn btn-accent" onclick="showForm()"> + Post Advertisement</button>
+            <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/createAd'"> + Post Advertisement</button>
         </div>
         <hr>
         
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="ad-actionbtns flex-col">
-                    <button class="btn btn-accent" onclick="showUpdateForm(<?php echo $ad->advertisementID ?>)">Edit</button>
+                    <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
                     <button class="btn btn-del" onclick="deleteAd(<?php echo $ad->advertisementID ?>)">Delete</button>
                 </div>
             </div>
@@ -74,93 +74,7 @@
 
         </div>
 
-        <div class="create-ad-form container hidden" id="create-ad">
-            <div class="title flex-row">
-                <i class="fa-solid fa-arrow-left" onclick="hideForm('create-ad')" style="cursor: pointer;"></i>
-                <p class="title">Create Ad</p>
-            </div>
-
-            <form action="<?=ROOT?>/manager/postAdvertisement" method="POST" enctype="multipart/form-data">
-                <div class="form-field">
-                    <label class="lbl">Title</label><br>
-                    <input type="text" name="adTitle" required style="width: 400px; padding: 0px;">
-                </div>
-                
-                <div class="form-field">
-                    <label class="lbl">Description</label><br>
-                    <textarea name="adDescription" rows="6" required></textarea>
-                </div>
-                
-                <div class="form-field">
-                    <label class="lbl">Link</label><br>
-                    <input type="url" name="link" required>
-                </div>
-                
-                <div class="form-field radio-btns flex-row" style="gap: 10px">
-                    <input type="radio" id="status-paid" name="adStatus" value="1" required>
-                    <label for="status-paid">Paid</label>
-                    <input type="radio" id="status-pending" name="adStatus" value="0">
-                    <label for="status-pending">Pending</label>
-                </div>
-                <br>
-                
-                <div class="links flex-col">
-                    <div class="form-field img-link">
-                        <label class="lbl">Advertisement Image</label><br>
-                        <input type="file" name="adImage" accept="image/*" required>
-                    </div>
-                    
-                    <button class="btn btn-accent" type="submit" name="createAdvertisement">Post Ad</button>
-                </div>
-            </form>
-        </div>
-
-
-
-        <!-- update ad form -->
-        <div class="update-ad-form container hidden" id="update-ad">
-            <div class="title flex-row">
-                <i class="fa-solid fa-arrow-left" onclick="hideForm('update-ad')" style="cursor: pointer;"></i>
-                <p class="title">Update Ad</p>
-            </div>
-
-            <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $ad->advertisementID ?>" method="POST" enctype="multipart/form-data">
-                <div class="form-field">
-                    <label class="lbl">Title</label><br>
-                    <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>" style="width: 400px; padding: 0px;">
-                </div>
-                
-                <div class="form-field">
-                    <label class="lbl">Description</label><br>
-                    <textarea name="adDescription" rows="6" required><?= htmlspecialchars($ad->adDescription) ?></textarea>
-                </div>
-                
-                <div class="form-field">
-                    <label class="lbl">Link</label><br>
-                    <input type="url" name="link"   placeholder="<?= htmlspecialchars($ad->link) ?>">
-                </div>
-                
-                <div class="form-field radio-btns flex-row" style="gap: 10px">
-                    <input type="radio" id="status-paid" name="adStatus" value="1" required <?= $ad->adStatus == 1 ? 'checked' : '' ?>>
-                    <label for="status-paid">Paid</label>
-                    <input type="radio" id="status-pending" name="adStatus" value="0" <?= $ad->adStatus == 0 ? 'checked' : '' ?>>
-                    <label for="status-pending">Pending</label>
-                </div>
-                <br>
-                
-                <div class="links flex-col">
-                    <div class="form-field img-link">
-                        <label class="lbl">Advertisement Image</label><br>
-                        <input type="file" name="adImage" accept="image/*">
-                    </div>
-                    
-                    <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
-                </div>
-            </form>
-        </div>
-
-        </div>
-
+        
 
         
 
@@ -169,43 +83,10 @@
     </div>
 
 
-    <div id="delete-confirmation" class="modal" style="display: none;">
-        <div class="modal-content">
-            <p>Are you sure you want to delete this advertisement?</p>
-            <button id="confirm-yes" class="popup-btn-delete-ad">Yes</button>
-            <button id="confirm-no" class="popup-btn-delete-ad">No</button>
-        </div>
-</div>
 
 
 
 <script>
-const form = document.getElementById("create-ad");
-const updateForm = document.getElementById("update-ad");
-
-function showUpdateForm(ad) {
-    updateForm.classList.remove("hidden");
-    updateForm.classList.add("show");
-}
-
-function showForm() {
-    if (form.classList.contains("hidden")) {
-        form.classList.remove("hidden");
-        setTimeout(() => {
-            form.classList.add("show");
-        }, 50);
-    }
-}
-
-function hideForm(formId) {
-    const selectedForm = document.getElementById(formId);
-    selectedForm.classList.remove("show");
-    setTimeout(() => {
-        selectedForm.classList.add("hidden");
-    }, 500);
-}
-
-
 
 function deleteAd(adId) {
     if (confirm('Are you sure you want to delete this advertisement?')) {
@@ -226,5 +107,29 @@ function deleteAd(adId) {
         })
     }
 }
+
+// function updateAd(adId, data) {
+//     fetch(`<?=ROOT?>/manager/updateAd/${adId}`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             status: newStatus
+//         })
+//     })
+//     .then(response => {
+//         if (response.ok) {
+//             alert('Advertisement status updated successfully');
+//             window.location.reload();
+//         } else {
+//             alert('Failed to update advertisement status');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('An error occurred while updating the advertisement');
+//     });
+// }
 
 </script>
