@@ -152,7 +152,7 @@
 .ad-actionbtns{
     gap: 10px;
     padding: 10px 20px;
-    margin-right: 10px;
+    
 }
 
 .ad-card .image {
@@ -167,4 +167,21 @@
     object-fit: cover;
     display: block;
     border-radius: 5px;
+}
+
+.pagination {
+    margin-top: 20px;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination .btn {
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pagination .btn:hover {
+    background-color: #f0f0f0;
 }

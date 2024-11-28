@@ -15,15 +15,6 @@ class Manager extends Controller {
         $this->view('profile');
     }
 
-    public function announcements(){
-        $this->view('announcements');
-    }
-
-    public function helpCenter(){
-        $this->view('helpCenter');
-    }
-
-
     public function advertisements() {
         $data = $this->advertisementModel->getAdvertisements();
         $this->view('advertisements', ['advertisements' => $data]);
