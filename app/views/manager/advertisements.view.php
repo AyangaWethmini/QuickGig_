@@ -70,6 +70,49 @@
                     <button class="btn btn-del" onclick="deleteAd(<?php echo $ad->advertisementID ?>)">Delete</button>
                 </div>
             </div>
+
+
+            <div class="update-ad-form container hidden" id="update-ad">
+            <div class="title flex-row">
+                <i class="fa-solid fa-arrow-left" onclick="hideForm('update-ad')" style="cursor: pointer;"></i>
+                <p class="title">Update Ad</p>
+            </div>
+
+            <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $ad->advertisementID ?>" method="POST" enctype="multipart/form-data">
+                <div class="form-field">
+                    <label class="lbl">Title</label><br>
+                    <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>" style="width: 400px; padding: 0px;">
+                </div>
+                
+                <div class="form-field">
+                    <label class="lbl">Description</label><br>
+                    <textarea name="adDescription" rows="6" required><?= htmlspecialchars($ad->adDescription) ?></textarea>
+                </div>
+                
+                <div class="form-field">
+                    <label class="lbl">Link</label><br>
+                    <input type="url" name="link"   placeholder="<?= htmlspecialchars($ad->link) ?>">
+                </div>
+                
+                <div class="form-field radio-btns flex-row" style="gap: 10px">
+                    <input type="radio" id="status-paid" name="adStatus" value="1" required <?= $ad->adStatus == 1 ? 'checked' : '' ?>>
+                    <label for="status-paid">Paid</label>
+                    <input type="radio" id="status-pending" name="adStatus" value="0" <?= $ad->adStatus == 0 ? 'checked' : '' ?>>
+                    <label for="status-pending">Pending</label>
+                </div>
+                <br>
+                
+                <div class="links flex-col">
+                    <div class="form-field img-link">
+                        <label class="lbl">Advertisement Image</label><br>
+                        <input type="file" name="adImage" accept="image/*">
+                    </div>
+                    
+                    <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
+                </div>
+            </form>
+        </div>
+
         <?php endforeach ?>
 
         </div>
@@ -118,47 +161,7 @@
 
 
         <!-- update ad form -->
-        <div class="update-ad-form container hidden" id="update-ad">
-            <div class="title flex-row">
-                <i class="fa-solid fa-arrow-left" onclick="hideForm('update-ad')" style="cursor: pointer;"></i>
-                <p class="title">Update Ad</p>
-            </div>
-
-            <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $ad->advertisementID ?>" method="POST" enctype="multipart/form-data">
-                <div class="form-field">
-                    <label class="lbl">Title</label><br>
-                    <input type="text" name="adTitle" required value="<?= htmlspecialchars($ad->adTitle) ?>" style="width: 400px; padding: 0px;">
-                </div>
-                
-                <div class="form-field">
-                    <label class="lbl">Description</label><br>
-                    <textarea name="adDescription" rows="6" required><?= htmlspecialchars($ad->adDescription) ?></textarea>
-                </div>
-                
-                <div class="form-field">
-                    <label class="lbl">Link</label><br>
-                    <input type="url" name="link"   placeholder="<?= htmlspecialchars($ad->link) ?>">
-                </div>
-                
-                <div class="form-field radio-btns flex-row" style="gap: 10px">
-                    <input type="radio" id="status-paid" name="adStatus" value="1" required <?= $ad->adStatus == 1 ? 'checked' : '' ?>>
-                    <label for="status-paid">Paid</label>
-                    <input type="radio" id="status-pending" name="adStatus" value="0" <?= $ad->adStatus == 0 ? 'checked' : '' ?>>
-                    <label for="status-pending">Pending</label>
-                </div>
-                <br>
-                
-                <div class="links flex-col">
-                    <div class="form-field img-link">
-                        <label class="lbl">Advertisement Image</label><br>
-                        <input type="file" name="adImage" accept="image/*">
-                    </div>
-                    
-                    <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
-                </div>
-            </form>
-        </div>
-
+        
         </div>
 
 
@@ -178,7 +181,55 @@
 </div>
 
 
-<script src="<?=ROOT?>/assets/js/Manager/advertisement.js"></script>
+<script>
+    const form = document.getElementById("create-ad");
+const updateForm = document.getElementById("update-ad");
+
+function showUpdateForm(ad) {
+    updateForm.classList.remove("hidden");
+    updateForm.classList.add("show");
+}
+
+// Ensure this function is defined before it's called
+function showForm() {
+    if (form.classList.contains("hidden")) {
+        form.classList.remove("hidden");
+        setTimeout(() => {
+            form.classList.add("show");
+        }, 50);
+    }
+}
+
+function hideForm(formId) {
+    const selectedForm = document.getElementById(formId);
+    selectedForm.classList.remove("show");
+    setTimeout(() => {
+        selectedForm.classList.add("hidden");
+    }, 500);
+}
+
+
+
+function deleteAd(adId) {
+    if (confirm('Are you sure you want to delete this advertisement?')) {
+        // Using POST instead of DELETE
+        fetch(`<?= ROOT ?>/manager/deleteAdvertisement/${adId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Advertisement deleted successfully');
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete advertisement');
+                }
+            })
+    }
+}
+</script>
 
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
