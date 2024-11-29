@@ -15,10 +15,8 @@ protectRoute([2]);?>
             <div class="subscription-plan-name">Basic</div>
             <div class="subscription-plan-price">$15.00/Month</div>
             <ul class="subscription-plan-options">
-                <li>Verified Badge</li>
                 <li>10 Posts per month</li>
-                <li>ztututu</li>
-                <li>bruh</li>
+                <li>Messaging</li>
             </ul>
             <button class="subscription-plan-btn">Select Plan</button>
         </div>
@@ -27,10 +25,9 @@ protectRoute([2]);?>
             <div class="subscription-plan-name">Standard</div>
             <div class="subscription-plan-price">$25.00/Month</div>
             <ul class="subscription-plan-options">
-                <li>Verified Badge</li>
-                <li>20 Posts per month</li>
-                <li>ztututu</li>
-                <li>bruh</li>
+                <li>25 Posts per month</li>
+                <li>Messaging</li>
+                <li>Scheduling</li>
             </ul>
             <button class="subscription-plan-btn">Select Plan</button>
         </div>
@@ -39,10 +36,10 @@ protectRoute([2]);?>
             <div class="subscription-plan-name">Premium</div>
             <div class="subscription-plan-price">$35.00/Month</div>
             <ul class="subscription-plan-options">
-                <li>Verified Badge</li>
                 <li>Unlimited Posts</li>
-                <li>ztututu</li>
-                <li>bruh</li>
+                <li>Messaging</li>
+                <li>Scheduling</li>
+                <li>verified Badge</li>
             </ul>
             <button class="subscription-plan-btn">Select Plan</button>
         </div>
