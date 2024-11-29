@@ -3,13 +3,13 @@ class Advertisement {
     use Database;
 
     public function getAdvertisements() {
-        $query = 'SELECT * FROM advertisement ORDER BY adDate DESC, adTime DESC';
+        $query = 'SELECT * FROM advertisement ORDER BY adDate ASC, adTime ASC';
         return $this->query($query);
     }
 
     public function createAdvertisement($data) {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus) 
-                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus)";
+        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus, duration) 
+                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus, :duration)";
         
         $params = [
             'advertiserID' => $data['advertiserID'],
@@ -20,7 +20,8 @@ class Advertisement {
             'img' => $data['img'],
             'adDescription' => $data['adDescription'],
             'link' => $data['link'],
-            'adStatus' => $data['adStatus']
+            'adStatus' => $data['adStatus'],
+            'duration' => $data['duration']
         ];
         
         return $this->query($query, $params);
@@ -46,6 +47,8 @@ class Advertisement {
                       img = :img, 
                       adDate = :adDate, 
                       adTime = :adTime, 
+                      link = :link,
+                      duration = :duration,
                       adStatus = :adStatus 
                   WHERE advertisementID = :id";
     
@@ -56,6 +59,8 @@ class Advertisement {
             'img' => $data['img'],
             'adDate' => $data['adDate'],
             'adTime' => $data['adTime'],
+            'link' => $data['link'],
+            'duration' => $data['duration'],
             'adStatus' => $data['adStatus']
         ];
     
