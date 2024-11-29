@@ -31,6 +31,13 @@ class Signup extends Controller
                 header("Location: " . ROOT . "/home/signup");
                 return false;
             }
+            $domain = substr(strrchr($email, "@"), 1);
+
+            // Check if the domain has valid DNS records
+            if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
+                echo "Invalid email domain.";
+                exit;
+            }
 
             // Check if email is already registered
             if ($this->model->findByEmail($email)) {
@@ -68,7 +75,7 @@ class Signup extends Controller
                 // Redirect to the homepage
                 $_SESSION['accountID'] = $accountID;
                 header("Location: " . ROOT . "/home/nextSign");
-                 exit; // Prevent further script execution after redirect
+                exit; // Prevent further script execution after redirect
             } else {
                 header("Location: " . ROOT . "/home/signup");
                 echo "Failed to create account.";
@@ -77,75 +84,74 @@ class Signup extends Controller
         }
     }
     public function registerMore()
-{
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $accountID = isset($_SESSION['accountID']) ? $_SESSION['accountID'] : null;
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = isset($_SESSION['accountID']) ? $_SESSION['accountID'] : null;
 
-        if (!$accountID) {
-            $_SESSION['signup_errors'][] = "Session expired. Please complete the signup process again.";
-            header("Location: " . ROOT . "/home/signup");
-            exit;
-        }
-
-        $userType = trim($_POST['userType']);
-
-        if ($userType === 'individual') {
-            // Process individual user data
-            $firstName = trim($_POST['fname']);
-            $lastName = trim($_POST['lname']);
-            $nic = trim($_POST['nic']);
-            $gender = trim($_POST['gender']);
-            $phone = trim($_POST['Phone']);
-
-            if (empty($firstName) || empty($lastName) || empty($nic) || empty($gender) || empty($phone)) {
-                echo "All individual user fields are required.";
-                return false;
-            }
-
-            $individualData = [
-                'accountID' => $accountID,
-                'fname' => $firstName,
-                'lname' => $lastName,
-                'nic' => $nic,
-                'gender' => $gender,
-                'Phone' => $phone
-            ];
-
-            if ($this->model->createIndividual($individualData)) {
-                header("Location: " . ROOT . "/home/login");
+            if (!$accountID) {
+                $_SESSION['signup_errors'][] = "Session expired. Please complete the signup process again.";
+                header("Location: " . ROOT . "/home/signup");
                 exit;
+            }
+
+            $userType = trim($_POST['userType']);
+
+            if ($userType === 'individual') {
+                // Process individual user data
+                $firstName = trim($_POST['fname']);
+                $lastName = trim($_POST['lname']);
+                $nic = trim($_POST['nic']);
+                $gender = trim($_POST['gender']);
+                $phone = trim($_POST['Phone']);
+
+                if (empty($firstName) || empty($lastName) || empty($nic) || empty($gender) || empty($phone)) {
+                    echo "All individual user fields are required.";
+                    return false;
+                }
+
+                $individualData = [
+                    'accountID' => $accountID,
+                    'fname' => $firstName,
+                    'lname' => $lastName,
+                    'nic' => $nic,
+                    'gender' => $gender,
+                    'Phone' => $phone
+                ];
+
+                if ($this->model->createIndividual($individualData)) {
+                    header("Location: " . ROOT . "/home/login");
+                    exit;
+                } else {
+                    echo "Failed to register individual.";
+                    return false;
+                }
+            } elseif ($userType === 'organization') {
+                // Process organization user data
+                $orgName = trim($_POST['orgName']);
+                $BRN = trim($_POST['brn']);
+
+                if (empty($orgName) || empty($BRN)) {
+                    echo "All organization fields are required.";
+                    return false;
+                }
+
+                $organizationData = [
+                    'accountID' => $accountID,
+                    'orgName' => $orgName,
+                    'brn' => $BRN,
+                ];
+
+                if ($this->model->createOrganization($organizationData)) {
+                    header("Location: " . ROOT . "/home/login");
+                    exit;
+                } else {
+                    echo "Failed to register organization.";
+                    return false;
+                }
             } else {
-                echo "Failed to register individual.";
+                echo "Invalid user type.";
                 return false;
             }
-        } elseif ($userType === 'organization') {
-            // Process organization user data
-            $orgName = trim($_POST['orgName']);
-            $BRN = trim($_POST['brn']);
-
-            if (empty($orgName) || empty($BRN)) {
-                echo "All organization fields are required.";
-                return false;
-            }
-
-            $organizationData = [
-                'accountID' => $accountID,
-                'orgName' => $orgName,
-                'brn' => $BRN,
-            ];
-
-            if ($this->model->createOrganization($organizationData)) {
-                header("Location: " . ROOT . "/home/login");
-                exit;
-            } else {
-                echo "Failed to register organization.";
-                return false;
-            }
-        } else {
-            echo "Invalid user type.";
-            return false;
         }
     }
-}
-
 }
