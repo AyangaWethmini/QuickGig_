@@ -70,7 +70,6 @@
                 <select name="gender"  placeholder = "Gender" class="userType" required>
                     <option value="Male" selected>Male</option>
                     <option value="Female">Female</option>
-                    <option value="Other">Mentally Challenged</option>
                     
                 </select>
             </div>

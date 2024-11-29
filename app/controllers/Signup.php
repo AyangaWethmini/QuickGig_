@@ -27,7 +27,7 @@ class Signup extends Controller
 
             // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $_SESSION['signup_errors'][] = "Wrong Email.";
+                $_SESSION['signup_errors'][] = "Invalid Email.";
                 header("Location: " . ROOT . "/home/signup");
                 return false;
             }
