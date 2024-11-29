@@ -3,6 +3,7 @@
 protectRoute([1]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/announcements.css"> 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
 
@@ -13,7 +14,6 @@ protectRoute([1]);?>
     <div class="main-content container">
         <div class="header flex-row">
             <h3>Announcements</h3>
-            <button class="btn btn-accent" onclick="showForm()"> + Post Announcement</button>
         </div>
         <hr>
         
@@ -24,7 +24,28 @@ protectRoute([1]);?>
                 aria-label="Search">
         </div>
 
-        <div class="filter flex-row">
+        
+        <br><br>
+
+        <div class="announcements container flex-row">
+            <div class="create-announcement-form container flex-col">
+                <h3>Create Announcement</h3>
+                <form action="" method="POST">
+                    <div class="form-field">
+                        <label class="lbl">Title</label><br>
+                        <input type="text" name="title" required style="width: 400px; padding: 0px;">
+                    </div>
+                    
+                    <div class="form-field">    
+                        <label class="lbl">Content</label><br>
+                        <textarea name="content" width="400px" height="150px" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-accent">Create Announcement</button>
+                </form>
+                
+            </div>
+            <div class="announcements container flex-col">
+            <div class="filter flex-row">
             <span>
                 <h3>All Announcements</h3>
                 <p class="text-grey">Showing 0 results</p>
@@ -39,13 +60,27 @@ protectRoute([1]);?>
                 <button id="gridButton" onclick="toggleView()">☰</button>
                 </div>
         </div>
+
         <br><br>
+                <div class="announcement-card flex-col container">
+                    <h3>Announcement Title</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit harum ducimus mollitia, voluptatum fugit laboriosam provident amet necessitatibus consectetur, deleniti expedita sequi consequatur, perferendis dolorum!</p>
+                    <div class="date-time">2024. 04. 04 @ 12:00</div>
+                </div>
 
-        <div class="announcements container flex-col">
-            <div class="announcement-card fle-col">
-                
+                <div class="announcement-card flex-col container">
+                    <h3>Announcement Title</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit harum ducimus mollitia, voluptatum fugit laboriosam provident amet necessitatibus consectetur, deleniti expedita sequi consequatur, perferendis dolorum!</p>
+                    <div class="date-time">2024. 04. 04 @ 12:00</div>
+                </div>
+
+                <div class="announcement-card flex-col container">
+                    <h3>Announcement Title</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit harum ducimus mollitia, voluptatum fugit laboriosam provident amet necessitatibus consectetur, deleniti expedita sequi consequatur, perferendis dolorum!</p>
+                    <div class="date-time">2024. 04. 04 @ 12:00</div>
+                </div>
             </div>
-        </div>
 
+</div>
         
 
