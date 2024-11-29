@@ -53,7 +53,7 @@ class Manager extends Controller {
 
             // Get form data
             $adTitle = trim($_POST['adTitle']);
-            $advertiserID = 2; // Default for now
+            $advertiserID = 1; // Default for now
             $adDescription = trim($_POST['adDescription']);
             $link = trim($_POST['link']);
             $adStatus = intval($_POST['adStatus']);
