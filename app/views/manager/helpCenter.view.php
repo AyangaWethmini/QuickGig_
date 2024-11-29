@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([1]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/helpCenter.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 

@@ -1,5 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php include APPROOT . '/views/components/navbar.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([0,1]);?>
 
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>

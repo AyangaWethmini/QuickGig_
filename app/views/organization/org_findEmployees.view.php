@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 
