@@ -9,6 +9,8 @@
 
 
 .create-ad-form, .update-ad-form{
+    align-items: center;
+    gap: 10px;
     position: absolute;
     width: 700px;
     height: 500px;
@@ -48,10 +50,10 @@
     scrollbar-color: #6c63ff #f1f1f1; /* Thumb color and track color */
 }
 
-.create-ad-form input[type="text"], .create-ad-form input[type="url"], .update-ad-form input[type="text"], .update-ad-form input[type="url"] {
+.create-ad-form input[type="text"], .create-ad-form input[type="url"], .update-ad-form input[type="text"], .update-ad-form input[type="url"] , .create-ad-form input[type="number"], .update-ad-form input[type="number"]{
     height: 35px;
     width: 400px;
-    padding: 3px;
+    padding: 8px;
     font-size: 16px;
 
 }
@@ -59,12 +61,12 @@
 .create-ad-form textarea, .update-ad-form textarea{
     width : 400px;
     font-size: 16px;
+    height: 100px;
 }
 
 .create-ad-form .title, .update-ad-form .title{
     width: 334px;
     height: 44px;
-    flex-shrink: 0;
     color: #515B6F;
     font-family: Inter;
     font-size: 24px;

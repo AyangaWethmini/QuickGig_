@@ -2,11 +2,17 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
+<style>
+    .form-field{
+        margin-top: 10px;
+    }
+</style>
+
 <div class="wrapper flex-row" style="margin-top: 100px;">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
     
     <div class="main-content">
-    <div class="update-ad-form container" id="update-ad">
+    <div class="update-ad-form container flex-col" id="update-ad">
         <div class="title flex-row">
             <i class="fa-solid fa-arrow-left" onclick="window.location.href='<?=ROOT?>/manager/advertisements'" style="cursor: pointer;"></i>
             <p class="title">Update Ad</p>
@@ -48,7 +54,7 @@
                         <input type="file" name="adImage" accept="image/*">
                     </div>
                     
-                    <button class="btn btn-accent"  type="submit" name="updateAdvertisement">Update Ad</button>
+                    <button class="btn btn-accent"  type="submit" name="updateAdvertisement" style="margin-top: 20px;">Update Ad</button>
                 </div>
             </form>
     </div>

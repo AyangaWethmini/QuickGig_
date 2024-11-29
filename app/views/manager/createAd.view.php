@@ -2,12 +2,17 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
+<style>
+    .form-field{
+        margin-top: 10px;
+    }
+</style>
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
     
     <div class="main-content">
 
-    <div class="create-ad-form container" id="create-ad">
+    <div class="create-ad-form container flex-col" id="create-ad">
             <div class="title flex-row">
                 <i class="fa-solid fa-arrow-left" onclick="window.location.href='<?=ROOT?>/manager/advertisements'" style="cursor: pointer;"></i>
                 <p class="title">Create Ad</p>
@@ -34,11 +39,15 @@
                     <input type="number" name="duration" min="1" required style="width: 400px; padding: 0px; height: 35px;">
                 </div>
                 
-                <div class="form-field radio-btns flex-row" style="gap: 10px">
-                    <input type="radio" id="status-paid" name="adStatus" value="1" required>
-                    <label for="status-paid">Paid</label>
+                <div class="form-field radio-btns flex-row" style="gap: 30px; margin-top : 20px">
+                   <div>
+                        <input type="radio" id="status-paid" name="adStatus" value="1" required>
+                        <label for="status-paid">Paid</label>
+                   </div>
+                <div>
                     <input type="radio" id="status-pending" name="adStatus" value="0">
                     <label for="status-pending">Pending</label>
+                </div>
                 </div>
                 <br>
                 
