@@ -33,6 +33,15 @@ class Manager extends Controller {
     }
 
 
+    public function createAd(){
+        $this->view('createAd');
+    }
+
+    public function updateAd($id){
+        $data = $this->advertisementModel->getAdById($id);
+        $this->view('updateAd', ['ad' => $data]);
+    }
+
     public function postAdvertisement() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //form validation
@@ -50,6 +59,7 @@ class Manager extends Controller {
             $adStatus = intval($_POST['adStatus']);
             $adDate = date('Y-m-d');
             $adTime = date('H:i:s');
+            $duration = intval($_POST['duration']);
 
             // Handle image upload
             $imageData = null;
@@ -75,6 +85,7 @@ class Manager extends Controller {
                 'adDescription' => $adDescription,
                 'link' => $link,
                 'adStatus' => $adStatus,
+                'duration' => $duration,
                 'img' => $imageData,
                 'adDate' => $adDate,
                 'adTime' => $adTime,
@@ -104,10 +115,11 @@ class Manager extends Controller {
             $adDescription = trim($_POST['adDescription']);
             $link = trim($_POST['link']);
             $adStatus = intval($_POST['adStatus']);
-
+            $duration = intval($_POST['duration']);
             //  updateData without the image field
             $updateData = [
                 'adTitle' => $adTitle,
+                'duration' => $duration,
                 'adDescription' => $adDescription,
                 'link' => $link,
                 'adStatus' => $adStatus
@@ -121,9 +133,13 @@ class Manager extends Controller {
                 if (in_array($fileType, $allowedTypes)) {
                     $updateData['img'] = file_get_contents($_FILES['adImage']['tmp_name']);
                 }
+            } else {
+                // Get existing advertisement data
+                $existingAd = $this->advertisementModel->getAdById($id);
+                if ($existingAd && isset($existingAd->img)) {
+                    $updateData['img'] = $existingAd->img;
+                }
             }
-
-            
 
             $this->advertisementModel->update($id, $updateData);
             header('Location: ' . ROOT . '/manager/advertisements');
