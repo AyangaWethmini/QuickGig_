@@ -59,8 +59,8 @@ protectRoute([3]);?>
                         </div>
                         <div class="tags">
                             <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Bartender</span>
+                            <span class="tag">Fruit Picker</span>
+                            <span class="tag">Weed Remover</span>
                         </div>
                         </div>
                     </div>
@@ -105,8 +105,8 @@ protectRoute([3]);?>
                         </div>
                         <div class="tags">
                             <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Bartender</span>
+                            <span class="tag">Fruit Picker</span>
+                            <span class="tag">Weed Remover</span>
                         </div>
                         </div>
                     </div>
@@ -151,8 +151,8 @@ protectRoute([3]);?>
                         </div>
                         <div class="tags">
                             <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Baby-Sitter</span>
+                            <span class="tag">Fruit Picker</span>
+                            <span class="tag">Weed Remover</span>
                         </div>
                         </div>
                     </div>

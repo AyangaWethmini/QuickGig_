@@ -30,7 +30,7 @@ protectRoute([3]);?>
                 </div>
                 <div class="employee-details">
                     <span class="employee-name">Nomad Nova</span>
-                    <span class="job-title">Bartender</span>
+                    <span class="job-title">Weed Remover</span>
                     <span class="date-applied">2024-07-24</span>
                     <span class="time-applied">03:22 PM</span>
                     <span class="jobId-applied">#5</span>
@@ -59,7 +59,7 @@ protectRoute([3]);?>
                 </div>
                 <div class="employee-details">
                     <span class="employee-name">Clara Zue</span>
-                    <span class="job-title">Waiter</span>
+                    <span class="job-title">Baby-Sitter</span>
                     <span class="date-applied">2024-07-25</span>
                     <span class="time-applied">10:22 AM</span>
                     <span class="jobId-applied">#2</span>
