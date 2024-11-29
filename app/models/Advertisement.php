@@ -3,7 +3,7 @@ class Advertisement {
     use Database;
 
     public function getAdvertisements() {
-        $query = 'SELECT * FROM advertisement ORDER BY adDate DESC, adTime DESC';
+        $query = 'SELECT * FROM advertisement ORDER BY adDate ASC, adTime ASC';
         return $this->query($query);
     }
 

@@ -66,7 +66,7 @@
                 <div class="details flex-col">
                     <p class="ad-title"><?= htmlspecialchars($ad->adTitle) ?></p>
                     <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                    <p class="description"><?= htmlspecialchars($ad->adDescription) ?></p>
+                    <p class="description"><?= htmlspecialchars(implode(' ', array_slice(explode(' ', $ad->adDescription), 0, 10))) . '...' ?></p>
                     <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
                     <div class="status flex-row">
                         <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
@@ -99,8 +99,12 @@
                 <a href="?page=<?= $currentPage + 1 ?>" class="btn btn-trans">Next</a>
             <?php endif; ?>
         </div>
-    </div>
-</div>
+
+
+
+
+
+
 
 <script>
 
