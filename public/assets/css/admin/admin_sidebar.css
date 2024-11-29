@@ -41,6 +41,7 @@
 
 /* LAYOUT */
 .admin-layout {
+    margin-top: 100px;
     display: flex;
     height: 100vh; /* Full height of the viewport */
 }

@@ -1,5 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/admin/admin_editannouncement.css">
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
@@ -63,7 +65,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button class="btn btn-accent srch-btn" style="width:900px;">Update</button>   
+                <button class="btn btn-accent srch-btn" style="margin-left:22.5%; width:945px;">Update</button>   
             </form>
         </div>
     </div>
