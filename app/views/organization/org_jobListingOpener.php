@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/jobListingOpener.css">
 
-<div class="opener">
+<div class="opener bar">
             <p class="title-name">My Jobs</p>
             <a href="<?php echo ROOT;?>/organization/org_postJob" class="post-job-btn">
                 + Post a job

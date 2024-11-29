@@ -77,7 +77,7 @@
 
         function submitComplaint(){
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $complainantID = 1;
+                $complainantID = $_SESSION['user_id'];
                 $content = trim($_POST['complainInfo']);
                 $complaintDate = date('Y-m-d');
                 $complaintTime = date('h:i A');
