@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
@@ -28,7 +30,7 @@
                 </div>
                 <div class="employee-details">
                     <span class="employee-name">Nomad Nova</span>
-                    <span class="job-title">Bartender</span>
+                    <span class="job-title">Weed Remover</span>
                     <span class="date-applied">2024-07-24</span>
                     <span class="time-applied">03:22 PM</span>
                     <span class="jobId-applied">#5</span>
@@ -57,7 +59,7 @@
                 </div>
                 <div class="employee-details">
                     <span class="employee-name">Clara Zue</span>
-                    <span class="job-title">Waiter</span>
+                    <span class="job-title">Baby-Sitter</span>
                     <span class="date-applied">2024-07-25</span>
                     <span class="time-applied">10:22 AM</span>
                     <span class="jobId-applied">#2</span>

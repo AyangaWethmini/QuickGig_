@@ -1,64 +1,72 @@
+.wrapper{
+    margin-top: 100px;
+}
+
 .main-content{
     position: relative;
     margin-left: 300px;
 }
 
-.create-ad-form{
+
+.create-ad-form, .update-ad-form{
+    align-items: center;
+    gap: 10px;
     position: absolute;
     width: 700px;
-    position: absolute;
     height: 500px;
     padding: 50px;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 20px;
     top: 100px;
     left: 200px;
     background-color: var(--color-white);
-    transition: opacity ease-in-out; 
-    opacity: 0;
+    transition: opacity 0.3s ease-in-out;;
 }
 /* Style for WebKit browsers (Chrome, Safari, Edge) */
-.create-ad-form::-webkit-scrollbar {
+.create-ad-form::-webkit-scrollbar , .update-ad-form::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
 }
 
-.create-ad-form::-webkit-scrollbar-track {
+.create-ad-form::-webkit-scrollbar-track , .update-ad-form::-webkit-scrollbar-track {
     background: #f1f1f1; /* Background color of the scrollbar track */
     border-radius: 10px;
 }
 
-.create-ad-form::-webkit-scrollbar-thumb {
+.create-ad-form::-webkit-scrollbar-thumb , .update-ad-form::-webkit-scrollbar-thumb {
     background-color:var(--neutral-60); /* Color of the scrollbar thumb */
     border-radius: 10px;
     border: 2px solid #f1f1f1; /* Adds a border to the thumb to give a "gap" effect */
 }
 
-.create-ad-form::-webkit-scrollbar-thumb:hover {
+.create-ad-form::-webkit-scrollbar-thumb:hover , .update-ad-form::-webkit-scrollbar-thumb:hover {
     background-color: var(--netrals-80); /* Color of the thumb on hover */
 }
 
 /* Style for Firefox */
-.create-ad-form {
+.create-ad-form , .update-ad-form{
     scrollbar-width: thin; /* Thin scrollbar width */
     scrollbar-color: #6c63ff #f1f1f1; /* Thumb color and track color */
 }
 
-.create-ad-form input[type="text"] {
+.create-ad-form input[type="text"], .create-ad-form input[type="url"], .update-ad-form input[type="text"], .update-ad-form input[type="url"] , .create-ad-form input[type="number"], .update-ad-form input[type="number"]{
     height: 35px;
     width: 400px;
+    padding: 8px;
+    font-size: 16px;
 
 }
 
-.create-ad-form textarea{
+.create-ad-form textarea, .update-ad-form textarea{
     width : 400px;
+    font-size: 16px;
+    height: 100px;
 }
 
-.create-ad-form .title{
+.create-ad-form .title, .update-ad-form .title{
     width: 334px;
     height: 44px;
-    flex-shrink: 0;
     color: #515B6F;
     font-family: Inter;
     font-size: 24px;
@@ -70,30 +78,28 @@
 
 
 
-.hidden {
-    display: none;
-    opacity: 0;
-}
-
-.show {
-    display: block;
-    opacity: 1;
-}
-
-
 .ad-card{
-    height: 150px;
+    height: 160px;
     width: 700px;
     gap : 20px;
     margin: 20px;
-    padding: 5px;
-    border: 1px solid var(--neutral-80);
+    padding: 10px;
+    border: 1px solid #d6ddeb;
+    border-radius: 8px;
+    background-color: var(--color-white);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 
+}
+
+.ad-card:hover{
+    transform: translateY(-5px);
 }
 
 .ad-card .details{
     justify-content: flex-start;
     margin-left: 10px;
+    width: 300px;
 }
 
 .ad-title{
@@ -119,7 +125,7 @@
 .status{
     padding: 5px;
     background-color: green;
-    width: 70px;
+    width: fit-content;
     height: 20px;
     color: var(--color-white);
     text-align: center;
@@ -131,9 +137,44 @@
     flex-direction: column;
     align-items: center;
     margin: auto;
+    max-width: 1200px;
+    gap: 20px;
 }
 
 .ad-actionbtns{
     gap: 10px;
     padding: 10px 20px;
+    
+}
+
+.ad-card .image {
+    flex-shrink: 0;
+    width: 160px;
+    height: 160px;
+}
+
+.ad-card .image img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    border-radius: 5px;
+}
+
+
+.pagination {
+    margin-top: 20px;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination .btn {
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pagination .btn:hover {
+    background-color: #f0f0f0;
 }

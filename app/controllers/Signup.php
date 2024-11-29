@@ -27,7 +27,7 @@ class Signup extends Controller
 
             // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $_SESSION['signup_errors'][] = "Wrong Email.";
+                $_SESSION['signup_errors'][] = "Invalid Email Format.";
                 header("Location: " . ROOT . "/home/signup");
                 return false;
             }
@@ -36,6 +36,15 @@ class Signup extends Controller
             // Check if the domain has valid DNS records
             if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
                 echo "Invalid email domain.";
+                exit;
+            }
+
+            $domain = substr(strrchr($email, "@"), 1);
+
+            // Check if the domain has valid DNS records
+            if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
+                $_SESSION['signup_errors'][] = "Invalid Email Format.";
+                header("Location: " . ROOT . "/home/signup");
                 exit;
             }
 

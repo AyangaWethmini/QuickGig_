@@ -34,8 +34,18 @@ class Login extends Controller
 
             // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Invalid email format.";
+                $_SESSION['login_errors'][] = "Invalid Email Format.";
+                header("Location: " . ROOT . "/home/login");
                 return false;
+            }
+
+            $domain = substr(strrchr($email, "@"), 1);
+
+            // Check if the domain has valid DNS records
+            if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
+                $_SESSION['login_errors'][] = "Invalid Email Format.";
+                header("Location: " . ROOT . "/home/login");
+                exit;
             }
 
             $user = $this->model->findByEmail($email);

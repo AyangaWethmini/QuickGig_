@@ -1,5 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([0]);?>
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/admin/admin_dashboard.css">
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
