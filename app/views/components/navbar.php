@@ -8,7 +8,7 @@
     <a href="<?=ROOT?>/home"><img class="logo nav-left-links" src="<?=ROOT?>/assets/images/QuickGiglLogo.png" alt="Logo"></a>
     <ul class="nav-left-links mobile-menu">
       <li class="nav-links-home"><a href="<?=ROOT?>/home">Home</a></li>
-      <li><a href="#">About</a></li>
+      <li><a href="<?php echo ROOT;?>/home/aboutUs">About</a></li>
       <li><a href="#">Contact Us</a></li>
     </ul>
   </div>
