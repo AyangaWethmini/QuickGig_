@@ -24,7 +24,7 @@
     </div>
 </nav> -->
 
-<div class="hero-section flex-row">
+<div class="hero-section flex-row" style="margin-top:80px;">
     <div class="job-search">
         <h1 class="typography">Discover more than <br> <span>5000+ Jobs</span></h1>
         <svg xmlns="http://www.w3.org/2000/svg" width="455" height="33" viewBox="0 0 455 33" fill="none" style="margin-top : 50px;">
