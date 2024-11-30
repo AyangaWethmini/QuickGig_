@@ -55,7 +55,7 @@ function allocatePathBasedOnRole() {
     if (isset($_SESSION['user_role'])) {
         switch ($_SESSION['user_role']) {
             case 0:
-                return ROOT . "/admin/announcement";
+                return ROOT . "/admin/admindashboard";
             case 1:
                 return ROOT . "/manager/dashboard";
             case 2:
