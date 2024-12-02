@@ -24,34 +24,34 @@ require_once APPROOT . '/views/inc/protectedRoute.php';
             <h1>All Announcements</h1>
         </div>
         <div class="complaints-container container">
-        <?php if (!empty($data['announcements'])): ?>
-            <?php foreach ($data['announcements'] as $announcement): ?>
-                <div class="complaint container">
-                    <div class="complaint-content flex-col">
-                        <div class="complaint-details flex-row">
-                            <div class="complaint-text flex-col">
-                                <div class="the-complaint"><?php echo $announcement->content; ?></div>
-                                <div class="text-grey">
-                                    <?php 
-                                    $formattedTime = date('h:i A', strtotime($announcement->announcementTime)); 
-                                    echo $announcement->announcementDate . ' | ' . $formattedTime; 
-                                    ?>
+            <?php if (!empty($data['announcements'])): ?>
+                <?php foreach ($data['announcements'] as $announcement): ?>
+                    <div class="complaint container">
+                        <div class="complaint-content flex-col">
+                            <div class="complaint-details flex-row">
+                                <div class="complaint-text flex-col">
+                                    <div class="the-complaint"><?php echo $announcement->content; ?></div>
+                                    <div class="text-grey">
+                                        <?php 
+                                        $formattedTime = date('h:i A', strtotime($announcement->announcementTime)); 
+                                        echo $announcement->announcementDate . ' | ' . $formattedTime; 
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="complaint-actions flex-row">
-                            <a href="<?php echo ROOT; ?>/admin/admineditannouncement/<?php echo $announcement->announcementID; ?>">
-                                <button class="btn btn-update">Update</button>
-                            </a>
-                            <button class="btn btn-delete" onclick="confirmDelete(<?php echo $announcement->announcementID ?>)">Delete</button>                       
+                            <div class="complaint-actions flex-row">
+                                <a href="<?php echo ROOT; ?>/admin/admineditannouncement/<?php echo $announcement->announcementID; ?>">
+                                    <button class="btn btn-update">Update</button>
+                                </a>
+                                <button class="btn btn-delete" onclick="confirmDelete(<?php echo $announcement->announcementID ?>)">Delete</button>                       
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            
-        <?php endif; ?>
-</div>
+                <?php endforeach; ?>
+            <?php else: ?>
+
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 <div id="delete-confirmation" class="modal" style="display: none;">

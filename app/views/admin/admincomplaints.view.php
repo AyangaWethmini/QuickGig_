@@ -8,38 +8,80 @@
         <div class="admin-announcement-header">
             <h1>Current Complaints</h1>
         </div>
-        <br><hr><br>
+        <br>
+        <hr><br>
         <div class="admin-announcement-searchbar">
             <input type="search" name="query" placeholder="Search Complaints">
         </div>
         <div class="admin-announcement-filterheader">
             <h1>All Complaints</h1>
-
-            <div class="complaint container">
-            <div class="complaint-content flex-col">
-                <div class="complaint-details flex-row">
-                    <div class="complaint-text flex-col">
-                        <div class="the-complaint">There was sensitive content displayed by the user</div>   
-                        <div class="text-grey">
-                            <!-- <?php 
-                            $formattedTime = date('h:i A', strtotime($announcement->announcementTime)); 
-                            echo $announcement->announcementDate . ' | ' . $formattedTime; 
-                            ?> -->
+        </div>
+        <div class="complaints-container container">
+            <?php foreach ($data['complaints'] as $complaint): ?>
+                <div class="complaint container">
+                    <div class="complaint-details flex-col">
+                        <div class="complaint-details flex-row">
+                            <div class="the-complaint"><?php echo $complaint->content ?></div>
+                            <div class="text-grey">
+                                <?php
+                                $formattedTime = date('h:i A', strtotime($complaint->complaintTime));
+                                echo $complaint->complaintDate . ' | ' . $formattedTime;
+                                ?>
+                            </div>
                         </div>
+                        <div class="complaint-status">
+                            <select
+                                name="status"
+                                class="status-dropdown"
+                                data-complaint-id="<?php echo $complaint->complaintID; ?>" onchange="updateComplaintStatus(this)">
+                                <option value="1" <?php echo $complaint->complaintStatus === 1 ? 'selected' : ''; ?>>Pending</option>
+                                <option value="2" <?php echo $complaint->complaintStatus === 2 ? 'selected' : ''; ?>>Under Reviewed</option>
+                                <option value="3" <?php echo $complaint->complaintStatus === 3 ? 'selected' : ''; ?>>Reviewed</option>
+                            </select>
+                        </div>
+
                     </div>
                 </div>
-                <div class="complaint-actions flex-row">
-                    <a>
-                        <select class="dropdown complaint-status">
-                            <option value="pending">Pending</option>
-                            <option value="reviewed">Under Reviewed</option>
-                            <option value="reviewed">Reviewed</option>
-                        </select>
-                    </a>   
-                </div>
-            </div>
-        </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
+
+</div>
+
+<script>
+    function updateComplaintStatus(selectElement) {
+        const complaintId = selectElement.dataset.complaintId; // Get the complaint ID
+        console.log(complaintId);
+        const newStatus = selectElement.value; // Get the selected status value
+
+        // Send an AJAX request to update the status
+        fetch('<?php echo ROOT; ?>/admin/updateComplaintStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: complaintId,
+                    status: newStatus
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Complaint ID:', complaintId);
+                    console.log('New Status:', newStatus);
+                    // alert('Complaint status updated successfully!');
+                } else {
+                    alert('Failed to update complaint status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the complaint status.');
+            });
+    }
+</script>
+
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

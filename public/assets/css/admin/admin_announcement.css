@@ -205,10 +205,39 @@ hr {
 }
 
 .complaint-status {
-    align-self: center;
-    color: var(--brand-primary);
-    font-weight: bold;
+  align-self: flex-end; /* Align to the right of the parent */
+  width: fit-content; /* Automatically adjusts width to fit the content */
+  font-weight: bold;
+  color: var(--brand-primary);
+  text-align: right; /* Ensures the text aligns properly inside the div */
+  padding: 4px 8px; /* Adds some spacing around the text */
 }
+
+
+.complaint-status select {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--neutral-80);
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #25324B;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  cursor: pointer;
+}
+
+.complaint-status select:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.complaint-status select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 4px var(--brand-primary);
+}
+
 
 .complaint-actions {
     display: flex;
