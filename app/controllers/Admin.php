@@ -178,7 +178,15 @@ class Admin extends Controller
 
     function admindashboard()
     {
-        $data = [];
+        // Assuming you have a model for interacting with the database
+        $totalIndividuals = $this->adminModel->getCountByRoleID(2); // Count for roleID=2
+        $totalOrganizations = $this->adminModel->getCountByRoleID(3); // Count for roleID=3
+
+        // Pass the counts to the view
+        $data = [
+            'totalIndividuals' => $totalIndividuals,
+            'totalOrganizations' => $totalOrganizations
+        ];
 
         $this->view('admindashboard', $data);
     }
