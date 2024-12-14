@@ -25,12 +25,19 @@
 </nav> -->
 <div class="home-announcement">
     <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
-        <p><?= $data['announcements'][0]->announcementDate ?></p>
-        <p><?= $data['announcements'][0]->content ?></p>
+        <div class="home-announcement-content">
+            <div class="home-announcement-date">
+                <?= htmlspecialchars($data['announcements'][0]->announcementDate) ?>
+            </div>
+            <div class="home-announcement-text">
+                <?= htmlspecialchars($data['announcements'][0]->content) ?>
+            </div>
+        </div>
     <?php else: ?>
         <p>No announcements available.</p>
     <?php endif; ?>
 </div>
+
 
 <div class="hero-section flex-row">
     <div class="job-search">
