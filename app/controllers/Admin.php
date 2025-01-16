@@ -6,6 +6,7 @@ class Admin extends Controller
     {
         $this->adminModel = $this->model('AdminModel');
         $this->complaintModel = $this->model('Complaint');
+        $this->userModel = $this->model('User');
     }
 
     protected $viewPath = "../app/views/admin/";
@@ -13,6 +14,41 @@ class Admin extends Controller
     function index()
     {
         $this->view('adminannouncement');
+    }
+
+    function adminmanageusers()
+    {
+        $users = $this->userModel->getUsers();
+
+        $data = [
+            'users' => $users
+        ];
+
+        $this->view('adminmanageusers', $data);
+    }
+
+    public function deleteUser()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $accountID = $_POST['accountID'];
+
+            // Delete user
+            if ($this->userModel->deleteUserById($accountID)) {
+                // Redirect to manage users page with success message
+                header('Location: ' . ROOT . '/admin/adminmanageusers');
+                exit;
+            } else {
+                // Handle error
+                die('Something went wrong');
+            }
+        } else {
+            // Redirect to manage users page if not a POST request
+            header('Location: ' . ROOT . '/admin/adminmanageusers');
+            exit;
+        }
     }
 
     function adminannouncement()
@@ -234,12 +270,7 @@ class Admin extends Controller
         $this->view('adminreviewcomplaint');
     }
 
-    function adminmanageusers()
-    {
-        $data = [];
 
-        $this->view('adminmanageusers');
-    }
 
     function adminsettings()
     {
