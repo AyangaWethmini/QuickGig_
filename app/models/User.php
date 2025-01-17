@@ -9,7 +9,7 @@ class User
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
+        // $this->db = Database; // PDO instance
     }
 
     public function getUsers()
@@ -22,7 +22,23 @@ class User
 
     public function deleteUserById($accountID)
     {
-        $query = 'DELETE FROM account WHERE accountID = :accountID';
-        return $this->query($query, ['accountID' => $accountID]);
+        try {
+            // $this->db->beginTransaction();
+
+            // Delete from account_role table
+            $queryRole = 'DELETE FROM account_role WHERE accountID = :accountID';
+            $this->query($queryRole, ['accountID' => $accountID]);
+
+            // Delete from account table
+            $queryAccount = 'DELETE FROM account WHERE accountID = :accountID';
+            $this->query($queryAccount, ['accountID' => $accountID]);
+
+            // $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            // $this->db->rollBack();
+            error_log('Failed to delete user: ' . $e->getMessage());
+            return false;
+        }
     }
 }

@@ -30,26 +30,30 @@ class Admin extends Controller
     public function deleteUser()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $_POST = filter_input_array(INPUT_POST);
+            $accountID = $_POST['accountID'] ?? null;
 
-            $accountID = $_POST['accountID'];
+            if (!$accountID) {
+                die('Account ID is missing');
+            }
 
-            // Delete user
+            // Debugging
+            echo "Account ID to delete: $accountID";
+
             if ($this->userModel->deleteUserById($accountID)) {
-                // Redirect to manage users page with success message
+                // echo "User deleted successfully";
                 header('Location: ' . ROOT . '/admin/adminmanageusers');
                 exit;
             } else {
-                // Handle error
-                die('Something went wrong');
+                echo "Failed to delete user";
+                exit;
             }
         } else {
-            // Redirect to manage users page if not a POST request
             header('Location: ' . ROOT . '/admin/adminmanageusers');
             exit;
         }
     }
+
 
     function adminannouncement()
     {
