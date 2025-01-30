@@ -1,146 +1,176 @@
 <?php
-    class JobProvider extends Controller {
+class JobProvider extends Controller
+{
 
-        public function __construct(){
-            $this->complaintModel = $this->model('Complaint');
-        }
+    public function __construct()
+    {
+        $this->complaintModel = $this->model('Complaint');
+        $this->adminModel = $this->model('AdminModel');
+    }
 
-        protected $viewPath = "../app/views/jobProvider/";
-        
-        function index(){
-            $this->view('individualProfile');
-        }
+    protected $viewPath = "../app/views/jobProvider/";
 
-        function findEmployees(){
-            $this->view('findEmployees');
-        }
+    function index()
+    {
+        $this->view('individualProfile');
+    }
 
-        function postJob(){
-            $this->view('postJob');
-        }
-        
-        function jobListing_received(){
-            $this->view('jobListing_received');
-        }
+    function findEmployees()
+    {
+        $this->view('findEmployees');
+    }
 
-        function viewEmployeeProfile(){
-            $this->view('viewEmployeeProfile');
-        }
+    function postJob()
+    {
+        $this->view('postJob');
+    }
 
-        function subscription(){
-            $this->view('subscription');
-        }
+    function jobListing_received()
+    {
+        $this->view('jobListing_received');
+    }
 
-        function messages(){
-            $this->view('messages');
-        }
+    function viewEmployeeProfile()
+    {
+        $this->view('viewEmployeeProfile');
+    }
 
-        function announcements(){
-            $this->view('announcements');
-        }
+    function subscription()
+    {
+        $this->view('subscription');
+    }
 
-        function individualEditProfile(){
-            $this->view('individualEditProfile');
-        }
+    function messages()
+    {
+        $this->view('messages');
+    }
 
-        function helpCenter(){
-            $this->view('helpCenter');
-        }
+    function announcements()
+    {
 
-        function reviews(){
-            $this->view('reviews');
-        }
+        $announcements = $this->adminModel->getAnnouncements();
 
-        function jobListing_myJobs(){
-            $this->view('jobListing_myJobs');
-        }
+        $data = [
+            'announcements' => $announcements
+        ];
+        $this->view('announcements', $data);
+    }
 
-        function jobListing_send(){
-            $this->view('jobListing_send');
-        }
+    function individualEditProfile()
+    {
+        $this->view('individualEditProfile');
+    }
 
-        function jobListing_toBeCompleted(){
-            $this->view('jobListing_toBeCompleted');
-        }
+    function helpCenter()
+    {
+        $this->view('helpCenter');
+    }
 
-        function jobListing_ongoing(){
-            $this->view('jobListing_ongoing');
-        }
+    function reviews()
+    {
+        $this->view('reviews');
+    }
 
-        function jobListing_completed(){
-            $this->view('jobListing_completed');
-        }
+    function jobListing_myJobs()
+    {
+        $this->view('jobListing_myJobs');
+    }
 
-        function makeComplaint(){
-            $this->view('makeComplaint');
-        }
+    function jobListing_send()
+    {
+        $this->view('jobListing_send');
+    }
 
-        function submitComplaint(){
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $complainantID = $_SESSION['user_id'];
-                $content = trim($_POST['complainInfo']);
-                $complaintDate = date('Y-m-d');
-                $complaintTime = date('h:i A');
-                $complaintStatus = 1;
-    
-                $complaintModel = $this->model('Complaint');
-                $complaintModel->create([
-                    'complainantID' => $complainantID,
-                    'content' => $content,
-                    'complaintDate' => $complaintDate,
-                    'complaintTime' => $complaintTime,
-                    'complaintStatus' => $complaintStatus
-                ]);
-    
-                header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
-            }
-        }
+    function jobListing_toBeCompleted()
+    {
+        $this->view('jobListing_toBeCompleted');
+    }
 
+    function jobListing_ongoing()
+    {
+        $this->view('jobListing_ongoing');
+    }
 
+    function jobListing_completed()
+    {
+        $this->view('jobListing_completed');
+    }
 
-        function complaints(){
-            $complaints = $this->complaintModel->getComplaints();
+    function makeComplaint()
+    {
+        $this->view('makeComplaint');
+    }
 
-            $data = [
-                'complaints' => $complaints
-            ];
+    function submitComplaint()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $complainantID = $_SESSION['user_id'];
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('h:i A');
+            $complaintStatus = 1;
 
-            $this->view('complaints', $data); 
-            
-        }
+            $complaintModel = $this->model('Complaint');
+            $complaintModel->create([
+                'complainantID' => $complainantID,
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime,
+                'complaintStatus' => $complaintStatus
+            ]);
 
-        public function deleteComplaint($id) {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $this->complaintModel->delete($id);
-                header('Location: ' . ROOT . '/jobProvider/complaints');
-            }
-        }
-
-        public function updateComplaint($id = null) {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $content = trim($_POST['complainInfo']);
-                $complaintDate = date('Y-m-d');
-                $complaintTime = date('h:i A');
-        
-                $this->complaintModel->update($id, [
-                    'content' => $content,
-                    'complaintDate' => $complaintDate,
-                    'complaintTime' => $complaintTime
-                ]);
-        
-                header('Location: ' . ROOT . '/jobProvider/complaints');
-            } else {
-                $complaint = $this->complaintModel->getComplaintById($id);
-        
-                $data = [
-                    'complaint' => $complaint
-                ];
-        
-                $this->view('updateComplaint', $data);
-            }
-        }
-
-        function settings(){
-            $this->view('settings');
+            header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
         }
     }
+
+
+
+    function complaints()
+    {
+        $complaints = $this->complaintModel->getComplaints();
+
+        $data = [
+            'complaints' => $complaints
+        ];
+
+        $this->view('complaints', $data);
+    }
+
+    public function deleteComplaint($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->complaintModel->delete($id);
+            header('Location: ' . ROOT . '/jobProvider/complaints');
+        }
+    }
+
+    public function updateComplaint($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('h:i A');
+
+            $this->complaintModel->update($id, [
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/complaints');
+        } else {
+            $complaint = $this->complaintModel->getComplaintById($id);
+
+            $data = [
+                'complaint' => $complaint
+            ];
+
+            $this->view('updateComplaint', $data);
+        }
+    }
+
+    function settings()
+    {
+        $this->view('settings');
+    }
+}
