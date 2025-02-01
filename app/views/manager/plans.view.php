@@ -20,27 +20,30 @@ protectRoute([1]);?>
                 <form action="" method="POST" id="createPlanForm">
                     <h3>Create a new subscription plan</h3>
                     
-                    <?php 
-                    $formFields = [
-                        'planName' => 'Plan Name',
-                        'price' => 'Price',
-                        'posts' => 'Number of posts',
-                        'duration' => 'Duration',
-                        'description' => 'Description'
-                    ];
-                    
-                    foreach ($formFields as $id => $label): ?>
-                        <div class="form-field">
-                            <label for="<?= $id ?>"><p class="lbl"><?= $label ?></p></label>
-                            <input type="text" id="<?= $id ?>" name="<?= $id ?>" placeholder="<?= $label ?>">
-                        </div>
-                    <?php endforeach; ?>
-
+                    <div class="form-field">
+                        <label for="planName"><p class="lbl">Plan Name</p></label>
+                        <input type="text" id="planName" name="planName" placeholder="Plan Name">
+                    </div>
+                    <div class="form-field">
+                        <label for="price"><p class="lbl">Price</p></label>
+                        <input type="text" id="price" name="price" placeholder="Price">
+                    </div>
+                    <div class="form-field">
+                        <label for="posts"><p class="lbl">Number of posts</p></label>
+                        <input type="text" id="posts" name="posts" placeholder="Number of posts">
+                    </div>
+                    <div class="form-field">
+                        <label for="duration"><p class="lbl">Duration</p></label>
+                        <input type="text" id="duration" name="duration" placeholder="Duration">
+                    </div>
+                    <div class="form-field">
+                        <label for="description"><p class="lbl">Description</p></label>
+                        <input type="text" id="description" name="description" placeholder="Description">
+                    </div>
                     <div class="form-field flex-row" style="gap: 10px; align-items: left;">
                         <input type="checkbox" id="badge" name="badge">
-                        <label for="badge"><p class="lbl">Badge</p></label>
+                        <label for="badge"><p class="lbl">Verified Badge</p></label>
                     </div>
-                    
                     <button type="submit" class="btn btn-accent">Create Plan</button>
                 </form>
             </div>

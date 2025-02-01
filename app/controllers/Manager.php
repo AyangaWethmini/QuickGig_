@@ -27,6 +27,10 @@ class Manager extends Controller {
         $this->view('plans');
     }
 
+    public function settings(){
+        $this->view('settings');
+    }
+
     public function advertisements() {
         $data = $this->advertisementModel->getAdvertisements();
         $this->view('advertisements', ['advertisements' => $data]);
