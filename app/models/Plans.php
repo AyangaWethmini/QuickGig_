@@ -3,7 +3,7 @@ class Plans {
     use Database;
 
     public function getPlans() {
-        $query = 'SELECT * FROM advertisement ORDER BY adDate ASC, adTime ASC';
+        $query = 'SELECT * FROM plan';
         return $this->query($query);
     }
 

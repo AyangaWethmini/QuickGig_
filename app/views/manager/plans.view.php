@@ -50,30 +50,26 @@ protectRoute([1]);?>
 
             <!-- Display Plans Section -->
             <div class="all-plans flex-col container">
-                <?php 
-                // This should be replaced with actual data from the backend
-                $plans = [
-                    ['name' => 'Basic', 'price' => '15.00'],
-                    ['name' => 'Standard', 'price' => '25.00'],
-                    ['name' => 'Pro', 'price' => '35.00'] 
-                ];
-                
-                foreach ($plans as $plan): ?>
-                    <div class="plan-card">
-                        <div class="subscription-plan-name"><?= $plan['name'] ?></div>
-                        <div class="subscription-plan-price">$<?= $plan['price'] ?>/Month</div>
-                        <ul class="subscription-plan-options">
-                            <li>Verified Badge</li>
-                            <li>10 Posts per month</li>
-                            <li>ztututu</li>
-                            <li>bruh</li>
-                        </ul>
-                        <div class="sub-btns flex-row" style="gap: 30px;">
-                            <button class="btn btn-accent">Edit Plan</button>
-                            <button class="btn btn-del">Delete Plan</button>
+                <?php if (is_array($plans) || is_object($plans)): ?>
+                    <?php foreach ($plans as $plan): ?>
+                        <div class="plan-card">
+                            <div class="subscription-plan-name"><?= htmlspecialchars($plan->planName) ?></div>
+                            <div class="subscription-plan-price">$<?= htmlspecialchars($plan->price) ?>/Month</div>
+                            <ul class="subscription-plan-options">
+                                <li><?= $plan->badge ? 'Verified Badge' : 'No Verified Badge' ?></li>
+                                <li><?= htmlspecialchars($plan->postLimit) ?> Posts per month</li>
+                                <li><?= htmlspecialchars($plan->description) ?></li>
+                                <li>Duration: <?= htmlspecialchars($plan->duration) ?> months</li>
+                            </ul>
+                            <div class="sub-btns flex-row" style="gap: 30px;">
+                                <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/updatePlan/<?= $plan->planID ?>'">Edit Plan</button>
+                                <button class="btn btn-del" onclick="deletePlan(<?= $plan->planID ?>)">Delete Plan</button>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No plans available.</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>

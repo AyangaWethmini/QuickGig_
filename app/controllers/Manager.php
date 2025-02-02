@@ -26,7 +26,8 @@ class Manager extends Controller {
     }
 
     public function plans(){
-        $this->view('plans');
+        $data = $this->planModel->getPlans();
+        $this->view('plans', ['plans' => $data]);
     }
 
     public function settings(){
