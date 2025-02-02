@@ -8,11 +8,11 @@ class Plans {
     }
 
     public function createPlan($data) {
-        $query = "INSERT INTO plan (palnName, descrption, price, duration, badge, postLimit) 
-                  VALUES (:palnName, :descrption, :price, :duration, :badge, :postLimit)";
+        $query = "INSERT INTO plan (planName, description, price, duration, badge, postLimit) 
+                  VALUES (:planName, :description, :price, :duration, :badge, :postLimit)";
         
         $params = [
-            'plaName' => $data['plaName'],
+            'planName' => $data['planName'],
             'description' => $data['description'],
             'price' => $data['price'],
             'duration' => $data['duration'],

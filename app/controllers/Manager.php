@@ -167,6 +167,13 @@ class Manager extends Controller {
                 }
             }
     
+            // Validate numeric fields
+            if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
+                $_SESSION['error'] = "Duration, price, and post limit must be numeric values";
+                header('Location: ' . ROOT . '/manager/plans');
+                return;
+            }
+    
             try {
                 // Get and sanitize form data
                 $planName = trim($_POST['planName']);
@@ -174,7 +181,7 @@ class Manager extends Controller {
                 $duration = intval($_POST['duration']);
                 $price = floatval($_POST['price']);
                 $postLimit = intval($_POST['postLimit']);
-                $badge = date('Y-m-d'); // Creation date
+                $badge = isset($_POST['badge']) ? 1 : 0;
     
                 // Create the plan
                 $result = $this->planModel->createPlan([

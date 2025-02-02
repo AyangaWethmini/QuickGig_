@@ -17,7 +17,7 @@ protectRoute([1]);?>
         <div class="plans container flex-row">
             <!-- Create Plan Form Section -->
             <div class="create-plan-form container">
-                <form action="<?=APPROOT?>/controllers/Manager/CreatePlan" method="POST" id="createPlanForm">
+                <form action="<?=ROOT?>/manager/createPlan" method="POST" id="createPlanForm">
                     <h3>Create a new subscription plan</h3>
                     
                     <div class="form-field">
@@ -26,15 +26,15 @@ protectRoute([1]);?>
                     </div>
                     <div class="form-field">
                         <label for="price"><p class="lbl">Price</p></label>
-                        <input type="text" id="price" name="price" placeholder="Price">
+                        <input type="number" id="price" name="price" placeholder="Price" step="0.01">
                     </div>
                     <div class="form-field">
                         <label for="posts"><p class="lbl">Number of posts</p></label>
-                        <input type="text" id="posts" name="posts" placeholder="Number of posts">
+                        <input type="number" id="posts" name="postLimit" placeholder="Number of posts">
                     </div>
                     <div class="form-field">
                         <label for="duration"><p class="lbl">Duration</p></label>
-                        <input type="text" id="duration" name="duration" placeholder="Duration">
+                        <input type="number" id="duration" name="duration" placeholder="Duration">
                     </div>
                     <div class="form-field">
                         <label for="description"><p class="lbl">Description</p></label>
