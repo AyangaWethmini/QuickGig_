@@ -212,6 +212,19 @@ class Manager extends Controller {
         // If not POST request, redirect to plans page
         header('Location: ' . ROOT . '/manager/plans');
     }
+
+    // delete plan
+    public function deletePlan($id){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Check for POST request
+            $this->planModel->deletePlan($id);
+            header('Location: '.ROOT. '/manager/plans');
+        } else {
+            // Handle the case where the request method is not POST
+            header('Location: '.ROOT. '/manager/plans');
+        }
+    }
 }
+
+
 
 

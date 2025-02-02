@@ -74,3 +74,25 @@ protectRoute([1]);?>
         </div>
     </div>
 </div>
+
+
+<script>
+    function deletePlan(planId){
+        if (confirm('Are you sure you want to delete this Plan?')) {
+        fetch(`<?=ROOT?>/manager/deletePlan/${planId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Plan deleted successfully');
+                window.location.reload();
+            } else {
+                alert('An error occoured');
+            }
+        })
+        }
+    }
+</script>

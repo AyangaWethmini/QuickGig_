@@ -23,7 +23,7 @@ class Plans {
         return $this->query($query, $params);
     }
 
-    public function delete($id) {
+    public function deletePlan($id) {
         $query = "DELETE FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
