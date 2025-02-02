@@ -2,9 +2,11 @@
 class Manager extends Controller {
     protected $viewPath = "../app/views/manager/";
     protected $advertisementModel;
+    protected $planModel;
 
     public function __construct(){
         $this->advertisementModel = $this->model('Advertisement');
+        $this->planModel = $this->model('Plans');
     }
 
     public function index(){
@@ -49,8 +51,7 @@ class Manager extends Controller {
     public function postAdvertisement() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //form validation
-            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_FILES['adImage'])) {
-
+            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_FILES['adImage']) || !isset($_POST['startDate']) || !isset($_POST['endDate'])) {
                 header('Location: ' . ROOT . '/manager/advertisements');
                 return;
             }
@@ -64,6 +65,8 @@ class Manager extends Controller {
             $adDate = date('Y-m-d');
             $adTime = date('H:i:s');
             $duration = intval($_POST['duration']);
+            $startDate = trim($_POST['startDate']);
+            $endDate = trim($_POST['endDate']);
 
             // Handle image upload
             $imageData = null;
@@ -93,7 +96,9 @@ class Manager extends Controller {
                 'img' => $imageData,
                 'adDate' => $adDate,
                 'adTime' => $adTime,
-                'clicks' => 0 
+                'clicks' => 0,
+                'startDate' => $startDate,
+                'endDate' => $endDate
             ]);
 
             header('Location: ' . ROOT . '/manager/advertisements');
@@ -149,4 +154,56 @@ class Manager extends Controller {
             header('Location: ' . ROOT . '/manager/advertisements');
         }
     }
+
+    public function createPlan() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Validate required fields
+            $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit'];
+            foreach ($requiredFields as $field) {
+                if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
+                    $_SESSION['error'] = "All fields are required";
+                    header('Location: ' . ROOT . '/manager/plans');
+                    return;
+                }
+            }
+    
+            try {
+                // Get and sanitize form data
+                $planName = trim($_POST['planName']);
+                $description = trim($_POST['description']);
+                $duration = intval($_POST['duration']);
+                $price = floatval($_POST['price']);
+                $postLimit = intval($_POST['postLimit']);
+                $badge = date('Y-m-d'); // Creation date
+    
+                // Create the plan
+                $result = $this->planModel->createPlan([
+                    'planName' => $planName,
+                    'description' => $description,
+                    'duration' => $duration,
+                    'price' => $price,
+                    'badge' => $badge,
+                    'postLimit' => $postLimit
+                ]);
+    
+                if ($result) {
+                    $_SESSION['success'] = "Plan created successfully";
+                } else {
+                    $_SESSION['error'] = "Failed to create plan";
+                }
+    
+            } catch (Exception $e) {
+                $_SESSION['error'] = "An error occurred while creating the plan";
+                error_log($e->getMessage());
+            }
+    
+            header('Location: ' . ROOT . '/manager/plans');
+            return;
+        }
+    
+        // If not POST request, redirect to plans page
+        header('Location: ' . ROOT . '/manager/plans');
+    }
 }
+
+

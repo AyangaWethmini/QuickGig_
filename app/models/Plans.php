@@ -1,40 +1,36 @@
 <?php
-class Advertisement {
+class Plans {
     use Database;
 
-    public function getAdvertisements() {
+    public function getPlans() {
         $query = 'SELECT * FROM advertisement ORDER BY adDate ASC, adTime ASC';
         return $this->query($query);
     }
 
-    public function createAdvertisement($data) {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus, duration) 
-                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus, :duration)";
+    public function createPlan($data) {
+        $query = "INSERT INTO plan (palnName, descrption, price, duration, badge, postLimit) 
+                  VALUES (:palnName, :descrption, :price, :duration, :badge, :postLimit)";
         
         $params = [
-            'advertiserID' => $data['advertiserID'],
-            'adTitle' => $data['adTitle'],
-            'adDate' => $data['adDate'],
-            'adTime' => $data['adTime'],
-            'clicks' => $data['clicks'],
-            'img' => $data['img'],
-            'adDescription' => $data['adDescription'],
-            'link' => $data['link'],
-            'adStatus' => $data['adStatus'],
-            'duration' => $data['duration']
+            'plaName' => $data['plaName'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'duration' => $data['duration'],
+            'badge' => $data['badge'],
+            'postLimit' => $data['postLimit'],
         ];
         
         return $this->query($query, $params);
     }
 
     public function delete($id) {
-        $query = "DELETE FROM advertisement WHERE advertisementID = :id";
+        $query = "DELETE FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
 
-    public function getAdById($id) {
-        $query = "SELECT * FROM advertisement WHERE advertisementID = :id";
+    public function getPlanById($id) {
+        $query = "SELECT * FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
         return $result[0] ?? null;

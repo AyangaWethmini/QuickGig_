@@ -8,20 +8,21 @@ class Advertisement {
     }
 
     public function createAdvertisement($data) {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus, duration) 
-                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus, :duration)";
+        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus, duration, startDate, endDate) 
+                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus, :duration, :startDate, :endDate)";
         
         $params = [
             'advertiserID' => $data['advertiserID'],
             'adTitle' => $data['adTitle'],
-            'adDate' => $data['adDate'],
-            'adTime' => $data['adTime'],
             'clicks' => $data['clicks'],
             'img' => $data['img'],
             'adDescription' => $data['adDescription'],
             'link' => $data['link'],
+            'startDate' => $data['startDate'],
+            'endDate' => $data['endDate'],
             'adStatus' => $data['adStatus'],
-            'duration' => $data['duration']
+            'adTime' => $data['adTime'],
+            'createdAt'=> $data['createdAt']
         ];
         
         return $this->query($query, $params);

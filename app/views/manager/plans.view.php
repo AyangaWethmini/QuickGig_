@@ -17,7 +17,7 @@ protectRoute([1]);?>
         <div class="plans container flex-row">
             <!-- Create Plan Form Section -->
             <div class="create-plan-form container">
-                <form action="" method="POST" id="createPlanForm">
+                <form action="<?=APPROOT?>/controllers/Manager/CreatePlan" method="POST" id="createPlanForm">
                     <h3>Create a new subscription plan</h3>
                     
                     <div class="form-field">
@@ -44,7 +44,7 @@ protectRoute([1]);?>
                         <input type="checkbox" id="badge" name="badge">
                         <label for="badge"><p class="lbl">Verified Badge</p></label>
                     </div>
-                    <button type="submit" class="btn btn-accent">Create Plan</button>
+                    <button type="submit" class="btn btn-accent" name="createPlan">Create Plan</button>
                 </form>
             </div>
 
