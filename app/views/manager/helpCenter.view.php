@@ -18,45 +18,31 @@ protectRoute([1]);?>
             </div>
         </div>
 
-        <div class="help-questions container flex-col">
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
+        <?php if (is_array($questions) || is_object($questions)): ?>
+            <?php foreach ($questions as $q): ?>
+                <div class="question flex-col">
+                    <h3><?= htmlspecialchars($q->title) ?></h3>
+                    <p><?= htmlspecialchars($q->description) ?></p>
+                    <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                        <?php 
+                            $timestamp = $q->createdAt;
+                            $date = date('Y-m-d', strtotime($timestamp));
+                            $time = date('H:i:s', strtotime($timestamp)); 
+                        ?>                       
+                        <p><?= $date ?></p>
+                        <p> at <?= $time ?></p>
+                    </div>
+                    <form method="POST" action ="<?=ROOT?>/manager/reply/<?= $data['q']->helpID ?>">
+                        <textarea name="reply" placeholder="send a reply"></textarea>
+                        <button class="btn btn-accent" type="submit">Reply</button>
+                    </form>
                 </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>All good here!</p>
+        <?php endif; ?>
 
-
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
-                </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
-
-
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
-                </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
-
-
-            
-        </div>
+        
 
         
     </div>

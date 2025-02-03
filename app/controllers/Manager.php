@@ -3,10 +3,12 @@ class Manager extends Controller {
     protected $viewPath = "../app/views/manager/";
     protected $advertisementModel;
     protected $planModel;
+    protected $helpModel;
 
     public function __construct(){
         $this->advertisementModel = $this->model('Advertisement');
         $this->planModel = $this->model('Plans');
+        $this->helpModel = $this->model('Help');
     }
 
     public function index(){
@@ -22,7 +24,8 @@ class Manager extends Controller {
     }
 
     public function helpCenter(){
-        $this->view('helpCenter');
+        $data = $this->helpModel->getAllQuestions();
+        $this->view('helpCenter', ['questions' => $data]);
     }
 
     public function plans(){
@@ -156,6 +159,9 @@ class Manager extends Controller {
         }
     }
 
+
+    //-------------------Plans----------------------
+
     public function createPlan() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Validate required fields
@@ -221,6 +227,26 @@ class Manager extends Controller {
         } else {
             // Handle the case where the request method is not POST
             header('Location: '.ROOT. '/manager/plans');
+        }
+    }
+
+    //--------------------Help-------------------------
+
+    public function reply($id){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Validation
+            if (!isset($_POST['reply'])) {
+                header('Location: ' . ROOT . '/manager/helpCenter');
+                return;
+            }
+
+            $reply = trim($_POST['reply']);
+
+            $updateData = [
+                'reply' => $reply
+            ];
+            $this->helpModel->replyToQuestion($id, $updateData); 
+            header('Location: ' . ROOT . '/manager/helpCenter'); 
         }
     }
 }
