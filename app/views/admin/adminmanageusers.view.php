@@ -17,7 +17,7 @@
         </div>
         <div class="complaints-container container">
             <?php foreach ($data['users'] as $user): ?>
-                <?php if ($user->roleID != 0): ?>
+                <?php if ($user->roleID != 0 && $user->roleID != 1): ?>
                     <div class="complaint container">
                         <div class="complaint-details flex-col">
                             <div class="complaint-details flex-row">
@@ -30,15 +30,20 @@
                                         echo 'Individual';
                                     } elseif ($user->roleID == 3) {
                                         echo 'Organization';
+                                    } else {
+                                        echo 'Unknown';
                                     }
                                     ?><br>
                                 </div>
-
                                 <div>
                                     <form action="<?= ROOT ?>/admin/deleteUser" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                         <input type="hidden" name="accountID" value="<?= $user->accountID ?>">
                                         <button type="submit" class="btn btn-delete">Delete</button>
                                     </form>
+                                    <!-- <form action="<?= ROOT ?>/admin/deleteUser" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                        <input type="hidden" name="accountID" value="<?= $user->accountID ?>">
+                                        <button type="submit" class="btn btn-delete">Deactivate</button>
+                                    </form> -->
                                 </div>
                             </div>
                         </div>

@@ -7,6 +7,7 @@ class Admin extends Controller
         $this->adminModel = $this->model('AdminModel');
         $this->complaintModel = $this->model('Complaint');
         $this->userModel = $this->model('User');
+        $this->advertisementModel = $this->model('Advertisement');
     }
 
     protected $viewPath = "../app/views/admin/";
@@ -14,6 +15,16 @@ class Admin extends Controller
     function index()
     {
         $this->view('adminannouncement');
+    }
+
+    function adminadvertisements()
+    {
+        $ads = $this->advertisementModel->getAdvertisements();
+        $data = [
+            'ads' => $ads
+        ];
+
+        $this->view('adminadvertisements', $data);
     }
 
     function adminmanageusers()
@@ -295,12 +306,5 @@ class Admin extends Controller
         $data = [];
 
         $this->view('admindeleteaccount');
-    }
-
-    function adminadvertisements()
-    {
-        $data = [];
-
-        $this->view('adminadvertisements');
     }
 }
