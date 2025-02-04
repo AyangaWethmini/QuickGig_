@@ -65,16 +65,24 @@ class Help {
 
     //from manager side to reply to the question
     public function replyToQuestion($id, $data){
+        // Ensure the helpId exists before updating
+        $existing = $this->query("SELECT helpId FROM help WHERE helpId = :id", ['id' => $id]);
+    
+        if (!$existing) {
+            return false;
+        }
+    
         $query = "UPDATE help
-                  SET reply = :reply,
+                  SET reply = :reply
                   WHERE helpId = :id";
-
+    
         $params = [
             'id' => $id,
             'reply' => $data['reply']
         ];
-
+    
         return $this->query($query, $params);
     }
+    
     
 }

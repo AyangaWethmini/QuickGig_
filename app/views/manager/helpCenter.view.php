@@ -18,29 +18,32 @@ protectRoute([1]);?>
             </div>
         </div>
 
-        <?php if (is_array($questions) || is_object($questions)): ?>
-            <?php foreach ($questions as $q): ?>
-                <div class="question flex-col">
-                    <h3><?= htmlspecialchars($q->title) ?></h3>
-                    <p><?= htmlspecialchars($q->description) ?></p>
-                    <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                        <?php 
-                            $timestamp = $q->createdAt;
-                            $date = date('Y-m-d', strtotime($timestamp));
-                            $time = date('H:i:s', strtotime($timestamp)); 
-                        ?>                       
-                        <p><?= $date ?></p>
-                        <p> at <?= $time ?></p>
-                    </div>
-                    <form method="POST" action ="<?=ROOT?>/manager/reply/<?= $data['q']->helpID ?>">
-                        <textarea name="reply" placeholder="send a reply"></textarea>
-                        <button class="btn btn-accent" type="submit">Reply</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>All good here!</p>
-        <?php endif; ?>
+        <?php if (!empty($questions) && (is_array($questions) || is_object($questions))): ?>
+    <?php foreach ($questions as $q): ?>
+        <div class="question flex-col">
+            <h3><?= htmlspecialchars($q->title) ?></h3>
+            <p><?= htmlspecialchars($q->description) ?></p>
+            
+            <form method="POST" action ="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>">
+                <textarea name="reply" placeholder="Send a reply" style="<?= !empty($q->reply) ? 'background-color: hsla(116, 76%, 87%, 1);' : '' ?>"><?= htmlspecialchars($q->reply ?? '') ?></textarea>
+                <button class="btn btn-accent" type="submit">Reply</button>
+            </form>
+            
+            <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                <?php 
+                    $timestamp = $q->createdAt;
+                    $date = date('Y-m-d', strtotime($timestamp));
+                    $time = date('H:i:s', strtotime($timestamp)); 
+                ?>                       
+                <p style="font-size : 11px;">Asked on <?= $date ?> at <?= $time ?></p>
+            </div>
+        </div>
+        <br>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>All good here!</p>
+<?php endif; ?>
+
 
         
 

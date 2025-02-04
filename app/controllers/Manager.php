@@ -234,21 +234,30 @@ class Manager extends Controller {
 
     public function reply($id){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation
-            if (!isset($_POST['reply'])) {
+            // Validation: Ensure reply is not empty
+            if (empty(trim($_POST['reply']))) {
+                $_SESSION['error'] = "Reply cannot be empty.";
                 header('Location: ' . ROOT . '/manager/helpCenter');
-                return;
+                exit;
             }
-
+    
             $reply = trim($_POST['reply']);
-
+    
             $updateData = [
                 'reply' => $reply
             ];
-            $this->helpModel->replyToQuestion($id, $updateData); 
-            header('Location: ' . ROOT . '/manager/helpCenter'); 
+    
+            if ($this->helpModel->replyToQuestion($id, $updateData)) {
+                $_SESSION['success'] = "Reply submitted successfully.";
+            } else {
+                $_SESSION['error'] = "Failed to submit reply.";
+            }
+    
+            header('Location: ' . ROOT . '/manager/helpCenter');
+            exit;
         }
     }
+    
 }
 
 
