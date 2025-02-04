@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([1]);?>
+protectRoute([1]); ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/announcements.css"> 
@@ -12,19 +12,21 @@ protectRoute([1]);?>
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container">
-        <div class="header flex-row">
+        <div>
+        <div class="header flex-col">
             <h3>Announcements</h3>
-        </div>
-        <hr>
-        
-        <div class="search-container">
+            <hr>
+            <div class="search-container">
             <input type="text" 
                 class="search-bar" 
                 placeholder="Search announcements"
                 aria-label="Search">
         </div>
-
+        </div>
         
+        
+        
+
         <br><br>
 
         <div class="announcements container flex-row">
@@ -38,49 +40,58 @@ protectRoute([1]);?>
                     
                     <div class="form-field">    
                         <label class="lbl">Content</label><br>
-                        <textarea name="content" width="400px" height="150px" required></textarea>
+                        <textarea name="content" required style="width: 400px; height: 150px;"></textarea>
                     </div>
                     <button type="submit" class="btn btn-accent">Create Announcement</button>
                 </form>
-                
             </div>
-            <div class="announcements container flex-col">
-            <div class="filter flex-row">
-            <span>
-                <h3>All Announcements</h3>
-                <p class="text-grey">Showing 0 results</p>
-            </span>
+            <div class="flex-col">
+                    <div class="announcements container flex-col">
+                    <div class="filter flex-row">
+                        <span>
+                            <h3>All Announcements</h3>
+                            <p class="text-grey">Showing 0 results</p>
+                        </span>
 
-            <div class="filter-container">
-                <span>Sort by:</span>
-                <select id="sortSelect" onchange="sortContent()">
-                    <option value="recent">Most recent</option>
-                    <option value="views">Highest views</option>
-                </select>
-                <button id="gridButton" onclick="toggleView()">☰</button>
+                        <div class="filter-container">
+                            <span>Sort by:</span>
+                            <select id="sortSelect" onchange="sortContent()">
+                                <option value="recent">Most recent</option>
+                                <option value="views">Highest views</option>
+                            </select>
+                            <button id="gridButton" onclick="toggleView()">☰</button>
+                        </div>
+                    </div>
+
+                    <?php if (!empty($announcements) && (is_array($announcements) || is_object($announcements))): ?>
+                        <?php foreach ($announcements as $announcement): ?>
+                            <div class="announcement-card flex-col container">
+                                <h3>Announcement ID : <?=htmlspecialchars(($announcement->announcementID))?></h3>
+                                <p><?=htmlspecialchars(($announcement->content))?></p>
+                                <div class="date-time"><?=htmlspecialchars(($announcement->announcementDate))?> @ <?=htmlspecialchars(($announcement->announcementTime))?></div>
+                            </div>
+                            <br>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No announcments Yet!</p>
+                    <?php endif; ?>
+
+                
                 </div>
+
+            
         </div>
 
-        <br><br>
-                <div class="announcement-card flex-col container">
-                    <h3>Announcement Title</h3>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit harum ducimus mollitia, voluptatum fugit laboriosam provident amet necessitatibus consectetur, deleniti expedita sequi consequatur, perferendis dolorum!</p>
-                    <div class="date-time">2024. 04. 04 @ 12:00</div>
-                </div>
+                
 
-                <div class="announcement-card flex-col container">
-                    <h3>Announcement Title</h3>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit harum ducimus mollitia, voluptatum fugit laboriosam provident amet necessitatibus consectetur, deleniti expedita sequi consequatur, perferendis dolorum!</p>
-                    <div class="date-time">2024. 04. 04 @ 12:00</div>
-                </div>
+                
 
-                <div class="announcement-card flex-col container">
-                    <h3>Announcement Title</h3>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit harum ducimus mollitia, voluptatum fugit laboriosam provident amet necessitatibus consectetur, deleniti expedita sequi consequatur, perferendis dolorum!</p>
-                    <div class="date-time">2024. 04. 04 @ 12:00</div>
-                </div>
+                
+
+                
             </div>
-
+        </div>
+    </div>
 </div>
         
 

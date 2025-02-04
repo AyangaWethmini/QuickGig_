@@ -4,11 +4,13 @@ class Manager extends Controller {
     protected $advertisementModel;
     protected $planModel;
     protected $helpModel;
+    protected $announcementModel;
 
     public function __construct(){
         $this->advertisementModel = $this->model('Advertisement');
         $this->planModel = $this->model('Plans');
         $this->helpModel = $this->model('Help');
+        $this->announcementModel = $this->model('AdminModel');
     }
 
     public function index(){
@@ -20,7 +22,8 @@ class Manager extends Controller {
     }
 
     public function announcements(){
-        $this->view('announcements');
+        $data = $this->announcementModel->getAnnouncements();
+        $this->view('announcements', ['announcements' => $data]);
     }
 
     public function helpCenter(){
