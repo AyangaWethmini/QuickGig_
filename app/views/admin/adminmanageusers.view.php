@@ -18,7 +18,7 @@
         <div class="complaints-container container">
             <?php foreach ($data['users'] as $user): ?>
                 <?php if ($user->roleID != 0 && $user->roleID != 1): ?>
-                    <div class="complaint container">
+                    <div class="complaint container" style="border: 2px solid <?php echo $user->activationCode ? 'green' : 'red'; ?>;">
                         <div class="complaint-details flex-col">
                             <div class="complaint-details flex-row">
                                 <div class="the-complaint">
@@ -36,14 +36,15 @@
                                     ?><br>
                                 </div>
                                 <div>
-                                    <form action="<?= ROOT ?>/admin/deleteUser" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                        <input type="hidden" name="accountID" value="<?= $user->accountID ?>">
-                                        <button type="submit" class="btn btn-delete">Delete</button>
-                                    </form>
-                                    <!-- <form action="<?= ROOT ?>/admin/deleteUser" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                        <input type="hidden" name="accountID" value="<?= $user->accountID ?>">
-                                        <button type="submit" class="btn btn-delete">Deactivate</button>
-                                    </form> -->
+                                    <button class="btn btn-delete" onclick="confirmDelete('<?php echo $user->accountID; ?>')">Delete</button>
+
+                                    <a href="<?php echo ROOT; ?>/admin/deactivateUser/<?php echo $user->accountID; ?>">
+                                        <button style="background-color:brown;" class="btn btn-update">Deactivate</button>
+                                    </a>
+
+                                    <a href="<?php echo ROOT; ?>/admin/activateUser/<?php echo $user->accountID; ?>">
+                                        <button style="background-color:green;" class="btn btn-update">Activate</button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -53,4 +54,44 @@
         </div>
     </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-confirmation" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p>Are you sure you want to delete this user? This action is irreversible.</p>
+        <button id="confirm-yes" class="popup-btn-delete-complaint">Yes</button>
+        <button id="confirm-no" class="popup-btn-delete-complaint">No</button>
+    </div>
+</div>
+
+<form id="delete-form" method="POST" style="display: none;"></form>
+
+<script>
+    function confirmDelete(accountID) {
+        var modal = document.getElementById('delete-confirmation');
+        modal.style.display = 'flex';
+
+        document.getElementById('confirm-yes').onclick = function() {
+            var form = document.getElementById('delete-form');
+            form.action = '<?= ROOT ?>/admin/deleteUser';
+            form.innerHTML = '<input type="hidden" name="accountID" value="' + accountID + '">';
+            modal.style.display = 'none';
+
+            form.submit();
+        };
+
+        document.getElementById('confirm-no').onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
+
+    // Close the modal when clicking outside of it
+    window.onclick = function(event) {
+        var modal = document.getElementById('delete-confirmation');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

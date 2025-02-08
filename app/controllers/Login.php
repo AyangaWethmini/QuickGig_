@@ -42,21 +42,20 @@ class Login extends Controller
             $userRole = $this->model->findRole($user['accountID']);
 
 
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user && password_verify($password, $user['password']) && $user['activationCode'] == true) {
                 // Login successful
                 $_SESSION['user_id'] = $user['accountID']; // Store user ID in the session
                 $_SESSION['user_email'] = $user['email']; // Store user email in the session
-                $_SESSION['user_role'] = $userRole['roleID']; 
+                $_SESSION['user_role'] = $userRole['roleID'];
                 $_SESSION['user_logged_in'] = true; // Store user email in the session
                 header("Location: " . ROOT . "/home");
                 exit;
-            }else {
+            } else {
                 // Login failed
                 $_SESSION['login_errors'][] = "Invalid email or password.";
                 header("Location: " . ROOT . "/home/login");
                 exit;
             }
-
         }
     }
     public function logout()

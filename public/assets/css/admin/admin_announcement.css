@@ -324,3 +324,9 @@ hr {
     background-color: #3430bd;
 }
 
+.admin-ad-details {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 10px;
+}

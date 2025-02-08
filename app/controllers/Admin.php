@@ -38,6 +38,34 @@ class Admin extends Controller
         $this->view('adminmanageusers', $data);
     }
 
+    public function deactivateUser($accountID)
+    {
+        // Debugging: Check if the accountID is received
+        // echo "Account ID: " . $accountID;
+        // exit;
+
+        // Call the model method to deactivate the user
+        if ($this->userModel->deactivateUserById($accountID)) {
+            header('Location: ' . ROOT . '/admin/adminmanageusers');
+        } else {
+            header('Location: ' . ROOT . '/admin/adminmanageusers');
+        }
+    }
+
+    public function activateUser($accountID)
+    {
+        // Debugging: Check if the accountID is received
+        // echo "Account ID: " . $accountID;
+        // exit;
+
+        // Call the model method to deactivate the user
+        if ($this->userModel->activateUserById($accountID)) {
+            header('Location: ' . ROOT . '/admin/adminmanageusers');
+        } else {
+            header('Location: ' . ROOT . '/admin/adminmanageusers');
+        }
+    }
+
     public function deleteUser()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

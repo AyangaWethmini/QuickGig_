@@ -14,10 +14,48 @@ class User
 
     public function getUsers()
     {
-        $query = 'SELECT ar.roleID, a.accountID, a.email 
+        $query = 'SELECT ar.roleID, a.accountID, a.email, a.activationCode 
               FROM account_role ar
               JOIN account a ON ar.accountID = a.accountID';
         return $this->query($query) ?? []; // Ensure it returns an array
+    }
+
+    public function activateUserById($accountID)
+    {
+        // Debugging: Check if the accountID is received
+        // echo "Account ID in Model: " . $accountID;
+        // exit;
+
+        // Prepare the SQL query to update the activationCode
+        $query = "UPDATE account SET activationCode = :activationCode WHERE accountID = :accountID";
+
+        // Bind parameters and execute the query
+        $params = [
+            ':activationCode' => true, // Set activationCode to true
+            ':accountID' => $accountID
+        ];
+
+        // Execute the query
+        return $this->query($query, $params);
+    }
+
+    public function deactivateUserById($accountID)
+    {
+        // Debugging: Check if the accountID is received
+        // echo "Account ID in Model: " . $accountID;
+        // exit;
+
+        // Prepare the SQL query to update the activationCode
+        $query = "UPDATE account SET activationCode = :activationCode WHERE accountID = :accountID";
+
+        // Bind parameters and execute the query
+        $params = [
+            ':activationCode' => false, // Set activationCode to true
+            ':accountID' => $accountID
+        ];
+
+        // Execute the query
+        return $this->query($query, $params);
     }
 
     public function deleteUserById($accountID)
