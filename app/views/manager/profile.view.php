@@ -13,7 +13,7 @@ protectRoute([1]);?>
     <div class="header">
             <h3>Profile</h3>
             
-</div>
+    </div>
 <hr>
         
 

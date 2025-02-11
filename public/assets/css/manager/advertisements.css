@@ -5,29 +5,23 @@
 }
 
 .main-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh; 
     width: 100%;
     padding: 20px;
+    margin-left: 300px;
 }
 
 .ad-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-}
+    justify-content: center;
 
+}
 .create-ad-form {
     width: 100%;
-    max-width: 600px;
-    background: #ffffff;
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-ad-form form{
+    gap: 100px;
 }
 
 
@@ -45,9 +39,18 @@
 .update-ad-form input[type="url"],
 .update-ad-form input[type="number"],
 .update-ad-form textarea {
-    width: 100%;
+    width: 410px;
+    height: 45px;
     max-width: 100%;
     padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #d6ddeb;
+    border-radius: 4px;
+}
+
+.create-ad-form input[type="date"]{
+    height: 45px;
+    width: 200px;
     box-sizing: border-box;
     border: 1px solid #d6ddeb;
     border-radius: 4px;
@@ -58,6 +61,15 @@
     flex-wrap: wrap;
     gap: 20px;
     margin: 15px 0;
+}
+
+.custom-file-input {
+    display: block;
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 #imagePreview {
@@ -95,66 +107,34 @@
 }
 
 .ad-title {
-    padding: 20px;
     display: flex;
-    align-items: center;
     gap: 15px;
+    font-size: 20px;
+    margin-top: 20px;
+    padding: 20px;
+    color: var(--Neutrals-80);
 }
 
-@media screen and (min-width: 1024px) {
-    .main-content {
-        margin-left: 300px;
-    }
-    
-    .ad-form {
-        flex-direction: row;
-    }
+.header {
+    margin-top: 20px;
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
 }
 
-@media screen and (max-width: 768px) {
-    .wrapper {
-        margin-top: 40px;
-    }
-    
-    .create-ad-form input[type="date"] {
-        width: 100%;
-    }
-    
-    .ad-title {
-        padding: 15px;
-        font-size: 20px;
-    }
-    
-    .ad-card {
-        margin: 10px;
-    }
+.header h3 {
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
 }
 
-@media screen and (max-width: 480px) {
-    .field {
-        margin: 10px 0;
-    }
-    
-    .radio-btns {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .ad-card {
-        padding: 10px;
-    }
-    
-    .ad-card .image {
-        width: 100%;
-        height: auto;
-    }
-    
-    .ad-card .details {
-        width: 100%;
-    }
-    
-    .ad-actionbtns {
-        width: 100%;
-        justify-content: center;
-    }
+.header button{
+    height: 50px;
+    font-size: 16px;
+    color: var(--Neutrals-80);
 }
+
+

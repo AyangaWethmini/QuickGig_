@@ -5,6 +5,7 @@ class Advertiser {
 
     public $advertiserName;
     public $contact;
+    public $email;
     
 
     public function __construct()
@@ -12,59 +13,38 @@ class Advertiser {
         // $this->db = new Database; // PDO instance
     }
 
-    public function getAdvertisements() {
+    public function getAdvertisers() {
         $query = 'SELECT * FROM advertiser;';
         return $this->query($query);
     }
 
-    public function create($data) {
-        $query = "INSERT INTO advertiser (advertiserName, contact) 
-                  VALUES (:advertiserName, :contact)";
+    public function createAdvertiser($data) {
+        $query = "INSERT INTO advertiser (advertiserName, contact, email) 
+                  VALUES (:advertiserName, :contact, :email)";
         
         $params = [
             'advertiserName' => $data['advertiserName'],
             'contact' => $data['contact'],
+            'email' => $data['email']
         ];
         
         return $this->query($query, $params);
     }
 
-    public function delete($id) {
-        $query = "DELETE FROM advertiser WHERE advertiserID = :id";
-        $params = ['id' => $id];
-        return $this->query($query, $params);
-    }
 
-    public function getAdvertiserById($id) {
-        $query = "SELECT * FROM advertiser WHERE advertiserID = :id";
-        $params = ['id' => $id];
+    // Checks if the advertiser exists and if yes returns the ID; if not, returns null
+    public function isAdvertiserExist($email) {
+        $query = "SELECT advertiserID FROM advertiser WHERE email = :email";
+        $params = ['email' => $email];
         $result = $this->query($query, $params);
     
-        return isset($result[0]) ? $result[0] : null;
+        // Check if the result is an object and not empty
+        if (is_object($result) && !empty($result)) {
+            return $result->advertiserID; // Access the object property
+        }
+    
+        return null; 
     }
 
-
-    public function findAdvertiser($data) {     //find by name and contact
-        $query = "SELECT * FROM advertiser WHERE advertiserName = :advertiserName AND contact = :contact";
-        $params = ['advertiserName' => $data['advertiserName'], 'contact' => $data['contact']];
-        $result = $this->query($query, $params);
-    
-        return isset($result[0]) ? $result[0] : null;
-    }
-    
-    
-    public function update($id, $data) {
-        $query = "UPDATE advertiser 
-                  SET contact = :contact, 
-                  WHERE advertiserID = :id";
-    
-        $params = [
-            'id' => $id,
-            'contact' => $data['contact'],
-            
-        ];
-    
-        return $this->query($query, $params);
-    }
     
 }

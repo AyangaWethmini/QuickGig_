@@ -5,12 +5,14 @@ class Manager extends Controller {
     protected $planModel;
     protected $helpModel;
     protected $announcementModel;
+    protected $advertiserModel;
 
     public function __construct(){
         $this->advertisementModel = $this->model('Advertisement');
         $this->planModel = $this->model('Plans');
         $this->helpModel = $this->model('Help');
         $this->announcementModel = $this->model('AdminModel');
+        $this->advertiserModel = $this->model('Advertiser');
     }
 
     public function index(){
@@ -47,6 +49,7 @@ class Manager extends Controller {
 
 
     public function createAd(){
+        $data = $this->advertiserModel->getAdvertisers();
         $this->view('createAd');
     }
 
@@ -58,22 +61,38 @@ class Manager extends Controller {
     public function postAdvertisement() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //form validation
-            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_FILES['adImage']) || !isset($_POST['startDate']) || !isset($_POST['endDate'])) {
+            if (!isset($_POST['advertiserName']) || !isset($_POST['contact']) || !isset($_POST['email']) || !isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_FILES['adImage']) || !isset($_POST['startDate']) || !isset($_POST['endDate'])) {
+                $_SESSION['error'] = "All fields are required.";
                 header('Location: ' . ROOT . '/manager/advertisements');
                 return;
             }
 
+            $advertiserName = trim($_POST['advertiserName']);
+            $contact = trim($_POST['contact']);
+            $email = trim($_POST['email']);
+
+            //retriving the advertiser ID. if not exist create an advertiser profile
+            $getAdvId = $this->advertiserModel->isAdvertiserExist($email);
+            if ($getAdvId == null) {
+                $this->advertiserModel->createAdvertiser([
+                        'advertiserName' => $advertiserName,
+                        'contact' => $contact,
+                        'email' => $email
+                    ]
+                );
+                $_SESSION['success'] = "Advertiser profile created successfully.";
+
+                $getAdvId = $this->advertiserModel->isAdvertiserExist($email);
+            }
+
             // Get form data
+            $advertiserID = $getAdvId; 
             $adTitle = trim($_POST['adTitle']);
-            $advertiserID = 1; // Default for now
             $adDescription = trim($_POST['adDescription']);
             $link = trim($_POST['link']);
-            $adStatus = intval($_POST['adStatus']);
-            $adDate = date('Y-m-d');
-            $adTime = date('H:i:s');
-            $duration = intval($_POST['duration']);
             $startDate = trim($_POST['startDate']);
             $endDate = trim($_POST['endDate']);
+            $adStatus = intval($_POST['adStatus']);
 
             // Handle image upload
             $imageData = null;
@@ -94,21 +113,20 @@ class Manager extends Controller {
 
             // Create advertisement with image data
             $this->advertisementModel->createAdvertisement([
-                'adTitle' => $adTitle,
                 'advertiserID' => $advertiserID,
+                'adTitle' => $adTitle,
                 'adDescription' => $adDescription,
+                'adImage' => $imageData,
                 'link' => $link,
-                'adStatus' => $adStatus,
-                'duration' => $duration,
-                'img' => $imageData,
-                'adDate' => $adDate,
-                'adTime' => $adTime,
-                'clicks' => 0,
                 'startDate' => $startDate,
-                'endDate' => $endDate
+                'endDate' => $endDate,
+                'adStatus' => $adStatus,                
             ]);
 
-            header('Location: ' . ROOT . '/manager/advertisements');
+            header('Location: ' . ROOT . '/manager/createAd');
+            $_SESSION['success'] = "Advertisement created successfully.";
+            exit;
+
         }
     }
     // delete advertisement

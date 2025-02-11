@@ -5,6 +5,7 @@ protectRoute([1]);
 ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager-commons.css"> 
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -17,29 +18,29 @@ protectRoute([1]);
                onclick="window.location.href='<?=ROOT?>/manager/advertisements'" 
                style="cursor: pointer;">
             </i>
-            <p class="title">Create Ad</p>
+            <h3 class="title">Create Ad</h3>
         </div>
 
-        <div class="ad-form flex-row">
-            <div class="create-ad-form" id="create-ad">
-                <form action="<?=ROOT?>/manager/postAdvertisement" method="POST" enctype="multipart/form-data">
+        <div class="ad-form flex-col">
+            <div class="create-ad-form flex-row" id="create-ad">
+                <form action="<?=ROOT?>/manager/postAdvertisement" method="POST" enctype="multipart/form-data" class="flex-row">
                     
                     <div class="advertiser_details">
-                    <h4>Advertiser Details</h4>
-                        <div class="field">
-                            <label class="lbl">Advertiser Name</label><br>
-                            <input type="text" name="advertiserName" required>
-                        </div>
+                        <h4>Advertiser Details</h4>
+                            <div class="field">
+                                <label class="lbl">Advertiser Name</label><br>
+                                <input type="text" name="advertiserName" required>
+                            </div>
 
-                        <div class="field">
-                            <label class="lbl">Contact Number</label><br>
-                            <input type="text" name="contact" required>
-                        </div>
-                        
-                        <div class="field">
-                            <label class="lbl">Email</label><br>
-                            <input type="email" name="email" required>
-                        </div>
+                            <div class="field">
+                                <label class="lbl">Contact Number</label><br>
+                                <input type="text" name="contact" required>
+                            </div>
+                            
+                            <div class="field">
+                                <label class="lbl">Email</label><br>
+                                <input type="email" name="email" required>
+                            </div>
 
                     </div>
                     <div class="advertisement-details">
@@ -60,7 +61,7 @@ protectRoute([1]);
                         </div>
 
                         <div class="field">
-                            <div class="flex-row" style="gap: 50px;">
+                            <div class="flex-row" style="gap: 10px;">
                                 <div>
                                     <label class="lbl">Start Date</label><br>
                                     <input type="date" id="startDate" name="startDate" required>
@@ -73,28 +74,29 @@ protectRoute([1]);
                         </div>
 
                         <div class="field radio-btns flex-row" style="gap: 30px; margin-top: 20px;">
-                            <div>
+                            <div class="flex-row" style="gap : 5px;">
                                 <input type="radio" id="status-paid" name="adStatus" value="1" required>
-                                <label for="status-paid">Paid</label>
+                                <label for="status-paid" class="lbl">Paid</label>
                             </div>
-                            <div>
+                            <div class="flex-row" style="gap : 5px;">
                                 <input type="radio" id="status-pending" name="adStatus" value="0">
-                                <label for="status-pending">Pending</label>
+                                <label for="status-pending" class="lbl">Pending</label>
                             </div>
                         </div>
 
                         <div class="links flex-col">
                             <div class="field img-link">
-                                <label class="lbl">Advertisement Image</label><br>
-                                <input type="file" name="adImage" accept="image/*" required onchange="previewImage(this)">
-                                <div id="imagePreview" style="margin-top: 10px; max-width: 300px;">
-                                    <img id="preview" src="" alt="Image Preview" 
-                                        style="display: none; width: 100%; height: auto;">
-                                </div>
+                                <label class="lbl">Advertisement Image</label><br><br>
+                                <input type="file" name="adImage" accept="image/*" required onchange="previewImage(this)" class="custom-file-input">
+                                
                             </div>
                         </div>
                         <button class="btn btn-accent" type="submit" name="createAdvertisement">Post Ad</button>
                     </div>
+                    <div id="imagePreview" style="margin-top: 10px; max-width: 300px;">
+                                    <img id="preview" src="" alt="Image Preview" 
+                                        style="display: none; width: 100%; height: auto;">
+                                </div>
                 </form>
             </div>
         </div>
