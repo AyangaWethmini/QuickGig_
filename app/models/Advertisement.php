@@ -62,4 +62,11 @@ class Advertisement {
     
         return $this->query($query, $params);
     }
+
+    public function getAdsCount(){
+        $query = "SELECT COUNT(*) AS totalAds FROM advertisement WHERE adStatus = 'active'";
+        $result = $this->query($query);
+        return $result[0]->totalAds ?? 0;
+    }
 }
+

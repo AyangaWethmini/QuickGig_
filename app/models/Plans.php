@@ -62,4 +62,10 @@ class Plans {
     
         return $this->query($query, $params);
     }
+
+    public function getPlansCount(){
+        $query = "SELECT COUNT(*) AS total FROM plan";
+        $result = $this->query($query);
+        return $result[0]->total ?? 0;
+    }
 }

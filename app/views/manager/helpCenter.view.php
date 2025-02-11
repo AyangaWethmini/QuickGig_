@@ -13,7 +13,7 @@ protectRoute([1]);?>
         <hr>
         <div class="help-overview container flex-col">
             <div class="card flex-row">
-                <h1>12</h1>
+                <h1><?= count(array_filter($questions, fn($q) => is_null($q->reply))) ?></h1>
                 <p>Questions to be answered</p>
             </div>
         </div>

@@ -83,6 +83,8 @@ class Help {
     
         return $this->query($query, $params);
     }
+
+    
     
     
 }

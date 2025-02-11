@@ -16,7 +16,13 @@ class Manager extends Controller {
     }
 
     public function index(){
-        $this->view('dashboard');
+        $adCount = $this->advertisementModel->getAdsCount();
+        $planCount = $this->planModel->getPlansCount();
+        $data = [
+            'adCount' => $adCount,
+            'planCount' => $planCount
+        ];
+        $this->view('dashboard', $data);
     }
 
     public function profile(){
