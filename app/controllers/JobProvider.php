@@ -143,4 +143,107 @@
         function settings(){
             $this->view('settings');
         }
+
+        public function job(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $jobID = uniqid();
+
+                $accountID = $_SESSION['user_id'];
+
+                $description = trim($_POST['description']);
+                $location = trim($_POST['location']);
+                $timeFrom = trim($_POST['timeFrom']);
+                $timeTo = trim($_POST['timeTo']);
+                $availableDate = trim($_POST['availableDate']);
+                $shift = trim($_POST['shift']);
+                $salary = trim($_POST['salary']);
+                $currency = trim($_POST['currency']);
+                $jobTitle = trim($_POST['jobTitle']);
+                $jobStatus = 1;
+                $noOfApplicants = trim($_POST['noOfApplicants']);
+
+                $jobModel = $this->model('Job');
+                $isPosted = $jobModel->create([
+                    'jobID' => $jobID,
+                    'accountID' => $accountID,
+                    'description' => $description,
+                    'timeFrom' => $timeFrom,
+                    'timeTo' => $timeTo,
+                    'location' => $location,
+                    'availableDate' => $availableDate,
+                    'shift' => $shift,
+                    'salary' => $salary,
+                    'currency' => $currency,
+                    'jobTitle' => $jobTitle,
+                    'jobStatus' => $jobStatus,
+                    'noOfApplicants' => $noOfApplicants
+                ]);
+
+                // Redirect or handle based on success or failure
+                if ($isPosted) {
+                    header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs'); // Replace with the appropriate success page
+                    exit();
+                } else {
+                    // Handle errors (e.g., log them or show an error message)
+                    echo "Failed to post job. Please try again.";
+                }
+            }
+        }
+        public function updateJob($id = null) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanitize POST data
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        
+                // Prepare data for updating
+                $description = trim($_POST['description']);
+                $shift = $_POST['shift'];
+                $salary = trim($_POST['salary']);
+                $currency = $_POST['currency'];
+                $timeFrom = $_POST['timeFrom'];
+                $timeTo = $_POST['timeTo'];
+                $availableDate = $_POST['availableDate'];
+                $location = trim($_POST['location']);
+                $jobTitle = trim($_POST['jobTitle']);
+                $jobStatus = 1;
+                $noOfApplicants = trim($_POST['noOfApplicants']);
+        
+                // Update availability in the database
+                $this->jobModel = $this->model('Job');
+                $this->jobModel->update($id, [
+                    'description' => $description,
+                    'shift' => $shift,
+                    'salary' => $salary,
+                    'currency' => $currency,
+                    'timeFrom' => $timeFrom,
+                    'timeTo' => $timeTo,
+                    'availableDate' => $availableDate,
+                    'location' => $location,
+                    'jobTitle' => $jobTitle,
+                    'jobStatus' => $jobStatus,
+                    'noOfApplicants' => $noOfApplicants
+                ]);
+        
+                // Redirect to the availability page or another appropriate page
+                header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
+            } else {
+                // Get the current availability details for the given ID
+                $this->jobModel = $this->model('Job');
+                $job = $this->jobModel->getJobById($id);
+        
+                // Pass the current availability data to the view
+                $data = [
+                    'job' => $job
+                ];
+        
+                // Load the update form view
+                $this->view('updateJob', $data);
+            }
+        }
+        public function deleteJob($id) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->jobModel = $this->model('Job');
+                $this->jobModel->delete($id);
+                header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
+            }
+        }
     }
