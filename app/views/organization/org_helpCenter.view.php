@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/help.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">

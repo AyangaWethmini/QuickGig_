@@ -140,8 +140,9 @@ class Admin extends Controller {
                     empty($data['announcementTime_error']) && 
                     empty($data['content_error'])
                 ) {
+                    $adminID = $_SESSION['user_id'];
                     // Insert into the database using the model
-                    if ($this->adminModel->createAnnouncement($data)) {
+                    if ($this->adminModel->createAnnouncement($data,$adminID)) {
                         // Redirect to announcements page
                         header('Location: ' . ROOT . '/admin/adminannouncement');
                         exit;

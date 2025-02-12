@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([0]);?>
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">

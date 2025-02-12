@@ -22,4 +22,8 @@ class Home extends Controller
 	{
 		$this->view('nextSign');
 	}
+	public function aboutUs()
+	{
+		$this->view('aboutUs');
+	}
 }

@@ -1,0 +1,125 @@
+.wrapper {
+    margin-top: 100px;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.main-content {
+    margin-left: 300px;
+    flex: 1;
+}
+
+.header {
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+.header h3 {
+    font-size: 1.5em;
+    color: #333;
+    padding: 10px 0;
+}
+
+.help-overview {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    
+}
+
+.card {
+    background-color: var(--brand-lavender);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.card h1 , .question h3{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+}
+
+.card p , .question p{
+    color: var(--Neutrals-80, #515B6F);
+    font-family: Epilogue;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; 
+}
+
+/* Help Questions Section */
+.help-questions {
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.question {
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #d6ddeb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.question:hover {
+    transform: translateY(-5px);
+}
+
+.question textarea {
+    width: 90%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #cfd7e1;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 16px;
+    color: #1a202c;
+    transition: border-color 0.15s ease-in-out;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.question textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.question textarea::placeholder {
+    color: #94a3b8;
+}
+
+.question button {
+    align-self: flex-end;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.question button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .question {
+        padding: 15px;
+    }
+}

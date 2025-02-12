@@ -22,7 +22,7 @@ class AdminModel{
     }
 
     // Properties representing the columns in the account table
-    public function createAnnouncement($data) {
+    public function createAnnouncement($data,$adminId) {
         // Include adminID as a fixed value (1)
         $query = "INSERT INTO announcement (announcementID, announcementDate, announcementTime, content, adminID) 
                   VALUES (:announcementID, :announcementDate, :announcementTime, :content, :adminID)";
@@ -33,7 +33,7 @@ class AdminModel{
             'announcementDate' => $data['announcementDate'],
             'announcementTime' => $data['announcementTime'],
             'content' => $data['content'],
-            'adminID' => 1,  // Fixed adminID of 1
+            'adminID' => $adminId,  // Fixed adminID of 1
         ];
         
         // Execute the query

@@ -17,8 +17,8 @@ class Complaint {
 
     public function getComplaints() {
         $id = $_SESSION['user_id'];
-        $query = 'SELECT * FROM complaint WHERE complainantID = ? ORDER BY complaintDate DESC, complaintTime DESC';
-        return $this->query($query, [$id]);
+        $query = 'SELECT * FROM complaint where complainantID = ? ORDER BY complaintDate DESC, complaintTime DESC';
+        return $this->query($query,[$id]);
     }
 
     public function create($data) {
