@@ -38,6 +38,7 @@ $jobs = $jobModel->getJobsByUser($userID);
                         <span class="skills">Skills: Diligent, English</span> -->
                         <span class="location">Location: <?= $job->location ?></span>
                         <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
+                        <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
                         <hr>
                         <span class="employment-type"><?= $job->description ?></span>
                         <hr>
@@ -46,7 +47,7 @@ $jobs = $jobModel->getJobsByUser($userID);
                         <span class="my-job-id">Job id: #<?= $job->jobID ?></span>
 
                     </div>
-                    <button class="update-jobReq-button btn btn-accent">Update</button>
+                    <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/jobprovider/updateJob/<?= $job->jobID ?>';">Update</button>
                     <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->jobID ?>" onclick="confirmDelete(this)">Delete</button>
                 </div>
             <?php endforeach; ?>
@@ -66,23 +67,20 @@ $jobs = $jobModel->getJobsByUser($userID);
 </div>
 </body>
 <script>
-    // Open modal and set the job id for deletion
     function confirmDelete(button) {
-        var jobId = button.getAttribute('data-jobid'); // Get the job ID from the clicked button
+        var jobId = button.getAttribute('data-jobid');
         var modal = document.getElementById('delete-confirmation');
-        modal.style.display = 'flex'; // Show modal
+        modal.style.display = 'flex';
 
-        // Handle the Yes button
         document.getElementById('confirm-yes').onclick = function() {
             var form = document.getElementById('delete-form');
-            form.action = '<?= ROOT ?>/jobProvider/deleteJob/' + jobId; // Set the form action URL
-            modal.style.display = 'none'; // Hide modal
-            form.submit(); // Submit the form
+            form.action = '<?= ROOT ?>/jobProvider/deleteJob/' + jobId;
+            modal.style.display = 'none';
+            form.submit(); 
         };
 
-        // Handle the No button
         document.getElementById('confirm-no').onclick = function() {
-            modal.style.display = 'none'; // Hide modal
+            modal.style.display = 'none';
         };
     }
 </script>
