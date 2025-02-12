@@ -40,8 +40,8 @@ $jobs = $jobModel->getJobsByUser($userID);
                         <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
                         <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
                         <hr>
-                        <span class="employment-type"><?= $job->description ?></span>
-                        <hr>
+                        <div class="jobDescription"><p><?= $job->description ?></p></div>
+                        <hr> 
                         <span class="date-posted">Posted on: <?= $job->datePosted ?></span>
                         <span class="time-posted">Posted at: <?= $job->timePosted ?></span>
                         <span class="my-job-id">Job id: #<?= $job->jobID ?></span>

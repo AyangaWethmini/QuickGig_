@@ -156,6 +156,12 @@ hr{
     font-size: 16px;
 }
 
+.jobDescription p {
+    max-width: 500px;
+    /* Remove white-space: nowrap; overflow: hidden; and text-overflow: ellipsis; */
+    word-wrap: break-word; /* Optional: Allows breaking long words if needed */
+}
+
 .update-jobReq-button {
     background-color: #007bff;
     color: white;
