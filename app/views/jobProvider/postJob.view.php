@@ -6,7 +6,7 @@ protectRoute([2]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
 
     <div class="main-content container post-job-form">
         <p class="heading">
