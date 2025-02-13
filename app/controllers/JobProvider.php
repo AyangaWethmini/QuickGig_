@@ -161,6 +161,7 @@
                 $jobTitle = trim($_POST['jobTitle']);
                 $jobStatus = 1;
                 $noOfApplicants = trim($_POST['noOfApplicants']);
+                $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
                 $jobModel = $this->model('Job');
                 $isPosted = $jobModel->create([
@@ -176,7 +177,8 @@
                     'currency' => $currency,
                     'jobTitle' => $jobTitle,
                     'jobStatus' => $jobStatus,
-                    'noOfApplicants' => $noOfApplicants
+                    'noOfApplicants' => $noOfApplicants,
+                    'categories' => json_encode($categories)
                 ]);
 
                 // Redirect or handle based on success or failure
@@ -206,6 +208,7 @@
                 $jobTitle = trim($_POST['jobTitle']);
                 $jobStatus = 1;
                 $noOfApplicants = trim($_POST['noOfApplicants']);
+                $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
         
                 // Update availability in the database
                 $this->jobModel = $this->model('Job');
@@ -220,7 +223,8 @@
                     'location' => $location,
                     'jobTitle' => $jobTitle,
                     'jobStatus' => $jobStatus,
-                    'noOfApplicants' => $noOfApplicants
+                    'noOfApplicants' => $noOfApplicants,
+                    'categories' => json_encode($categories)
                 ]);
         
                 // Redirect to the availability page or another appropriate page

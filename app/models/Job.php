@@ -19,6 +19,7 @@ class Job{
     public $salary;
     public $currency;
     public $jobTitle;
+    public $categories;
 
     public function __construct()
     {
@@ -34,8 +35,8 @@ class Job{
 
     public function create($data)
     {
-        $query = "INSERT INTO job (jobID, accountID, jobTitle, description, location, timeFrom, timeTo, availableDate, shift, salary, currency, noOfApplicants, jobStatus) 
-                  VALUES (:jobID, :accountID, :jobTitle, :description, :location, :timeFrom, :timeTo, :availableDate, :shift, :salary, :currency, :noOfApplicants, :jobStatus)";
+        $query = "INSERT INTO job (jobID, accountID, jobTitle, description, location, timeFrom, timeTo, availableDate, shift, salary, currency, noOfApplicants, jobStatus, categories) 
+                  VALUES (:jobID, :accountID, :jobTitle, :description, :location, :timeFrom, :timeTo, :availableDate, :shift, :salary, :currency, :noOfApplicants, :jobStatus, :categories)";
 
         $params = [
             'jobID' => $data['jobID'],
@@ -50,6 +51,7 @@ class Job{
             'currency' => $data['currency'],
             'jobTitle' => $data['jobTitle'],
             'noOfApplicants' => $data['noOfApplicants'],
+            'categories' => $data['categories'],
             'jobStatus' => $data['jobStatus']
         ];
         return $this->query($query, $params);
@@ -67,7 +69,8 @@ class Job{
                         currency = :currency,
                         jobTitle = :jobTitle,
                         noOfApplicants = :noOfApplicants,
-                        jobStatus = :jobStatus
+                        jobStatus = :jobStatus,
+                        categories = :categories
                     WHERE jobID = :id";
     
         $params = [
@@ -82,7 +85,8 @@ class Job{
             'currency' => $data['currency'],
             'jobTitle' => $data['jobTitle'],
             'noOfApplicants' => $data['noOfApplicants'],
-            'jobStatus' => $data['jobStatus']
+            'jobStatus' => $data['jobStatus'],
+            'categories' => $data['categories']
         ];
         return $this->query($query, $params);
     }

@@ -160,7 +160,7 @@ protectRoute([2]);?>
 
 <div id="add-tag-popup" class="modal" style="display: none;">
     <div class="modal-content">
-        <p>Enter job category:</p>
+        <p>Enter tags:</p>
         <input type="text" id="tag-input" class="popup-input">
         <button id="add-tag-btn" class="popup-btn-add" type="button">Add</button>
         <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>

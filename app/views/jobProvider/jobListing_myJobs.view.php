@@ -27,15 +27,18 @@ $jobs = $jobModel->getJobsByUser($userID);
         </div> <br>
 
         <div class="job-list">
-            <?php foreach ($jobs as $job): ?>
+            <?php foreach ($jobs as $job): 
+                            $categories = json_decode($job->categories, true);
+                            $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
+            ?>
                 <div class="myjob-item">
                     <div class="job-details">
                         <span class="job-title"><?= $job->jobTitle ?></span>
                         <span class="employment-type"><?= $job->shift ?></span>
                         <span class="duration">Duration: <?= $job->timeFrom ?> - <?= $job->timeTo ?></span>
                         <span class="employment-type">Date: <?= $job->availableDate ?></span>
-                    <!--   <span class="myjobs-category">Category: Waiter</span> 
-                        <span class="skills">Skills: Diligent, English</span> -->
+                        <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
+                    <!--    <span class="skills">Skills: Diligent, English</span> -->
                         <span class="location">Location: <?= $job->location ?></span>
                         <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
                         <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
