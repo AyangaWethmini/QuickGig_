@@ -102,6 +102,7 @@ class Seeker extends Controller
     {
         $this->view('updateJob');
     }
+    
     public function availability()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -117,6 +118,7 @@ class Seeker extends Controller
             $shift = trim($_POST['shift']);
             $salary = trim($_POST['salary']);
             $currency = trim($_POST['currency']);
+            $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
             $makeAvailableModel = $this->model('Available');
             $isPosted = $makeAvailableModel->create([
@@ -129,7 +131,8 @@ class Seeker extends Controller
                 'availableDate' => $availableDate,
                 'shift' => $shift,
                 'salary' => $salary,
-                'currency' => $currency
+                'currency' => $currency,
+                'categories' => json_encode($categories)
             ]);
 
             // Redirect or handle based on success or failure
@@ -142,6 +145,7 @@ class Seeker extends Controller
             }
         }
     }
+
     public function updateAvailability($id = null) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize POST data

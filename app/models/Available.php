@@ -15,6 +15,7 @@ class Available
     public $shift;
     public $salary;
     public $currency;
+    public $categories;
 
 
     public function __construct()
@@ -30,25 +31,26 @@ class Available
     }
 
     public function create($data)
-    {
-        $query = "INSERT INTO makeavailable (availableID, accountID, description, location, timeFrom, timeTo, availableDate, shift,salary,currency) 
-                  VALUES (:availableID, :accountID, :description, :location, :timeFrom,:timeTo, :availableDate, :shift,:salary,:currency)";
+{
+    $query = "INSERT INTO makeavailable (availableID, accountID, description, location, timeFrom, timeTo, availableDate, shift, salary, currency, categories) 
+              VALUES (:availableID, :accountID, :description, :location, :timeFrom, :timeTo, :availableDate, :shift, :salary, :currency, :categories)";
 
-        $params = [
-            'availableID' => $data['availableID'],
-            'accountID' => $data['accountID'],
-            'description' => $data['description'],
-            'location' => $data['location'],
-            'timeFrom' => $data['timeFrom'],
-            'timeTo' => $data['timeTo'],
-            'availableDate' => $data['availableDate'],
-            'shift' => $data['shift'],
-            'salary' => $data['salary'],
-            'currency' => $data['currency']
-        ];
+    $params = [
+        'availableID' => $data['availableID'],
+        'accountID' => $data['accountID'],
+        'description' => $data['description'],
+        'location' => $data['location'],
+        'timeFrom' => $data['timeFrom'],
+        'timeTo' => $data['timeTo'],
+        'availableDate' => $data['availableDate'],
+        'shift' => $data['shift'],
+        'salary' => $data['salary'],
+        'currency' => $data['currency'],
+        'categories' => $data['categories']
+    ];
 
-        return $this->query($query, $params);
-    }
+    return $this->query($query, $params);
+}
     public function update($id, $data) {
         // Corrected SQL query to match parameter names and remove the extra comma
         $query = "UPDATE makeavailable 
@@ -79,15 +81,18 @@ class Available
         return $this->query($query, $params);
     }
     
-
-
     public function getAvailabilityById($id) {
         $query = "SELECT * FROM makeavailable WHERE availableID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
     
+        if (isset($result[0])) {
+            $result[0]['categories'] = json_decode($result[0]['categories'], true);
+        }
+    
         return isset($result[0]) ? $result[0] : null;
     }
+
     public function delete($id) {
         $query = "DELETE FROM makeavailable WHERE availableID = :id";
         $params = ['id' => $id];

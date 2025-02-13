@@ -4,6 +4,7 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/post_job.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUp.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
@@ -22,7 +23,7 @@ protectRoute([2]);?>
                     </p>
                 </div>
                 <div class="user-input" style="align-items: center; margin-top: 10px;">
-                    <textarea name="description" rows="5" cols="30"></textarea>
+                    <textarea name="description" rows="5" cols="30" required></textarea>
                 </div>
             </div>
             <hr>
@@ -52,7 +53,7 @@ protectRoute([2]);?>
                 </div>
                 <div class="user-input">
                     <div class="salary-ph flex-row">
-                        <input type="text" name="salary" id="salary-per-hr">
+                        <input type="text" name="salary" id="salary-per-hr" required>
                         <select id="currency-select" class="currency-select" name="currency">
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
@@ -114,7 +115,6 @@ protectRoute([2]);?>
                 <div class="user-input flex-col ">
                     <p class="lbl">Date</p>
                     <input type="date" id="dateInput" name="availableDate" required>
-                    <button type="button" class="btn btn-trans" onclick="submitDate()">Submit</button>
                 </div>
             </div>
             <hr>
@@ -123,18 +123,17 @@ protectRoute([2]);?>
                     <p class="title">
                         Categories
                     </p>
-                    <p class="text-grey desc">You can select multiple job categories</p>
+                    <p class="text-grey desc">You can select up to five job categories</p>
                 </div>
                 <div class="user-input">
                     <div class="user-input flex-col">
                         <div class="flex-row" style="gap: 20px;">
-                            <div class="btn btn-trans" onclick="addTag('job')" name="categories">+ Add Categories</div>
+                            <div class="btn btn-trans" onclick="showAddTagPopup('job')" name="categories">+ Add Categories</div>
                         </div>
+                        <div id="tags-container" class="tags-container"></div>
                     </div>
                 </div>
             </div>
-            <hr>
-
             <hr>
             <div class="form-section flex-row container">
                 <div class="container right-container">
@@ -146,7 +145,7 @@ protectRoute([2]);?>
                 <div class="user-input">
                     <button class="btn btn-trans">Add your Location</button>
                     <p>Or</p>
-                    <input type="text" name="location" placeholder="Add location using google maps">
+                    <input type="text" name="location" placeholder="Type your location">
                 </div>
             </div>
             <hr>
@@ -154,37 +153,92 @@ protectRoute([2]);?>
                 <button class="btn btn-accent">Discard</button>
                 <button class="btn btn-accent" type="submit">Finish</button>
             </div>
-    </div>
-    </form>
 
-</div>
+            <div id="tag-limit-popup" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>You can only add up to five categories.</p>
+                    <button id="popup-ok" class="popup-btn-ok" type="button">Ok</button>
+                </div>
+            </div>
+
+            <div id="add-tag-popup" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>Enter job category:</p>
+                    <input type="text" id="tag-input" class="popup-input">
+                    <button id="add-tag-btn" class="popup-btn-add" type="button">Add</button>
+                    <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 
 <script>
-    function addTag(type) {
-        const tagText = prompt(`Enter ${type === 'job' ? 'job' : 'Language'}`);
-        if (tagText) {
-            const tagContainer = document.getElementById('tags-container');
-
-            // Create tag element
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = tagText;
-
-            // Add remove button
-            const removeBtn = document.createElement('span');
-            removeBtn.className = 'remove-btn';
-            removeBtn.textContent = '×';
-            removeBtn.onclick = () => tag.remove();
-
-            // Append remove button to tag
-            tag.appendChild(removeBtn);
-
-            // Append tag to container
-            tagContainer.appendChild(tag);
+    function showAddTagPopup(type) {
+        const tagContainer = document.getElementById('tags-container');
+        if (tagContainer.children.length >= 5) {
+            showTagLimitPopup();
+            return;
         }
+
+        var modal = document.getElementById('add-tag-popup');
+        modal.style.display = 'flex';
+
+        document.getElementById('add-tag-btn').onclick = function() {
+            const tagText = document.getElementById('tag-input').value;
+            if (tagText) {
+                addTag(tagText);
+                modal.style.display = 'none';
+                document.getElementById('tag-input').value = '';
+            }
+        };
+
+        document.getElementById('cancel-tag-btn').onclick = function() {
+            modal.style.display = 'none';
+            document.getElementById('tag-input').value = '';
+        };
     }
+
+    function addTag(tagText) {
+        const tagContainer = document.getElementById('tags-container');
+
+        // Create tag element
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.textContent = tagText;
+
+        // Add remove button
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'remove-btn';
+        removeBtn.textContent = '×';
+        removeBtn.onclick = () => tag.remove();
+
+        // Append remove button to tag
+        tag.appendChild(removeBtn);
+
+        // Append tag to container
+        tagContainer.appendChild(tag);
+
+        // Create hidden input to store tag value
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'categories[]';
+        hiddenInput.value = tagText;
+        tag.appendChild(hiddenInput);
+    }
+
+    function showTagLimitPopup() {
+        var modal = document.getElementById('tag-limit-popup');
+        modal.style.display = 'flex';
+
+        document.getElementById('popup-ok').onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
+
     // Set today's date as the minimum date
     const today = new Date().toISOString().split("T")[0];
     document.getElementById('availableDate').setAttribute('min', today);
