@@ -1,7 +1,10 @@
 <?php
 class Seeker extends Controller
 {
-    
+    public function __construct(){
+        $this->findJobModel = $this->model('FindJobs');
+    }
+
     protected $viewPath = "../app/views/seeker/";
     
     function index()
@@ -9,9 +12,14 @@ class Seeker extends Controller
         $this->view('seekerProfile');
     }
 
-    function findEmployees()
-    {
-        $this->view('findEmployees');
+    function findEmployees(){
+        $findJobs = $this->findJobModel->getJobs();
+
+        $data = [
+            'findJobs' => $findJobs
+        ];
+
+        $this->view('findEmployees', $data);
     }
 
     function postJob()

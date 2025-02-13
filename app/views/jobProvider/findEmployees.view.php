@@ -39,7 +39,7 @@ protectRoute([2]);?>
                   </div>           
                     <div class="job-details">
                         <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
-                        <p><?= htmlspecialchars($findEmp->location) ?></p>
+                        <span class="jobPostedDate"><?= htmlspecialchars($findEmp->location) ?></span>
                         <div style="display:flex;flex-direction:column; gap:20px">
                         <div class="rating">
                             <span>
@@ -60,6 +60,9 @@ protectRoute([2]);?>
                             <div class="availability-shift">
                                 <span><?= htmlspecialchars($findEmp->shift) ?></span>
                             </div>
+                            <div class="availability-salary">
+                                <span><?= htmlspecialchars($findEmp->salary) ?> <?= htmlspecialchars($findEmp->currency) ?>/Hr</span>
+                            </div>
                         </div>
                         <div class="tags">
                             <?php 
@@ -72,10 +75,10 @@ protectRoute([2]);?>
                             ?>
                         </div>
                         <hr>
-                        <div class="jobPostedDateTime">
-                        <span class="jobPostedDate">Posted on: <?= htmlspecialchars($findEmp->datePosted) ?></span>
-                        <span class="jobPostedTime">Posted at: <?= htmlspecialchars($findEmp->timePosted) ?></span>
-                        <span class="jobPostedTime">ID: #<?= htmlspecialchars($findEmp->availableID) ?></span>
+                        <div class="job-identities">
+                        <p>Posted on: <?= htmlspecialchars($findEmp->datePosted) ?></p>
+                        <p>Posted at: <?= htmlspecialchars($findEmp->timePosted) ?></p>
+                        <p>ID: #<?= htmlspecialchars($findEmp->availableID) ?></p>
                         </div>
                         </div>
                     </div>
