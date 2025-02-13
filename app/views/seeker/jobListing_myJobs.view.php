@@ -27,19 +27,22 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             </div> <br>
 
             <div class="job-list">
-                <?php foreach ($jobs as $job): ?>
+                <?php foreach ($jobs as $job): 
+                    $categories = json_decode($job->categories, true);
+                    $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
+                ?>
                     <div class="myjob-item">
                         <div class="job-details">
                             <span class="job-title"><?= htmlspecialchars($job->description) ?></span>
                             <span class="employment-type"><?= htmlspecialchars($job->shift) ?></span>
                             <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
-                            <span class="myjobs-category">Category: <?= htmlspecialchars($job->category ?? 'N/A') ?></span>
-                            <span class="skills">Skills: <?= htmlspecialchars($job->skills ?? 'N/A') ?></span>
+                            <span class="employment-type">Date: <?= htmlspecialchars($job->availableDate) ?></span>
+                            <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
                             <span class="location">Location: <?= htmlspecialchars($job->location) ?></span>
-                            <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?> per hour</span>
+                            <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?>/Hr</span>
                             <hr>
-                            <span class="date-posted">Posted on: <?= htmlspecialchars($job->availableDate) ?></span>
-                            <span class="time-posted">Posted at: <?= htmlspecialchars($job->timeFrom) ?></span>
+                            <span class="date-posted">Posted on: <?= htmlspecialchars($job->datePosted) ?></span>
+                            <span class="time-posted">Posted at: <?= htmlspecialchars($job->timePosted) ?></span>
                             <span class="my-job-id">Job id: #<?= htmlspecialchars($job->availableID) ?></span>
                         </div>
                         <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/seeker/updateAvailability/<?= $job->availableID ?>';">Update</button>

@@ -118,6 +118,7 @@ class Seeker extends Controller
             $shift = trim($_POST['shift']);
             $salary = trim($_POST['salary']);
             $currency = trim($_POST['currency']);
+            $AvailabilityStatus = 1;
             $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
             $makeAvailableModel = $this->model('Available');
@@ -132,6 +133,7 @@ class Seeker extends Controller
                 'shift' => $shift,
                 'salary' => $salary,
                 'currency' => $currency,
+                'availabilityStatus' => $availabilityStatus,
                 'categories' => json_encode($categories)
             ]);
 
@@ -160,6 +162,7 @@ class Seeker extends Controller
             $timeTo = $_POST['timeTo'];
             $availableDate = $_POST['availableDate'];
             $location = trim($_POST['location']);
+            $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
     
             // Update availability in the database
             $this->availabilityModel = $this->model('Available');
@@ -171,7 +174,8 @@ class Seeker extends Controller
                 'timeFrom' => $timeFrom,
                 'timeTo' => $timeTo,
                 'availableDate' => $availableDate,
-                'location' => $location
+                'location' => $location,
+                'categories' => json_encode($categories)
             ]);
     
             // Redirect to the availability page or another appropriate page

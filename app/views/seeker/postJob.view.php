@@ -121,9 +121,9 @@ protectRoute([2]);?>
             <div class="form-section flex-row container">
                 <div class="container right-container">
                     <p class="title">
-                        Categories
+                        Tags
                     </p>
-                    <p class="text-grey desc">You can select up to five job categories</p>
+                    <p class="text-grey desc">You can add skills, jobs and more</p>
                 </div>
                 <div class="user-input">
                     <div class="user-input flex-col">

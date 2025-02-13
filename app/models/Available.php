@@ -16,6 +16,7 @@ class Available
     public $salary;
     public $currency;
     public $categories;
+    public $availabilityStatus;
 
 
     public function __construct()
@@ -32,8 +33,8 @@ class Available
 
     public function create($data)
 {
-    $query = "INSERT INTO makeavailable (availableID, accountID, description, location, timeFrom, timeTo, availableDate, shift, salary, currency, categories) 
-              VALUES (:availableID, :accountID, :description, :location, :timeFrom, :timeTo, :availableDate, :shift, :salary, :currency, :categories)";
+    $query = "INSERT INTO makeavailable (availableID, accountID, description, location, timeFrom, timeTo, availableDate, shift, salary, currency, categories, availabilityStatus) 
+              VALUES (:availableID, :accountID, :description, :location, :timeFrom, :timeTo, :availableDate, :shift, :salary, :currency, :categories, :availabilityStatus)";
 
     $params = [
         'availableID' => $data['availableID'],
@@ -46,7 +47,8 @@ class Available
         'shift' => $data['shift'],
         'salary' => $data['salary'],
         'currency' => $data['currency'],
-        'categories' => $data['categories']
+        'categories' => $data['categories'],
+        'availabilityStatus' => $data['availabilityStatus']
     ];
 
     return $this->query($query, $params);
@@ -61,7 +63,8 @@ class Available
                       availableDate = :availableDate,
                       shift = :shift,
                       salary = :salary,
-                      currency = :currency
+                      currency = :currency,
+                      categories = :categories
                   WHERE availableID = :id";
     
         // Updated parameters to match the query fields
@@ -74,7 +77,8 @@ class Available
             'availableDate' => $data['availableDate'],
             'shift' => $data['shift'],
             'salary' => $data['salary'],
-            'currency' => $data['currency']
+            'currency' => $data['currency'],
+            'categories' => $data['categories']
         ];
     
         // Execute the query and return the result
@@ -87,7 +91,7 @@ class Available
         $result = $this->query($query, $params);
     
         if (isset($result[0])) {
-            $result[0]['categories'] = json_decode($result[0]['categories'], true);
+            $result[0]->categories = json_decode($result[0]->categories, true);
         }
     
         return isset($result[0]) ? $result[0] : null;

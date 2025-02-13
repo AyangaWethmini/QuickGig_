@@ -208,7 +208,7 @@ protectRoute([2]);?>
                     <button class="btn btn-trans">Add your Location</button>
                     <p>Or</p>
                     <input type="text" name="location" placeholder="Type your location here" required value="<?= $job->location ?>">
-                    </div>
+                </div>
                 </div>
                 <hr>
                 <div class="post-job-buttons flex-row">
