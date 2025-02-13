@@ -17,7 +17,7 @@ protectRoute([2]);?>
         <div class="search-container">
             <input type="text" 
                 class="search-bar" 
-                placeholder="Find emplyees (e.g. waiter, bartender, etc. or by name)"
+                placeholder="Find employees (e.g. waiter, bartender, etc. or by name)"
                 aria-label="Search">
             <br><br>
             <div class="filter-container">
@@ -31,14 +31,15 @@ protectRoute([2]);?>
             </div>
         </div>
         <div class="job-cards-container">
+            <?php foreach($data['findEmployees'] as $findEmp): ?>
             <div class="job-card container">
                 <div class="job-card-left flex-row">
                   <div class="pfp">
                     <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-find-employee">
                   </div>           
                     <div class="job-details">
-                        <h2>Smith Greenwood</h2>
-                        <p>Manchester, UK</p>
+                        <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
+                        <p><?= htmlspecialchars($findEmp->location) ?></p>
                         <div style="display:flex;flex-direction:column; gap:20px">
                         <div class="rating">
                             <span>
@@ -51,16 +52,30 @@ protectRoute([2]);?>
                         </div>
                         <div class="availability">
                             <div class="availability-time">
-                                <span>Available: 08:00 AM - 04:00 PM </span>
+                                <span>Available: <?= htmlspecialchars($findEmp->timeFrom) ?> - <?= htmlspecialchars($findEmp->timeTo) ?> </span>
                             </div>
                             <div class="availability-date">
-                                <span>2024-11-30</span>
+                                <span><?= htmlspecialchars($findEmp->availableDate) ?></span>
+                            </div>
+                            <div class="availability-shift">
+                                <span><?= htmlspecialchars($findEmp->shift) ?></span>
                             </div>
                         </div>
                         <div class="tags">
-                            <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Bartender</span>
+                            <?php 
+                            $categories = json_decode($findEmp->categories, true);
+                            if (is_array($categories)) {
+                                foreach ($categories as $category) {
+                                    echo '<span class="tag">' . htmlspecialchars($category) . '</span>';
+                                }
+                            }
+                            ?>
+                        </div>
+                        <hr>
+                        <div class="jobPostedDateTime">
+                        <span class="jobPostedDate">Posted on: <?= htmlspecialchars($findEmp->datePosted) ?></span>
+                        <span class="jobPostedTime">Posted at: <?= htmlspecialchars($findEmp->timePosted) ?></span>
+                        <span class="jobPostedTime">ID: #<?= htmlspecialchars($findEmp->availableID) ?></span>
                         </div>
                         </div>
                     </div>
@@ -76,99 +91,7 @@ protectRoute([2]);?>
                     </div>
                 </div>
             </div>
-
-            <div class="job-card container">
-                <div class="job-card-left flex-row">
-                  <div class="pfp">
-                    <img src="<?=ROOT?>/assets/images/person4.jpg" alt="Profile Picture" class="profile-pic-find-employee">
-                  </div>           
-                    <div class="job-details">
-                        <h2>Zedd Alexis</h2>
-                        <p>London, UK</p>
-                        <div style="display:flex;flex-direction:column; gap:20px">
-                        <div class="rating">
-                            <span>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            </span>
-                        </div>
-                        <div class="availability">
-                            <div class="availability-time">
-                                <span>Available: 08:00 AM - 04:00 PM </span>
-                            </div>
-                            <div class="availability-date">
-                                <span>2024-11-30</span>
-                            </div>
-                        </div>
-                        <div class="tags">
-                            <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Bartender</span>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="job-card-right flex-row">
-                  <button class="request-button btn btn-accent">Request</button>
-                    <div class="dropdown">
-                        <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Message</a></li>
-                            <li><a href="#">View Profile</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>   
-
-            <div class="job-card container">
-                <div class="job-card-left flex-row">
-                  <div class="pfp">
-                    <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture" class="profile-pic-find-employee">
-                  </div>           
-                    <div class="job-details">
-                        <h2>Sarah Eve</h2>
-                        <p>London, UK</p>
-                        <div style="display:flex;flex-direction:column; gap:20px">
-                        <div class="rating">
-                            <span>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            <i class="fa fa-star star-active mx-1"></i>
-                            </span>
-                        </div>
-                        <div class="availability">
-                            <div class="availability-time">
-                                <span>Available: 08:00 AM - 04:00 PM </span>
-                            </div>
-                            <div class="availability-date">
-                                <span>2024-11-30</span>
-                            </div>
-                        </div>
-                        <div class="tags">
-                            <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Baby-Sitter</span>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="job-card-right flex-row">
-                  <button class="request-button btn btn-accent">Request</button>
-                    <div class="dropdown">
-                        <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Message</a></li>
-                            <li><a href="#">View Profile</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>   
-
+            <?php endforeach;?>   
         </div>
     </div>
 </div>

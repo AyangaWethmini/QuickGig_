@@ -3,6 +3,7 @@
 
         public function __construct(){
             $this->complaintModel = $this->model('Complaint');
+            $this->findEmpModel = $this->model('FindEmployees');
         }
 
         protected $viewPath = "../app/views/jobProvider/";
@@ -12,7 +13,13 @@
         }
 
         function findEmployees(){
-            $this->view('findEmployees');
+            $findEmployees = $this->findEmpModel->getEmployees();
+
+            $data = [
+                'findEmployees' => $findEmployees
+            ];
+
+            $this->view('findEmployees', $data);
         }
 
         function postJob(){
