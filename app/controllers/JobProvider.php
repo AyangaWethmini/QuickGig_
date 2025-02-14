@@ -22,6 +22,23 @@
             $this->view('findEmployees', $data);
         }
 
+        public function requestJob() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $jobModel = new FindEmployees();
+                $providerID = $_SESSION['user_id']; 
+                $availableID = $_POST['jobID'];
+                $reqID = uniqid('REQ_');
+        
+                $success = $jobModel->applyForJob($reqID, $providerID, $availableID);
+        
+                if ($success) {
+                    echo json_encode(["status" => "success", "message" => "Your request has been submitted successfully!"]);
+                } else {
+                    echo json_encode(["status" => "error", "message" => "You have already requested for this."]);
+                }
+            }
+        }    
+
         function postJob(){
             $this->view('postJob');
         }

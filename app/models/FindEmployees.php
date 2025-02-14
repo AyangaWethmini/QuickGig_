@@ -28,8 +28,32 @@ class FindEmployees {
         $query = 'SELECT ma.*, i.fname, i.lname 
                   FROM makeAvailable ma 
                   JOIN individual i ON ma.accountID = i.accountID 
-                  WHERE ma.accountID != ? 
+                  WHERE ma.accountID != ?
+                  AND ma.availabilityStatus = 1
                   ORDER BY ma.datePosted DESC, ma.timePosted DESC';
-        return $this->query($query, [$id]);
+        $result = $this->query($query, [$id]);
+        return $result ? $result : [];
+    }
+
+    public function hasAlreadyApplied($providerID, $availableID) {
+        $query = "SELECT COUNT(*) as count FROM req_available WHERE providerID = ? AND availableID = ?";
+        $result = $this->query($query, [$providerID, $availableID]);
+    
+        return $result[0]->count > 0; // Returns true if an application exists
+    }
+    
+    public function applyForJob($reqID, $providerID, $availableID) {
+        if ($this->hasAlreadyApplied($providerID, $availableID)) {
+            return false; // Prevent duplicate applications
+        }
+    
+        //$dateApplied = date('Y-m-d');
+        //$timeApplied = date('H:i:s');
+        $reqStatus = 1; // Set to 1 as per requirements
+    
+        $query = "INSERT INTO req_available (reqID, providerID, availableID, reqStatus) 
+                  VALUES (?, ?, ?, ?)";
+    
+        return $this->query($query, [$reqID, $providerID, $availableID, $reqStatus]);
     }
 }

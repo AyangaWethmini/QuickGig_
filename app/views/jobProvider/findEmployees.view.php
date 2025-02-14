@@ -5,6 +5,7 @@ protectRoute([2]);?>
 
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
@@ -31,6 +32,7 @@ protectRoute([2]);?>
             </div>
         </div>
         <div class="job-cards-container">
+            <?php if (!empty($data['findEmployees'])): ?>
             <?php foreach($data['findEmployees'] as $findEmp): ?>
             <div class="job-card container">
                 <div class="job-card-left flex-row">
@@ -39,6 +41,7 @@ protectRoute([2]);?>
                   </div>           
                     <div class="job-details">
                         <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
+                        <h4><?= htmlspecialchars($findEmp->description) ?></h4>
                         <span class="jobPostedDate"><?= htmlspecialchars($findEmp->location) ?></span>
                         <div style="display:flex;flex-direction:column; gap:20px">
                         <div class="rating">
@@ -84,7 +87,7 @@ protectRoute([2]);?>
                     </div>
                 </div>
                 <div class="job-card-right flex-row">
-                  <button class="request-button btn btn-accent">Request</button>
+                    <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findEmp->availableID ?>')">Request</button>
                     <div class="dropdown">
                         <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                         <ul class="dropdown-menu">
@@ -94,7 +97,78 @@ protectRoute([2]);?>
                     </div>
                 </div>
             </div>
-            <?php endforeach;?>   
+            <?php endforeach;?>
+            <?php else: ?>
+                <p>No employees found.</p>
+            <?php endif; ?>  
         </div>
     </div>
 </div>
+
+<!-- Confirmation Popup -->
+<div id="confirmPopup" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to request for this employee?</p>
+        <button class="popup-btn-add" id="confirmYes">Yes</button>
+        <button class="popup-btn-cancel" onclick="closePopup('confirmPopup')">Cancel</button>
+    </div>
+</div>
+
+<!-- Success Popup -->
+<div id="successPopup" class="modal">
+    <div class="modal-content">
+        <p>Your request has been submitted successfully!</p>
+    </div>
+</div>
+
+<!-- Already Applied Popup -->
+<div id="alreadyAppliedPopup" class="modal">
+    <div class="modal-content">
+        <p>You have already requested for this.</p>
+        <button class="popup-btn-ok" onclick="closePopup('alreadyAppliedPopup')">OK</button>
+    </div>
+</div>
+
+<script>
+    let selectedJobID = null;
+
+    function confirmRequest(availableID) {
+        selectedJobID = availableID;
+        document.getElementById('confirmPopup').style.display = 'flex';
+    }
+
+    document.getElementById('confirmYes').addEventListener('click', function() {
+        if (selectedJobID) {
+            applyForJob(selectedJobID);
+        }
+        closePopup('confirmPopup');
+    });
+
+    function applyForJob(availableID) {
+        fetch("<?= ROOT ?>/jobprovider/requestJob", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `jobID=${availableID}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                showPopup("successPopup");
+                setTimeout(() => closePopup("successPopup"), 3000);
+            } else if (data.status === "error") {
+                showPopup("alreadyAppliedPopup");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    function showPopup(popupID) {
+        document.getElementById(popupID).style.display = 'flex';
+    }
+
+    function closePopup(popupID) {
+        document.getElementById(popupID).style.display = 'none';
+    }
+</script>
