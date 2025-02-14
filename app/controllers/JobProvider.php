@@ -43,8 +43,15 @@
             $this->view('postJob');
         }
         
-        function jobListing_received(){
-            $this->view('jobListing_received');
+        public function jobListing_received(){
+            $received = $this->model('ReceivedProvider');
+            $receivedRequests = $received->getReceivedRequests();
+
+            $data = [
+                'receivedRequests' => $receivedRequests
+            ];
+
+            $this->view('jobListing_received', $data);
         }
 
         function viewEmployeeProfile(){
@@ -88,7 +95,14 @@
         }
 
         function jobListing_send(){
-            $this->view('jobListing_send');
+            $send = $this->model('sendProvider');
+            $sendRequests = $send->getsendRequests();
+
+            $data = [
+                'sendRequests' => $sendRequests
+            ];
+
+            $this->view('jobListing_send', $data);
         }
 
         function jobListing_toBeCompleted(){

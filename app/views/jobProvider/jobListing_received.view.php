@@ -4,6 +4,7 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -23,17 +24,19 @@ protectRoute([2]);?>
         </div> <br>
 
         <div class="employee-list">
-            
+
+            <?php if (!empty($data['receivedRequests'])): ?>
+            <?php foreach($data['receivedRequests'] as $received): ?>
             <div class="employee-item">
                 <div class="employee-photo">
                     <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture">
                 </div>
                 <div class="employee-details">
-                    <span class="employee-name">Nomad Nova</span>
-                    <span class="job-title">Bartender</span>
-                    <span class="date-applied">2024-07-24</span>
-                    <span class="time-applied">03:22 PM</span>
-                    <span class="jobId-applied">#5</span>
+                    <span class="employee-name"><?= htmlspecialchars($received->fname . ' ' . $received->lname) ?></span>
+                    <span class="job-title">Applied Job:<?= htmlspecialchars($received->jobTitle) ?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($received->dateApplied) ?></span>
+                    <span class="time-applied">Time Applied: <?= htmlspecialchars($received->timeApplied)?></span>
+                    
                     <div class="ratings">
                     <span class="star">★</span>
                     <span class="star">★</span>
@@ -41,6 +44,9 @@ protectRoute([2]);?>
                     <span class="star">★</span>
                     <span class="star">★</span>
                     </div>
+                    <hr>
+                    <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($received->jobID)?></span>
+                    <span class="jobId-applied">Application ID: #<?= htmlspecialchars($received->applicationID)?></span>
                 </div>
                 <button class="accept-jobReq-button btn btn-accent">Accept</button>
                 <button class="reject-jobReq-button btn btn-danger">Reject</button>
@@ -52,65 +58,13 @@ protectRoute([2]);?>
                     </ul>
                 </div>
             </div>
-
-            <div class="employee-item">
-                <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture">
+            <?php endforeach;?>
+            <?php else: ?>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
+                    <p class="empty-text">No Requests Found</p>
                 </div>
-                <div class="employee-details">
-                    <span class="employee-name">Clara Zue</span>
-                    <span class="job-title">Waiter</span>
-                    <span class="date-applied">2024-07-25</span>
-                    <span class="time-applied">10:22 AM</span>
-                    <span class="jobId-applied">#2</span>
-                    <div class="ratings">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    </div>
-                </div>
-                <button class="accept-jobReq-button btn btn-accent">Accept</button>
-                <button class="reject-jobReq-button btn btn-danger">Reject</button>
-                <div class="dropdown">
-                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">View Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="employee-item">
-                <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture">
-                </div>
-                <div class="employee-details">
-                    <span class="employee-name">Kane Smith</span>
-                    <span class="job-title">Plumber</span>
-                    <span class="date-applied">2024-07-26</span>
-                    <span class="time-applied">04:42 PM</span>
-                    <span class="jobId-applied">#6</span>
-                    <div class="ratings">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    </div>
-                </div>
-                <button class="accept-jobReq-button btn btn-accent">Accept</button>
-                <button class="reject-jobReq-button btn btn-danger">Reject</button>
-                <div class="dropdown">
-                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
-                        <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-
+            <?php endif; ?>
         </div>
 
         <div id="popup" class="popup hidden">
