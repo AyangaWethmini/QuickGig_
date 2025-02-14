@@ -27,6 +27,7 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             </div> <br>
 
             <div class="job-list">
+                <?php if (!empty($data['jobs'])): ?>
                 <?php foreach ($jobs as $job): 
                     $categories = json_decode($job->categories, true);
                     $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
@@ -49,6 +50,9 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
                         <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->availableID ?>" onclick="confirmDelete(this)">Delete</button>
                     </div>
                 <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No Availabilities Have Been Listed.</p>
+                <?php endif; ?>
             </div>
 
             <!-- Delete Confirmation Modal -->

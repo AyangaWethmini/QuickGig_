@@ -84,9 +84,17 @@ class Seeker extends Controller
         $this->view('reviews');
     }
 
-    function jobListing_myJobs()
-    {
-        $this->view('jobListing_myJobs');
+    public function jobListing_myJobs()
+    {   
+        $userID = $_SESSION['user_id'];
+        $availableModel = $this->model('Available');
+        $jobs = $availableModel->getJobsByUser($userID);
+
+        $data = [
+            'jobs' => $jobs
+        ];
+
+        $this->view('jobListing_myJobs', $data);
     }
 
     function jobListing_send()
