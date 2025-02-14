@@ -22,6 +22,23 @@ class Seeker extends Controller
         $this->view('findEmployees', $data);
     }
 
+    public function requestJob() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $jobModel = new FindJobs();
+            $seekerID = $_SESSION['user_id']; 
+            $jobID = $_POST['jobID'];
+            $applicationID = uniqid('APP_'); // Generate a unique application ID
+    
+            $success = $jobModel->applyForJob($applicationID, $seekerID, $jobID);
+    
+            if ($success) {
+                echo json_encode(["status" => "success", "message" => "Your request has been submitted successfully!"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "You have already applied for this job."]);
+            }
+        }
+    }    
+
     function postJob()
     {
         $this->view('postJob');

@@ -3,8 +3,8 @@
 protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css"> 
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
@@ -17,7 +17,7 @@ protectRoute([2]);?>
         <div class="search-container">
             <input type="text" 
                 class="search-bar" 
-                placeholder="Find jobs (e.g. waiter, bartender, day, skill etc. or by a name)"
+                placeholder="Find jobs (e.g. waiter, bartender, skill etc.)"
                 aria-label="Search">
             <br><br>
             <div class="filter-container">
@@ -30,6 +30,7 @@ protectRoute([2]);?>
                 </select>
             </div>
         </div>
+
         <div class="job-cards-container">
             <?php if (!empty($data['findJobs'])): ?>
                 <?php foreach($data['findJobs'] as $findJob): ?>
@@ -43,15 +44,6 @@ protectRoute([2]);?>
                             <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
                             <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
                             <div style="display:flex;flex-direction:column; gap:20px">
-                            <div class="rating">
-                                <span>
-                                <i class="fa fa-star star-active mx-1"></i>
-                                <i class="fa fa-star star-active mx-1"></i>
-                                <i class="fa fa-star star-active mx-1"></i>
-                                <i class="fa fa-star star-active mx-1"></i>
-                                <i class="fa fa-star star-active mx-1"></i>
-                                </span>
-                            </div>
                                 <div class="availability">
                                     <div class="availability-time">
                                         <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>
@@ -80,22 +72,25 @@ protectRoute([2]);?>
                                 <div class="jobDescription"><p><?= $findJob->description ?></p></div>
                                 <hr>
                                 <div class="job-identities">
-                                <p>Posted on: <?= htmlspecialchars($findJob->datePosted) ?></p>
-                                <p>Posted at: <?= htmlspecialchars($findJob->timePosted) ?></P>
-                                <p>Job id: #<?= htmlspecialchars($findJob->jobID) ?></p>
+                                    <p>Posted on: <?= htmlspecialchars($findJob->datePosted) ?></p>
+                                    <p>Posted at: <?= htmlspecialchars($findJob->timePosted) ?></P>
+                                    <p>Job id: #<?= htmlspecialchars($findJob->jobID) ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="job-card-right flex-row">
-                      <button class="request-button btn btn-accent">Request</button>
+                        <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findJob->jobID ?>')">Request</button>
                         <div class="dropdown">
-                            <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                            <button class="dropdown-toggle">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Message</a></li>
-                                <li><a href="<?php echo ROOT;?>/seeker/viewEmployeeProfile">View Profile</a></li>
+                                <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
                             </ul>
                         </div>
+
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -105,3 +100,71 @@ protectRoute([2]);?>
         </div>
     </div>
 </div>
+
+<!-- Confirmation Popup -->
+<div id="confirmPopup" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to request this job?</p>
+        <button class="popup-btn-add" id="confirmYes">Yes</button>
+        <button class="popup-btn-cancel" onclick="closePopup('confirmPopup')">Cancel</button>
+    </div>
+</div>
+
+<!-- Success Popup -->
+<div id="successPopup" class="modal">
+    <div class="modal-content">
+        <p>Your request has been submitted successfully!</p>
+    </div>
+</div>
+
+<!-- Already Applied Popup -->
+<div id="alreadyAppliedPopup" class="modal">
+    <div class="modal-content">
+        <p>You have already applied for this job.</p>
+        <button class="popup-btn-ok" onclick="closePopup('alreadyAppliedPopup')">OK</button>
+    </div>
+</div>
+
+<script>
+    let selectedJobID = null;
+
+    function confirmRequest(jobID) {
+        selectedJobID = jobID;
+        document.getElementById('confirmPopup').style.display = 'flex';
+    }
+
+    document.getElementById('confirmYes').addEventListener('click', function() {
+        if (selectedJobID) {
+            applyForJob(selectedJobID);
+        }
+        closePopup('confirmPopup');
+    });
+
+    function applyForJob(jobID) {
+        fetch("<?= ROOT ?>/seeker/requestJob", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `jobID=${jobID}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                showPopup("successPopup");
+                setTimeout(() => closePopup("successPopup"), 3000);
+            } else if (data.status === "error") {
+                showPopup("alreadyAppliedPopup");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    function showPopup(popupID) {
+        document.getElementById(popupID).style.display = 'flex';
+    }
+
+    function closePopup(popupID) {
+        document.getElementById(popupID).style.display = 'none';
+    }
+</script>

@@ -38,4 +38,27 @@ class FindJobs {
         $result = $this->query($query, [$id]);
         return $result ? $result : [];
     }
+
+    public function hasAlreadyApplied($seekerID, $jobID) {
+        $query = "SELECT COUNT(*) as count FROM apply_job WHERE seekerID = ? AND jobID = ?";
+        $result = $this->query($query, [$seekerID, $jobID]);
+    
+        return $result[0]->count > 0; // Returns true if an application exists
+    }
+    
+    public function applyForJob($applicationID, $seekerID, $jobID) {
+        if ($this->hasAlreadyApplied($seekerID, $jobID)) {
+            return false; // Prevent duplicate applications
+        }
+    
+        //$dateApplied = date('Y-m-d');
+        //$timeApplied = date('H:i:s');
+        $applicationStatus = 1; // Set to 1 as per requirements
+    
+        $query = "INSERT INTO apply_job (applicationID, seekerID, jobID, applicationStatus) 
+                  VALUES (?, ?, ?, ?)";
+    
+        return $this->query($query, [$applicationID, $seekerID, $jobID, $applicationStatus]);
+    }
+    
 }
