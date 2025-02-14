@@ -44,6 +44,15 @@ protectRoute([2]);?>
                             <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
                             <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
                             <div style="display:flex;flex-direction:column; gap:20px">
+                                <div class="rating">
+                                    <span>
+                                        <i class="fa fa-star star-active mx-1"></i>
+                                        <i class="fa fa-star star-active mx-1"></i>
+                                        <i class="fa fa-star star-active mx-1"></i>
+                                        <i class="fa fa-star star-active mx-1"></i>
+                                        <i class="fa fa-star star-active mx-1"></i>
+                                    </span>
+                                </div>
                                 <div class="availability">
                                     <div class="availability-time">
                                         <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>
