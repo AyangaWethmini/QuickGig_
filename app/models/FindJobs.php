@@ -26,11 +26,16 @@ class FindJobs {
 
     public function getJobs() {
         $id = $_SESSION['user_id'];
-        $query = 'SELECT j.*, i.fname, i.lname 
+        $query = 'SELECT j.*, 
+                         COALESCE(i.fname, o.orgName) AS name, 
+                         i.lname 
                   FROM job j 
-                  JOIN individual i ON j.accountID = i.accountID 
+                  LEFT JOIN individual i ON j.accountID = i.accountID 
+                  LEFT JOIN organization o ON j.accountID = o.accountID 
                   WHERE j.accountID != ? 
+                  AND j.jobStatus = 1 
                   ORDER BY j.datePosted DESC, j.timePosted DESC';
-        return $this->query($query, [$id]);
+        $result = $this->query($query, [$id]);
+        return $result ? $result : [];
     }
 }
