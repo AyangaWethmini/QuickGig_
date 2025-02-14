@@ -4,7 +4,8 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css"> 
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
@@ -104,7 +105,10 @@ protectRoute([2]);?>
                 </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No jobs found.</p>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
+                    <p class="empty-text">No Jobs Found</p>
+                </div>
             <?php endif; ?>
         </div>
     </div>

@@ -8,6 +8,7 @@ $jobs = $jobModel->getJobsByUser($userID);
 ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing_myJobs.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -56,7 +57,10 @@ $jobs = $jobModel->getJobsByUser($userID);
                 </div>
             <?php endforeach; ?>
             <?php else: ?>
-                <p>No Jobs Have Been Listed.</p>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
+                    <p class="empty-text">No Jobs Have Been Listed</p>
+                </div>
             <?php endif; ?>
         </div>
 

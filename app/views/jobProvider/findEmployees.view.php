@@ -6,6 +6,7 @@ protectRoute([2]);?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
@@ -99,7 +100,10 @@ protectRoute([2]);?>
             </div>
             <?php endforeach;?>
             <?php else: ?>
-                <p>No employees found.</p>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
+                    <p class="empty-text">No Employees Found</p>
+                </div>
             <?php endif; ?>  
         </div>
     </div>
