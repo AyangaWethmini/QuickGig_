@@ -32,7 +32,7 @@ protectRoute([2]);?>
                     <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture">
                 </div>
                 <div class="employee-details">
-                    <span class="employee-name"><?= htmlspecialchars($received->fname . ' ' . $received->lname) ?></span>
+                    <span class="employee-name"><?= htmlspecialchars($received->name) ?></span>
                     <span class="job-title">Job Title:<?= htmlspecialchars($received->jobTitle) ?></span>
                     <span class="date-applied">Available Date: <?= htmlspecialchars($received->availableDate) ?></span>
                     <span class="time-applied">Available Time: <?= htmlspecialchars($received->timeFrom)?> - <?= htmlspecialchars($received->timeTo) ?></span>
