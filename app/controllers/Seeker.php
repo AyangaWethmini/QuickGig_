@@ -46,7 +46,14 @@ class Seeker extends Controller
 
     function jobListing_received()
     {
-        $this->view('jobListing_received');
+        $receivedModel = $this->model('ReceivedSeeker');
+        $receivedRequests = $receivedModel->getReceivedRequests();
+
+        $data = [
+            'receivedRequests' => $receivedRequests
+        ];
+
+        $this->view('jobListing_received', $data);
     }
 
     function viewEmployeeProfile()
