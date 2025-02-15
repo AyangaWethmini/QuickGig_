@@ -106,7 +106,14 @@ class Seeker extends Controller
 
     function jobListing_send()
     {
-        $this->view('jobListing_send');
+        $send = $this->model('SendSeeker');
+        $sendRequests = $send->getSendRequests();
+
+        $data = [
+            'sendRequests' => $sendRequests
+        ];
+
+        $this->view('jobListing_send', $data);
     }
 
     function jobListing_toBeCompleted()
