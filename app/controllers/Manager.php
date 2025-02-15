@@ -64,82 +64,109 @@ class Manager extends Controller {
         $this->view('updateAd', ['ad' => $data]);
     }
 
+    public function report(){
+        $this->view('report');
+    }
+
     public function postAdvertisement() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            //form validation
-            if (!isset($_POST['advertiserName']) || !isset($_POST['contact']) || !isset($_POST['email']) || !isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus']) || !isset($_FILES['adImage']) || !isset($_POST['startDate']) || !isset($_POST['endDate'])) {
-                $_SESSION['error'] = "All fields are required.";
-                header('Location: ' . ROOT . '/manager/advertisements');
-                return;
-            }
-
-            $advertiserName = trim($_POST['advertiserName']);
-            $contact = trim($_POST['contact']);
-            $email = trim($_POST['email']);
-
-            //retriving the advertiser ID. if not exist create an advertiser profile
-            $getAdvId = $this->advertiserModel->isAdvertiserExist($email);
-            if ($getAdvId == null) {
-                $this->advertiserModel->createAdvertiser([
-                        'advertiserName' => $advertiserName,
-                        'contact' => $contact,
-                        'email' => $email
-                    ]
-                );
-                $_SESSION['success'] = "Advertiser profile created successfully.";
-
-                $getAdvId = $this->advertiserModel->isAdvertiserExist($email);
-            }
-
-            // Get form data
-            $advertiserID = $getAdvId; 
-            $adTitle = trim($_POST['adTitle']);
-            $adDescription = trim($_POST['adDescription']);
-            $link = trim($_POST['link']);
-            $startDate = trim($_POST['startDate']);
-            $endDate = trim($_POST['endDate']);
-            $adStatus = intval($_POST['adStatus']);
-
-            // Handle image upload
-            $imageData = null;
-            if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
-                // Check file type
-                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
-                
-                if (in_array($fileType, $allowedTypes)) {
-                    // Read the image file content
-                    $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
-                } else {
-                    // Handle invalid file type
-                    header('Location: ' . ROOT . '/manager/advertisements');
-                    return;
-                }
-            }
-
-            // Create advertisement with image data
-            $this->advertisementModel->createAdvertisement([
-                'advertiserID' => $advertiserID,
-                'adTitle' => $adTitle,
-                'adDescription' => $adDescription,
-                'adImage' => $imageData,
-                'link' => $link,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-                'adStatus' => $adStatus,                
-            ]);
-
-            header('Location: ' . ROOT . '/manager/createAd');
-            $_SESSION['success'] = "Advertisement created successfully.";
-            exit;
-
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
         }
+    
+        // Ensure session is started
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    
+        // Form validation
+        $requiredFields = [
+            'advertiserName', 'contact', 'email', 'adTitle', 
+            'adDescription', 'link', 'adStatus', 'startDate', 'endDate'
+        ];
+    
+        foreach ($requiredFields as $field) {
+            if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+                $_SESSION['error'] = "All fields are required.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+    
+        if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
+            $_SESSION['error'] = "Advertisement image is required.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+    
+        // Clean input data
+        $advertiserName = trim($_POST['advertiserName']);
+        $contact = trim($_POST['contact']);
+        $email = trim($_POST['email']);
+    
+        // Get existing advertiser ID
+        $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
+        if ($advertiserId === null) {
+            $advertiserData = [
+                'advertiserName' => $advertiserName,
+                'contact' => $contact,
+                'email' => $email
+            ];
+    
+            $this->advertiserModel->createAdvertiser($advertiserData);   
+    
+            // Fetch the newly created advertiser ID
+            $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
+            if ($advertiserId === null) {
+                $_SESSION['error'] = "Failed to retrieve advertiser ID after creation.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+    
+        // Handle image upload
+        $imageData = null;
+        if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
+    
+            if (!in_array($fileType, $allowedTypes)) {
+                $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+    
+            $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
+            if ($imageData === false) {
+                $_SESSION['error'] = "Failed to read image file.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+    
+        // Prepare advertisement data
+        $advertisementData = [
+            'advertiserID' => $advertiserId,
+            'adTitle' => trim($_POST['adTitle']),
+            'adDescription' => trim($_POST['adDescription']),
+            'adImage' => $imageData,
+            'link' => trim($_POST['link']),
+            'startDate' => trim($_POST['startDate']),
+            'endDate' => trim($_POST['endDate']),
+            'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
+        ];
+    
+        // Create advertisement
+        if (!$this->advertisementModel->createAdvertisement($advertisementData)) {
+            $_SESSION['error'] = "Failed to create advertisement.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+    
+        $_SESSION['success'] = "Advertisement created successfully.";
+        header('Location: ' . ROOT . '/manager/advertisement');
+        exit;
     }
-    // delete advertisement
-    public function deleteAdvertisement($id) {
-        $this->advertisementModel->delete($id);
-        header('Location: ' . ROOT . '/manager/advertisements');
-    }
+    
 
 
     // update advertisement

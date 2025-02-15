@@ -1,5 +1,4 @@
 .wrapper {
-    margin-top: 60px;
     position: relative;
     width: 100%;
 }
@@ -13,17 +12,16 @@
 
 .ad-form {
     justify-content: center;
-
 }
+
 .create-ad-form {
     width: 100%;
     padding: 30px;
 }
 
-.create-ad-form form{
+.create-ad-form form {
     gap: 100px;
 }
-
 
 .field {
     margin: 15px 0;
@@ -38,22 +36,19 @@
 .update-ad-form input[type="text"],
 .update-ad-form input[type="url"],
 .update-ad-form input[type="number"],
-.update-ad-form textarea {
-    width: 410px;
+.update-ad-form textarea,
+.create-ad-form input[type="date"] {
+    width: 100%;
+    max-width: 410px;
     height: 45px;
-    max-width: 100%;
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #d6ddeb;
     border-radius: 4px;
 }
 
-.create-ad-form input[type="date"]{
-    height: 45px;
+.create-ad-form input[type="date"] {
     width: 200px;
-    box-sizing: border-box;
-    border: 1px solid #d6ddeb;
-    border-radius: 4px;
 }
 
 .radio-btns {
@@ -86,32 +81,33 @@
 .ad-card {
     width: 100%;
     max-width: 700px;
-    height: auto;
     min-height: 160px;
     margin: 15px auto;
     padding: 15px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    border: 1px solid #D6DDEB;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
-.ad-card .image {
-    width: 150px;
-    height: 150px;
-    flex-shrink: 0;
+.ad-card:hover {
+    transform: translateY(-5px);
 }
 
-.ad-card .details {
+.ad-card .ad-details {
     flex: 1;
     min-width: 250px;
 }
 
-.ad-title {
-    display: flex;
-    gap: 15px;
+.adv-title {
     font-size: 20px;
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: 5px;
+    padding: 5px;
     color: var(--Neutrals-80);
 }
 
@@ -126,15 +122,18 @@
     color: var(--Neutrals-100, #25324B);
     font-family: Epilogue;
     font-size: 30px;
-    font-style: normal;
     font-weight: 600;
     line-height: 120%;
 }
 
-.header button{
+.header button {
     height: 50px;
     font-size: 16px;
     color: var(--Neutrals-80);
+}
+
+.ads-wrapper {
+    justify-content: center;
 }
 
 

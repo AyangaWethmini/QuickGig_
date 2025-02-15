@@ -26,4 +26,9 @@ class Home extends Controller
 	{
 		$this->view('aboutUs');
 	}
+
+	public function payments()
+	{
+		$this->view('payments');
+	}
 }

@@ -38,13 +38,13 @@ class Advertiser {
         $params = ['email' => $email];
         $result = $this->query($query, $params);
     
-        // Check if the result is an object and not empty
-        if (is_object($result) && !empty($result)) {
-            return $result->advertiserID; // Access the object property
+        if (!empty($result)) {
+            return is_object($result[0]) ? $result[0]->advertiserID : $result[0]['advertiserID'];
         }
     
-        return null; 
+        return null;
     }
-
+    
+    
     
 }
