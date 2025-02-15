@@ -41,7 +41,7 @@ protectRoute([2]);?>
                         <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-find-employee">
                       </div>           
                         <div class="job-details">
-                            <h2><?= htmlspecialchars($findJob->name . ' ' . $findJob->lname) ?></h2>
+                            <h2><?= htmlspecialchars($findJob->name)?></h2>
                             <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
                             <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
                             <div style="display:flex;flex-direction:column; gap:20px">

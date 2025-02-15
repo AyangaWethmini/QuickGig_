@@ -27,8 +27,11 @@ class FindJobs {
     public function getJobs() {
         $id = $_SESSION['user_id'];
         $query = 'SELECT j.*, 
-                         COALESCE(i.fname, o.orgName) AS name, 
-                         i.lname 
+                         CASE 
+                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
+                             THEN CONCAT(i.fname, " ", i.lname) 
+                             ELSE o.orgName 
+                         END AS name
                   FROM job j 
                   LEFT JOIN individual i ON j.accountID = i.accountID 
                   LEFT JOIN organization o ON j.accountID = o.accountID 
