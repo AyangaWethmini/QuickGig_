@@ -1,5 +1,10 @@
 <?php
     class Organization extends Controller {
+
+        public function __construct(){
+            $this->findEmpModel = $this->model('FindEmployees');
+        }
+
         protected $viewPath = "../app/views/organization/";
         
         function index(){
@@ -7,15 +12,45 @@
         }
 
         function org_findEmployees(){
-            $this->view('org_findEmployees');
+            $findEmployees = $this->findEmpModel->getEmployees();
+
+            $data = [
+                'findEmployees' => $findEmployees
+            ];
+
+            $this->view('org_findEmployees', $data);
         }
+
+        public function requestJob() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $jobModel = new FindEmployees();
+                $providerID = $_SESSION['user_id']; 
+                $availableID = $_POST['jobID'];
+                $reqID = uniqid('REQ_');
+        
+                $success = $jobModel->applyForJob($reqID, $providerID, $availableID);
+        
+                if ($success) {
+                    echo json_encode(["status" => "success", "message" => "Your request has been submitted successfully!"]);
+                } else {
+                    echo json_encode(["status" => "error", "message" => "You have already requested for this."]);
+                }
+            }
+        }    
 
         function org_postJob(){
             $this->view('org_postJob');
         }
         
-        function org_jobListing_received(){
-            $this->view('org_jobListing_received');
+        public function org_jobListing_received(){
+            $received = $this->model('ReceivedProvider');
+            $receivedRequests = $received->getReceivedRequests();
+
+            $data = [
+                'receivedRequests' => $receivedRequests
+            ];
+
+            $this->view('org_jobListing_received', $data);
         }
 
         function org_viewEmployeeProfile(){
@@ -46,12 +81,27 @@
             $this->view('org_reviews');
         }
 
-        function org_jobListing_myJobs(){
-            $this->view('org_jobListing_myJobs');
+        public function org_jobListing_myJobs(){
+            $userID = $_SESSION['user_id'];
+            $jobModel = $this->model('Job'); 
+            $jobs = $jobModel->getJobsByUser($userID);
+        
+            $data = [
+                'jobs' => $jobs
+            ];
+        
+            $this->view('org_jobListing_myJobs', $data);
         }
 
         function org_jobListing_send(){
-            $this->view('org_jobListing_send');
+            $send = $this->model('sendProvider');
+            $sendRequests = $send->getsendRequests();
+
+            $data = [
+                'sendRequests' => $sendRequests
+            ];
+
+            $this->view('org_jobListing_send', $data);
         }
 
         function org_jobListing_toBeCompleted(){
@@ -74,4 +124,112 @@
             $this->view('settings');
         }
 
+        public function job(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $jobID = uniqid();
+
+                $accountID = $_SESSION['user_id'];
+
+                $description = trim($_POST['description']);
+                $location = trim($_POST['location']);
+                $timeFrom = trim($_POST['timeFrom']);
+                $timeTo = trim($_POST['timeTo']);
+                $availableDate = trim($_POST['availableDate']);
+                $shift = trim($_POST['shift']);
+                $salary = trim($_POST['salary']);
+                $currency = trim($_POST['currency']);
+                $jobTitle = trim($_POST['jobTitle']);
+                $jobStatus = 1;
+                $noOfApplicants = trim($_POST['noOfApplicants']);
+                $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
+
+                $jobModel = $this->model('Job');
+                $isPosted = $jobModel->create([
+                    'jobID' => $jobID,
+                    'accountID' => $accountID,
+                    'description' => $description,
+                    'timeFrom' => $timeFrom,
+                    'timeTo' => $timeTo,
+                    'location' => $location,
+                    'availableDate' => $availableDate,
+                    'shift' => $shift,
+                    'salary' => $salary,
+                    'currency' => $currency,
+                    'jobTitle' => $jobTitle,
+                    'jobStatus' => $jobStatus,
+                    'noOfApplicants' => $noOfApplicants,
+                    'categories' => json_encode($categories)
+                ]);
+
+                // Redirect or handle based on success or failure
+                if ($isPosted) {
+                    header('Location: ' . ROOT . '/organization/org_jobListing_myJobs'); // Replace with the appropriate success page
+                    exit();
+                } else {
+                    // Handle errors (e.g., log them or show an error message)
+                    echo "Failed to post job. Please try again.";
+                }
+            }
+        }
+
+        public function updateJob($id = null) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanitize POST data
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        
+                // Prepare data for updating
+                $description = trim($_POST['description']);
+                $shift = $_POST['shift'];
+                $salary = trim($_POST['salary']);
+                $currency = $_POST['currency'];
+                $timeFrom = $_POST['timeFrom'];
+                $timeTo = $_POST['timeTo'];
+                $availableDate = $_POST['availableDate'];
+                $location = trim($_POST['location']);
+                $jobTitle = trim($_POST['jobTitle']);
+                $jobStatus = 1;
+                $noOfApplicants = trim($_POST['noOfApplicants']);
+                $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
+        
+                // Update availability in the database
+                $this->jobModel = $this->model('Job');
+                $this->jobModel->update($id, [
+                    'description' => $description,
+                    'shift' => $shift,
+                    'salary' => $salary,
+                    'currency' => $currency,
+                    'timeFrom' => $timeFrom,
+                    'timeTo' => $timeTo,
+                    'availableDate' => $availableDate,
+                    'location' => $location,
+                    'jobTitle' => $jobTitle,
+                    'jobStatus' => $jobStatus,
+                    'noOfApplicants' => $noOfApplicants,
+                    'categories' => json_encode($categories)
+                ]);
+        
+                // Redirect to the availability page or another appropriate page
+                header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
+            } else {
+                // Get the current availability details for the given ID
+                $this->jobModel = $this->model('Job');
+                $job = $this->jobModel->getJobById($id);
+        
+                // Pass the current availability data to the view
+                $data = [
+                    'job' => $job
+                ];
+        
+                // Load the update form view
+                $this->view('updateJob', $data);
+            }
+        }
+
+        public function deleteJob($id) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->jobModel = $this->model('Job');
+                $this->jobModel->delete($id);
+                header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
+            }
+        }
     }
