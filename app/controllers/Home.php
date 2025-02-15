@@ -1,8 +1,14 @@
-<?php 
+<?php
 
 class Home extends Controller
 {
 	protected $viewPath = "../app/views/home/";
+	protected $planModel; //temporary for testig, needto move into a ad controller
+
+	public function __construct()
+	{
+		$this->planModel = $this->model('Plans');
+	}
 
 	public function index()
 	{
@@ -27,8 +33,14 @@ class Home extends Controller
 		$this->view('aboutUs');
 	}
 
-	public function payments()
+	// public function payments()
+	// {
+	// 	$this->view('payments');
+	// }
+
+	public function subscriptions()
 	{
-		$this->view('payments');
+		$data = $this->planModel->getPlans();
+		$this->view('subscriptions', ['plans' => $data]);
 	}
 }
