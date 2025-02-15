@@ -27,7 +27,7 @@ protectRoute([1]);?>
         <div class="filter flex-row">
             <span>
                 <h3>All Ads</h3>
-                <!--<p class="text-grey">Showing <?= count($advertisements) ?> results</p>-->
+                <p class="text-grey">Showing <?= count($advertisements) ?> results</p>
             </span>
 
             <div class="filter-container">
@@ -41,47 +41,49 @@ protectRoute([1]);?>
         </div>
         <br><br>
 
-        <div class="ads container">
-        <?php 
-            $adsPerPage = 3;
-            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            $startIndex = ($currentPage - 1) * $adsPerPage;
-            
-            $counter = 0;
-            for ($i = $startIndex; $i < count($advertisements) && $counter < $adsPerPage; $i++): 
-                $ad = $advertisements[$i];
-                $counter++;
-        ?> 
-            <div class="ad-card flex-row container">
-                <div class="image" >
-                    <?php if ($ad->img): ?>
-                        <?php 
-                            // Get the mime type from the first few bytes of the BLOB
-                            $finfo = new finfo(FILEINFO_MIME_TYPE);
-                            $mimeType = $finfo->buffer($ad->img);
-                        ?>
-                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Advertisement image">
-                    <?php else: ?>
-                        <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available">
-                    <?php endif; ?>
-                </div>
-                <div class="details flex-col">
-                    <p class="ad-title"><?= htmlspecialchars($ad->adTitle) ?></p>
-                    <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                    <p class="description"><?= htmlspecialchars(implode(' ', array_slice(explode(' ', $ad->adDescription), 0, 10))) . '...' ?></p>
-                    <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
-                    <div class="status flex-row">
-                        <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
-                            <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
-                        </span>
+        <div class="ads-wrapper flex-col">
+            <div class="ads container">
+            <?php 
+                $adsPerPage = 3;
+                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $startIndex = ($currentPage - 1) * $adsPerPage;
+                
+                $counter = 0;
+                for ($i = $startIndex; $i < count($advertisements) && $counter < $adsPerPage; $i++): 
+                    $ad = $advertisements[$i];
+                    $counter++;
+            ?> 
+                <div class="ad-card flex-row container">
+                    <div class="image" >
+                        <?php if ($ad->img): ?>
+                            <?php 
+                                // Get the mime type from the first few bytes of the BLOB
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($ad->img);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Advertisement image" height="150px" width="150px">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
+                    <div class="ad-details flex-col">
+                        <p class="adv-title"><?= htmlspecialchars($ad->adTitle) ?></p>
+                        <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
+                        <p class="description"><?= htmlspecialchars(implode(' ', array_slice(explode(' ', $ad->adDescription), 0, 10))) . '...' ?></p>
+                        <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
+                        <div class="status flex-row">
+                            <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
+                                <?= $ad->adStatus == 1 ? 'Active' : 'Inactive' ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ad-actionbtns flex-col">
+                        <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
+                        <button class="btn btn-del" onclick="deleteAd(<?php echo $ad->advertisementID ?>)">Delete</button>
                     </div>
                 </div>
-                <div class="ad-actionbtns flex-col">
-                    <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
-                    <button class="btn btn-del" onclick="deleteAd(<?php echo $ad->advertisementID ?>)">Delete</button>
-                </div>
+            <?php endfor; ?>
             </div>
-        <?php endfor; ?>
         </div>
 
         <div class="pagination flex-row">
@@ -102,6 +104,15 @@ protectRoute([1]);?>
             <?php endif; ?>
         </div>
 
+
+        <?php
+            // Check if there are any error messages in the session
+            if (isset($_SESSION['error'])) {
+                echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+                // Clear the error message after displaying it
+                unset($_SESSION['error']);
+            }
+        ?>
 
 
 
