@@ -4,7 +4,7 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
-<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUp.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>

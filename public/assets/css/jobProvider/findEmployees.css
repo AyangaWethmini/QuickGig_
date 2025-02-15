@@ -173,6 +173,7 @@
   .request-button{
     height: 50px;
     width: 100px;
+    border-radius: 10px;
   }
   
   
