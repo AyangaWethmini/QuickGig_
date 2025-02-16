@@ -1,24 +1,132 @@
-.ads{
-    display: flex;
-    align-items: center;
-    padding: 100px;
-    justify-content: center;
+.sub-background{
+    height: 100vh;
+    width: 100%;
+    background-color: transparent;
+    backdrop-filter: blur(1px);
+}
+.subscription-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 90%;
     max-width: 800px;
-    background-color: aqua;
-    gap: 10px;
+    padding: 30px 50px;
+    z-index: 1000;
+    background-color: white;
 }
 
-.ads-popup{
+.popup-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.popup-header h2 {
+    font-size: 24px;
+    color: var(--brand-primary);
+    margin: 0;
+    font-family: 'Abel', sans-serif;
+    font-weight: bold;
+}
+
+.plans-container {
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
-    align-items:center;
 }
 
-.plan-card{
-    background-color: beige;
+.plan-card {
+    background-color: #f9f9f9;
     border-radius: 10px;
-    margin: 8px;
-    padding: 10px;
-    height: 200px;
-    width: 200px;
+    overflow: hidden;
+    width: calc(33.333% - 20px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* .plan-image {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+} */
+
+.plan-details {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.plan-name {
+    font-size: 20px;
+    color: #333;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.plan-price {
+    font-size: 18px;
+    color: var(--brand-primary);
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    text-align: left;
+}
+
+.plan-features li {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+.trial-button {
+    display: flex; 
+    justify-content: center;
+    gap: 50px;
+}
+
+.trial-button button {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Gradient background */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    margin-top: 20px;
+    padding: 10px 20px; /* Increased padding for a better look */
+    color: white; /* Change text color to white */
+    font-size: 16px; /* Increase font size */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+    animation: shake 0.5s; /* Add shake animation */
+}
+
+.trial-button button:hover {
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%); /* Reverse gradient on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+@keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px, 0); }
+    50% { transform: translate(2px, 0); }
+    75% { transform: translate(-2px, 0); }
+    100% { transform: translate(0); }
+}
+
+.close{
+    color: var(--neurals-80);
 }

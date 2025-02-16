@@ -12,7 +12,8 @@ class Home extends Controller
 
 	public function index()
 	{
-		$this->view('home');
+		$data = $this->planModel->getPlans();
+		$this->view('home',['plans' => $data]);
 	}
 
 	public function signup()
@@ -38,9 +39,9 @@ class Home extends Controller
 	// 	$this->view('payments');
 	// }
 
-	public function subscriptions()
-	{
-		$data = $this->planModel->getPlans();
-		$this->view('subscriptions', ['plans' => $data]);
-	}
+	// public function subscriptions()
+	// {
+	// 	$data = $this->planModel->getPlans();
+	// 	$this->view('subscriptions', ['plans' => $data]);
+	// }
 }
