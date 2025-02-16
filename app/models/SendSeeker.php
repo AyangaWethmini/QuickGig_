@@ -31,8 +31,8 @@ class SendSeeker{
                         j.jobTitle, j.jobID, j.salary, j.currency, j.location, j.availableDate, j.timeFrom, j.timeTo
                 FROM apply_job a 
                 JOIN job j ON a.jobID = j.jobID
-                LEFT JOIN individual i ON a.seekerID = i.accountID
-                LEFT JOIN organization o ON a.seekerID = o.accountID
+                LEFT JOIN individual i ON j.accountID = i.accountID
+                LEFT JOIN organization o ON j.accountID = o.accountID
                 WHERE a.seekerID = ? 
                 AND a.applicationStatus = 1
                 ORDER BY datePosted DESC, timePosted DESC";
