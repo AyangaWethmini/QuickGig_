@@ -32,11 +32,12 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
                 <?php foreach ($jobs as $job): 
                     $categories = json_decode($job->categories, true);
                     $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
+                    $jobStatusClass = ($job->availabilityStatus == 2) ? 'inactive-job' : '';
                 ?>
-                    <div class="myjob-item">
+                    <div class="myjob-item <?= $jobStatusClass ?>">
                         <div class="job-details">
                             <span class="job-title"><?= htmlspecialchars($job->description) ?></span>
-                            <span class="employment-type"><?= htmlspecialchars($job->shift) ?></span>
+                            <span class="employment-type">Shift: <?= htmlspecialchars($job->shift) ?></span>
                             <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
                             <span class="employment-type">Date: <?= htmlspecialchars($job->availableDate) ?></span>
                             <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
