@@ -54,6 +54,37 @@
             $this->view('jobListing_received', $data);
         }
 
+        public function acceptJobRequest() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $applicationID = $_POST['applicationID'];
+                $receivedProviderModel = $this->model('ReceivedProvider');
+                $success = $receivedProviderModel->acceptRequest($applicationID);
+        
+                if ($success) {
+                    // Get the jobID from the application
+                    $application = $receivedProviderModel->getApplicationByID($applicationID);
+                    $jobID = $application->jobID;
+        
+                    // Count the number of accepted applications for the job
+                    $acceptedCount = $receivedProviderModel->countAcceptedApplications($jobID);
+        
+                    // Get the number of applicants allowed for the job
+                    $jobModel = $this->model('Job');
+                    $job = $jobModel->getJobById($jobID);
+                    $noOfApplicants = $job->noOfApplicants;
+        
+                    // If the number of accepted applications equals the number of applicants, update the job status
+                    if ($acceptedCount >= $noOfApplicants) {
+                        $receivedProviderModel->updateJobStatus($jobID, 2);
+                    }
+        
+                    header('Location: ' . ROOT . '/jobprovider/jobListing_received');
+                } else {
+                    echo "Failed to accept the request.";
+                }
+            }
+        }
+
         function viewEmployeeProfile(){
             $this->view('viewEmployeeProfile');
         }
