@@ -260,3 +260,26 @@ a {
     text-decoration: none !important;
     color: inherit
 }
+
+.inactive-job {
+    position: relative;
+    pointer-events: none;
+}
+
+.inactive-job::before {
+    content: '';
+    position: absolute;
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128, 128, 128, 0.5); /* Transparent gray layer */
+    z-index: 1;
+}
+
+/* Ensure buttons are not clickable */
+.inactive-job .update-jobReq-button,
+.inactive-job .delete-jobReq-button {
+    pointer-events: none;
+}

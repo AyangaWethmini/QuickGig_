@@ -29,33 +29,32 @@ $jobs = $jobModel->getJobsByUser($userID);
 
         <div class="job-list">
             <?php if (!empty($data['jobs'])): ?>
-            <?php foreach ($jobs as $job): 
-                            $categories = json_decode($job->categories, true);
-                            $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
-            ?>
-                <div class="myjob-item">
-                    <div class="job-details">
-                        <span class="job-title"><?= $job->jobTitle ?></span>
-                        <span class="employment-type">Shift: <?= $job->shift ?></span>
-                        <span class="duration">Duration: <?= $job->timeFrom ?> - <?= $job->timeTo ?></span>
-                        <span class="employment-type">Date: <?= $job->availableDate ?></span>
-                        <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
-                    <!--    <span class="skills">Skills: Diligent, English</span> -->
-                        <span class="location">Location: <?= $job->location ?></span>
-                        <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
-                        <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
-                        <hr>
-                        <div class="jobDescription"><p><?= $job->description ?></p></div>
-                        <hr> 
-                        <span class="date-posted">Posted on: <?= $job->datePosted ?></span>
-                        <span class="time-posted">Posted at: <?= $job->timePosted ?></span>
-                        <span class="my-job-id">Job id: #<?= $job->jobID ?></span>
-
+                <?php foreach ($jobs as $job): 
+                    $categories = json_decode($job->categories, true);
+                    $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
+                    $jobStatusClass = ($job->jobStatus == 2) ? 'inactive-job' : '';
+                ?>
+                    <div class="myjob-item <?= $jobStatusClass ?>">
+                        <div class="job-details">
+                            <span class="job-title"><?= $job->jobTitle ?></span>
+                            <span class="employment-type">Shift: <?= $job->shift ?></span>
+                            <span class="duration">Duration: <?= $job->timeFrom ?> - <?= $job->timeTo ?></span>
+                            <span class="employment-type">Date: <?= $job->availableDate ?></span>
+                            <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
+                            <span class="location">Location: <?= $job->location ?></span>
+                            <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
+                            <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
+                            <hr>
+                            <div class="jobDescription"><p><?= $job->description ?></p></div>
+                            <hr> 
+                            <span class="date-posted">Posted on: <?= $job->datePosted ?></span>
+                            <span class="time-posted">Posted at: <?= $job->timePosted ?></span>
+                            <span class="my-job-id">Job id: #<?= $job->jobID ?></span>
+                        </div>
+                        <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/organization/updateJob/<?= $job->jobID ?>';">Update</button>
+                        <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->jobID ?>" onclick="confirmDelete(this)">Delete</button>
                     </div>
-                    <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/organization/updateJob/<?= $job->jobID ?>';">Update</button>
-                    <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->jobID ?>" onclick="confirmDelete(this)">Delete</button>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
             <?php else: ?>
                 <div class="empty-container">
                     <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
