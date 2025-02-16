@@ -40,4 +40,26 @@ class ReceivedProvider{
         $query = "UPDATE apply_job SET applicationStatus = 0 WHERE applicationID = ?";
         return $this->query($query, [$applicationID]);
     }
+
+    public function acceptRequest($applicationID) {
+        $query = "UPDATE apply_job SET applicationStatus = 2 WHERE applicationID = ?";
+        return $this->query($query, [$applicationID]);
+    }
+    
+    public function countAcceptedApplications($jobID) {
+        $query = "SELECT COUNT(*) as acceptedCount FROM apply_job WHERE jobID = ? AND applicationStatus = 2";
+        $result = $this->query($query, [$jobID]);
+        return $result ? $result[0]->acceptedCount : 0;
+    }
+    
+    public function updateJobStatus($jobID, $status) {
+        $query = "UPDATE job SET jobStatus = ? WHERE jobID = ?";
+        return $this->query($query, [$status, $jobID]);
+    }
+
+    public function getApplicationByID($applicationID) {
+        $query = "SELECT * FROM apply_job WHERE applicationID = ?";
+        $result = $this->query($query, [$applicationID]);
+        return $result ? $result[0] : null;
+    }
 }

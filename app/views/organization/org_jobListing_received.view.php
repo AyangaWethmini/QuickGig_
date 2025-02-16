@@ -76,7 +76,7 @@ protectRoute([3]);?>
             </div>
         </div>
 
-        <form id="action-form" action="<?=ROOT?>/organization/rejectJobRequest" method="POST" style="display: none;">
+        <form id="action-form" action="" method="POST" style="display: none;">
             <input type="hidden" name="applicationID" id="action-applicationID">
         </form>
 
@@ -97,11 +97,11 @@ protectRoute([3]);?>
         if (currentAction && currentApplicationID) {
             document.getElementById('action-applicationID').value = currentApplicationID;
             if (currentAction === 'reject') {
+                document.getElementById('action-form').action = '<?=ROOT?>/organization/rejectJobRequest';
                 document.getElementById('action-form').submit();
             } else if (currentAction === 'accept') {
-                // Handle accept action here
-                // For now, just show success popup
-                alert('Request accepted successfully!');
+                document.getElementById('action-form').action = '<?=ROOT?>/organization/acceptJobRequest';
+                document.getElementById('action-form').submit();
             }
         }
         closePopup('confirmPopup');
