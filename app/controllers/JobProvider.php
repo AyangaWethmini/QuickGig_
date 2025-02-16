@@ -85,6 +85,20 @@
             }
         }
 
+        public function rejectJobRequest() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $applicationID = $_POST['applicationID'];
+                $receivedProviderModel = $this->model('ReceivedProvider');
+                $success = $receivedProviderModel->rejectRequest($applicationID);
+        
+                if ($success) {
+                    header('Location: ' . ROOT . '/jobprovider/jobListing_received');
+                } else {
+                    echo "Failed to reject the request.";
+                }
+            }
+        }
+
         function viewEmployeeProfile(){
             $this->view('viewEmployeeProfile');
         }
