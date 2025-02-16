@@ -53,6 +53,20 @@
             $this->view('org_jobListing_received', $data);
         }
 
+        public function rejectJobRequest() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $applicationID = $_POST['applicationID'];
+                $receivedProviderModel = $this->model('ReceivedProvider');
+                $success = $receivedProviderModel->rejectRequest($applicationID);
+        
+                if ($success) {
+                    header('Location: ' . ROOT . '/organization/org_jobListing_received');
+                } else {
+                    echo "Failed to reject the request.";
+                }
+            }
+        }
+
         function org_viewEmployeeProfile(){
             $this->view('org_viewEmployeeProfile');
         }

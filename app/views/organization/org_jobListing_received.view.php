@@ -48,8 +48,8 @@ protectRoute([3]);?>
                     <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($received->jobID)?></span>
                     <span class="jobId-applied">Application ID: #<?= htmlspecialchars($received->applicationID)?></span>
                 </div>
-                <button class="accept-jobReq-button btn btn-accent">Accept</button>
-                <button class="reject-jobReq-button btn btn-danger">Reject</button>
+                <button class="accept-jobReq-button btn btn-accent" onclick="confirmAction('accept', '<?= $received->applicationID ?>')">Accept</button>
+                <button class="reject-jobReq-button btn btn-danger" onclick="confirmAction('reject', '<?= $received->applicationID ?>')">Reject</button>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
@@ -67,37 +67,48 @@ protectRoute([3]);?>
             <?php endif; ?>
         </div>
 
-        <div id="popup" class="popup hidden">
+        <!-- Confirmation Popup -->
+        <div id="confirmPopup" class="popup hidden">
             <div class="popup-content">
-                <p id="popup-message">Are you sure to accept the request?</p>
-                <button id="popup-yes" class="popup-button-jobReq">Yes</button>
-                <button id="popup-no" class="popup-button-jobReq">No</button>
+                <p id="confirmMessage">Are you sure you want to proceed?</p>
+                <button class="popup-button-jobReq" id="popup-yes">Yes</button>
+                <button class="popup-button-jobReq" id="popup-no" onclick="closePopup('confirmPopup')">Cancel</button>
             </div>
         </div>
+
+        <form id="action-form" action="<?=ROOT?>/organization/rejectJobRequest" method="POST" style="display: none;">
+            <input type="hidden" name="applicationID" id="action-applicationID">
+        </form>
 
     </div>
 </body>
 <script>
-document.querySelectorAll('.accept-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to accept the request?';
-        document.getElementById('popup').classList.remove('hidden');
+    let currentAction = null;
+    let currentApplicationID = null;
+
+    function confirmAction(action, applicationID) {
+        currentAction = action;
+        currentApplicationID = applicationID;
+        document.getElementById('confirmMessage').textContent = `Are you sure you want to ${action} this application?`;
+        document.getElementById('confirmPopup').classList.remove('hidden');
+    }
+
+    document.getElementById('popup-yes').addEventListener('click', function() {
+        if (currentAction && currentApplicationID) {
+            document.getElementById('action-applicationID').value = currentApplicationID;
+            if (currentAction === 'reject') {
+                document.getElementById('action-form').submit();
+            } else if (currentAction === 'accept') {
+                // Handle accept action here
+                // For now, just show success popup
+                alert('Request accepted successfully!');
+            }
+        }
+        closePopup('confirmPopup');
     });
-});
 
-document.querySelectorAll('.reject-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to reject the request?';
-        document.getElementById('popup').classList.remove('hidden');
-    });
-});
-
-document.getElementById('popup-yes').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-});
-
-document.getElementById('popup-no').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-});
+    function closePopup(popupID) {
+        document.getElementById(popupID).classList.add('hidden');
+    }
 </script>
 </html>

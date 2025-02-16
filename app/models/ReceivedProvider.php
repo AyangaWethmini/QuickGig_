@@ -35,4 +35,9 @@ class ReceivedProvider{
         
         return $result ? $result : [];
     }
+
+    public function rejectRequest($applicationID) {
+        $query = "UPDATE apply_job SET applicationStatus = 0 WHERE applicationID = ?";
+        return $this->query($query, [$applicationID]);
+    }
 }
