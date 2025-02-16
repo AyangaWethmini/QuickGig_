@@ -42,4 +42,25 @@ class ReceivedSeeker{
         
         return $result ? $result : [];
     }
+
+    public function rejectRequest($reqID) {
+        $query = "UPDATE req_available SET reqStatus = 0 WHERE reqID = ?";
+        return $this->query($query, [$reqID]);
+    }
+
+    public function acceptRequest($reqID) {
+        $query = "UPDATE req_available SET reqStatus = 2 WHERE reqID = ?";
+        return $this->query($query, [$reqID]);
+    }
+    
+    public function updateAvailableStatus($availableID, $status) {
+        $query = "UPDATE makeavailable SET availabilityStatus = ? WHERE availableID = ?";
+        return $this->query($query, [$status, $availableID]);
+    }
+
+    public function getReqByID($reqID) {
+        $query = "SELECT * FROM req_available WHERE reqID = ?";
+        $result = $this->query($query, [$reqID]);
+        return $result ? $result[0] : null;
+    }
 }

@@ -56,6 +56,45 @@ class Seeker extends Controller
         $this->view('jobListing_received', $data);
     }
 
+    public function rejectJobRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $reqID = $_POST['reqID'];
+            $receivedSeekerModel = $this->model('ReceivedSeeker');
+            $success = $receivedSeekerModel->rejectRequest($reqID);
+    
+            if ($success) {
+                header('Location: ' . ROOT . '/seeker/jobListing_received');
+            } else {
+                echo "Failed to reject the request.";
+            }
+        }
+    }
+
+    public function acceptJobRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $reqID = $_POST['reqID'];
+            $receivedSeekerModel = $this->model('ReceivedSeeker');
+            $success = $receivedSeekerModel->acceptRequest($reqID);
+
+            if ($success) {
+                // Get the jobID from the application
+                $req = $receivedSeekerModel->getReqByID($reqID);
+                if ($req) {
+                    $availableID = $req->availableID;
+
+                    // Update the request status
+                    $receivedSeekerModel->updateAvailableStatus($availableID, 2);
+
+                    header('Location: ' . ROOT . '/seeker/jobListing_received');
+                } else {
+                    echo "Request not found.";
+                }
+            } else {
+                echo "Failed to accept the request.";
+            }
+        }
+    }
+
     function viewEmployeeProfile()
     {
         $this->view('viewEmployeeProfile');
