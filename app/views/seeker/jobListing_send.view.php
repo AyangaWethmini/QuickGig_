@@ -4,6 +4,7 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
