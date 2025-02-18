@@ -22,6 +22,7 @@
                     <div class="complaint-details flex-col">
                         <div class="complaint-details flex-row">
                             <div class="the-complaint"><?php echo $complaint->content ?></div>
+                            <div class="the-complaint"><?php echo $complaint->complainantID ?></div>
                             <div class="text-grey">
                                 <?php
                                 $formattedTime = date('h:i A', strtotime($complaint->complaintTime));

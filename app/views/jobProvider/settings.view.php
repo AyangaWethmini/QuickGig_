@@ -27,22 +27,28 @@
         <div class="popup-overlay hidden" id="changePwPopup">
             <div class="popup-form">
                 <h1>Change Password</h1>
-                <form action="">
+                <form action="<?= ROOT ?>/jobProvider/changePassword" method="POST">
                     <div class="form-field">
-                        <label for="oldpw"><p class="lbl">Enter old password:</p></label>
-                        <input type="password" id="oldpw" placeholder="Old password">
+                        <label for="oldpw">
+                            <p class="lbl">Enter old password:</p>
+                        </label>
+                        <input type="password" id="oldpw" name="oldpw" placeholder="Old password" required>
                     </div>
                     <div class="form-field">
-                        <label for="newpw"><p class="lbl">Enter new password:</p></label>
-                        <input type="password" id="newpw" placeholder="New password">
+                        <label for="newpw">
+                            <p class="lbl">Enter new password:</p>
+                        </label>
+                        <input type="password" id="newpw" name="newpw" placeholder="New password" required>
                     </div>
                     <div class="form-field">
-                        <label for="renewpw"><p class="lbl">Re-enter password:</p></label>
-                        <input type="password" id="renewpw" placeholder="Re-enter new password">
+                        <label for="renewpw">
+                            <p class="lbl">Re-enter password:</p>
+                        </label>
+                        <input type="password" id="renewpw" name="renewpw" placeholder="Re-enter new password" required>
                     </div>
                     <div class="popup-btns">
                         <button type="button" class="btn btn-del" onclick="closePopup('changePwPopup')">Cancel</button>
-                        <button class="btn btn-accent">Update Password</button>
+                        <button type="submit" class="btn btn-accent">Update Password</button>
                     </div>
                 </form>
             </div>
@@ -55,7 +61,9 @@
                 <form action="">
                     <p class="lbl">You can always reactivate your account by logging back in.</p>
                     <div class="form-field">
-                        <label for="duration"><p class="lbl">Choose Deactivation Period:</p></label>
+                        <label for="duration">
+                            <p class="lbl">Choose Deactivation Period:</p>
+                        </label>
                         <select name="duration" id="duration">
                             <option value="15_days">15 Days</option>
                             <option value="1_month">1 Month</option>
@@ -78,15 +86,21 @@
                 <h1>Delete Account</h1>
                 <form action="">
                     <div class="form-field">
-                        <label for="email"><p class="lbl">Enter your email:</p></label>
+                        <label for="email">
+                            <p class="lbl">Enter your email:</p>
+                        </label>
                         <input type="email" id="email" placeholder="Email Address">
                     </div>
                     <div class="form-field">
-                        <label for="password"><p class="lbl">Enter your password:</p></label>
+                        <label for="password">
+                            <p class="lbl">Enter your password:</p>
+                        </label>
                         <input type="password" id="password" placeholder="Password">
                     </div>
                     <div class="form-field">
-                        <label for="confirmDelete"><p class="lbl">Type "Delete my account":</p></label>
+                        <label for="confirmDelete">
+                            <p class="lbl">Type "Delete my account":</p>
+                        </label>
                         <input type="text" id="confirmDelete" placeholder="Delete my account">
                     </div>
                     <div class="form-field">
@@ -107,19 +121,20 @@
 <div class="backdrop hidden" id="backdrop"></div>
 
 <script>
-function openPopup(popupId) {
-    const popup = document.getElementById(popupId);
-    const backdrop = document.getElementById('backdrop');
-    popup.classList.remove('hidden');
-    popup.classList.add('show');
-    backdrop.classList.remove('hidden'); 
-}
+    function openPopup(popupId) {
+        const popup = document.getElementById(popupId);
+        const backdrop = document.getElementById('backdrop');
+        popup.classList.remove('hidden');
+        popup.classList.add('show');
+        backdrop.classList.remove('hidden');
+    }
 
-function closePopup(popupId) {
-    const popup = document.getElementById(popupId);
-    const backdrop = document.getElementById('backdrop');
-    popup.classList.remove('show');
-    popup.classList.add('hidden');
-    backdrop.classList.add('hidden'); 
-}
+    function closePopup(popupId) {
+        const popup = document.getElementById(popupId);
+        const backdrop = document.getElementById('backdrop');
+        popup.classList.remove('show');
+        popup.classList.add('hidden');
+        backdrop.classList.add('hidden');
+    }
 </script>
+<?php require APPROOT . '/views/inc/footer.php'; ?>

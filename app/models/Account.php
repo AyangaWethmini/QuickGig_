@@ -2,11 +2,17 @@
 // models/Account.php
 class Account
 {
+    use Database;  // Add this line to use the Database trait
+
     private $db;
 
-    public function __construct($db)
+    public function __construct($db = null)
     {
-        $this->db = $db; // PDO instance
+        if ($db !== null) {
+            $this->db = $db;
+        } else {
+            $this->db = $this->connect();  // Use the connect method from the trait
+        }
     }
 
     // Properties representing the columns in the account table
@@ -22,7 +28,25 @@ class Account
     public $lastLogin;
     public $activationCode;
 
+    // Method to change password
+    public function changePassword($accountID, $newPassword)
+    {
+        $query = "UPDATE account SET password = :password WHERE accountID = :accountID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':password', $newPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
 
+    // Method to get user by ID
+    public function getUserByID($accountID)
+    {
+        $query = "SELECT * FROM account WHERE accountID = :accountID LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':accountID', $accountID);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
 
     // Method to create a new account
     public function create()

@@ -6,6 +6,7 @@ class JobProvider extends Controller
     {
         $this->complaintModel = $this->model('Complaint');
         $this->adminModel = $this->model('AdminModel');
+        $this->accountModel = $this->model('Account');
     }
 
     protected $viewPath = "../app/views/jobProvider/";
@@ -13,6 +14,49 @@ class JobProvider extends Controller
     function index()
     {
         $this->view('individualProfile');
+    }
+
+    public function changePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $oldPassword = trim($_POST['oldpw']);
+            $newPassword = trim($_POST['newpw']);
+            $reNewPassword = trim($_POST['renewpw']);
+            $accountID = $_SESSION['user_id']; // Assuming user ID is stored in session
+
+            // Validate if new passwords match
+            if ($newPassword !== $reNewPassword) {
+                // flash('password_message', 'New passwords do not match!', 'alert-danger');
+                header('Location: ' . ROOT . '/jobProvider/settings');
+                exit;
+            }
+
+            // Fetch the current password from the database
+            $currentUser = $this->accountModel->getUserByID($accountID);
+
+            if (!password_verify($oldPassword, $currentUser->password)) {
+                // flash('password_message', 'Old password is incorrect!', 'alert-danger');
+                header('Location: ' . ROOT . '/jobProvider/settings');
+                exit;
+            }
+
+            // Hash new password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // Update password in the database
+            if ($this->accountModel->changePassword($accountID, $hashedPassword)) {
+                // flash('password_message', 'Password updated successfully!', 'alert-success');
+                header('Location: ' . ROOT . '/jobProvider/settings');
+                exit;
+            } else {
+                // flash('password_message', 'Something went wrong, please try again.', 'alert-danger');
+                header('Location: ' . ROOT . '/jobProvider/settings');
+                exit;
+            }
+        } else {
+            header('Location: ' . ROOT . '/jobProvider/settings');
+            exit;
+        }
     }
 
     function findEmployees()
