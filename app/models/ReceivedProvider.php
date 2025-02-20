@@ -22,10 +22,11 @@ class ReceivedProvider{
     public function getReceivedRequests()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID
+        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
         FROM apply_job a 
         JOIN job j ON a.jobID = j.jobID
         JOIN individual i ON a.seekerID = i.accountID
+        JOIN account acc ON a.seekerID = acc.accountID
         WHERE j.accountID = ? 
         AND a.applicationStatus = 1
         ORDER BY datePosted DESC, timePosted DESC";
