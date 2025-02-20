@@ -4,6 +4,7 @@ protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -23,17 +24,19 @@ protectRoute([3]);?>
         </div> <br>
 
         <div class="employee-list">
-            
+
+            <?php if (!empty($data['receivedRequests'])): ?>
+            <?php foreach($data['receivedRequests'] as $received): ?>
             <div class="employee-item">
                 <div class="employee-photo">
                     <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture">
                 </div>
                 <div class="employee-details">
-                    <span class="employee-name">Nomad Nova</span>
-                    <span class="job-title">Weed Remover</span>
-                    <span class="date-applied">2024-07-24</span>
-                    <span class="time-applied">03:22 PM</span>
-                    <span class="jobId-applied">#5</span>
+                    <span class="employee-name"><?= htmlspecialchars($received->fname . ' ' . $received->lname) ?></span>
+                    <span class="job-title">Applied Job: <?= htmlspecialchars($received->jobTitle) ?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($received->dateApplied) ?></span>
+                    <span class="time-applied">Time Applied: <?= htmlspecialchars($received->timeApplied)?></span>
+                    
                     <div class="ratings">
                     <span class="star">★</span>
                     <span class="star">★</span>
@@ -41,67 +44,12 @@ protectRoute([3]);?>
                     <span class="star">★</span>
                     <span class="star">★</span>
                     </div>
+                    <hr>
+                    <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($received->jobID)?></span>
+                    <span class="jobId-applied">Application ID: #<?= htmlspecialchars($received->applicationID)?></span>
                 </div>
-                <button class="accept-jobReq-button btn btn-accent">Accept</button>
-                <button class="reject-jobReq-button btn btn-danger">Reject</button>
-                <div class="dropdown">
-                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">View Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="employee-item">
-                <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture">
-                </div>
-                <div class="employee-details">
-                    <span class="employee-name">Clara Zue</span>
-                    <span class="job-title">Baby-Sitter</span>
-                    <span class="date-applied">2024-07-25</span>
-                    <span class="time-applied">10:22 AM</span>
-                    <span class="jobId-applied">#2</span>
-                    <div class="ratings">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    </div>
-                </div>
-                <button class="accept-jobReq-button btn btn-accent">Accept</button>
-                <button class="reject-jobReq-button btn btn-danger">Reject</button>
-                <div class="dropdown">
-                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">View Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="employee-item">
-                <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture">
-                </div>
-                <div class="employee-details">
-                    <span class="employee-name">Kane Smith</span>
-                    <span class="job-title">Plumber</span>
-                    <span class="date-applied">2024-07-26</span>
-                    <span class="time-applied">04:42 PM</span>
-                    <span class="jobId-applied">#6</span>
-                    <div class="ratings">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    </div>
-                </div>
-                <button class="accept-jobReq-button btn btn-accent">Accept</button>
-                <button class="reject-jobReq-button btn btn-danger">Reject</button>
+                <button class="accept-jobReq-button btn btn-accent" onclick="confirmAction('accept', '<?= $received->applicationID ?>')">Accept</button>
+                <button class="reject-jobReq-button btn btn-danger" onclick="confirmAction('reject', '<?= $received->applicationID ?>')">Reject</button>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
@@ -110,40 +58,57 @@ protectRoute([3]);?>
                     </ul>
                 </div>
             </div>
-
+            <?php endforeach;?>
+            <?php else: ?>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
+                    <p class="empty-text">No Received Applications Found</p>
+                </div>
+            <?php endif; ?>
         </div>
 
-        <div id="popup" class="popup hidden">
+        <!-- Confirmation Popup -->
+        <div id="confirmPopup" class="popup hidden">
             <div class="popup-content">
-                <p id="popup-message">Are you sure to accept the request?</p>
-                <button id="popup-yes" class="popup-button-jobReq">Yes</button>
-                <button id="popup-no" class="popup-button-jobReq">No</button>
+                <p id="confirmMessage">Are you sure you want to proceed?</p>
+                <button class="popup-button-jobReq" id="popup-yes">Yes</button>
+                <button class="popup-button-jobReq" id="popup-no" onclick="closePopup('confirmPopup')">Cancel</button>
             </div>
         </div>
+
+        <form id="action-form" action="" method="POST" style="display: none;">
+            <input type="hidden" name="applicationID" id="action-applicationID">
+        </form>
 
     </div>
 </body>
 <script>
-document.querySelectorAll('.accept-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to accept the request?';
-        document.getElementById('popup').classList.remove('hidden');
+    let currentAction = null;
+    let currentApplicationID = null;
+
+    function confirmAction(action, applicationID) {
+        currentAction = action;
+        currentApplicationID = applicationID;
+        document.getElementById('confirmMessage').textContent = `Are you sure you want to ${action} this application?`;
+        document.getElementById('confirmPopup').classList.remove('hidden');
+    }
+
+    document.getElementById('popup-yes').addEventListener('click', function() {
+        if (currentAction && currentApplicationID) {
+            document.getElementById('action-applicationID').value = currentApplicationID;
+            if (currentAction === 'reject') {
+                document.getElementById('action-form').action = '<?=ROOT?>/organization/rejectJobRequest';
+                document.getElementById('action-form').submit();
+            } else if (currentAction === 'accept') {
+                document.getElementById('action-form').action = '<?=ROOT?>/organization/acceptJobRequest';
+                document.getElementById('action-form').submit();
+            }
+        }
+        closePopup('confirmPopup');
     });
-});
 
-document.querySelectorAll('.reject-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to reject the request?';
-        document.getElementById('popup').classList.remove('hidden');
-    });
-});
-
-document.getElementById('popup-yes').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-});
-
-document.getElementById('popup-no').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-});
+    function closePopup(popupID) {
+        document.getElementById(popupID).classList.add('hidden');
+    }
 </script>
 </html>

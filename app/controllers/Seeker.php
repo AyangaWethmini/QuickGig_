@@ -1,7 +1,10 @@
 <?php
 class Seeker extends Controller
 {
-    
+    public function __construct(){
+        $this->findJobModel = $this->model('FindJobs');
+    }
+
     protected $viewPath = "../app/views/seeker/";
     
     function index()
@@ -9,10 +12,32 @@ class Seeker extends Controller
         $this->view('seekerProfile');
     }
 
-    function findEmployees()
-    {
-        $this->view('findEmployees');
+    function findEmployees(){
+        $findJobs = $this->findJobModel->getJobs();
+
+        $data = [
+            'findJobs' => $findJobs
+        ];
+
+        $this->view('findEmployees', $data);
     }
+
+    public function requestJob() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $jobModel = new FindJobs();
+            $seekerID = $_SESSION['user_id']; 
+            $jobID = $_POST['jobID'];
+            $applicationID = uniqid('APP_'); // Generate a unique application ID
+    
+            $success = $jobModel->applyForJob($applicationID, $seekerID, $jobID);
+    
+            if ($success) {
+                echo json_encode(["status" => "success", "message" => "Your request has been submitted successfully!"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "You have already applied for this job."]);
+            }
+        }
+    }    
 
     function postJob()
     {
@@ -21,7 +46,53 @@ class Seeker extends Controller
 
     function jobListing_received()
     {
-        $this->view('jobListing_received');
+        $receivedModel = $this->model('ReceivedSeeker');
+        $receivedRequests = $receivedModel->getReceivedRequests();
+
+        $data = [
+            'receivedRequests' => $receivedRequests
+        ];
+
+        $this->view('jobListing_received', $data);
+    }
+
+    public function rejectJobRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $reqID = $_POST['reqID'];
+            $receivedSeekerModel = $this->model('ReceivedSeeker');
+            $success = $receivedSeekerModel->rejectRequest($reqID);
+    
+            if ($success) {
+                header('Location: ' . ROOT . '/seeker/jobListing_received');
+            } else {
+                echo "Failed to reject the request.";
+            }
+        }
+    }
+
+    public function acceptJobRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $reqID = $_POST['reqID'];
+            $receivedSeekerModel = $this->model('ReceivedSeeker');
+            $success = $receivedSeekerModel->acceptRequest($reqID);
+
+            if ($success) {
+                // Get the jobID from the application
+                $req = $receivedSeekerModel->getReqByID($reqID);
+                if ($req) {
+                    $availableID = $req->availableID;
+
+                    // Update the request status
+                    $receivedSeekerModel->updateAvailableStatus($availableID, 2);
+
+                    header('Location: ' . ROOT . '/seeker/jobListing_received');
+                } else {
+                    echo "Request not found.";
+                }
+            } else {
+                echo "Failed to accept the request.";
+            }
+        }
     }
 
     function viewEmployeeProfile()
@@ -59,14 +130,29 @@ class Seeker extends Controller
         $this->view('reviews');
     }
 
-    function jobListing_myJobs()
-    {
-        $this->view('jobListing_myJobs');
+    public function jobListing_myJobs()
+    {   
+        $userID = $_SESSION['user_id'];
+        $availableModel = $this->model('Available');
+        $jobs = $availableModel->getJobsByUser($userID);
+
+        $data = [
+            'jobs' => $jobs
+        ];
+
+        $this->view('jobListing_myJobs', $data);
     }
 
     function jobListing_send()
     {
-        $this->view('jobListing_send');
+        $send = $this->model('SendSeeker');
+        $sendRequests = $send->getSendRequests();
+
+        $data = [
+            'sendRequests' => $sendRequests
+        ];
+
+        $this->view('jobListing_send', $data);
     }
 
     function jobListing_toBeCompleted()
@@ -102,6 +188,7 @@ class Seeker extends Controller
     {
         $this->view('updateJob');
     }
+    
     public function availability()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -117,6 +204,8 @@ class Seeker extends Controller
             $shift = trim($_POST['shift']);
             $salary = trim($_POST['salary']);
             $currency = trim($_POST['currency']);
+            $AvailabilityStatus = 1;
+            $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
             $makeAvailableModel = $this->model('Available');
             $isPosted = $makeAvailableModel->create([
@@ -129,7 +218,9 @@ class Seeker extends Controller
                 'availableDate' => $availableDate,
                 'shift' => $shift,
                 'salary' => $salary,
-                'currency' => $currency
+                'currency' => $currency,
+                'availabilityStatus' => $availabilityStatus,
+                'categories' => json_encode($categories)
             ]);
 
             // Redirect or handle based on success or failure
@@ -142,6 +233,7 @@ class Seeker extends Controller
             }
         }
     }
+
     public function updateAvailability($id = null) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize POST data
@@ -156,6 +248,7 @@ class Seeker extends Controller
             $timeTo = $_POST['timeTo'];
             $availableDate = $_POST['availableDate'];
             $location = trim($_POST['location']);
+            $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
     
             // Update availability in the database
             $this->availabilityModel = $this->model('Available');
@@ -167,7 +260,8 @@ class Seeker extends Controller
                 'timeFrom' => $timeFrom,
                 'timeTo' => $timeTo,
                 'availableDate' => $availableDate,
-                'location' => $location
+                'location' => $location,
+                'categories' => json_encode($categories)
             ]);
     
             // Redirect to the availability page or another appropriate page

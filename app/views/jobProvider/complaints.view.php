@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/complaints.css">
 
@@ -27,6 +27,7 @@ protectRoute([2]);?>
             </div>
         </div>
         <div class="complaints-container container">
+
             <?php foreach ($data['complaints'] as $complaint): ?>
                 <div class="complaint container">
                     <div class="complaint-content flex-col">

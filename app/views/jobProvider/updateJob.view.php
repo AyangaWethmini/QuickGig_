@@ -11,11 +11,11 @@ protectRoute([2]);?>
 
     <div class="main-content container post-job-form">
         <p class="heading">
-            Post a Job
+            Update Job
         </p>
         <hr>
 
-        <form class="form-section container" action="<?php echo ROOT ?>/jobProvider/job" method="POST">
+        <form class="form-section container" action="<?php echo ROOT ?>/jobProvider/updateJob/<?= htmlspecialchars($job->jobID) ?>" method="POST">
             <div class="form-section flex-row container">
                 <div class="container right-container">
                     <p class="title">
@@ -33,7 +33,7 @@ protectRoute([2]);?>
                     <p class="text-grey  desc">Explain the kind of job you are offering</p>
                 </div>
                 <div class="user-input">
-                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required>
+                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required value="<?= $job->jobTitle ?>">
                 </div>
             </div>
             <hr>
@@ -44,7 +44,7 @@ protectRoute([2]);?>
                     </p>
                 </div>
                 <div class="user-input" style="align-items: center; margin-top: 10px;">
-                    <textarea placeholder="Simple description about the job." name="description" rows="10" cols="60" required></textarea>
+                    <textarea placeholder="Simple description about the job." name="description" rows="10" cols="60" required><?= $job->description?></textarea>
                 </div>
             </div>
             <hr>
@@ -58,8 +58,8 @@ protectRoute([2]);?>
                     </p>
                 </div>
                 <div class="user-input">
-                <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Day<input type="radio" name="shift" value="Day"> </p><br>
-                <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night<input type="radio" name="shift" value="Night"> </p> <br>
+                <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Day<input type="radio" name="shift" value="Day" <?= $job->shift === 'Day' ? 'checked' : '' ?>>  </p><br>
+                <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night<input type="radio" name="shift" value="Night" <?= $job->shift === 'Night' ? 'checked' : '' ?>>  </p> <br>
                 </div>
             </div>
             <hr>
@@ -74,18 +74,18 @@ protectRoute([2]);?>
                 </div>
                 <div class="user-input">
                     <div class="salary-ph flex-row">
-                        <input type="text" name="salary" id="salary-per-hr" required>
+                        <input type="text" name="salary" id="salary-per-hr" required value="<?= $job->salary ?>">
                         <select id="currency-select" class="currency-select" name="currency">
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <option value="LKR">LKR</option>
-                            <option value="AUD">AUD</option>
-                            <option value="CAD">CAD</option>
-                            <option value="JPY">JPY</option>
-                            <option value="CNY">CNY</option>
-                            <option value="INR">INR</option>
-                            <option value="NZD">NZD</option>
+                            <option value="USD" <?= $job->currency === 'USD' ? 'selected' : '' ?>>USD</option>
+                            <option value="EUR" <?= $job->currency === 'EUR' ? 'selected' : '' ?>>EUR</option>
+                            <option value="GBP" <?= $job->currency === 'GBP' ? 'selected' : '' ?>>GBP</option>
+                            <option value="LKR" <?= $job->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>
+                            <option value="AUD" <?= $job->currency === 'AUD' ? 'selected' : '' ?>>AUD</option>
+                            <option value="CAD" <?= $job->currency === 'CAD' ? 'selected' : '' ?>>CAD</option>
+                            <option value="CNY" <?= $job->currency === 'CNY' ? 'selected' : '' ?>>CNY</option>
+                            <option value="INR" <?= $job->currency === 'INR' ? 'selected' : '' ?>>INR</option>
+                            <option value="JPY" <?= $job->currency === 'JPY' ? 'selected' : '' ?>>JPY</option>
+                            <option value="NZD" <?= $job->currency === 'NZD' ? 'selected' : '' ?>>NZD</option>
                         </select>
                     </div>
                 </div>
@@ -106,7 +106,7 @@ protectRoute([2]);?>
                             <label for="start-time-select"><p class="lbl">Start Time</p></label>
                         </div>
                         <div class="input-boxes">
-                                <input type="time" id="timeInput" name="timeFrom" required>
+                            <input type="time" id="timeInput" name="timeFrom" required value="<?= $job->timeFrom ?>">
                         </div>
                     </div>
                     <div class="end-time flex-col">
@@ -116,7 +116,7 @@ protectRoute([2]);?>
                             </label>
                         </div>
                         <div class="input-boxes">
-                            <input type="time" id="timeInput" name="timeTo" required>
+                            <input type="time" id="timeInput" name="timeTo" required value="<?= $job->timeTo ?>">
                         </div>
                     </div>
                 </div>
@@ -133,28 +133,35 @@ protectRoute([2]);?>
                 </div>
                 <div class="user-input flex-col ">
                     <p class="lbl">Date</p>
-                    <input type="date" id="dateInput" name="availableDate" required>
+                    <input type="date" id="dateInput" name="availableDate" required value="<?= $job->availableDate ?>">
                 </div>
             </div>
             <hr>
             <div class="form-section flex-row container">
                 <div class="container right-container">
-                    <p class="title">
-                        Tags
-                    </p>
-                    <p class="text-grey desc">You can add upto 5 skills, jobs and more</p>
+                    <p class="title">Tags</p>
+                    <p class="text-grey desc">You can add skills, jobs and more</p>
                 </div>
                 <div class="user-input">
                     <div class="user-input flex-col">
                         <div class="flex-row" style="gap: 20px;">
                             <div class="btn btn-trans" onclick="showAddTagPopup('job')" name="categories">+ Add Categories</div>
                         </div>
-                        <div id="tags-container" class="tags-container"></div>
+                        <div id="tags-container" class="tags-container">
+                            <?php 
+                            $categories = is_string($job->categories) ? json_decode($job->categories, true) : $job->categories;
+                            if (is_array($categories)) {
+                                foreach ($categories as $category) {
+                                    echo '<div class="tag">' . htmlspecialchars($category) . '<span class="remove-btn" onclick="this.parentElement.remove()">×</span><input type="hidden" name="categories[]" value="' . htmlspecialchars($category) . '"></div>';
+                                }
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
             <hr>
-            <!--<div class="form-section flex-row container">
+        <!--    <div class="form-section flex-row container">
                 <div class="container right-container">
                     <p class="title">
                     Required Skills
@@ -186,7 +193,7 @@ protectRoute([2]);?>
                 </div>
                 <div class="user-input">
                     <div class="salary-ph flex-row">
-                        <select id="currency-select" class="currency-select" name="noOfApplicants" required>
+                        <select id="currency-select" class="currency-select" name="noOfApplicants" required value="<?= $job->noOfApplicants ?>">
                             <?php for ($i = 1; $i <= 10; $i++): ?>
                                 <option value="<?= $i ?>"><?= $i ?></option>
                             <?php endfor; ?>
@@ -205,83 +212,36 @@ protectRoute([2]);?>
                 <div class="user-input">
                     <button class="btn btn-trans">Add your Location</button>
                     <p>Or</p>
-                    <input type="text" name="location" placeholder="Type your location here" required>
-                    </div>
+                    <input type="text" name="location" placeholder="Type your location here" required value="<?= $job->location ?>">
+                </div>
                 </div>
                 <hr>
                 <div class="post-job-buttons flex-row">
                     <button class="btn btn-accent">Discard</button>
-                    <button class="btn btn-accent" type="submit">Finish</button>
-                </div>
-                <div id="tag-limit-popup" class="modal" style="display: none;">
-                    <div class="modal-content">
-                        <p>You can only add up to five categories.</p>
-                        <button id="popup-ok" class="popup-btn-ok" type="button">Ok</button>
-                    </div>
-                </div>
-
-                <div id="add-tag-popup" class="modal" style="display: none;">
-                    <div class="modal-content">
-                        <p>Enter job category:</p>
-                        <input type="text" id="tag-input" class="popup-input">
-                        <button id="add-tag-btn" class="popup-btn-add" type="button">Add</button>
-                        <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>
-                    </div>
+                    <button class="btn btn-accent" type="submit">Update</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<div id="tag-limit-popup" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p>You can only add up to five categories.</p>
+        <button id="popup-ok" class="popup-btn-ok" type="button">Ok</button>
+    </div>
+</div>
+
+<div id="add-tag-popup" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p>Enter tags:</p>
+        <input type="text" id="tag-input" class="popup-input">
+        <button id="add-tag-btn" class="popup-btn-add" type="button">Add</button>
+        <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>
+    </div>
+</div>
+
 <script>
-/*
-  // Function to populate time dropdowns
-  function populateTimeDropdown(selectElement) {
-    for (let hour = 1; hour <= 12; hour++) {
-      for (let minutes = 0; minutes < 60; minutes += 30) {
-        const time = `${hour}:${String(minutes).padStart(2, '0')}`;
-        const option = document.createElement('option');
-        option.value = time;
-        option.textContent = time;
-        selectElement.appendChild(option);
-      }
-    }
-  }
-
-  // Select elements for start and end times
-  const startTimeSelect = document.getElementById('start-time-select');
-  const endTimeSelect = document.getElementById('end-time-select');
-
-  // Populate both dropdowns
-  populateTimeDropdown(startTimeSelect);
-  populateTimeDropdown(endTimeSelect);
-
-  function addTag(type) {
-        const tagText = prompt(`Enter ${type === 'skill' ? 'Skill' : 'Language'}`);
-        if (tagText) {
-            const tagContainer = document.getElementById('tags-container');
-            
-            // Create tag element
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = tagText;
-            
-            // Add remove button
-            const removeBtn = document.createElement('span');
-            removeBtn.className = 'remove-btn';
-            removeBtn.textContent = '×';
-            removeBtn.onclick = () => tag.remove();
-            
-            // Append remove button to tag
-            tag.appendChild(removeBtn);
-            
-            // Append tag to container
-            tagContainer.appendChild(tag);
-        }
-    }
-        */
-    // Set today's date as the minimum date
-
     function showAddTagPopup(type) {
         const tagContainer = document.getElementById('tags-container');
         if (tagContainer.children.length >= 5) {
@@ -343,7 +303,53 @@ protectRoute([2]);?>
             modal.style.display = 'none';
         };
     }
+/*
+  // Function to populate time dropdowns
+  function populateTimeDropdown(selectElement) {
+    for (let hour = 1; hour <= 12; hour++) {
+      for (let minutes = 0; minutes < 60; minutes += 30) {
+        const time = `${hour}:${String(minutes).padStart(2, '0')}`;
+        const option = document.createElement('option');
+        option.value = time;
+        option.textContent = time;
+        selectElement.appendChild(option);
+      }
+    }
+  }
 
+  // Select elements for start and end times
+  const startTimeSelect = document.getElementById('start-time-select');
+  const endTimeSelect = document.getElementById('end-time-select');
+
+  // Populate both dropdowns
+  populateTimeDropdown(startTimeSelect);
+  populateTimeDropdown(endTimeSelect);
+
+  function addTag(type) {
+        const tagText = prompt(`Enter ${type === 'skill' ? 'Skill' : 'Language'}`);
+        if (tagText) {
+            const tagContainer = document.getElementById('tags-container');
+            
+            // Create tag element
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.textContent = tagText;
+            
+            // Add remove button
+            const removeBtn = document.createElement('span');
+            removeBtn.className = 'remove-btn';
+            removeBtn.textContent = '×';
+            removeBtn.onclick = () => tag.remove();
+            
+            // Append remove button to tag
+            tag.appendChild(removeBtn);
+            
+            // Append tag to container
+            tagContainer.appendChild(tag);
+        }
+    }
+        */
+    // Set today's date as the minimum date
     const today = new Date().toISOString().split("T")[0];
     document.getElementById('availableDate').setAttribute('min', today);
 

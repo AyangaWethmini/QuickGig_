@@ -1,9 +1,14 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
 protectRoute([3]);?>
-<?php require APPROOT . '/views/components/navbar.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php';
+$userID = $_SESSION['user_id'];
+$jobModel = $this->model('Job'); 
+$jobs = $jobModel->getJobsByUser($userID); 
+?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing_myJobs.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -23,53 +28,70 @@ protectRoute([3]);?>
         </div> <br>
 
         <div class="job-list">
-            
-            <div class="myjob-item">
-            <div class="job-details">
-                    <span class="job-title">Fruit Picker for a apple farm</span>
-                    <span class="employment-type">Night-time</span>
-                    <span class="duration">Duration: 06:00 PM - 01:30 AM</span>
-                    <span class="myjobs-category">Category: Waiter</span>
-                    <span class="skills">Skills: Diligent, English</span>
-                    <span class="location">Location: Dehiwala-Mount Lavinia</span>
-                    <span class="salary">Salary: 13.50$ per hour</span>
-                    <hr>
-                    <span class="date-posted">Posted on: 2024-11-26</span>
-                    <span class="time-posted">Posted at: 03:37 PM</span>
-                    <span class="my-job-id">Job id: #1</span>
-
+            <?php if (!empty($data['jobs'])): ?>
+                <?php foreach ($jobs as $job): 
+                    $categories = json_decode($job->categories, true);
+                    $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
+                    $jobStatusClass = ($job->jobStatus == 2) ? 'inactive-job' : '';
+                ?>
+                    <div class="myjob-item <?= $jobStatusClass ?>">
+                        <div class="job-details">
+                            <span class="job-title"><?= $job->jobTitle ?></span>
+                            <span class="employment-type">Shift: <?= $job->shift ?></span>
+                            <span class="duration">Duration: <?= $job->timeFrom ?> - <?= $job->timeTo ?></span>
+                            <span class="employment-type">Date: <?= $job->availableDate ?></span>
+                            <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
+                            <span class="location">Location: <?= $job->location ?></span>
+                            <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
+                            <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
+                            <hr>
+                            <div class="jobDescription"><p><?= $job->description ?></p></div>
+                            <hr> 
+                            <span class="date-posted">Posted on: <?= $job->datePosted ?></span>
+                            <span class="time-posted">Posted at: <?= $job->timePosted ?></span>
+                            <span class="my-job-id">Job id: #<?= $job->jobID ?></span>
+                        </div>
+                        <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/organization/updateJob/<?= $job->jobID ?>';">Update</button>
+                        <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->jobID ?>" onclick="confirmDelete(this)">Delete</button>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
+                    <p class="empty-text">No Jobs Have Been Listed</p>
                 </div>
-                <button class="update-jobReq-button btn btn-accent">Update</button>
-                <button class="delete-jobReq-button btn btn-danger">Delete</button>
-            </div>
-
+            <?php endif; ?>
         </div>
 
-        <div id="popup" class="popup hidden">
-            <div class="popup-content">
-                <p id="popup-message">Are you sure you want to delete this job?</p>
-                <button id="popup-yes" class="popup-button-jobReq">Yes</button>
-                <button id="popup-no" class="popup-button-jobReq">No</button>
+        <div id="delete-confirmation" class="modal" style="display: none;">
+            <div class="modal-content">
+                <p>Are you sure you want to delete this job?</p>
+                <button id="confirm-yes" class="popup-btn-delete-complaint">Yes</button>
+                <button id="confirm-no" class="popup-btn-delete-complaint">No</button>
             </div>
         </div>
+
+        <form id="delete-form" method="POST" style="display: none;"></form>
 
     </div>
+</div>
 </body>
 <script>
-document.querySelectorAll('.delete-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure you want to delete this job?';
-        document.getElementById('popup').classList.remove('hidden');
-    });
-});
+    function confirmDelete(button) {
+        var jobId = button.getAttribute('data-jobid');
+        var modal = document.getElementById('delete-confirmation');
+        modal.style.display = 'flex';
 
-document.getElementById('popup-yes').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-    // Add your delete logic here
-});
+        document.getElementById('confirm-yes').onclick = function() {
+            var form = document.getElementById('delete-form');
+            form.action = '<?= ROOT ?>/organization/deleteJob/' + jobId;
+            modal.style.display = 'none';
+            form.submit(); 
+        };
 
-document.getElementById('popup-no').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-});
+        document.getElementById('confirm-no').onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
 </script>
 </html>
