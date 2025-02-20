@@ -3,29 +3,28 @@ class Advertisement {
     use Database;
 
     public function getAdvertisements() {
-        $query = 'SELECT * FROM advertisement ORDER BY adDate ASC, adTime ASC';
+        $query = 'SELECT * FROM advertisement ORDER BY createdAt ASC';
         return $this->query($query);
     }
 
     public function createAdvertisement($data) {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDate, adTime, clicks, img, adDescription, link, adStatus, duration) 
-                  VALUES (:advertiserID, :adTitle, :adDate, :adTime, :clicks, :img, :adDescription, :link, :adStatus, :duration)";
-        
+        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDescription, img, link, startDate, endDate, adStatus) 
+                  VALUES (:advertiserID, :adTitle, :adDescription, :img, :link, :startDate, :endDate, :adStatus)";
+    
         $params = [
             'advertiserID' => $data['advertiserID'],
             'adTitle' => $data['adTitle'],
-            'adDate' => $data['adDate'],
-            'adTime' => $data['adTime'],
-            'clicks' => $data['clicks'],
-            'img' => $data['img'],
             'adDescription' => $data['adDescription'],
+            'img' => $data['adImage'], // Corrected key
             'link' => $data['link'],
-            'adStatus' => $data['adStatus'],
-            'duration' => $data['duration']
+            'startDate' => $data['startDate'],
+            'endDate' => $data['endDate'],
+            'adStatus' => $data['adStatus']
         ];
-        
+    
         return $this->query($query, $params);
     }
+    
 
     public function delete($id) {
         $query = "DELETE FROM advertisement WHERE advertisementID = :id";
@@ -45,7 +44,6 @@ class Advertisement {
                   SET adTitle = :adTitle, 
                       adDescription = :adDescription, 
                       img = :img, 
-                      adDate = :adDate, 
                       adTime = :adTime, 
                       link = :link,
                       duration = :duration,
@@ -57,7 +55,6 @@ class Advertisement {
             'adTitle' => $data['adTitle'],
             'adDescription' => $data['adDescription'],
             'img' => $data['img'],
-            'adDate' => $data['adDate'],
             'adTime' => $data['adTime'],
             'link' => $data['link'],
             'duration' => $data['duration'],
@@ -66,4 +63,11 @@ class Advertisement {
     
         return $this->query($query, $params);
     }
+
+    public function getAdsCount(){
+        $query = "SELECT COUNT(*) AS totalAds FROM advertisement WHERE adStatus = 'active'";
+        $result = $this->query($query);
+        return $result[0]->totalAds ?? 0;
+    }
 }
+

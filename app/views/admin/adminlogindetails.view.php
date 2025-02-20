@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([0]); ?>
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
 <div class="admin-layout">
@@ -7,7 +9,8 @@
         <div class="admin-announcement-header">
             <h1>Settings</h1>
         </div>
-        <br><hr><br>
+        <br>
+        <hr><br>
         <div class="admin-functions">
             <div>
                 <a href="<?php echo ROOT; ?>/admin/adminsettings" class="admin-link <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/adminsettings') !== false) ? 'active' : ''; ?>">My Profile</a>
@@ -16,7 +19,8 @@
                 <a href="<?php echo ROOT; ?>/admin/adminlogindetails" class="admin-link <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/adminlogindetails') !== false) ? 'active' : ''; ?>">Login Details</a>
             </div>
         </div>
-        <br><hr>
+        <br>
+        <hr>
         <div class="update-container">
             <div class="update-container-one">
                 <h2>Update Email</h2>
@@ -30,7 +34,8 @@
                 <button class="btn btn-accent srch-btn">Update Email</button>
             </div>
         </div>
-        <br><hr>
+        <br>
+        <hr>
         <div class="update-container">
             <div class="update-container-one">
                 <h2>Update Password</h2>
@@ -45,7 +50,8 @@
                 <button class="btn btn-accent srch-btn">Update Password</buutton>
             </div>
         </div>
-        <br><hr>
+        <br>
+        <hr>
         <div class="update-delete-account">
             <a href="<?php echo ROOT; ?>/admin/admindeleteaccount">Delete Account<i class="fa-solid fa-circle-exclamation" style="padding-left: 3px;"></i></a>
         </div>

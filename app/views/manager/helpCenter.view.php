@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([1]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/helpCenter.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -11,50 +13,39 @@
         <hr>
         <div class="help-overview container flex-col">
             <div class="card flex-row">
-                <h1>12</h1>
+                <h1><?= count(array_filter($questions, fn($q) => is_null($q->reply))) ?></h1>
                 <p>Questions to be answered</p>
             </div>
         </div>
 
-        <div class="help-questions container flex-col">
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
-                </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
-
-
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
-                </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
-
-
-            <div class="question flex-col">
-                <h3>Question Title</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis optio necessitatibus voluptatem ullam ut tempore sunt architecto? Voluptate cum assumenda, est omnis a animi doloremque ratione iusto laborum rerum. Sed.</p>
-                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                    <p>2024-01-01</p>
-                    <p> at 12:00:00</p>
-                </div>
-                <textarea placeholder="send a reply"></textarea>
-                <button class="btn btn-accent">Reply</button>
-            </div>
-
-
+        <?php if (!empty($questions) && (is_array($questions) || is_object($questions))): ?>
+    <?php foreach ($questions as $q): ?>
+        <div class="question flex-col">
+            <h3><?= htmlspecialchars($q->title) ?></h3>
+            <p><?= htmlspecialchars($q->description) ?></p>
             
+            <form method="POST" action ="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>">
+                <textarea name="reply" placeholder="Send a reply" style="<?= !empty($q->reply) ? 'background-color: hsla(116, 76%, 87%, 1);' : '' ?>"><?= htmlspecialchars($q->reply ?? '') ?></textarea>
+                <button class="btn btn-accent" type="submit">Reply</button>
+            </form>
+            
+            <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                <?php 
+                    $timestamp = $q->createdAt;
+                    $date = date('Y-m-d', strtotime($timestamp));
+                    $time = date('H:i:s', strtotime($timestamp)); 
+                ?>                       
+                <p style="font-size : 11px;">Asked on <?= $date ?> at <?= $time ?></p>
+            </div>
         </div>
+        <br>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>All good here!</p>
+<?php endif; ?>
+
+
+        
 
         
     </div>

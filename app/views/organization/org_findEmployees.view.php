@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 
@@ -57,8 +59,8 @@
                         </div>
                         <div class="tags">
                             <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Bartender</span>
+                            <span class="tag">Fruit Picker</span>
+                            <span class="tag">Weed Remover</span>
                         </div>
                         </div>
                     </div>
@@ -103,8 +105,8 @@
                         </div>
                         <div class="tags">
                             <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Bartender</span>
+                            <span class="tag">Fruit Picker</span>
+                            <span class="tag">Weed Remover</span>
                         </div>
                         </div>
                     </div>
@@ -149,8 +151,8 @@
                         </div>
                         <div class="tags">
                             <span class="tag">Day</span>
-                            <span class="tag">Waiter</span>
-                            <span class="tag">Baby-Sitter</span>
+                            <span class="tag">Fruit Picker</span>
+                            <span class="tag">Weed Remover</span>
                         </div>
                         </div>
                     </div>

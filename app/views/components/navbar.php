@@ -8,7 +8,7 @@
     <a href="<?=ROOT?>/home"><img class="logo nav-left-links" src="<?=ROOT?>/assets/images/QuickGiglLogo.png" alt="Logo"></a>
     <ul class="nav-left-links mobile-menu">
       <li class="nav-links-home"><a href="<?=ROOT?>/home">Home</a></li>
-      <li><a href="#">About</a></li>
+      <li><a href="<?php echo ROOT;?>/home/aboutUs">About</a></li>
       <li><a href="#">Contact Us</a></li>
     </ul>
   </div>
@@ -29,7 +29,7 @@
       <?php else: ?>
         <div class="flex-row" style="gap: 10px;">
           <form action="<?=ROOT?>/login/logout" method="POST" style="display: inline;">
-            <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;">Log Out</button>
+            <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;margin-top: 10px; margin-right: 5px;">Log Out</button>
           </form>
           <a href="<?php echo $path; ?>">
             <button class="profile-btn" style="background-image: url('<?=ROOT?>/assets/images/default.jpg');"></button>

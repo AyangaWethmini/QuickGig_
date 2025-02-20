@@ -1,4 +1,8 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([2]);?>
     <?php include APPROOT . '/views/components/navbar.php'; ?>
 
     <link rel="stylesheet" href="<?=ROOT?>/assets/css/user/editprofile.css">

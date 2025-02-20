@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([0]);?>
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/admin/admin_editannouncement.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -69,8 +71,12 @@
 
             
                 <!-- Submit Button -->
+<<<<<<< HEAD
                 <button class="btn btn-accent srch-btn" style="margin-left: 215px; width: 940px;">Post</button>
                 <!-- <input type="submit" value="Post" class="btn btn-accent srch-btn" style="width: 900px;">     -->
+=======
+                <input type="submit" value="Post" class="btn btn-accent srch-btn" style="margin-left:22.5%; width:945px;">    
+>>>>>>> origin/AyangaW
             </form>
  
 

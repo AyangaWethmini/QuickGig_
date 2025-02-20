@@ -47,11 +47,7 @@
             <a href="<?php echo ROOT;?>/jobProvider/helpCenter" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-circle-question"></i></span>
                 <span class="sidebar-label">Help Center</span>
-            </a> 
-            <div class="sidebar-item" data-link="login-logout.php">
-                <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
-                <span class="sidebar-label">Log Out</span>
-            </div> 
+            </a>  
         </div>
 
     </div>

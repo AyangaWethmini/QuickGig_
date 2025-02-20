@@ -1,5 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php include APPROOT . '/views/components/navbar.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([0, 1]); ?>
 
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
@@ -8,7 +10,8 @@
             <h1>Settings</h1>
 
         </div>
-        <br><hr><br>
+        <br>
+        <hr><br>
         <div class="admin-functions">
             <div>
                 <a href="<?php echo ROOT; ?>/admin/adminsettings" class="admin-link <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/adminsettings') !== false) ? 'active' : ''; ?>">My Profile</a>
@@ -17,7 +20,8 @@
                 <a href="<?php echo ROOT; ?>/admin/adminlogindetails" class="admin-link <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/adminlogindetails') !== false) ? 'active' : ''; ?>">Login Details</a>
             </div>
         </div>
-        <br><hr>
+        <br>
+        <hr>
 
         <!-- Content specific to My Profile page -->
         <div class="info-section">

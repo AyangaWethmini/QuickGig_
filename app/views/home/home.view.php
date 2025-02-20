@@ -2,7 +2,15 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
+<!-- Include the subscriptions component -->
+<?php include APPROOT . '/views/components/subscriptions.php'; ?>
 
+<script>
+    // Function to hide the subscription popup
+    function hideSubscriptionPopup() {
+        document.querySelector('.sub-background').style.display = 'none';
+    }
+</script>
 
 <!-- <nav class="navbar flex-row">
     <div class="flex-row  nav-left">
@@ -39,7 +47,7 @@
 </div>
 
 
-<div class="hero-section flex-row">
+<div class="hero-section flex-row" style="margin-top:80px;">
     <div class="job-search">
         <h1 class="typography">Discover more than <br> <span>5000+ Jobs</span></h1>
         <svg xmlns="http://www.w3.org/2000/svg" width="455" height="33" viewBox="0 0 455 33" fill="none" style="margin-top : 50px;">

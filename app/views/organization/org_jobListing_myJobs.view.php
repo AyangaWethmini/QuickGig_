@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing_myJobs.css">
@@ -24,13 +26,13 @@
             
             <div class="myjob-item">
             <div class="job-details">
-                    <span class="job-title">Waiter for a bar</span>
+                    <span class="job-title">Fruit Picker for a apple farm</span>
                     <span class="employment-type">Night-time</span>
                     <span class="duration">Duration: 06:00 PM - 01:30 AM</span>
                     <span class="myjobs-category">Category: Waiter</span>
                     <span class="skills">Skills: Diligent, English</span>
                     <span class="location">Location: Dehiwala-Mount Lavinia</span>
-                    <span class="salary">Salary: 500 LKR per hour</span>
+                    <span class="salary">Salary: 13.50$ per hour</span>
                     <hr>
                     <span class="date-posted">Posted on: 2024-11-26</span>
                     <span class="time-posted">Posted at: 03:37 PM</span>

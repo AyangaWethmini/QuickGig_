@@ -1,4 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; 
 $userID = $_SESSION['user_id'];
 $availableModel = $this->model('Available'); // Get the Available model
