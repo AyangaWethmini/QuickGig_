@@ -19,8 +19,8 @@ class SendProvider{
     }
 
 
-    public function getSendRequests()
-{   
+    public function getSendRequests(){   
+
     $id = $_SESSION['user_id'];
     $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location,m.currency, acc.pp
     FROM req_available r 
@@ -35,5 +35,11 @@ class SendProvider{
     //error_log(print_r($result, true));
     
     return $result ? $result : [];
-}
+    }
+
+    public function deleteSendRequest($applicationID) {
+        $query = "DELETE FROM req_available WHERE reqID = ?";
+        return $this->query($query, [$applicationID]);
+    }
+    
 }
