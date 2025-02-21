@@ -3,6 +3,7 @@
 protectRoute([1]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/dashboard.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager_commons.css">
 
 <!-- Chart.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
@@ -39,7 +40,7 @@ protectRoute([1]);?>
 
         <div class="overview flex-row">
             <div class="flex-row box container" style="background-color: var(--brand-primary);">
-                <div><h3>23 Ads Posted</h3></div>
+                <div><h3><?= $adCount; ?> Ads Posted</h3></div>
                     
             </div>
             <div class="flex-row box container" style="background-color: #56CDAD;">
@@ -51,7 +52,7 @@ protectRoute([1]);?>
                 
             </div>
             <div class="flex-row box container" style="background-color: #FFB836;">
-                <div><h3>3 Active Plans</h3></div>
+                <div><h3><?= $planCount; ?> Active Plans</h3></div>
                 
             </div>
         </div>

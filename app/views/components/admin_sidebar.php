@@ -1,9 +1,8 @@
-
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/Components/jobProvider_sidebar.css">
-    
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/Components/jobProvider_sidebar.css">
+
 <body>
-    
+
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">
@@ -24,8 +23,14 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
                 <span class="sidebar-label">Complaints</span>
             </a>
-            
-            <br><hr><br>
+
+            <a href="<?php echo ROOT; ?>/admin/adminmanageusers" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
+                <span class="sidebar-label">Users</span>
+            </a>
+
+            <br>
+            <hr><br>
 
             <a href="<?php echo ROOT; ?>/admin/adminsettings" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-gear"></i></span>
@@ -33,10 +38,11 @@
             </a>
 
             <!-- <a href="<?php echo ROOT; ?>/admin/adminsettings" class="sidebar-item">
+            <!-- <a href="<?php echo ROOT; ?>/admin/adminsettings" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
                 <span class="sidebar-label">Logout</span>
             </a> -->
-            
+
         </div>
 
     </div>

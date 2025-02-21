@@ -2,7 +2,7 @@
 
 trait Database
 {
-	
+
     // Change connect method to protected
     protected function connect()
     {
@@ -16,17 +16,17 @@ trait Database
         try {
             $con = $this->connect(); // Connect to the database
             $stm = $con->prepare($query);
-            
+
             // Execute the query
             $check = $stm->execute($data);
-    
+
             // Check if query was a SELECT statement
-            if ($stm->columnCount() > 0) { 
+            if ($stm->columnCount() > 0) {
                 // Return fetched results as objects
                 $result = $stm->fetchAll(PDO::FETCH_OBJ);
                 return $result ?: false; // Return results if available, otherwise false
             }
-    
+
             // For non-SELECT queries, return true if execution was successful
             return $check;
         } catch (PDOException $e) {
@@ -35,8 +35,8 @@ trait Database
             return false;
         }
     }
-    
-    
+
+
     public function get_row($query, $data = [])
     {
         $con = $this->connect(); // Use the connect method here
@@ -52,4 +52,3 @@ trait Database
         return false;
     }
 }
-?>

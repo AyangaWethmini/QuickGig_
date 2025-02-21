@@ -31,11 +31,15 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-bullhorn"></i></span>
                 <span class="sidebar-label">Announcements</span>
             </a>
+            <a href="<?php echo ROOT;?>/manager/report" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-regular fa-chart-bar"></i></span>
+                <span class="sidebar-label">Report</span>
+            </a>
 
             
             <hr>
             <br><br><br>
-            <a href="<?php echo ROOT;?>/admin/adminsettings" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/manager/settings" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-sharp fa-solid fa-gear"></i></span>
                 <span class="sidebar-label">Settings</span>
             </a>

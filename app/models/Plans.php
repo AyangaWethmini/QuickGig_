@@ -1,39 +1,36 @@
 <?php
-class Advertisement {
+class Plans {
     use Database;
 
-    public function getAdvertisements() {
-        $query = 'SELECT * FROM advertisement ORDER BY createdAt ASC';
+    public function getPlans() {
+        $query = 'SELECT * FROM plan';
         return $this->query($query);
     }
 
-    public function createAdvertisement($data) {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDescription, img, link, startDate, endDate, adStatus) 
-                  VALUES (:advertiserID, :adTitle, :adDescription, :img, :link, :startDate, :endDate, :adStatus)";
-    
+    public function createPlan($data) {
+        $query = "INSERT INTO plan (planName, description, price, duration, badge, postLimit) 
+                  VALUES (:planName, :description, :price, :duration, :badge, :postLimit)";
+        
         $params = [
-            'advertiserID' => $data['advertiserID'],
-            'adTitle' => $data['adTitle'],
-            'adDescription' => $data['adDescription'],
-            'img' => $data['adImage'], // Corrected key
-            'link' => $data['link'],
-            'startDate' => $data['startDate'],
-            'endDate' => $data['endDate'],
-            'adStatus' => $data['adStatus']
+            'planName' => $data['planName'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'duration' => $data['duration'],
+            'badge' => $data['badge'],
+            'postLimit' => $data['postLimit'],
         ];
-    
+        
         return $this->query($query, $params);
     }
-    
 
-    public function delete($id) {
-        $query = "DELETE FROM advertisement WHERE advertisementID = :id";
+    public function deletePlan($id) {
+        $query = "DELETE FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
 
-    public function getAdById($id) {
-        $query = "SELECT * FROM advertisement WHERE advertisementID = :id";
+    public function getPlanById($id) {
+        $query = "SELECT * FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
         return $result[0] ?? null;
@@ -44,6 +41,7 @@ class Advertisement {
                   SET adTitle = :adTitle, 
                       adDescription = :adDescription, 
                       img = :img, 
+                      adDate = :adDate, 
                       adTime = :adTime, 
                       link = :link,
                       duration = :duration,
@@ -55,6 +53,7 @@ class Advertisement {
             'adTitle' => $data['adTitle'],
             'adDescription' => $data['adDescription'],
             'img' => $data['img'],
+            'adDate' => $data['adDate'],
             'adTime' => $data['adTime'],
             'link' => $data['link'],
             'duration' => $data['duration'],
@@ -64,10 +63,9 @@ class Advertisement {
         return $this->query($query, $params);
     }
 
-    public function getAdsCount(){
-        $query = "SELECT COUNT(*) AS totalAds FROM advertisement WHERE adStatus = 'active'";
+    public function getPlansCount(){
+        $query = "SELECT COUNT(*) AS total FROM plan";
         $result = $this->query($query);
-        return $result[0]->totalAds ?? 0;
+        return $result[0]->total ?? 0;
     }
 }
-
