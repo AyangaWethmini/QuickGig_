@@ -165,7 +165,12 @@
         }
 
         function org_jobListing_toBeCompleted(){
-            $this->view('org_jobListing_toBeCompleted');
+            $tbcProvider = $this->model('ToBeCompletedProvider');
+            $tbc = $tbcProvider->getTBC();
+            $data = [
+                'tbc' => $tbc
+        ];
+            $this->view('org_jobListing_toBeCompleted', $data);
         }
 
         function org_jobListing_ongoing(){
