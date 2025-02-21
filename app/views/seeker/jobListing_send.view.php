@@ -63,7 +63,7 @@ protectRoute([2]);?>
                     <span class="jobId-applied">ID: #<?= htmlspecialchars($received->applicationID)?></span>
                 </div>
             
-                <button class="reject-jobReq-button btn btn-danger">Cancel</button>
+                <button class="reject-jobReq-button btn btn-danger" data-application-id="<?= htmlspecialchars($received->applicationID) ?>">Cancel</button>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
@@ -93,21 +93,32 @@ protectRoute([2]);?>
     </div>
 </body>
 <script>
-document.querySelectorAll('.accept-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to accept the request?';
-        document.getElementById('popup').classList.remove('hidden');
-    });
-});
-
 document.querySelectorAll('.reject-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+        const applicationID = event.target.dataset.applicationId;
         document.getElementById('popup-message').textContent = 'Are you sure you want to cancel this request?';
         document.getElementById('popup').classList.remove('hidden');
+        document.getElementById('popup-yes').dataset.applicationId = applicationID;
     });
 });
 
 document.getElementById('popup-yes').addEventListener('click', () => {
+    const applicationID = document.getElementById('popup-yes').dataset.applicationId;
+    fetch('<?=ROOT?>/seeker/deleteSendRequest', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ applicationID })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload();
+        } else {
+            alert('Failed to delete the request.');
+        }
+    });
     document.getElementById('popup').classList.add('hidden');
 });
 

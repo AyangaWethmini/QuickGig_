@@ -43,4 +43,9 @@ class SendSeeker{
         
         return $result ? $result : [];
     }
+
+    public function deleteSendRequest($applicationID) {
+        $query = "DELETE FROM apply_job WHERE applicationID = ?";
+        return $this->query($query, [$applicationID]);
+    }
 }

@@ -155,6 +155,21 @@ class Seeker extends Controller
         $this->view('jobListing_send', $data);
     }
 
+    public function deleteSendRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $applicationID = $data['applicationID'];
+            $sendSeekerModel = $this->model('SendSeeker');
+            $success = $sendSeekerModel->deleteSendRequest($applicationID);
+    
+            if ($success) {
+                echo json_encode(["status" => "success"]);
+            } else {
+                echo json_encode(["status" => "error"]);
+            }
+        }
+    }
+
     function jobListing_toBeCompleted()
     {
         $this->view('jobListing_toBeCompleted');
