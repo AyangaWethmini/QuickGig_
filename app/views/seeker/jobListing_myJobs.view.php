@@ -22,7 +22,7 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             <hr> <br>
 
             <div class="list-header">
-                <p class="list-header-title">My Jobs</p>
+                <p class="list-header-title">My Availabilities</p>
                 <input type="text" class="search-input" placeholder="Search...">
                 <button class="filter-btn">Filter</button>
             </div> <br>

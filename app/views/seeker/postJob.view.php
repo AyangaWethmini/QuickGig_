@@ -150,7 +150,7 @@ protectRoute([2]);?>
             </div>
             <hr>
             <div class="post-job-buttons flex-row">
-                <button class="btn btn-accent">Discard</button>
+                <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/seeker/jobListing_myJobs'">Discard</button>
                 <button class="btn btn-accent" type="submit">Finish</button>
             </div>
 
