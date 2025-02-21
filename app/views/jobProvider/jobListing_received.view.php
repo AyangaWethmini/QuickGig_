@@ -36,7 +36,7 @@ protectRoute([2]);?>
                                 $finfo = new finfo(FILEINFO_MIME_TYPE);
                                 $mimeType = $finfo->buffer($received->pp);
                             ?>
-                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($received->pp) ?>" alt="Advertisement image" height="150px" width="150px">
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($received->pp) ?>" alt="profile image">
                         <?php else: ?>
                             <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
                         <?php endif; ?>
