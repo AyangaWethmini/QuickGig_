@@ -29,7 +29,7 @@ protectRoute([2]);?>
             <?php foreach($data['receivedRequests'] as $received): ?>
             <div class="employee-item">
                 <div class="employee-photo">
-                <div class="img" >
+                    <div class="img" >
                         <?php if ($received->pp): ?>
                             <?php 
                                 // Get the mime type from the first few bytes of the BLOB

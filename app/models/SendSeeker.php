@@ -28,11 +28,12 @@ class SendSeeker{
                             THEN CONCAT(i.fname, ' ', i.lname) 
                             ELSE o.orgName 
                         END AS name, 
-                        j.jobTitle, j.jobID, j.salary, j.currency, j.location, j.availableDate, j.timeFrom, j.timeTo
+                        j.jobTitle, j.jobID, j.salary, j.currency, j.location, j.availableDate, j.timeFrom, j.timeTo, acc.pp
                 FROM apply_job a 
                 JOIN job j ON a.jobID = j.jobID
                 LEFT JOIN individual i ON j.accountID = i.accountID
                 LEFT JOIN organization o ON j.accountID = o.accountID
+                JOIN account acc ON j.accountID = acc.accountID
                 WHERE a.seekerID = ? 
                 AND a.applicationStatus = 1
                 ORDER BY datePosted DESC, timePosted DESC";
