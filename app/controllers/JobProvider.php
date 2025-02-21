@@ -344,6 +344,6 @@
              $this->jobModel = $this->model('Job');
              $this->jobModel->delete($id);
              header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
-         }
-       }
-   }
+         } 
+        }
+        }
