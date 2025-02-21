@@ -176,9 +176,9 @@
      public function deleteSendRequest() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
-            $applicationID = $data['applicationID'];
+            $reqID = $data['reqID'];
             $sendProviderModel = $this->model('SendProvider');
-            $success = $sendProviderModel->deleteSendRequest($applicationID);
+            $success = $sendProviderModel->deleteSendRequest($reqID);
     
             if ($success) {
                 echo json_encode(["status" => "success"]);

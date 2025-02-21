@@ -37,9 +37,9 @@ class SendProvider{
     return $result ? $result : [];
     }
 
-    public function deleteSendRequest($applicationID) {
+    public function deleteSendRequest($reqID) {
         $query = "DELETE FROM req_available WHERE reqID = ?";
-        return $this->query($query, [$applicationID]);
+        return $this->query($query, [$reqID]);
     }
-    
+
 }
