@@ -38,13 +38,17 @@ class ReceivedProvider{
     }
 
     public function rejectRequest($applicationID) {
-        $query = "UPDATE apply_job SET applicationStatus = 0 WHERE applicationID = ?";
-        return $this->query($query, [$applicationID]);
+        $dateActioned = date('Y-m-d');
+        $timeActioned = date('H:i:s');
+        $query = "UPDATE apply_job SET applicationStatus = 0, dateActioned = ?, timeActioned = ? WHERE applicationID = ?";
+        return $this->query($query, [$dateActioned, $timeActioned, $applicationID]);
     }
-
+    
     public function acceptRequest($applicationID) {
-        $query = "UPDATE apply_job SET applicationStatus = 2 WHERE applicationID = ?";
-        return $this->query($query, [$applicationID]);
+        $dateActioned = date('Y-m-d');
+        $timeActioned = date('H:i:s');
+        $query = "UPDATE apply_job SET applicationStatus = 2, dateActioned = ?, timeActioned = ? WHERE applicationID = ?";
+        return $this->query($query, [$dateActioned, $timeActioned, $applicationID]);
     }
     
     public function countAcceptedApplications($jobID) {

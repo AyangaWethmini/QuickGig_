@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Colombo');
+
  class JobProvider extends Controller {
      public function __construct(){
          $this->complaintModel = $this->model('Complaint');
@@ -189,7 +191,12 @@
     }
 
      function jobListing_toBeCompleted(){
-         $this->view('jobListing_toBeCompleted');
+        $tbcProvider = $this->model('ToBeCompletedProvider');
+        $tbc = $tbcProvider->getTBC();
+        $data = [
+            'tbc' => $tbc
+        ];
+         $this->view('jobListing_toBeCompleted', $data);
      }
      function jobListing_ongoing(){
          $this->view('jobListing_ongoing');
