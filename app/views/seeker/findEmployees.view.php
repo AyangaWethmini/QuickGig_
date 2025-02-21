@@ -38,7 +38,17 @@ protectRoute([2]);?>
                 <div class="job-card container">
                     <div class="job-card-left flex-row">
                       <div class="pfp">
-                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-find-employee">
+                        <div class="img" >
+                            <?php if ($findJob->pp): ?>
+                                <?php 
+                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                    $mimeType = $finfo->buffer($findJob->pp);
+                                ?>
+                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findJob->pp) ?>" alt="Employer Image">
+                            <?php else: ?>
+                                <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                            <?php endif; ?>
+                        </div>
                       </div>           
                         <div class="job-details">
                             <h2><?= htmlspecialchars($findJob->name)?></h2>
