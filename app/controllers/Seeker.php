@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Colombo');
+
 class Seeker extends Controller
 {
     public function __construct(){
@@ -172,7 +174,12 @@ class Seeker extends Controller
 
     function jobListing_toBeCompleted()
     {
-        $this->view('jobListing_toBeCompleted');
+        $tbcSeeker = $this->model('ToBeCompletedSeeker');
+            $tbc = $tbcSeeker->getTBC();
+            $data = [
+                'tbc' => $tbc
+        ];
+        $this->view('jobListing_toBeCompleted', $data);
     }
 
     function jobListing_ongoing()
