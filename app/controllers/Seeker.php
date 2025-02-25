@@ -187,11 +187,13 @@ class Seeker extends Controller
 
     function jobListing_ongoing()
     {
+        $this->jobStatusUpdater->updateJobStatuses();
         $this->view('jobListing_ongoing');
     }
 
     function jobListing_completed()
     {
+        $this->jobStatusUpdater->updateJobStatuses();
         $this->view('jobListing_completed');
     }
 
