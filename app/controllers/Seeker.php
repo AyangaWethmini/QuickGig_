@@ -5,6 +5,7 @@ class Seeker extends Controller
 {
     public function __construct(){
         $this->findJobModel = $this->model('FindJobs');
+        $this->jobStatusUpdater = $this->model('JobStatusUpdater');
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -172,12 +173,14 @@ class Seeker extends Controller
         }
     }
 
-    function jobListing_toBeCompleted()
-    {
+    function jobListing_toBeCompleted(){
+        $this->jobStatusUpdater->updateJobStatuses();
         $tbcSeeker = $this->model('ToBeCompletedSeeker');
-            $tbc = $tbcSeeker->getTBC();
-            $data = [
-                'tbc' => $tbc
+        $reqAvailableTBC = $tbcSeeker->getReqAvailableTBC();
+        $applyJobTBC = $tbcSeeker->getApplyJobTBC();
+        $data = [
+            'reqAvailableTBC' => $reqAvailableTBC,
+            'applyJobTBC' => $applyJobTBC
         ];
         $this->view('jobListing_toBeCompleted', $data);
     }

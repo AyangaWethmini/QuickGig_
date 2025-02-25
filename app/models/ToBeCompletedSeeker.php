@@ -19,7 +19,7 @@ class ToBeCompletedSeeker{
     }
 
 
-    public function getTBC()
+    public function getReqAvailableTBC()
     {   
         $id = $_SESSION['user_id'];
         $query = "SELECT r.*, 
@@ -40,6 +40,29 @@ class ToBeCompletedSeeker{
         $result = $this->query($query, [$id]);
         
         //error_log(print_r($result, true));
+        
+        return $result ? $result : [];
+    }
+
+    public function getApplyJobTBC()
+    {   
+        $id = $_SESSION['user_id'];
+        $query = "SELECT a.*, 
+                        CASE 
+                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
+                             THEN CONCAT(i.fname, ' ', i.lname) 
+                             ELSE o.orgName 
+                         END AS name,
+                         j.jobTitle, j.jobID, acc.pp
+        FROM apply_job a 
+        JOIN job j ON a.jobID = j.jobID
+        LEFT JOIN individual i ON j.accountID = i.accountID
+        LEFT JOIN organization o ON j.accountID = o.accountID
+        JOIN account acc ON j.accountID = acc.accountID
+        WHERE a.seekerID = ? 
+        AND a.applicationStatus = 2
+        ORDER BY datePosted DESC, timePosted DESC";
+        $result = $this->query($query, [$id]);
         
         return $result ? $result : [];
     }
