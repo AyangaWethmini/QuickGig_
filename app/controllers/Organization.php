@@ -1,8 +1,10 @@
 <?php
+date_default_timezone_set('Asia/Colombo');
     class Organization extends Controller {
 
         public function __construct(){
             $this->findEmpModel = $this->model('FindEmployees');
+            $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         }
 
         protected $viewPath = "../app/views/organization/";
@@ -165,6 +167,7 @@
         }
 
         function org_jobListing_toBeCompleted(){
+            $this->jobStatusUpdater->updateJobStatuses();
             $tbcProvider = $this->model('ToBeCompletedProvider');
             $tbc = $tbcProvider->getTBC();
             $data = [
@@ -174,10 +177,12 @@
         }
 
         function org_jobListing_ongoing(){
+            $this->jobStatusUpdater->updateJobStatuses();
             $this->view('org_jobListing_ongoing');
         }
 
         function org_jobListing_completed(){
+            $this->jobStatusUpdater->updateJobStatuses();
             $this->view('org_jobListing_completed');
         }
 
