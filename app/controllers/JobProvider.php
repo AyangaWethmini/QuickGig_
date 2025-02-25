@@ -6,6 +6,7 @@ date_default_timezone_set('Asia/Colombo');
          $this->complaintModel = $this->model('Complaint');
          $this->findEmpModel = $this->model('FindEmployees');
          $this->accountModel = $this->model('Account');
+         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
      }
      protected $viewPath = "../app/views/jobProvider/";
      
@@ -190,14 +191,18 @@ date_default_timezone_set('Asia/Colombo');
         }
     }
 
-     function jobListing_toBeCompleted(){
+    function jobListing_toBeCompleted(){
+        $this->jobStatusUpdater->updateJobStatuses();
         $tbcProvider = $this->model('ToBeCompletedProvider');
-        $tbc = $tbcProvider->getTBC();
+        $applyJobTBC = $tbcProvider->getApplyJobTBC();
+        $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
         $data = [
-            'tbc' => $tbc
+            'applyJobTBC' => $applyJobTBC,
+            'reqAvailableTBC' => $reqAvailableTBC
         ];
-         $this->view('jobListing_toBeCompleted', $data);
-     }
+        $this->view('jobListing_toBeCompleted', $data);
+    }
+
      function jobListing_ongoing(){
          $this->view('jobListing_ongoing');
      }
