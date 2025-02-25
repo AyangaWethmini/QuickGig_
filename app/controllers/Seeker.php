@@ -226,7 +226,7 @@ class Seeker extends Controller
             $shift = trim($_POST['shift']);
             $salary = trim($_POST['salary']);
             $currency = trim($_POST['currency']);
-            $AvailabilityStatus = 1;
+            $availabilityStatus = 1;
             $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
             $makeAvailableModel = $this->model('Available');

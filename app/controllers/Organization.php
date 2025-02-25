@@ -169,10 +169,12 @@ date_default_timezone_set('Asia/Colombo');
         function org_jobListing_toBeCompleted(){
             $this->jobStatusUpdater->updateJobStatuses();
             $tbcProvider = $this->model('ToBeCompletedProvider');
-            $tbc = $tbcProvider->getTBC();
+            $applyJobTBC = $tbcProvider->getApplyJobTBC();
+            $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
             $data = [
-                'tbc' => $tbc
-        ];
+                'applyJobTBC' => $applyJobTBC,
+                'reqAvailableTBC' => $reqAvailableTBC
+            ];
             $this->view('org_jobListing_toBeCompleted', $data);
         }
 

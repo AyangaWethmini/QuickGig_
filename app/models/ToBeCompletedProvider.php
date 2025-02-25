@@ -18,8 +18,7 @@ class ToBeCompletedProvider{
         // $this->db = new Database; // PDO instance
     }
 
-
-    public function getTBC()
+    public function getApplyJobTBC()
     {   
         $id = $_SESSION['user_id'];
         $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
@@ -32,7 +31,21 @@ class ToBeCompletedProvider{
         ORDER BY datePosted DESC, timePosted DESC";
         $result = $this->query($query, [$id]);
         
-        //error_log(print_r($result, true));
+        return $result ? $result : [];
+    }
+
+    public function getReqAvailableTBC()
+    {   
+        $id = $_SESSION['user_id'];
+        $query = "SELECT r.*, i.fname, i.lname, m.description, m.availableID, acc.pp
+        FROM req_available r
+        JOIN makeavailable m ON r.availableID = m.availableID
+        JOIN individual i ON m.accountID = i.accountID
+        JOIN account acc ON i.accountID = acc.accountID
+        WHERE r.providerID = ?
+        AND r.reqStatus = 2
+        ORDER BY datePosted DESC, timePosted DESC";
+        $result = $this->query($query, [$id]);
         
         return $result ? $result : [];
     }

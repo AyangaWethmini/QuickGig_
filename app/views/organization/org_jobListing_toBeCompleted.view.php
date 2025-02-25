@@ -25,8 +25,9 @@ protectRoute([3]);?>
 
         <div class="employee-list">
 
-        <?php if (!empty($data['tbc'])): ?>
-            <?php foreach($data['tbc'] as $tbc): ?>
+        <?php if (!empty($data['applyJobTBC'])): ?>
+            <h2>From Applications</h2><hr>
+            <?php foreach($data['applyJobTBC'] as $tbc): ?>
                 
         <div class="employee-item">
                 <div class="employee-photo">
@@ -69,12 +70,61 @@ protectRoute([3]);?>
                 </div>
             </div>
             <?php endforeach;?>
-            <?php else: ?>
-                <div class="empty-container">
-                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="Empty" class="empty-icon">
-                    <p class="empty-text">No Jobs To Be Completed</p>
+        <?php endif; ?> 
+
+        <?php if (!empty($data['reqAvailableTBC'])): ?>
+            <h2>From Requets</h2><hr>
+            <?php foreach($data['reqAvailableTBC'] as $tbc): ?>
+                
+        <div class="employee-item">
+                <div class="employee-photo">
+                    <div class="img" >
+                        <?php if ($tbc->pp): ?>
+                            <?php 
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($tbc->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($tbc->pp) ?>" alt="Employee Image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
                 </div>
-            <?php endif; ?> 
+                <div class="employee-details">
+                    <span class="employee-name"><?= htmlspecialchars($tbc->fname . ' ' . $tbc->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($tbc->description) ?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->datePosted) ?></span>
+                    <span class="time-applied">Time Applied: <?= htmlspecialchars($tbc->timePosted)?></span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?></span>
+                    <span class="time-applied">Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <div class="ratings">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <hr>
+                    <span class="jobId-applied">Available ID: #<?= htmlspecialchars($tbc->availableID)?></span>
+                    <span class="jobId-applied">Request ID: #<?= htmlspecialchars($tbc->reqID)?></span>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="#">View Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <?php endforeach;?>
+        <?php endif; ?> 
+
+        <?php if (empty($data['applyJobTBC']) && empty($data['reqAvailableTBC'])): ?>
+            <div class="empty-container">
+                <img src="<?=ROOT?>/assets/images/no-data.png" alt="Empty" class="empty-icon">
+                <p class="empty-text">Nothing To Be Completed</p>
+            </div>
+        <?php endif; ?> 
         </div>
 
         <div id="popup" class="popup hidden">
