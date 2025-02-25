@@ -30,7 +30,7 @@ class JobStatusUpdater {
         $query = "UPDATE req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
                   SET r.reqStatus = 4
-                  WHERE m.availableDate = :currentDate
+                  WHERE m.availableDate <= :currentDate
                   AND :currentTime > m.timeTo
                   AND (r.reqStatus = 3 OR r.reqStatus = 2)";
         $this->query($query, ['currentDate' => $currentDate, 'currentTime' => $currentTime]);
