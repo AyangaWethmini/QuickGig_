@@ -53,7 +53,7 @@ class ToBeCompletedSeeker{
                              THEN CONCAT(i.fname, ' ', i.lname) 
                              ELSE o.orgName 
                          END AS name,
-                         j.jobTitle, j.jobID, acc.pp
+                         j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
         FROM apply_job a 
         JOIN job j ON a.jobID = j.jobID
         LEFT JOIN individual i ON j.accountID = i.accountID

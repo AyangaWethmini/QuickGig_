@@ -46,10 +46,12 @@ protectRoute([2]);?>
                 <div class="employee-details">
                     <span class="employee-name"><?= htmlspecialchars($tbc->name) ?></span>
                     <span class="job-title"><?= htmlspecialchars($tbc->description) ?></span>
-                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->datePosted) ?></span>
-                    <span class="time-applied">Time Applied: <?= htmlspecialchars($tbc->timePosted)?></span>
-                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?></span>
-                    <span class="time-applied">Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->datePosted) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Applied: <?= htmlspecialchars($tbc->timePosted)?></span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <span class="time-applied">Available Date: <?= htmlspecialchars($tbc->availableDate)?></span>
+                    <span class="time-applied">Available Time: <?= htmlspecialchars($tbc->timeFrom)?> - <?= htmlspecialchars($tbc->timeTo)?></span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>/Hr</span>
+                    <span class="time-applied">Location: <?= htmlspecialchars($tbc->location)?></span>
                     <div class="ratings">
                         <span class="star">★</span>
                         <span class="star">★</span>
@@ -93,10 +95,12 @@ protectRoute([2]);?>
                 <div class="employee-details">
                     <span class="employee-name"><?= htmlspecialchars($tbc->name) ?></span>
                     <span class="job-title"><?= htmlspecialchars($tbc->jobTitle) ?></span>
-                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->dateApplied) ?></span>
-                    <span class="time-applied">Time Applied: <?= htmlspecialchars($tbc->timeApplied)?></span>
-                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?></span>
-                    <span class="time-applied">Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->dateApplied) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Applied: <?= htmlspecialchars($tbc->timeApplied)?></span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <span class="time-applied">Available Date: <?= htmlspecialchars($tbc->availableDate)?></span>
+                    <span class="time-applied">Available Time: <?= htmlspecialchars($tbc->timeFrom)?> - <?= htmlspecialchars($tbc->timeTo)?></span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>/Hr</span>
+                    <span class="time-applied">Location: <?= htmlspecialchars($tbc->location)?></span>
                     <div class="ratings">
                         <span class="star">★</span>
                         <span class="star">★</span>

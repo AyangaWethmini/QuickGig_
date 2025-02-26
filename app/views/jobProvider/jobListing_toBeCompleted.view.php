@@ -50,7 +50,7 @@ protectRoute([2]);?>
                     <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
                     <span class="time-applied">Available Date: <?= htmlspecialchars($tbc->availableDate)?></span>
                     <span class="time-applied">Available Time: <?= htmlspecialchars($tbc->timeFrom)?> - <?= htmlspecialchars($tbc->timeTo)?></span>
-                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>?Hr</span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>/Hr</span>
                     <span class="time-applied">Location: <?= htmlspecialchars($tbc->location)?></span>
                     <div class="ratings">
                         <span class="star">★</span>
@@ -99,7 +99,7 @@ protectRoute([2]);?>
                     <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
                     <span class="time-applied">Available Date: <?= htmlspecialchars($tbc->availableDate)?></span>
                     <span class="time-applied">Available Time: <?= htmlspecialchars($tbc->timeFrom)?> - <?= htmlspecialchars($tbc->timeTo)?></span>
-                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>?Hr</span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>/Hr</span>
                     <span class="time-applied">Location: <?= htmlspecialchars($tbc->location)?></span>
                     <div class="ratings">
                         <span class="star">★</span>
