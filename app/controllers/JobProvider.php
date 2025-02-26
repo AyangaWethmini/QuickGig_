@@ -216,7 +216,14 @@ date_default_timezone_set('Asia/Colombo');
      }
      function jobListing_completed(){
         $this->jobStatusUpdater->updateJobStatuses();
-         $this->view('jobListing_completed');
+        $completedProvider = $this->model('CompletedProvider');
+        $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+        $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            $data = [
+                'applyJobCompleted' => $applyJobCompleted,
+                'reqAvailableCompleted' => $reqAvailableCompleted
+            ];
+        $this->view('jobListing_completed', $data);
      }
      function makeComplaint(){
          $this->view('makeComplaint');
