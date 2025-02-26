@@ -4,16 +4,25 @@ class Home extends Controller
 {
 	protected $viewPath = "../app/views/home/";
 	protected $planModel; //temporary for testig, needto move into a ad controller
+	protected $adModel;
 
 	public function __construct()
 	{
 		$this->planModel = $this->model('Plans');
+		$this->adModel = $this->model("Advertisement");
 	}
 
 	public function index()
 	{
-		$data = $this->planModel->getPlans();
-		$this->view('home',['plans' => $data]);
+		$plans = $this->planModel->getPlans();
+		$ad = $this->adModel->getRandomActiveAd();
+
+		$data = [
+			'plans' => $plans,
+			'ad' => $ad
+		];
+
+		$this->view('home', $data);
 	}
 
 	public function signup()

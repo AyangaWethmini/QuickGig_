@@ -2,35 +2,10 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
+
+
 <!-- Include the subscriptions component -->
 <?php include APPROOT . '/views/components/subscriptions.php'; ?>
-
-<script>
-    // Function to hide the subscription popup
-    function hideSubscriptionPopup() {
-        document.querySelector('.sub-background').style.display = 'none';
-    }
-</script>
-
-<!-- <nav class="navbar flex-row">
-    <div class="flex-row  nav-left">
-        <div class="logo">QuickGig</div>
-        <ul class="nav-links  flex-row">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">Categories</a></li>
-        </ul>
-    </div>
-
-    <div class="sign-btns">
-        <button class="btn btn-trans">Login</button>
-        <button class="btn" style="background-color: var(--brand-pri-dark);">Sign Up</button>
-    </div>
-    <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</nav> -->
 
 <div class="hero-section flex-row" style="margin-top:80px;">
     <div class="job-search">
@@ -102,6 +77,16 @@
 
 </div>
 
+<div class="ad-cont flex-row">
+    <div class="advertisement-content">
+        <?php if (!empty($ad)): ?>
+            <?= renderAdvertisement($ad, ROOT) ?>
+        <?php else: ?>
+            <p>No active advertisements</p>
+        <?php endif; ?>
+    </div>
+</div>
+
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">
         Featured <span>Jobs</span>
@@ -136,3 +121,30 @@
 </div>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+
+<script>
+    function hideSubscriptionPopup() {
+        document.querySelector('.sub-background').style.display = 'none';
+    }
+
+    function recordAdClick(event, adId, adLink) {
+        event.preventDefault();
+
+        // Send AJAX request to record click
+        fetch(`<?= ROOT ?>/advertisement/click/${adId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // After recording the click, redirect to the ad's link
+                if (adLink) {
+                    window.open(adLink, '_blank');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>

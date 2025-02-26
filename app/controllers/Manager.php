@@ -1,5 +1,6 @@
 <?php
-class Manager extends Controller {
+class Manager extends Controller
+{
     protected $viewPath = "../app/views/manager/";
     protected $advertisementModel;
     protected $planModel;
@@ -7,7 +8,8 @@ class Manager extends Controller {
     protected $announcementModel;
     protected $advertiserModel;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->advertisementModel = $this->model('Advertisement');
         $this->planModel = $this->model('Plans');
         $this->helpModel = $this->model('Help');
@@ -15,7 +17,8 @@ class Manager extends Controller {
         $this->advertiserModel = $this->model('Advertiser');
     }
 
-    public function index(){
+    public function index()
+    {
         $adCount = $this->advertisementModel->getAdsCount();
         $planCount = $this->planModel->getPlansCount();
         $data = [
@@ -25,65 +28,77 @@ class Manager extends Controller {
         $this->view('dashboard', $data);
     }
 
-    public function profile(){
+    public function profile()
+    {
         $this->view('profile');
     }
 
-    public function announcements(){
+    public function announcements()
+    {
         $data = $this->announcementModel->getAnnouncements();
         $this->view('announcements', ['announcements' => $data]);
     }
 
-    public function helpCenter(){
+    public function helpCenter()
+    {
         $data = $this->helpModel->getAllQuestions();
         $this->view('helpCenter', ['questions' => $data]);
     }
 
-    public function plans(){
+    public function plans()
+    {
         $data = $this->planModel->getPlans();
         $this->view('plans', ['plans' => $data]);
     }
 
-    public function settings(){
+    public function settings()
+    {
         $this->view('settings');
     }
 
-    public function advertisements() {
+    public function advertisements()
+    {
         $data = $this->advertisementModel->getAdvertisements();
         $this->view('advertisements', ['advertisements' => $data]);
     }
 
 
-    public function createAd(){
+    public function createAd()
+    {
         $data = $this->advertiserModel->getAdvertisers();
         $this->view('createAd');
     }
 
-    public function updateAd($id){
+    public function updateAd($id)
+    {
         $data = $this->advertisementModel->getAdById($id);
         $this->view('updateAd', ['ad' => $data]);
     }
 
-    public function report(){
+    public function report()
+    {
         $this->view('report');
     }
 
-    public function postAdvertisement() {
+    public function postAdvertisement()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
         }
-    
-        // Ensure session is started
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-    
+
         // Form validation
         $requiredFields = [
-            'advertiserName', 'contact', 'email', 'adTitle', 
-            'adDescription', 'link', 'adStatus', 'startDate', 'endDate'
+            'advertiserName',
+            'contact',
+            'email',
+            'adTitle',
+            'adDescription',
+            'link',
+            'adStatus',
+            'startDate',
+            'endDate'
         ];
-    
+
         foreach ($requiredFields as $field) {
             if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
                 $_SESSION['error'] = "All fields are required.";
@@ -91,18 +106,18 @@ class Manager extends Controller {
                 exit;
             }
         }
-    
+
         if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
             $_SESSION['error'] = "Advertisement image is required.";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
-    
+
         // Clean input data
         $advertiserName = trim($_POST['advertiserName']);
         $contact = trim($_POST['contact']);
         $email = trim($_POST['email']);
-    
+
         // Get existing advertiser ID
         $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
         if ($advertiserId === null) {
@@ -111,9 +126,9 @@ class Manager extends Controller {
                 'contact' => $contact,
                 'email' => $email
             ];
-    
-            $this->advertiserModel->createAdvertiser($advertiserData);   
-    
+
+            $this->advertiserModel->createAdvertiser($advertiserData);
+
             // Fetch the newly created advertiser ID
             $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
             if ($advertiserId === null) {
@@ -122,19 +137,19 @@ class Manager extends Controller {
                 exit;
             }
         }
-    
+
         // Handle image upload
         $imageData = null;
         if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
             $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
-    
+
             if (!in_array($fileType, $allowedTypes)) {
                 $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
                 header('Location: ' . ROOT . '/manager/createAd');
                 exit;
             }
-    
+
             $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
             if ($imageData === false) {
                 $_SESSION['error'] = "Failed to read image file.";
@@ -142,7 +157,7 @@ class Manager extends Controller {
                 exit;
             }
         }
-    
+
         // Prepare advertisement data
         $advertisementData = [
             'advertiserID' => $advertiserId,
@@ -154,23 +169,24 @@ class Manager extends Controller {
             'endDate' => trim($_POST['endDate']),
             'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
         ];
-    
+
         // Create advertisement
         if (!$this->advertisementModel->createAdvertisement($advertisementData)) {
             $_SESSION['error'] = "Failed to create advertisement.";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
-    
+
         $_SESSION['success'] = "Advertisement created successfully.";
         header('Location: ' . ROOT . '/manager/advertisement');
         exit;
     }
-    
+
 
 
     // update advertisement
-    public function updateAdvertisement($id) {
+    public function updateAdvertisement($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Validation
             if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus'])) {
@@ -196,7 +212,7 @@ class Manager extends Controller {
             if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
                 $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
-                
+
                 if (in_array($fileType, $allowedTypes)) {
                     $updateData['img'] = file_get_contents($_FILES['adImage']['tmp_name']);
                 }
@@ -213,10 +229,26 @@ class Manager extends Controller {
         }
     }
 
+    //add clicks to the ads
+    public function click($adId)
+    {
+        if (isset($adId) && is_numeric($adId)) {
+            $result = $this->advertisementModel->recordClick($adId);
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Click recorded successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to record click']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid ad ID']);
+        }
+    }
+
 
     //-------------------Plans----------------------
 
-    public function createPlan() {
+    public function createPlan()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Validate required fields
             $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit'];
@@ -227,14 +259,14 @@ class Manager extends Controller {
                     return;
                 }
             }
-    
+
             // Validate numeric fields
             if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
                 $_SESSION['error'] = "Duration, price, and post limit must be numeric values";
                 header('Location: ' . ROOT . '/manager/plans');
                 return;
             }
-    
+
             try {
                 // Get and sanitize form data
                 $planName = trim($_POST['planName']);
@@ -243,7 +275,7 @@ class Manager extends Controller {
                 $price = floatval($_POST['price']);
                 $postLimit = intval($_POST['postLimit']);
                 $badge = isset($_POST['badge']) ? 1 : 0;
-    
+
                 // Create the plan
                 $result = $this->planModel->createPlan([
                     'planName' => $planName,
@@ -253,40 +285,41 @@ class Manager extends Controller {
                     'badge' => $badge,
                     'postLimit' => $postLimit
                 ]);
-    
+
                 if ($result) {
                     $_SESSION['success'] = "Plan created successfully";
                 } else {
                     $_SESSION['error'] = "Failed to create plan";
                 }
-    
             } catch (Exception $e) {
                 $_SESSION['error'] = "An error occurred while creating the plan";
                 error_log($e->getMessage());
             }
-    
+
             header('Location: ' . ROOT . '/manager/plans');
             return;
         }
-    
+
         // If not POST request, redirect to plans page
         header('Location: ' . ROOT . '/manager/plans');
     }
 
     // delete plan
-    public function deletePlan($id){
+    public function deletePlan($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Check for POST request
             $this->planModel->deletePlan($id);
-            header('Location: '.ROOT. '/manager/plans');
+            header('Location: ' . ROOT . '/manager/plans');
         } else {
             // Handle the case where the request method is not POST
-            header('Location: '.ROOT. '/manager/plans');
+            header('Location: ' . ROOT . '/manager/plans');
         }
     }
 
     //--------------------Help-------------------------
 
-    public function reply($id){
+    public function reply($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Validation: Ensure reply is not empty
             if (empty(trim($_POST['reply']))) {
@@ -294,26 +327,21 @@ class Manager extends Controller {
                 header('Location: ' . ROOT . '/manager/helpCenter');
                 exit;
             }
-    
+
             $reply = trim($_POST['reply']);
-    
+
             $updateData = [
                 'reply' => $reply
             ];
-    
+
             if ($this->helpModel->replyToQuestion($id, $updateData)) {
                 $_SESSION['success'] = "Reply submitted successfully.";
             } else {
                 $_SESSION['error'] = "Failed to submit reply.";
             }
-    
+
             header('Location: ' . ROOT . '/manager/helpCenter');
             exit;
         }
     }
-    
 }
-
-
-
-
