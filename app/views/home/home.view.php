@@ -132,7 +132,7 @@
         event.preventDefault();
 
         // Send AJAX request to record click
-        fetch(`<?= ROOT ?>/advertisement/click/${adId}`, {
+        fetch(`<?= ROOT ?>/manager/click/${adId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,5 +146,29 @@
                 }
             })
             .catch(error => console.error('Error:', error));
+    }
+
+    function recordAdView(adId) {
+        if (adId && !isNaN(adId)) {
+            fetch(`<?= ROOT ?>/manager/adView/${adId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('View recorded successfully:', data.message);
+                    } else {
+                        console.error('Failed to record view:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.error('Invalid ad ID');
+        }
     }
 </script>

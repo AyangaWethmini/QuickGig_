@@ -80,17 +80,25 @@ class Advertisement
     public function getRandomActiveAd()
     {
         $query = "SELECT * FROM advertisement 
-              WHERE adStatus = 'active' AND endDate > NOW() 
+              WHERE adStatus = 'active' AND endDate > NOW()  AND startDate <= NOW();
               ORDER BY RAND() LIMIT 1";
         $result = $this->query($query);
         return $result[0] ?? null;
     }
 
-    public function recordClick($adId) {
+    public function recordClick($adId)
+    {
         $query = "UPDATE advertisement 
                  SET clicks = clicks + 1 
-                 WHERE advertisementID = :id";
-        $params = ['id' => $adId];
+                 WHERE advertisementID = :adId";
+        $params = ['adId' => $adId];
+        return $this->query($query, $params);
+    }
+
+    public function addView($adId)
+    {
+        $query = "UPDATE advertisement SET views = views + 1 WHERE advertisementID = :adId";
+        $params = ['adId' => $adId];
         return $this->query($query, $params);
     }
 }

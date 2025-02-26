@@ -244,6 +244,18 @@ class Manager extends Controller
         }
     }
 
+    public function adView($adId){
+        if (isset($adId) && is_numeric($adId)) {
+            $result = $this->advertisementModel->addView($adId);
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Click recorded successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to record click']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid ad ID']);
+        }
+    }
 
     //-------------------Plans----------------------
 
