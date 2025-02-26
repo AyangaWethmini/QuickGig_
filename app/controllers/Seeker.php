@@ -201,7 +201,14 @@ class Seeker extends Controller
     function jobListing_completed()
     {
         $this->jobStatusUpdater->updateJobStatuses();
-        $this->view('jobListing_completed');
+        $completedSeeker = $this->model('CompletedSeeker');
+        $reqAvailableCompleted = $completedSeeker->getReqAvailableCompleted();
+        $applyJobCompleted = $completedSeeker->getApplyJobCompleted();
+        $data = [
+            'reqAvailableCompleted' => $reqAvailableCompleted,
+            'applyJobCompleted' => $applyJobCompleted
+        ];
+        $this->view('jobListing_completed', $data);
     }
 
     function makeComplaint()
