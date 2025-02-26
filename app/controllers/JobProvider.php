@@ -205,7 +205,14 @@ date_default_timezone_set('Asia/Colombo');
 
      function jobListing_ongoing(){
         $this->jobStatusUpdater->updateJobStatuses();
-         $this->view('jobListing_ongoing');
+        $ongoingProvider = $this->model('OngoingProvider');
+        $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+        $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            $data = [
+                'applyJobOngoing' => $applyJobOngoing,
+                'reqAvailableOngoing' => $reqAvailableOngoing
+            ];
+        $this->view('jobListing_ongoing', $data);
      }
      function jobListing_completed(){
         $this->jobStatusUpdater->updateJobStatuses();
