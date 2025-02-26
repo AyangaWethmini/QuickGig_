@@ -52,13 +52,6 @@ protectRoute([3]);?>
                     <span class="time-applied">Available Time: <?= htmlspecialchars($completed->timeFrom)?> - <?= htmlspecialchars($completed->timeTo)?></span>
                     <span class="time-applied">Salary: <?= htmlspecialchars($completed->salary)?> <?= htmlspecialchars($completed->currency)?>/Hr</span>
                     <span class="time-applied">Location: <?= htmlspecialchars($completed->location)?></span>
-                    <div class="ratings">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
                     <hr>
                     <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($completed->jobID)?></span>
                     <span class="jobId-applied">Application ID: #<?= htmlspecialchars($completed->applicationID)?></span>
@@ -102,13 +95,6 @@ protectRoute([3]);?>
                     <span class="time-applied">Available Time: <?= htmlspecialchars($completed->timeFrom)?> - <?= htmlspecialchars($completed->timeTo)?></span>
                     <span class="time-applied">Salary: <?= htmlspecialchars($completed->salary)?> <?= htmlspecialchars($completed->currency)?>/Hr</span>
                     <span class="time-applied">Location: <?= htmlspecialchars($completed->location)?></span>
-                    <div class="ratings">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
                     <hr>
                     <span class="jobId-applied">Available ID: #<?= htmlspecialchars($completed->availableID)?></span>
                     <span class="jobId-applied">Request ID: #<?= htmlspecialchars($completed->reqID)?></span>
