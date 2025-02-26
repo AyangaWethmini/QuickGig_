@@ -188,7 +188,14 @@ class Seeker extends Controller
     function jobListing_ongoing()
     {
         $this->jobStatusUpdater->updateJobStatuses();
-        $this->view('jobListing_ongoing');
+        $ongoingSeeker = $this->model('OngoingSeeker');
+        $reqAvailableOngoing = $ongoingSeeker->getReqAvailableOngoing();
+        $applyJobOngoing = $ongoingSeeker->getApplyJobOngoing();
+            $data = [
+                'reqAvailableOngoing' => $reqAvailableOngoing,
+                'applyJobOngoing' => $applyJobOngoing
+            ];
+        $this->view('jobListing_ongoing', $data);
     }
 
     function jobListing_completed()
