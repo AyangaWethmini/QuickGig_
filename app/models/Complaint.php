@@ -46,15 +46,19 @@ class Complaint
 
     public function create($data)
     {
-        $query = "INSERT INTO complaint (complainantID, content, complaintDate, complaintTime, complaintStatus) 
-                  VALUES (:complainantID, :content, :complaintDate, :complaintTime, :complaintStatus)";
+        $query = "INSERT INTO complaint (complaintID, complainantID, complaineeID, content, complaintDate, complaintTime, complaintStatus, jobOrAvailable, applicationOrReq) 
+                VALUES (:complaintID, :complainantID, :complaineeID, :content, :complaintDate, :complaintTime, :complaintStatus, :jobOrAvailable, :applicationOrReq)";
 
         $params = [
+            'complaintID' => $data['complaintID'],
             'complainantID' => $data['complainantID'],
+            'complaineeID' => $data['complaineeID'],
             'content' => $data['content'],
             'complaintDate' => $data['complaintDate'],
             'complaintTime' => $data['complaintTime'],
-            'complaintStatus' => $data['complaintStatus']
+            'complaintStatus' => $data['complaintStatus'],
+            'jobOrAvailable' => $data['jobOrAvailable'],
+            'applicationOrReq' => $data['applicationOrReq']
         ];
 
         return $this->query($query, $params);

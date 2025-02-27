@@ -9,16 +9,20 @@ protectRoute([2]);?>
     <div class="make-complain-container">
         <div class="complain-form-container">
             <div class="employee-details">
-                <p><strong>Employee Name:</strong> Kane Smith</p>
-                <p><strong>Job:</strong> Plumber</p>
-                <p><strong>Job Start Time:</strong> 03:00 PM</p>
-                <p><strong>Job End Time:</strong> 05:00 PM</p>
-                <p><strong>Job Date:</strong> 2023-10-01</p>
-                <p><strong>Job Location:</strong> Manchester, UK</p>
+                <p><strong>Employee Name:</strong> <?= htmlspecialchars($data['employee']->fname . ' ' . $data['employee']->lname) ?></p>
+                <p><strong>Title:</strong> <?= htmlspecialchars($data['employee']->title)?></p>
+                <p><strong>Job Time:</strong> <?= htmlspecialchars($data['employee']->timeFrom) ?> - <?= htmlspecialchars($data['employee']->timeTo) ?></p>
+                <p><strong>Job Date:</strong> <?= htmlspecialchars($data['employee']->availableDate) ?></p>
+                <p><strong>Job/Available ID:</strong> #<?= htmlspecialchars($data['employee']->ja) ?></p>
+                <p><strong>Req/Application ID:</strong> #<?= htmlspecialchars($data['employee']->applicationID ?? $data['employee']->reqID) ?></p>
             </div>
-            <form id="complainForm" action="<?=ROOT?>/jobProvider/submitComplaint" method="post" class="complain-form">               
+            <form id="complainForm" action="<?=ROOT?>/jobProvider/submitComplaint" method="post" class="complain-form">
+                <input type="hidden" name="complaineeID" value="<?= htmlspecialchars($data['employee']->accountID) ?>">
+                <input type="hidden" name="jobOrAvailable" value="<?= htmlspecialchars($data['employee']->ja) ?>">
+                <input type="hidden" name="applicationOrReq" value="<?= htmlspecialchars($data['employee']->applicationID ?? $data['employee']->reqID) ?>">
+
                 <div class="form-section">
-                    <label for="complainInfo">Complain Information:</label>
+                    <label for="complainInfo">Complaint Information:</label>
                     <textarea id="complainInfo" name="complainInfo" rows="10" required></textarea>
                     <p id="error-msg" style="color: red; display: none;">Complaint information cannot be empty or spaces only.</p>
                 </div>

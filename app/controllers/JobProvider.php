@@ -225,29 +225,49 @@ date_default_timezone_set('Asia/Colombo');
             ];
         $this->view('jobListing_completed', $data);
      }
-     function makeComplaint(){
-         $this->view('makeComplaint');
+    
+     public function makeComplaint($taskID)
+     {
+         $completedProvider = $this->model('CompletedProvider');
+         $employee = $completedProvider->getEmployeeDetails($taskID);
+     
+         $data = [
+             'employee' => $employee
+         ];
+     
+         $this->view('makeComplaint', $data);
      }
-     function submitComplaint(){
+     
+     public function submitComplaint()
+     {
          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              $complainantID = $_SESSION['user_id'];
+             $complaineeID = trim($_POST['complaineeID']);
              $content = trim($_POST['complainInfo']);
              $complaintDate = date('Y-m-d');
-             $complaintTime = date('h:i A');
+             $complaintTime = date('H:i:s');
              $complaintStatus = 1;
- 
+             $complaintID = uniqid('COMP_');
+             $jobOrAvailable = trim($_POST['jobOrAvailable']);
+             $applicationOrReq = trim($_POST['applicationOrReq']);
+     
              $complaintModel = $this->model('Complaint');
              $complaintModel->create([
+                 'complaintID' => $complaintID,
                  'complainantID' => $complainantID,
+                 'complaineeID' => $complaineeID,
                  'content' => $content,
                  'complaintDate' => $complaintDate,
                  'complaintTime' => $complaintTime,
-                 'complaintStatus' => $complaintStatus
+                 'complaintStatus' => $complaintStatus,
+                 'jobOrAvailable' => $jobOrAvailable,
+                 'applicationOrReq' => $applicationOrReq
              ]);
- 
+     
              header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
          }
      }
+
      function complaints(){
          $complaints = $this->complaintModel->getComplaints();
          $data = [
