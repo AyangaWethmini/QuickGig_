@@ -48,9 +48,9 @@ class Home extends Controller
 	// 	$this->view('payments');
 	// }
 
-	// public function subscriptions()
-	// {
-	// 	$data = $this->planModel->getPlans();
-	// 	$this->view('subscriptions', ['plans' => $data]);
-	// }
+	public function subscriptions()
+	{
+		$data = $this->planModel->getPlans();
+		$this->view('subscriptions', ['plans' => $data]);
+	}
 }

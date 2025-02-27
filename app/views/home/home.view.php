@@ -2,10 +2,12 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
-
-
-<!-- Include the subscriptions component -->
-<?php include APPROOT . '/views/components/subscriptions.php'; ?>
+<?php
+if (!isset($_SESSION['subscription_popup_shown'])) {
+    include APPROOT . '/views/components/subscriptions.php';
+    $_SESSION['subscription_popup_shown'] = true;
+}
+?>
 
 <div class="hero-section flex-row" style="margin-top:80px;">
     <div class="job-search">
