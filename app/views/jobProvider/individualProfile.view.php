@@ -39,8 +39,6 @@ protectRoute([2]); ?>
                         <p class="detail-items"><?= htmlspecialchars(($data['email'] ?? '')) ?></p><br>
                         <p class="title-items">Phone</p>
                         <p class="detail-items"><?= htmlspecialchars(($data['phone'] ?? '')) ?></p><br>
-                        <p class="title-items">Languages</p>
-                        <p class="detail-items">English, French</p>
                     </div>
                     <div class="social-links">
                         <h2>Social Links</h2> <br>

@@ -74,10 +74,10 @@ protectRoute([2]); ?>
 
                 <div class="section2-right">
                     <label><strong>LinkedIn</strong></label><br>
-                    <input type="text" name="linkedIn" class="custom-input part1" placeholder="instagram.com/jakegyll" value="<?= htmlspecialchars(($data['linkedIn'] ?? '')) ?>"><br><br>
+                    <input type="text" name="linkedIn" class="custom-input part1" placeholder="LinkedIn.com/jakegyll" value="<?= htmlspecialchars(($data['linkedIn'] ?? '')) ?>"><br><br>
 
                     <label><strong>FaceBook</strong></label><br>
-                    <input type="text" name="facebook" class="custom-input part2" placeholder="twitter.com/jakegyll" value="<?= htmlspecialchars(($data['facebook'] ?? '')) ?>"><br><br>
+                    <input type="text" name="facebook" class="custom-input part2" placeholder="facebook.com/jakegyll" value="<?= htmlspecialchars(($data['facebook'] ?? '')) ?>"><br><br>
 
                     <label><strong>Website</strong></label><br>
                     <input type="text" class="custom-input part3" placeholder="www.jakegyll.com"><br><br>

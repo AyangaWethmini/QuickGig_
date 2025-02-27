@@ -1,12 +1,27 @@
 <?php
 class Seeker extends Controller
-{
+{   
+    private $accountModel;
+    use Database;  // Use the Database trait, don't instantiate it.
     
     protected $viewPath = "../app/views/seeker/";
+    public function __construct(){
+        $db = $this->connect();
+        $this->accountModel = new Account($db);
+        
+    }
     
     function index()
-    {
-        $this->view('seekerProfile');
+    {   
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login'); // Redirect to login if not authenticated
+        }
+
+        // Get user data
+        $userId = $_SESSION['user_id'];
+        $data = $this->accountModel->getUserData($userId);
+        $this->view('seekerProfile',$data);
     }
 
     function findEmployees()
