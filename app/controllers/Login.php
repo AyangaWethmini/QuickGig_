@@ -56,6 +56,7 @@ class Login extends Controller
                 // Login successful
                 $_SESSION['user_id'] = $user['accountID']; // Store user ID in the session
                 $_SESSION['user_email'] = $user['email']; // Store user email in the session
+                $_SESSION['pp'] = $user['pp']; 
                 $_SESSION['user_role'] = $userRole['roleID']; 
                 $_SESSION['user_logged_in'] = true; // Store user email in the session
                 header("Location: " . ROOT . "/home");

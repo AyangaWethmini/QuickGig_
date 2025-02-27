@@ -154,6 +154,83 @@ public function createOrganization($data)
         return false;
     }
 }
+public function getUserData($userId) {
+    
+    try {
+        $sql = "
+           SELECT 
+                a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
+                i.gender, i.nic, i.fname, i.lname, i.phone, i.bio
+            FROM account a
+            INNER JOIN individual i ON a.accountID = i.accountID
+            WHERE a.accountID = :user_id
+        ";
+       
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Database Error: " . $e->getMessage());
+        return null;
+    }
+}
+public function updateUserData($userId, $data) {
+    try {
+        $sql = "
+            UPDATE account a
+            INNER JOIN individual i ON a.accountID = i.accountID
+            SET 
+                a.district = :district,
+                a.addressLine1 = :addressLine1,
+                a.addressLine2 = :addressLine2,
+                a.city = :city,
+                a.linkedIn = :linkedIn,
+                a.facebook = :facebook,
+                i.fname = :fname,
+                i.lname = :lname,
+                i.phone = :phone,
+                i.bio = :bio
+        ";
+        
+        if (!empty($data['pp'])) {
+            $sql .= ", a.pp = :pp";
+        }
+
+        $sql .= " WHERE a.accountID = :user_id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindParam(':district', $data['district']);
+        $stmt->bindParam(':addressLine1', $data['addressLine1']);
+        $stmt->bindParam(':addressLine2', $data['addressLine2']);
+        $stmt->bindParam(':city', $data['city']);
+        $stmt->bindParam(':linkedIn', $data['linkedIn']);
+        $stmt->bindParam(':facebook', $data['facebook']);
+        $stmt->bindParam(':fname', $data['fname']);
+        $stmt->bindParam(':lname', $data['lname']);
+        $stmt->bindParam(':phone', $data['phone']);
+        $stmt->bindParam(':bio', $data['bio']);
+        $stmt->bindParam(':user_id', $userId);
+
+        if (!empty($data['pp'])) {
+            $stmt->bindParam(':pp', $data['pp'], PDO::PARAM_LOB);
+        }
+        if ($stmt->execute()) {
+            error_log("Database Error: Statement execution succeful.");
+            return true;
+        } else {
+            error_log("Database Error: Statement execution failed.");
+            return false;
+        }
+    } catch (PDOException $e) {
+        error_log("Database Error: " . $e->getMessage());
+        return false;
+    }
+}
+
+
 
 }
 

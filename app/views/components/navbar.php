@@ -1,4 +1,11 @@
 <?php $path = allocatePathBasedOnRole(); ?>
+<?php
+$profilePic = ROOT . "/assets/images/default.jpg"; // Default profile picture
+
+if (isset($_SESSION['pp']) && !empty($_SESSION['pp'])) {
+    $profilePic = "data:image/jpeg;base64," . base64_encode($_SESSION['pp']);
+}
+?>
 <nav class="navbar">
   <div class="nav-left">
     <div class="hamburger" onclick="toggleMenu()">
@@ -32,7 +39,7 @@
             <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;margin-top: 10px; margin-right: 5px;">Log Out</button>
           </form>
           <a href="<?php echo $path; ?>">
-            <button class="profile-btn" style="background-image: url('<?=ROOT?>/assets/images/default.jpg');"></button>
+            <button class="profile-btn" style="background-image: url('<?= $profilePic; ?>');"></button>
           </a>
         </div>
       <?php endif; ?>
@@ -68,4 +75,6 @@ function allocatePathBasedOnRole() {
     }
     return $defaultPath; // Redirect to login if roleID is not set
 }
+
 ?>
+

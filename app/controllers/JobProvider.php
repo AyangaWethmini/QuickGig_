@@ -1,14 +1,28 @@
 <?php
     class JobProvider extends Controller {
+        private $accountModel;
+        use Database;  // Use the Database trait, don't instantiate it.
 
         public function __construct(){
             $this->complaintModel = $this->model('Complaint');
+            $db = $this->connect();
+            $this->accountModel = new Account($db);
+            
         }
+        
 
         protected $viewPath = "../app/views/jobProvider/";
         
         function index(){
-            $this->view('individualProfile');
+            // Ensure user is logged in
+            if (!isset($_SESSION['user_id'])) {
+                redirect('login'); // Redirect to login if not authenticated
+            }
+    
+            // Get user data
+            $userId = $_SESSION['user_id'];
+            $data = $this->accountModel->getUserData($userId);
+            $this->view('individualProfile',$data);
         }
 
         function findEmployees(){
@@ -39,9 +53,53 @@
             $this->view('announcements');
         }
 
-        function individualEditProfile(){
-            $this->view('individualEditProfile');
+        public function individualEditProfile() {
+            // Ensure user is logged in
+            if (!isset($_SESSION['user_id'])) {
+                redirect('login'); // Redirect to login if not authenticated
+            }
+    
+            // Get user data
+            $userId = $_SESSION['user_id'];
+            $data = $this->accountModel->getUserData($userId);
+    
+            // Load the view and pass user data
+            $this->view('individualEditProfile', $data);
         }
+        public function updateProfile() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $userId = $_SESSION['user_id'];
+        
+                $data = [
+                    'fname' => trim($_POST['fname']),
+                    'lname' => trim($_POST['lname']),
+                    'email' => trim($_POST['email']),
+                    'phone' => trim($_POST['phone']),
+                    'district' => trim($_POST['district']),
+                    'addressLine1' => trim($_POST['addressLine1']),
+                    'addressLine2' => trim($_POST['addressLine2']),
+                    'city' => trim($_POST['city']),
+                    'linkedIn' => trim($_POST['linkedIn']),
+                    'facebook' => trim($_POST['facebook']),
+                    'bio' => trim($_POST['bio']),
+                    'pp' => null
+                ];
+                
+        
+                // Handle profile picture upload
+                if (!empty($_FILES['pp']['tmp_name'])) {
+                    $imageData = file_get_contents($_FILES['pp']['tmp_name']);
+                    $data['pp'] = $imageData;
+                    $_SESSION['pp'] = $imageData;
+                }
+                if ($this->accountModel->updateUserData($userId, $data)) {
+                    redirect('JobProvider/individualProfile'); // Reload page with updated data
+                } else {
+                    die("Something went wrong. Please try again.");
+                }
+            }
+        }
+        
 
         function helpCenter(){
             $this->view('helpCenter');
