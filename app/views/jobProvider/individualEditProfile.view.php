@@ -88,7 +88,11 @@ protectRoute([2]); ?>
 
             <div class="edit-profile-description">
                 <h2>Description</h2>
-                <input type="text" name="bio" class="custom-input part4" value="<?= htmlspecialchars(($data['bio'] ?? '')) ?>" placeholder="With years of experience in farming, I'm seeking reliable and motivated individuals to assist with daily farm tasks. Our farm, spanning over 150 acres, is a lush, green oasis teeming with life. We cultivate a variety of crops, including wheat, cabbage, carrots. Our farm is home to cows, chickens, ducks, goats and pigs, which contribute to a sustainable and harmonious ecosystem. We provide a comfortable and safe working environment for our workers, with access to clean water and basic amenities."><br><br>
+                <textarea name="bio" class="custom-input part4"
+                    placeholder="Your description here"
+                    maxlength="6000"><?= htmlspecialchars(($data['bio'] ?? '')) ?></textarea>
+
+                <p id="char-count">0 / 1000 words</p>
             </div>
 
             <div class="edit-profile-btnsection">
@@ -108,6 +112,16 @@ protectRoute([2]); ?>
             };
             reader.readAsDataURL(file);
         }
+    });
+    const textarea = document.querySelector('textarea[name="bio"]');
+    const wordCountDisplay = document.getElementById('char-count');
+
+    textarea.addEventListener('input', function () {
+        let length = this.value.length;
+        if (length > 1000) {
+            this.value = this.value.substring(0, 1000);
+        }
+        charCountDisplay.textContent = length + " / 1000 characters";
     });
 </script>
 

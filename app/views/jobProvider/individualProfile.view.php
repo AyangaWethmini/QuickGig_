@@ -1,7 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
 protectRoute([2]); ?>
-<?php require APPROOT . '/views/components/navbar.php'; ?>
+<?php require APPROOT . '/views/components/navbar.php'; ?> 
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/individualProfile.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/reviews.css">
