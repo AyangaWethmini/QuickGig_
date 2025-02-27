@@ -8,6 +8,7 @@
      protected $viewPath = "../app/views/jobProvider/";
      
      function index(){
+        
          $this->view('individualProfile');
      }
 
@@ -345,5 +346,9 @@
              $this->jobModel->delete($id);
              header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
          }
-       }
-   }
+
+        }
+
+    }
+
+
