@@ -17,6 +17,19 @@ class AdminModel
         // $this->db = new Database; // PDO instance
     }
 
+    public function getJobCount()
+    {
+        $query = 'SELECT COUNT(*) AS jobcount FROM job';
+        $result = $this->query($query);
+
+        // Ensure the result is an array and has at least one element
+        if (is_array($result) && isset($result[0]->jobcount)) {
+            return $result[0]->jobcount; // Access the 'jobcount' property from the first object
+        }
+
+        return 0; // Return 0 if no rows match or query fails
+    }
+
     /* ADMIN DASHBOARD */
     public function getCountByRoleID($roleID)
     {

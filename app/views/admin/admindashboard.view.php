@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([0]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([0]); ?>
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/admin/admin_dashboard.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -23,7 +23,7 @@ protectRoute([0]);?>
             </div>
             <div class="dashboard-card">
                 <h2>Total Jobs Posted</h2>
-                <p>456</p> <!-- Replace this with dynamic data if needed -->
+                <p><?php echo $data['totalJobs']; ?></p>
             </div>
         </div>
     </div>

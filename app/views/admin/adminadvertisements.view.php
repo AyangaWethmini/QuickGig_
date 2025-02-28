@@ -9,15 +9,6 @@ protectRoute([0]); ?>
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
-        <div class="admin-announcement-header">
-            <h1>Current Advertisements</h1>
-
-        </div>
-        <br>
-        <hr><br>
-        <div class="admin-announcement-searchbar">
-            <input type="search" name="query" placeholder="Search Advertisements">
-        </div>
         <div class="admin-announcement-filterheader">
             <h1>All Advertisements</h1>
         </div>

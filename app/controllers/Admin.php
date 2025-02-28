@@ -260,11 +260,13 @@ class Admin extends Controller
         // Assuming you have a model for interacting with the database
         $totalIndividuals = $this->adminModel->getCountByRoleID(2); // Count for roleID=2
         $totalOrganizations = $this->adminModel->getCountByRoleID(3); // Count for roleID=3
+        $totalJobs = $this->adminModel->getJobCount(); // Count for jobs
 
         // Pass the counts to the view
         $data = [
             'totalIndividuals' => $totalIndividuals,
-            'totalOrganizations' => $totalOrganizations
+            'totalOrganizations' => $totalOrganizations,
+            'totalJobs' => $totalJobs
         ];
 
         $this->view('admindashboard', $data);
