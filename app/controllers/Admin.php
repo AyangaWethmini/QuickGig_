@@ -8,6 +8,7 @@ class Admin extends Controller
         $this->complaintModel = $this->model('Complaint');
         $this->userModel = $this->model('User');
         $this->advertisementModel = $this->model('Advertisement');
+        $this->accountModel = $this->model('Account');
     }
 
     protected $viewPath = "../app/views/admin/";
@@ -336,5 +337,32 @@ class Admin extends Controller
         $data = [];
 
         $this->view('admindeleteaccount');
+    }
+
+    public function getComplaintDetails($complaintId)
+    {
+        // Get complaint details
+        $complaint = $this->complaintModel->getComplaintById($complaintId);
+
+        if ($complaint) {
+            // Get user details
+            $complainant = $this->accountModel->getUserByID($complaint->complainantID);
+            $complainee = $this->accountModel->getUserByID($complaint->complaineeID);
+
+            // Prepare response data
+            $response = [
+                'complaint' => $complaint,
+                'complainant' => $complainant,
+                'complainee' => $complainee
+            ];
+
+            // Send JSON response
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        } else {
+            // Send error response
+            http_response_code(404);
+            echo json_encode(['error' => 'Complaint not found']);
+        }
     }
 }
