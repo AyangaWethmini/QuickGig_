@@ -5,7 +5,7 @@ body {
 
 /* to style active sidebar */
 .sidebar-item.active {
-    background-color: rgb(173, 173, 243);
+    background-color: rgb(198, 198, 249);
     color: white;
 }
 
