@@ -1,23 +1,17 @@
 <?php
 date_default_timezone_set('Asia/Colombo');
     class Organization extends Controller {
+        
+        protected $viewPath = "../app/views/organization/";
 
+        use Database;
         public function __construct(){
             $this->findEmpModel = $this->model('FindEmployees');
             $this->jobStatusUpdater = $this->model('JobStatusUpdater');
+            $this->accountModel = $this->model('Account');
         }
 
-        protected $viewPath = "../app/views/organization/";
-
-        private $accountModel;
-        use Database;
-
-        public function __construct(){
-            $db = $this->connect();
-            $this->accountModel = new Account($db);
-            
-        }
-        
+    
         function index(){
             // Ensure user is logged in
             if (!isset($_SESSION['user_id'])) {
