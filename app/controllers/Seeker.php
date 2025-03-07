@@ -3,19 +3,34 @@ date_default_timezone_set('Asia/Colombo');
 
 class Seeker extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->findJobModel = $this->model('FindJobs');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
     }
 
     protected $viewPath = "../app/views/seeker/";
-    
-    function index()
+    public function __construct()
     {
-        $this->view('seekerProfile');
+        $db = $this->connect();
+        $this->accountModel = new Account($db);
     }
 
-    function findEmployees(){
+    function index()
+    {
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login'); // Redirect to login if not authenticated
+        }
+
+        // Get user data
+        $userId = $_SESSION['user_id'];
+        $data = $this->accountModel->getUserData($userId);
+        $this->view('seekerProfile', $data);
+    }
+
+    function findEmployees()
+    {
         $findJobs = $this->findJobModel->getJobs();
 
         $data = [
@@ -25,22 +40,23 @@ class Seeker extends Controller
         $this->view('findEmployees', $data);
     }
 
-    public function requestJob() {
+    public function requestJob()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $jobModel = new FindJobs();
-            $seekerID = $_SESSION['user_id']; 
+            $seekerID = $_SESSION['user_id'];
             $jobID = $_POST['jobID'];
             $applicationID = uniqid('APP_'); // Generate a unique application ID
-    
+
             $success = $jobModel->applyForJob($applicationID, $seekerID, $jobID);
-    
+
             if ($success) {
                 echo json_encode(["status" => "success", "message" => "Your request has been submitted successfully!"]);
             } else {
                 echo json_encode(["status" => "error", "message" => "You have already applied for this job."]);
             }
         }
-    }    
+    }
 
     function postJob()
     {
@@ -59,12 +75,13 @@ class Seeker extends Controller
         $this->view('jobListing_received', $data);
     }
 
-    public function rejectJobRequest() {
+    public function rejectJobRequest()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $reqID = $_POST['reqID'];
             $receivedSeekerModel = $this->model('ReceivedSeeker');
             $success = $receivedSeekerModel->rejectRequest($reqID);
-    
+
             if ($success) {
                 header('Location: ' . ROOT . '/seeker/jobListing_received');
             } else {
@@ -73,7 +90,8 @@ class Seeker extends Controller
         }
     }
 
-    public function acceptJobRequest() {
+    public function acceptJobRequest()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $reqID = $_POST['reqID'];
             $receivedSeekerModel = $this->model('ReceivedSeeker');
@@ -134,7 +152,7 @@ class Seeker extends Controller
     }
 
     public function jobListing_myJobs()
-    {   
+    {
         $userID = $_SESSION['user_id'];
         $availableModel = $this->model('Available');
         $jobs = $availableModel->getJobsByUser($userID);
@@ -158,13 +176,14 @@ class Seeker extends Controller
         $this->view('jobListing_send', $data);
     }
 
-    public function deleteSendRequest() {
+    public function deleteSendRequest()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
             $applicationID = $data['applicationID'];
             $sendSeekerModel = $this->model('SendSeeker');
             $success = $sendSeekerModel->deleteSendRequest($applicationID);
-    
+
             if ($success) {
                 echo json_encode(["status" => "success"]);
             } else {
@@ -173,7 +192,8 @@ class Seeker extends Controller
         }
     }
 
-    function jobListing_toBeCompleted(){
+    function jobListing_toBeCompleted()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $tbcSeeker = $this->model('ToBeCompletedSeeker');
         $reqAvailableTBC = $tbcSeeker->getReqAvailableTBC();
@@ -191,10 +211,10 @@ class Seeker extends Controller
         $ongoingSeeker = $this->model('OngoingSeeker');
         $reqAvailableOngoing = $ongoingSeeker->getReqAvailableOngoing();
         $applyJobOngoing = $ongoingSeeker->getApplyJobOngoing();
-            $data = [
-                'reqAvailableOngoing' => $reqAvailableOngoing,
-                'applyJobOngoing' => $applyJobOngoing
-            ];
+        $data = [
+            'reqAvailableOngoing' => $reqAvailableOngoing,
+            'applyJobOngoing' => $applyJobOngoing
+        ];
         $this->view('jobListing_ongoing', $data);
     }
 
@@ -229,7 +249,7 @@ class Seeker extends Controller
     {
         $this->view('updateJob');
     }
-    
+
     public function availability()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -275,11 +295,12 @@ class Seeker extends Controller
         }
     }
 
-    public function updateAvailability($id = null) {
+    public function updateAvailability($id = null)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize POST data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    
+
             // Prepare data for updating
             $description = trim($_POST['description']);
             $shift = $_POST['shift'];
@@ -290,7 +311,7 @@ class Seeker extends Controller
             $availableDate = $_POST['availableDate'];
             $location = trim($_POST['location']);
             $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
-    
+
             // Update availability in the database
             $this->availabilityModel = $this->model('Available');
             $this->availabilityModel->update($id, [
@@ -304,30 +325,29 @@ class Seeker extends Controller
                 'location' => $location,
                 'categories' => json_encode($categories)
             ]);
-    
+
             // Redirect to the availability page or another appropriate page
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         } else {
             // Get the current availability details for the given ID
             $this->availabilityModel = $this->model('Available');
             $availability = $this->availabilityModel->getAvailabilityById($id);
-    
+
             // Pass the current availability data to the view
             $data = [
                 'availability' => $availability
             ];
-    
+
             // Load the update form view
             $this->view('updateJob', $data);
         }
     }
-    public function deleteAvailability($id) {
+    public function deleteAvailability($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->availabilityModel = $this->model('Available');
             $this->availabilityModel->delete($id);
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         }
     }
-    
-    
 }

@@ -47,11 +47,16 @@
 .profile-info h2 {
     font-size: 24px;
     margin-top: 10px;
+    
 }
 .profile-info p {
     margin: 5px 0;
 }
-
+.profile-intro-cover{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 .profile-intro{
     margin-left: 70px;
     margin-top: 15%;
@@ -301,11 +306,13 @@ td {
     padding: 10px 20px;
     cursor: pointer;
     margin-left: 30%;
+    white-space: nowrap;
 
 }
 
 
 .edit-profile-btn{
+    height: fit-content;
     background-color: white;
     color:  #4640DE;
     font-weight: bold;

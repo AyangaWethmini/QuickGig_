@@ -14,6 +14,7 @@ class Controller
 	}
 
 	public function view($name, $data = [])
+<<<<<<< HEAD
 	{
 		$filename = $this->viewPath . $name . ".view.php";
 		if (file_exists($filename)) {
@@ -24,3 +25,20 @@ class Controller
 		}
 	}
 }
+=======
+{
+    $filename = $this->viewPath . $name . ".view.php";
+    
+    if (file_exists($filename)) {  
+        if (!is_array($data)) {
+            $data = []; // Ensure $data is an array
+        }
+        extract($data);
+        require $filename;
+    } else {
+        $this->view('error/404', ["message" => "View not found"]);
+    }
+}
+
+}
+>>>>>>> finalDemo
