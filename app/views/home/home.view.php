@@ -83,7 +83,7 @@ if (
 
 </div>
 
-<div class="ad-cont flex-row">
+<div class="ad-cont flex-row"> 
     <div class="advertisement-content">
         <?php if (!empty($ad)): ?>
             <?= renderAdvertisement($ad, ROOT) ?>
