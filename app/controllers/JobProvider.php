@@ -210,10 +210,7 @@ class JobProvider extends Controller
     {
         $this->view('announcements');
     }
-    function individualEditProfile()
-    {
-        $this->view('individualEditProfile');
-    }
+
     function helpCenter()
     {
         $this->view('helpCenter');
