@@ -13,9 +13,6 @@ class Home extends Controller
 		$this->adModel = $this->model("Advertisement");
 	}
 
-	protected $viewPath = "../app/views/home/";
-	protected $planModel; //temporary for testig, needto move into a ad controller
-
 	public function index()
 	{
 		$plans = $this->planModel->getPlans();

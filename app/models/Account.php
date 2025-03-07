@@ -185,11 +185,12 @@ class Account
             return false;
         }
     }
-}
-public function getUserData($userId) {
-    
-    try {
-        $sql = "
+
+    public function getUserData($userId)
+    {
+
+        try {
+            $sql = "
            SELECT 
                 a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
                 i.gender, i.nic, i.fname, i.lname, i.phone, i.bio
@@ -197,20 +198,21 @@ public function getUserData($userId) {
             INNER JOIN individual i ON a.accountID = i.accountID
             WHERE a.accountID = :user_id
         ";
-       
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        error_log("Database Error: " . $e->getMessage());
-        return null;
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database Error: " . $e->getMessage());
+            return null;
+        }
     }
-}
-public function updateUserData($userId, $data) {
-    try {
-        $sql = "
+    public function updateUserData($userId, $data)
+    {
+        try {
+            $sql = "
             UPDATE account a
             INNER JOIN individual i ON a.accountID = i.accountID
             SET 
@@ -225,46 +227,47 @@ public function updateUserData($userId, $data) {
                 i.phone = :phone,
                 i.bio = :bio
         ";
-        
-        if (!empty($data['pp'])) {
-            $sql .= ", a.pp = :pp";
-        }
 
-        $sql .= " WHERE a.accountID = :user_id";
+            if (!empty($data['pp'])) {
+                $sql .= ", a.pp = :pp";
+            }
 
-        $stmt = $this->db->prepare($sql);
+            $sql .= " WHERE a.accountID = :user_id";
 
-        $stmt->bindParam(':district', $data['district']);
-        $stmt->bindParam(':addressLine1', $data['addressLine1']);
-        $stmt->bindParam(':addressLine2', $data['addressLine2']);
-        $stmt->bindParam(':city', $data['city']);
-        $stmt->bindParam(':linkedIn', $data['linkedIn']);
-        $stmt->bindParam(':facebook', $data['facebook']);
-        $stmt->bindParam(':fname', $data['fname']);
-        $stmt->bindParam(':lname', $data['lname']);
-        $stmt->bindParam(':phone', $data['phone']);
-        $stmt->bindParam(':bio', $data['bio']);
-        $stmt->bindParam(':user_id', $userId);
+            $stmt = $this->db->prepare($sql);
 
-        if (!empty($data['pp'])) {
-            $stmt->bindParam(':pp', $data['pp'], PDO::PARAM_LOB);
-        }
-        if ($stmt->execute()) {
-            error_log("Database Error: Statement execution succeful.");
-            return true;
-        } else {
-            error_log("Database Error: Statement execution failed.");
+            $stmt->bindParam(':district', $data['district']);
+            $stmt->bindParam(':addressLine1', $data['addressLine1']);
+            $stmt->bindParam(':addressLine2', $data['addressLine2']);
+            $stmt->bindParam(':city', $data['city']);
+            $stmt->bindParam(':linkedIn', $data['linkedIn']);
+            $stmt->bindParam(':facebook', $data['facebook']);
+            $stmt->bindParam(':fname', $data['fname']);
+            $stmt->bindParam(':lname', $data['lname']);
+            $stmt->bindParam(':phone', $data['phone']);
+            $stmt->bindParam(':bio', $data['bio']);
+            $stmt->bindParam(':user_id', $userId);
+
+            if (!empty($data['pp'])) {
+                $stmt->bindParam(':pp', $data['pp'], PDO::PARAM_LOB);
+            }
+            if ($stmt->execute()) {
+                error_log("Database Error: Statement execution succeful.");
+                return true;
+            } else {
+                error_log("Database Error: Statement execution failed.");
+                return false;
+            }
+        } catch (PDOException $e) {
+            error_log("Database Error: " . $e->getMessage());
             return false;
         }
-    } catch (PDOException $e) {
-        error_log("Database Error: " . $e->getMessage());
-        return false;
     }
-}
-public function getOrgData($userId) {
-    
-    try {
-        $sql = "
+    public function getOrgData($userId)
+    {
+
+        try {
+            $sql = "
            SELECT 
                 a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
                 o.orgName, o.phone, o.bio
@@ -272,20 +275,21 @@ public function getOrgData($userId) {
             INNER JOIN organization o ON a.accountID = o.accountID
             WHERE a.accountID = :user_id
         ";
-       
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        error_log("Database Error: " . $e->getMessage());
-        return null;
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database Error: " . $e->getMessage());
+            return null;
+        }
     }
-}
-public function updateOrgData($userId, $data) {
-    try {
-        $sql = "
+    public function updateOrgData($userId, $data)
+    {
+        try {
+            $sql = "
             UPDATE account a
             INNER JOIN organization o ON a.accountID = o.accountID
             SET 
@@ -299,42 +303,39 @@ public function updateOrgData($userId, $data) {
                 o.phone = :phone,
                 o.bio = :bio
         ";
-        
-        if (!empty($data['pp'])) {
-            $sql .= ", a.pp = :pp";
-        }
 
-        $sql .= " WHERE a.accountID = :user_id";
+            if (!empty($data['pp'])) {
+                $sql .= ", a.pp = :pp";
+            }
 
-        $stmt = $this->db->prepare($sql);
+            $sql .= " WHERE a.accountID = :user_id";
 
-        $stmt->bindParam(':district', $data['district']);
-        $stmt->bindParam(':addressLine1', $data['addressLine1']);
-        $stmt->bindParam(':addressLine2', $data['addressLine2']);
-        $stmt->bindParam(':city', $data['city']);
-        $stmt->bindParam(':linkedIn', $data['linkedIn']);
-        $stmt->bindParam(':facebook', $data['facebook']);
-        $stmt->bindParam(':orgName', $data['orgName']);
-        $stmt->bindParam(':phone', $data['phone']);
-        $stmt->bindParam(':bio', $data['bio']);
-        $stmt->bindParam(':user_id', $userId);
+            $stmt = $this->db->prepare($sql);
 
-        if (!empty($data['pp'])) {
-            $stmt->bindParam(':pp', $data['pp'], PDO::PARAM_LOB);
-        }
-        if ($stmt->execute()) {
-            error_log("Database Error: Statement execution succeful.");
-            return true;
-        } else {
-            error_log("Database Error: Statement execution failed.");
+            $stmt->bindParam(':district', $data['district']);
+            $stmt->bindParam(':addressLine1', $data['addressLine1']);
+            $stmt->bindParam(':addressLine2', $data['addressLine2']);
+            $stmt->bindParam(':city', $data['city']);
+            $stmt->bindParam(':linkedIn', $data['linkedIn']);
+            $stmt->bindParam(':facebook', $data['facebook']);
+            $stmt->bindParam(':orgName', $data['orgName']);
+            $stmt->bindParam(':phone', $data['phone']);
+            $stmt->bindParam(':bio', $data['bio']);
+            $stmt->bindParam(':user_id', $userId);
+
+            if (!empty($data['pp'])) {
+                $stmt->bindParam(':pp', $data['pp'], PDO::PARAM_LOB);
+            }
+            if ($stmt->execute()) {
+                error_log("Database Error: Statement execution succeful.");
+                return true;
+            } else {
+                error_log("Database Error: Statement execution failed.");
+                return false;
+            }
+        } catch (PDOException $e) {
+            error_log("Database Error: " . $e->getMessage());
             return false;
         }
-    } catch (PDOException $e) {
-        error_log("Database Error: " . $e->getMessage());
-        return false;
     }
 }
-
-}
-
-
