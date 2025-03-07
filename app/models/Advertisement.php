@@ -1,16 +1,19 @@
 <?php
-class Advertisement {
+class Advertisement
+{
     use Database;
 
-    public function getAdvertisements() {
+    public function getAdvertisements()
+    {
         $query = 'SELECT * FROM advertisement ORDER BY createdAt ASC';
         return $this->query($query);
     }
 
-    public function createAdvertisement($data) {
+    public function createAdvertisement($data)
+    {
         $query = "INSERT INTO advertisement (advertiserID, adTitle, adDescription, img, link, startDate, endDate, adStatus) 
                   VALUES (:advertiserID, :adTitle, :adDescription, :img, :link, :startDate, :endDate, :adStatus)";
-    
+
         $params = [
             'advertiserID' => $data['advertiserID'],
             'adTitle' => $data['adTitle'],
@@ -21,25 +24,28 @@ class Advertisement {
             'endDate' => $data['endDate'],
             'adStatus' => $data['adStatus']
         ];
-    
+
         return $this->query($query, $params);
     }
-    
 
-    public function delete($id) {
+
+    public function delete($id)
+    {
         $query = "DELETE FROM advertisement WHERE advertisementID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
 
-    public function getAdById($id) {
+    public function getAdById($id)
+    {
         $query = "SELECT * FROM advertisement WHERE advertisementID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
         return $result[0] ?? null;
     }
 
-    public function update($id, $data) {
+    public function update($id, $data)
+    {
         $query = "UPDATE advertisement 
                   SET adTitle = :adTitle, 
                       adDescription = :adDescription, 
@@ -49,7 +55,7 @@ class Advertisement {
                       duration = :duration,
                       adStatus = :adStatus 
                   WHERE advertisementID = :id";
-    
+
         $params = [
             'id' => $id,
             'adTitle' => $data['adTitle'],
@@ -60,14 +66,39 @@ class Advertisement {
             'duration' => $data['duration'],
             'adStatus' => $data['adStatus']
         ];
-    
+
         return $this->query($query, $params);
     }
 
-    public function getAdsCount(){
+    public function getAdsCount()
+    {
         $query = "SELECT COUNT(*) AS totalAds FROM advertisement WHERE adStatus = 'active'";
         $result = $this->query($query);
         return $result[0]->totalAds ?? 0;
     }
-}
 
+    public function getRandomActiveAd()
+    {
+        $query = "SELECT * FROM advertisement 
+              WHERE adStatus = 'active' AND endDate > NOW()  AND startDate <= NOW();
+              ORDER BY RAND() LIMIT 1";
+        $result = $this->query($query);
+        return $result[0] ?? null;
+    }
+
+    public function recordClick($adId)
+    {
+        $query = "UPDATE advertisement 
+                 SET clicks = clicks + 1 
+                 WHERE advertisementID = :adId";
+        $params = ['adId' => $adId];
+        return $this->query($query, $params);
+    }
+
+    public function addView($adId)
+    {
+        $query = "UPDATE advertisement SET views = views + 1 WHERE advertisementID = :adId";
+        $params = ['adId' => $adId];
+        return $this->query($query, $params);
+    }
+}

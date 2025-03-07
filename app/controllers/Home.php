@@ -2,10 +2,15 @@
 
 class Home extends Controller
 {
+	protected $viewPath = "../app/views/home/";
+	protected $planModel; //temporary for testig, needto move into a ad controller
+	protected $adModel;
+
 	public function __construct()
 	{
 		$this->adminModel = $this->model('AdminModel');
 		$this->planModel = $this->model('Plans');
+		$this->adModel = $this->model("Advertisement");
 	}
 
 	protected $viewPath = "../app/views/home/";
@@ -14,13 +19,11 @@ class Home extends Controller
 	public function index()
 	{
 		$plans = $this->planModel->getPlans();
-		// Fetch announcements from the database
-		$announcements = $this->adminModel->getAnnouncements();
+		$ad = $this->adModel->getRandomActiveAd();
 
-		// Ensure the announcements key is always defined
 		$data = [
-			'announcements' => $announcements,
-			'plans' => $plans
+			'plans' => $plans,
+			'ad' => $ad
 		];
 
 		$this->view('home', $data);
@@ -49,9 +52,9 @@ class Home extends Controller
 	// 	$this->view('payments');
 	// }
 
-	// public function subscriptions()
-	// {
-	// 	$data = $this->planModel->getPlans();
-	// 	$this->view('subscriptions', ['plans' => $data]);
-	// }
+	public function subscriptions()
+	{
+		$data = $this->planModel->getPlans();
+		$this->view('subscriptions', ['plans' => $data]);
+	}
 }

@@ -46,6 +46,12 @@
     <?php endif; ?>
 </div>
 
+<?php
+if (!isset($_SESSION['subscription_popup_shown'])) {
+    include APPROOT . '/views/components/subscriptions.php';
+    $_SESSION['subscription_popup_shown'] = true;
+}
+?>
 
 <div class="hero-section flex-row" style="margin-top:80px;">
     <div class="job-search">
@@ -117,6 +123,16 @@
 
 </div>
 
+<div class="ad-cont flex-row">
+    <div class="advertisement-content">
+        <?php if (!empty($ad)): ?>
+            <?= renderAdvertisement($ad, ROOT) ?>
+        <?php else: ?>
+            <p>No active advertisements</p>
+        <?php endif; ?>
+    </div>
+</div>
+
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">
         Featured <span>Jobs</span>
@@ -151,3 +167,54 @@
 </div>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+
+<script>
+    function hideSubscriptionPopup() {
+        document.querySelector('.sub-background').style.display = 'none';
+    }
+
+    function recordAdClick(event, adId, adLink) {
+        event.preventDefault();
+
+        // Send AJAX request to record click
+        fetch(`<?= ROOT ?>/manager/click/${adId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // After recording the click, redirect to the ad's link
+                if (adLink) {
+                    window.open(adLink, '_blank');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function recordAdView(adId) {
+        if (adId && !isNaN(adId)) {
+            fetch(`<?= ROOT ?>/manager/adView/${adId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('View recorded successfully:', data.message);
+                    } else {
+                        console.error('Failed to record view:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.error('Invalid ad ID');
+        }
+    }
+</script>
