@@ -22,10 +22,11 @@ class ReceivedProvider{
     public function getReceivedRequests()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID
+        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
         FROM apply_job a 
         JOIN job j ON a.jobID = j.jobID
         JOIN individual i ON a.seekerID = i.accountID
+        JOIN account acc ON a.seekerID = acc.accountID
         WHERE j.accountID = ? 
         AND a.applicationStatus = 1
         ORDER BY datePosted DESC, timePosted DESC";
@@ -37,13 +38,17 @@ class ReceivedProvider{
     }
 
     public function rejectRequest($applicationID) {
-        $query = "UPDATE apply_job SET applicationStatus = 0 WHERE applicationID = ?";
-        return $this->query($query, [$applicationID]);
+        $dateActioned = date('Y-m-d');
+        $timeActioned = date('H:i:s');
+        $query = "UPDATE apply_job SET applicationStatus = 0, dateActioned = ?, timeActioned = ? WHERE applicationID = ?";
+        return $this->query($query, [$dateActioned, $timeActioned, $applicationID]);
     }
-
+    
     public function acceptRequest($applicationID) {
-        $query = "UPDATE apply_job SET applicationStatus = 2 WHERE applicationID = ?";
-        return $this->query($query, [$applicationID]);
+        $dateActioned = date('Y-m-d');
+        $timeActioned = date('H:i:s');
+        $query = "UPDATE apply_job SET applicationStatus = 2, dateActioned = ?, timeActioned = ? WHERE applicationID = ?";
+        return $this->query($query, [$dateActioned, $timeActioned, $applicationID]);
     }
     
     public function countAcceptedApplications($jobID) {

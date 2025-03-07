@@ -19,13 +19,14 @@ class SendProvider{
     }
 
 
-    public function getSendRequests()
-{   
+    public function getSendRequests(){   
+
     $id = $_SESSION['user_id'];
-    $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location,m.currency
+    $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location,m.currency, acc.pp
     FROM req_available r 
     JOIN makeavailable m ON r.availableID = m.availableID
     JOIN individual i ON m.accountID = i.accountID
+    JOIN account acc ON m.accountID = acc.accountID
     WHERE r.providerID = ? 
     AND r.reqStatus = 1
     ORDER BY datePosted DESC, timePosted DESC";
@@ -34,5 +35,11 @@ class SendProvider{
     //error_log(print_r($result, true));
     
     return $result ? $result : [];
-}
+    }
+
+    public function deleteSendRequest($reqID) {
+        $query = "DELETE FROM req_available WHERE reqID = ?";
+        return $this->query($query, [$reqID]);
+    }
+
 }

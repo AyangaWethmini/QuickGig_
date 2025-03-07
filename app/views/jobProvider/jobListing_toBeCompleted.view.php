@@ -4,6 +4,7 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -24,18 +25,43 @@ protectRoute([2]);?>
 
         <div class="employee-list">
 
+        <?php if (!empty($data['applyJobTBC'])): ?>
+            <h2>From Applications</h2><hr>
+            <?php foreach($data['applyJobTBC'] as $tbc): ?>
+                
         <div class="employee-item">
                 <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture">
+                    <div class="img" >
+                        <?php if ($tbc->pp): ?>
+                            <?php 
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($tbc->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($tbc->pp) ?>" alt="Employee Image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="employee-details">
-                    <span class="employee-name">Clara Zue</span>
-                    <span class="job-title">Baby-Sitter</span>
-                    <span class="date-available">2024-11-30</span>
-                    <span class="time-available">03:00 PM - 07:00 PM</span>
-                    <span class="hourly-pay">$13/hour</span>
+                    <span class="employee-name"><?= htmlspecialchars($tbc->fname . ' ' . $tbc->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($tbc->jobTitle) ?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->dateApplied) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Applied: <?= htmlspecialchars($tbc->timeApplied)?></span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <span class="time-applied">Available Date: <?= htmlspecialchars($tbc->availableDate)?></span>
+                    <span class="time-applied">Available Time: <?= htmlspecialchars($tbc->timeFrom)?> - <?= htmlspecialchars($tbc->timeTo)?></span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>/Hr</span>
+                    <span class="time-applied">Location: <?= htmlspecialchars($tbc->location)?></span>
+                    <div class="ratings">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
                     <hr>
-                    <span class="date-applied">2024-11-22</span>
+                    <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($tbc->jobID)?></span>
+                    <span class="jobId-applied">Application ID: #<?= htmlspecialchars($tbc->applicationID)?></span>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -45,7 +71,64 @@ protectRoute([2]);?>
                     </ul>
                 </div>
             </div>
+            <?php endforeach;?>
+        <?php endif; ?> 
 
+        <?php if (!empty($data['reqAvailableTBC'])): ?>
+            <h2>From Requests</h2><hr>
+            <?php foreach($data['reqAvailableTBC'] as $tbc): ?>
+                
+        <div class="employee-item">
+                <div class="employee-photo">
+                    <div class="img" >
+                        <?php if ($tbc->pp): ?>
+                            <?php 
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($tbc->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($tbc->pp) ?>" alt="Employee Image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="employee-details">
+                    <span class="employee-name"><?= htmlspecialchars($tbc->fname . ' ' . $tbc->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($tbc->description) ?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($tbc->datePosted) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Applied: <?= htmlspecialchars($tbc->timePosted)?></span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($tbc->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($tbc->timeActioned)?></span>
+                    <span class="time-applied">Available Date: <?= htmlspecialchars($tbc->availableDate)?></span>
+                    <span class="time-applied">Available Time: <?= htmlspecialchars($tbc->timeFrom)?> - <?= htmlspecialchars($tbc->timeTo)?></span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($tbc->salary)?> <?= htmlspecialchars($tbc->currency)?>/Hr</span>
+                    <span class="time-applied">Location: <?= htmlspecialchars($tbc->location)?></span>
+                    <div class="ratings">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <hr>
+                    <span class="jobId-applied">Available ID: #<?= htmlspecialchars($tbc->availableID)?></span>
+                    <span class="jobId-applied">Request ID: #<?= htmlspecialchars($tbc->reqID)?></span>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="#">View Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <?php endforeach;?>
+        <?php endif; ?> 
+
+        <?php if (empty($data['applyJobTBC']) && empty($data['reqAvailableTBC'])): ?>
+            <div class="empty-container">
+                <img src="<?=ROOT?>/assets/images/no-data.png" alt="Empty" class="empty-icon">
+                <p class="empty-text">Nothing To Be Completed</p>
+            </div>
+        <?php endif; ?> 
         </div>
 
         <div id="popup" class="popup hidden">

@@ -1,6 +1,6 @@
 <?php
 
-class ReceivedSeeker{
+class CompletedSeeker{
     use Database;
 
     public $availableID;
@@ -19,7 +19,7 @@ class ReceivedSeeker{
     }
 
 
-    public function getReceivedRequests()
+    public function getReqAvailableCompleted()
     {   
         $id = $_SESSION['user_id'];
         $query = "SELECT r.*, 
@@ -35,7 +35,7 @@ class ReceivedSeeker{
                   LEFT JOIN organization o ON r.providerID = o.accountID
                   JOIN account acc ON r.providerID = acc.accountID
                   WHERE m.accountID = ? 
-                  AND r.reqStatus = 1
+                  AND r.reqStatus = 4
                   ORDER BY datePosted DESC, timePosted DESC";
         $result = $this->query($query, [$id]);
         
@@ -44,28 +44,26 @@ class ReceivedSeeker{
         return $result ? $result : [];
     }
 
-    public function rejectRequest($reqID) {
-        $dateActioned = date('Y-m-d');
-        $timeActioned = date('H:i:s');
-        $query = "UPDATE req_available SET reqStatus = 0, dateActioned = ?, timeActioned = ? WHERE reqID = ?";
-        return $this->query($query, [$dateActioned, $timeActioned, $reqID]);
-    }
-    
-    public function acceptRequest($reqID) {
-        $dateActioned = date('Y-m-d');
-        $timeActioned = date('H:i:s');
-        $query = "UPDATE req_available SET reqStatus = 2, dateActioned = ?, timeActioned = ? WHERE reqID = ?";
-        return $this->query($query, [$dateActioned, $timeActioned, $reqID]);
-    }
-    
-    public function updateAvailableStatus($availableID, $status) {
-        $query = "UPDATE makeavailable SET availabilityStatus = ? WHERE availableID = ?";
-        return $this->query($query, [$status, $availableID]);
-    }
-
-    public function getReqByID($reqID) {
-        $query = "SELECT * FROM req_available WHERE reqID = ?";
-        $result = $this->query($query, [$reqID]);
-        return $result ? $result[0] : null;
+    public function getApplyJobCompleted()
+    {   
+        $id = $_SESSION['user_id'];
+        $query = "SELECT a.*, 
+                        CASE 
+                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
+                             THEN CONCAT(i.fname, ' ', i.lname) 
+                             ELSE o.orgName 
+                         END AS name,
+                         j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
+        FROM apply_job a 
+        JOIN job j ON a.jobID = j.jobID
+        LEFT JOIN individual i ON j.accountID = i.accountID
+        LEFT JOIN organization o ON j.accountID = o.accountID
+        JOIN account acc ON j.accountID = acc.accountID
+        WHERE a.seekerID = ? 
+        AND a.applicationStatus = 4
+        ORDER BY datePosted DESC, timePosted DESC";
+        $result = $this->query($query, [$id]);
+        
+        return $result ? $result : [];
     }
 }

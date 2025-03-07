@@ -1,8 +1,10 @@
 <?php
+date_default_timezone_set('Asia/Colombo');
     class Organization extends Controller {
 
         public function __construct(){
             $this->findEmpModel = $this->model('FindEmployees');
+            $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         }
 
         protected $viewPath = "../app/views/organization/";
@@ -149,16 +151,55 @@
             $this->view('org_jobListing_send', $data);
         }
 
+        public function deleteSendRequest() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                $reqID = $data['reqID'];
+                $sendProviderModel = $this->model('SendProvider');
+                $success = $sendProviderModel->deleteSendRequest($reqID);
+        
+                if ($success) {
+                    echo json_encode(["status" => "success"]);
+                } else {
+                    echo json_encode(["status" => "error"]);
+                }
+            }
+        }
+
         function org_jobListing_toBeCompleted(){
-            $this->view('org_jobListing_toBeCompleted');
+            $this->jobStatusUpdater->updateJobStatuses();
+            $tbcProvider = $this->model('ToBeCompletedProvider');
+            $applyJobTBC = $tbcProvider->getApplyJobTBC();
+            $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+            $data = [
+                'applyJobTBC' => $applyJobTBC,
+                'reqAvailableTBC' => $reqAvailableTBC
+            ];
+            $this->view('org_jobListing_toBeCompleted', $data);
         }
 
         function org_jobListing_ongoing(){
-            $this->view('org_jobListing_ongoing');
+            $this->jobStatusUpdater->updateJobStatuses();
+            $ongoingProvider = $this->model('OngoingProvider');
+            $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+            $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            $data = [
+                'applyJobOngoing' => $applyJobOngoing,
+                'reqAvailableOngoing' => $reqAvailableOngoing
+            ];
+            $this->view('org_jobListing_ongoing', $data);
         }
 
         function org_jobListing_completed(){
-            $this->view('org_jobListing_completed');
+            $this->jobStatusUpdater->updateJobStatuses();
+            $completedProvider = $this->model('CompletedProvider');
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            $data = [
+                'applyJobCompleted' => $applyJobCompleted,
+                'reqAvailableCompleted' => $reqAvailableCompleted
+            ];
+            $this->view('org_jobListing_completed', $data);
         }
 
         function org_complaints(){

@@ -26,7 +26,7 @@ class FindJobs {
 
     public function getJobs() {
         $id = $_SESSION['user_id'];
-        $query = 'SELECT j.*, 
+        $query = 'SELECT j.*, acc.pp,
                          CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, " ", i.lname) 
@@ -34,7 +34,8 @@ class FindJobs {
                          END AS name
                   FROM job j 
                   LEFT JOIN individual i ON j.accountID = i.accountID 
-                  LEFT JOIN organization o ON j.accountID = o.accountID 
+                  LEFT JOIN organization o ON j.accountID = o.accountID
+                  LEFT JOIN account acc ON j.accountID = acc.accountID
                   WHERE j.accountID != ? 
                   AND j.jobStatus = 1 
                   ORDER BY j.datePosted DESC, j.timePosted DESC';

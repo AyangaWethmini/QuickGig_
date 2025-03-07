@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/jobListingOpener.css">
-<div>
-    <div class="opener bar">
-        <p class="title-name" style="width:fit-content;">Availabilities</p>
+<div >
+    <div class="opener bar" >
+        <p class="title-name-opener" >Availabilities</p>
         <a href="<?php echo ROOT; ?>/seeker/postJob" class="post-job-btn">
             + Available
         </a>

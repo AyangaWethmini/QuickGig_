@@ -1,8 +1,11 @@
 <?php
+date_default_timezone_set('Asia/Colombo');
+
 class Seeker extends Controller
 {
     public function __construct(){
         $this->findJobModel = $this->model('FindJobs');
+        $this->jobStatusUpdater = $this->model('JobStatusUpdater');
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -155,19 +158,57 @@ class Seeker extends Controller
         $this->view('jobListing_send', $data);
     }
 
-    function jobListing_toBeCompleted()
-    {
-        $this->view('jobListing_toBeCompleted');
+    public function deleteSendRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $applicationID = $data['applicationID'];
+            $sendSeekerModel = $this->model('SendSeeker');
+            $success = $sendSeekerModel->deleteSendRequest($applicationID);
+    
+            if ($success) {
+                echo json_encode(["status" => "success"]);
+            } else {
+                echo json_encode(["status" => "error"]);
+            }
+        }
+    }
+
+    function jobListing_toBeCompleted(){
+        $this->jobStatusUpdater->updateJobStatuses();
+        $tbcSeeker = $this->model('ToBeCompletedSeeker');
+        $reqAvailableTBC = $tbcSeeker->getReqAvailableTBC();
+        $applyJobTBC = $tbcSeeker->getApplyJobTBC();
+        $data = [
+            'reqAvailableTBC' => $reqAvailableTBC,
+            'applyJobTBC' => $applyJobTBC
+        ];
+        $this->view('jobListing_toBeCompleted', $data);
     }
 
     function jobListing_ongoing()
     {
-        $this->view('jobListing_ongoing');
+        $this->jobStatusUpdater->updateJobStatuses();
+        $ongoingSeeker = $this->model('OngoingSeeker');
+        $reqAvailableOngoing = $ongoingSeeker->getReqAvailableOngoing();
+        $applyJobOngoing = $ongoingSeeker->getApplyJobOngoing();
+            $data = [
+                'reqAvailableOngoing' => $reqAvailableOngoing,
+                'applyJobOngoing' => $applyJobOngoing
+            ];
+        $this->view('jobListing_ongoing', $data);
     }
 
     function jobListing_completed()
     {
-        $this->view('jobListing_completed');
+        $this->jobStatusUpdater->updateJobStatuses();
+        $completedSeeker = $this->model('CompletedSeeker');
+        $reqAvailableCompleted = $completedSeeker->getReqAvailableCompleted();
+        $applyJobCompleted = $completedSeeker->getApplyJobCompleted();
+        $data = [
+            'reqAvailableCompleted' => $reqAvailableCompleted,
+            'applyJobCompleted' => $applyJobCompleted
+        ];
+        $this->view('jobListing_completed', $data);
     }
 
     function makeComplaint()
@@ -204,7 +245,7 @@ class Seeker extends Controller
             $shift = trim($_POST['shift']);
             $salary = trim($_POST['salary']);
             $currency = trim($_POST['currency']);
-            $AvailabilityStatus = 1;
+            $availabilityStatus = 1;
             $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
             $makeAvailableModel = $this->model('Available');

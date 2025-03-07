@@ -29,7 +29,18 @@ protectRoute([2]);?>
             <?php foreach($data['receivedRequests'] as $received): ?>
             <div class="employee-item">
                 <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person1.jpg" alt="Profile Picture">
+                    <div class="img" >
+                        <?php if ($received->pp): ?>
+                            <?php 
+                                // Get the mime type from the first few bytes of the BLOB
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($received->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($received->pp) ?>" alt="profile image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="employee-details">
                     <span class="employee-name"><?= htmlspecialchars($received->fname . ' ' . $received->lname) ?></span>

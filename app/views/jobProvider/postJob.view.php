@@ -210,7 +210,7 @@ protectRoute([2]);?>
                 </div>
                 <hr>
                 <div class="post-job-buttons flex-row">
-                    <button class="btn btn-accent">Discard</button>
+                    <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/jobProvider/jobListing_myJobs'">Discard</button>
                     <button class="btn btn-accent" type="submit">Finish</button>
                 </div>
                 <div id="tag-limit-popup" class="modal" style="display: none;">

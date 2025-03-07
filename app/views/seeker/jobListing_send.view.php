@@ -30,7 +30,18 @@ protectRoute([2]);?>
 
             <div class="employee-item">
                 <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture">
+                    <div class="img" >
+                        <?php if ($received->pp): ?>
+                            <?php 
+                                // Get the mime type from the first few bytes of the BLOB
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($received->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($received->pp) ?>" alt="profile image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="employee-details">
                     <span class="employee-name"><?= htmlspecialchars($received->name) ?></span>
@@ -52,7 +63,7 @@ protectRoute([2]);?>
                     <span class="jobId-applied">ID: #<?= htmlspecialchars($received->applicationID)?></span>
                 </div>
             
-                <button class="reject-jobReq-button btn btn-danger">Cancel</button>
+                <button class="reject-jobReq-button btn btn-danger" data-application-id="<?= htmlspecialchars($received->applicationID) ?>">Cancel</button>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
@@ -82,21 +93,32 @@ protectRoute([2]);?>
     </div>
 </body>
 <script>
-document.querySelectorAll('.accept-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to accept the request?';
-        document.getElementById('popup').classList.remove('hidden');
-    });
-});
-
 document.querySelectorAll('.reject-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+        const applicationID = event.target.dataset.applicationId;
         document.getElementById('popup-message').textContent = 'Are you sure you want to cancel this request?';
         document.getElementById('popup').classList.remove('hidden');
+        document.getElementById('popup-yes').dataset.applicationId = applicationID;
     });
 });
 
 document.getElementById('popup-yes').addEventListener('click', () => {
+    const applicationID = document.getElementById('popup-yes').dataset.applicationId;
+    fetch('<?=ROOT?>/seeker/deleteSendRequest', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ applicationID })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload();
+        } else {
+            alert('Failed to delete the request.');
+        }
+    });
     document.getElementById('popup').classList.add('hidden');
 });
 
