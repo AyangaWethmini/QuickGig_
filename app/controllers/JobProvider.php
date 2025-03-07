@@ -14,9 +14,17 @@ class JobProvider extends Controller
 
     function index()
     {
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login'); // Redirect to login if not authenticated
+        }
 
-        $this->view('individualProfile');
+        // Get user data
+        $userId = $_SESSION['user_id'];
+        $data = $this->accountModel->getUserData($userId);
+        $this->view('individualProfile', $data);
     }
+
 
     public function changePassword()
     {
