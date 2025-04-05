@@ -7,10 +7,11 @@ class StripeService{
     private $config;
 
     public function __construct()
-    {
-        $this->config = require_once '../app/core/config.php'; // Load Stripe configuration from config file
-        \Stripe\Stripe::setApiKey($this->config['STRIPE_SECRET_KEY']); // Set the Stripe API key
-        $this->stripe = new \Stripe\StripeClient($this->config['STRIPE_SECRET_KEY']);
+    {      
+        $this->config = require_once '../app/core/stripe-config.php'; // Load Stripe configuration from config file
+        var_dump($this->config);
+        \Stripe\Stripe::setApiKey($this->config['secret_key']); // Set the Stripe API key
+        $this->stripe = new \Stripe\StripeClient($this->config['secret_key']);
     }
    
     public function createCustomer($email, $name = null, $metadata = [])

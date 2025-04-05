@@ -1,57 +1,50 @@
 <?php
 
 require_once "account.php";
-require_once 'services/StripeService.php';
+require_once '../app/services/StripeService.php';
 
-class AccountSubscription extends Account{
+class AccountSubscription extends Account
+{
     use Database;
 
-    private $db; // Declare the $db property
-    private $stirpeService;
+    protected $stripeService;
 
-    public function __construct($db)
+    public function __construct()
     {
-        $this->db = $db; // Initialize $db with the passed database connection
-        parent::__construct($db);
-        $this->stirpeService = new StripeService();
+        $this->stripeService = new StripeService();
     }
 
-    //creating stripe customer related to the account
-    public function createStripeCustomer($accountID, $email){
-        //retrieving the account
+    public function createStripeCustomer($accountID, $email)
+    {
         $query = "SELECT * FROM account WHERE accountID = :accountID LIMIT 1";
         $params = ['accountID' => $accountID];
-        $account =  $this->query($query, $params);
+        $account = $this->query($query, $params);
 
-        if(!$account){ // Account not found
+        if (!$account) {
             return false;
         }
 
-        //checking account roles
+        // Determine name based on role
         $role = $this->findRole($accountID);
+        $name = "User";
 
-        if($role && $role == 2){ //for individuals accounts
+        if ($role == 2) { // Individual
             $query = "SELECT * FROM individual WHERE accountID = :accountID LIMIT 1";
-            $params = ['accountID' => $accountID];
-            $individual =  $this->query($query, $params);
-
-            if($individual){
+            $individual = $this->query($query, $params);
+            if ($individual) {
                 $name = $individual[0]->firstName . " " . $individual[0]->lastName;
             }
-            
-        }else if($role && $role == 3){ //for business accounts
+        } elseif ($role == 3) { // Business
             $query = "SELECT * FROM organization WHERE accountID = :accountID LIMIT 1";
-            $params = ['accountID' => $accountID];
-            $business =  $this->query($query, $params);
-
-            if($business){
+            $business = $this->query($query, $params);
+            if ($business) {
                 $name = $business[0]->orgName;
             }
-        
         }
-        // Create Stripe customer
-        $customer = $this->stirpeService->createCustomer($email, $name, ['accountID' => $accountID]); //account id as metadata?
-        if($customer && $customer->id){
+
+        $customer = $this->stripeService->createCustomer($email, $name, ['accountID' => $accountID]);
+
+        if ($customer && $customer->id) {
             $query = "INSERT INTO stripe_customers (accountID, stripe_customer_id, created_at) 
                       VALUES (:accountID, :stripe_customer_id, NOW())";
             $params = [
@@ -59,59 +52,50 @@ class AccountSubscription extends Account{
                 'stripe_customer_id' => $customer->id
             ];
             $this->query($query, $params);
+            return $customer->id;
         }
 
         return false;
     }
 
-    public function getStripeCustomerID($accountID){
+    public function getStripeCustomerID($accountID)
+    {
         $query = "SELECT stripe_customer_id FROM stripe_customers WHERE accountID = :accountID LIMIT 1";
         $params = ['accountID' => $accountID];
-        $customer =  $this->query($query, $params);
-
-        if($customer && count($customer) > 0){
-            return $customer[0]->stripe_customer_id;
-        }
-        return false;
+        $customer = $this->query($query, $params);
+        return $customer && count($customer) ? $customer[0]->stripe_customer_id : false;
     }
 
-    //mapping stripe plan IDs to internal plan IDs
-    // This function maps Stripe price IDs to internal plan IDs
-    private function getStripePlanMap() {
+    private function getStripePlanMap()
+    {
         return [
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 1,   
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz'   => 2,   
-            'price_1RASFHFq0GU0Vr5TM8MF8OjW' => 3   
+            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 1,
+            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 2, // Warning: Duplicate key
+            'price_1RASFHFq0GU0Vr5TM8MF8OjW' => 3
         ];
     }
 
-    //creating subscription to the account
-    public function createSubscription($accountID, $priceID){
+    public function createSubscription($accountID, $priceID)
+    {
         $customerID = $this->getStripeCustomerID($accountID);
-        if(!$customerID){
+        if (!$customerID) {
             return ['error' => 'Customer not found in Stripe'];
         }
 
-        $subscription = $this->stirpeService->createSubscription($customerID, $priceID, ['accountID' => $accountID]);
-        if($subscription && $subscription->id){
-            try{
-                $this->db->beginTransaction();
-                $planmap = $this->getStripePlanMap();
-                $planID = isset($planmap[$priceID]) ? $planmap[$priceID] : null;
+        $subscription = $this->stripeService->createSubscription($customerID, $priceID, ['accountID' => $accountID]);
+        if ($subscription && $subscription->id) {
+            try {
+                $planMap = $this->getStripePlanMap();
+                $planID = $planMap[$priceID] ?? null;
 
-                if($planID){
+                if ($planID) {
                     $query = "UPDATE account SET planID = :planID WHERE accountID = :accountID";
-                    $params = [
-                        'planID' => $planID,
-                        'accountID' => $accountID
-                    ];
-                    $this->query($query, $params);
+                    $this->query($query, ['planID' => $planID, 'accountID' => $accountID]);
                 }
 
-                //save subscription to the database
                 $query = "INSERT INTO subscriptions (accountID, stripe_subscription_id, stripe_price_id, status, current_period_start, current_period_end) 
                           VALUES (:accountID, :subscription_id, :price_id, :status, FROM_UNIXTIME(:period_start), FROM_UNIXTIME(:period_end))";
-                $params = [ 
+                $params = [
                     'accountID' => $accountID,
                     'subscription_id' => $subscription->id,
                     'price_id' => $priceID,
@@ -120,67 +104,60 @@ class AccountSubscription extends Account{
                     'period_end' => $subscription->current_period_end
                 ];
                 $this->query($query, $params);
-                $this->db->commit();
+
                 return ['success' => true, 'subscription' => $subscription];
-            }catch(PDOException $e){
-                $this->db->rollBack();
+            } catch (PDOException $e) {
                 return ['error' => 'Database error: ' . $e->getMessage()];
             }
-        
-    }
+        }
+
         return ['error' => 'Subscription creation failed'];
-    }   
+    }
 
-   
-    public function getActiveSubscriptions($accountID){
+    public function getActiveSubscriptions($accountID)
+    {
         $query = "SELECT * FROM subscriptions WHERE accountID = :accountID AND status = 'active'";
-        $params = ['accountID' => $accountID];
-        return $this->query($query, $params);
+        return $this->query($query, ['accountID' => $accountID]);
     }
 
-   public function updateSubscriptionStatus($subscriptionID, $status){
-        $query = "UPDATE subscriptions SET status = :status WHERE subscriptionID = :subscriptionID";
-        $params = [
-            'status' => $status,
-            'subscriptionID' => $subscriptionID
-        ];
-        return $this->query($query, $params);
+    public function updateSubscriptionStatus($stripeSubscriptionID, $status)
+    {
+        $query = "UPDATE subscriptions SET status = :status WHERE stripe_subscription_id = :subscriptionID";
+        return $this->query($query, ['status' => $status, 'subscriptionID' => $stripeSubscriptionID]);
     }
 
-    public function cancelSubscription($subscriptionID){
-        $subscription = $this->stirpeService->cancelSubscription($subscriptionID);
-        if($subscription && $subscription->id){
-            try{
-                $this->db->beginTransaction();
+    public function cancelSubscription($subscriptionID)
+    {
+        $subscription = $this->stripeService->cancelSubscription($subscriptionID);
+        if ($subscription && $subscription->id) {
+            try {
                 $query = "UPDATE subscriptions SET status = :status WHERE stripe_subscription_id = :subscription_id";
-                $params = [
-                    'status' => 'canceled',
-                    'subscription_id' => $subscription->id
-                ];
+                $params = ['status' => 'canceled', 'subscription_id' => $subscription->id];
                 $this->query($query, $params);
-                $this->db->commit();
                 return ['success' => true];
-            }catch(PDOException $e){
-                $this->db->rollBack();
+            } catch (PDOException $e) {
                 return ['error' => 'Database error: ' . $e->getMessage()];
             }
         }
         return ['error' => 'Subscription cancellation failed'];
     }
 
-    public function createCheckoutsession($accountID, $priceID){
+    public function createCheckoutSession($accountID, $priceID)
+    {
         $customerID = $this->getStripeCustomerID($accountID);
-        if(!$customerID){
+        if (!$customerID) {
             return ['error' => 'Customer not found in Stripe'];
         }
 
-        $success_url = "https://yourdomain.com/success"; 
-        $cancel_url = "https://yourdomain.com/cancel";  //add relevent urls
+        $success_url = "https://yourdomain.com/success"; // Change these
+        $cancel_url = "https://yourdomain.com/cancel";
 
-        $session = $this->stirpeService->createCheckoutSession($customerID, $priceID, $success_url, $cancel_url);
-        if($session && $session->id){
-            return ['success' => true, 'session_id' => $session->id, 'checkout_url' => $session->success_url];
+        $session = $this->stripeService->createCheckoutSession($customerID, $priceID, $success_url, $cancel_url);
+
+        if ($session && $session->id) {
+            return ['success' => true, 'session_id' => $session->id, 'checkout_url' => $session->url];
         }
-        return ['error' => 'Checkout session creation failed', 'checkout_url' => $session->cancel_url];
+
+        return ['error' => 'Checkout session creation failed', 'checkout_url' => $cancel_url];
     }
 }

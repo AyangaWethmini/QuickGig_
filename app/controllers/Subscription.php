@@ -1,29 +1,31 @@
 <?php
 
-require_once 'services/StripeService.php';
+require_once '../app/services/StripeService.php';
 
 class Subscription extends Controller {
-    protected $viewPath = "../app/views/subscriptions/";
+    protected $viewPath = "../app/views/subscription/";
     protected $accountSubscriptionModel;
     protected $stripeService;
     protected $accountModel;
+    private $db;
     
 
     public function __construct(){
-        $this->accountSubscriptionModel = $this->model('AccountSubscription');
+        $this->accountSubscriptionModel = new AccountSubscription();
+
         $this->stripeService = new StripeService();   
+
         $this->accountModel = $this->model('Account');
     }
 
 
     public function index(){
-        $data = $this->accountSubscriptionModel->getAllSubscriptions();
-        $this->view('plans', $data);
+        $this->view('subscribe');
     }
 
     public function subscribe(){
         if(!isset($_SESSION['accountID']) || !isset($_POST['priceID'])){
-            header('Location: /plans');
+            header('Location: /subscribe');
             exit;
         }
 
@@ -36,14 +38,14 @@ class Subscription extends Controller {
 
             if(!$account){
                 $_SESSION['error'] = 'Account not found'; /*!ERRORS!*/
-                header('Location: /plans');
+                header('Location: /subscribe');
                 exit;
             }
 
             $customenrID = $this->accountSubscriptionModel->createStripeCustomer($accountID, $account->email);
             if(!$customenrID){
                 $_SESSION['error'] = 'Failed to create Stripe customer'; /*!ERRORS!*/
-                header('Location: /plans');
+                header('Location: /subscribe');
                 exit;
             }
         }
@@ -64,7 +66,7 @@ class Subscription extends Controller {
 
     public function chekoutSuccess(){
         if(!isset($_SESSION['accountID']) || !isset($_GET['session_id'])){
-            header('Location: /plans');
+            header('Location: /subscribe');
             exit;
         }
 
@@ -81,7 +83,7 @@ class Subscription extends Controller {
         }catch(\Stripe\Exception\ApiErrorException $e){
             $_SESSION['error'] = 'Failed to retrieve session: ' . $e->getMessage(); /*!ERRORS!*/
         }
-        header('Location: /plans');
+        header('Location: /subscribe');
         exit;
     }
 
@@ -99,7 +101,7 @@ class Subscription extends Controller {
         }else{
             $_SESSION['error'] = isset($result['error']) ? $result['error'] : 'Failed to cancel subscription'; /*!ERRORS!*/
         }
-        header('Location: /plans');
+        header('Location: /subscribe');
         exit;
     }
 
