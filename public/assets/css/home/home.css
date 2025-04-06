@@ -16,8 +16,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 70px 40px 20px 126px;
-    min-height: fit-content;
+    padding: 0px 40px 20px 126px;
+    /* min-height: fit-content; */
     width: 100%; /* Makes it responsive */
     max-width: 80vw; /* Restricts the maximum width */
 
@@ -233,6 +233,48 @@
     margin-left: 48px;
  }
 
+ /*HOME ANNOUNCEMENT CSS*/
+ .home-announcement {
+    margin: 120px auto 10px; /* Center horizontally with top and bottom margins */
+    background-color: #f8f9fa; /* Neutral background color */
+    color: #333; /* Neutral text color */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 20px; /* Generous padding */
+    max-width: 70%; /* Narrower width for focus */
+    text-align: center; /* Center text */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+    font-family: 'Arial', sans-serif; /* Professional font */
+}
+
+.home-announcement-content {
+    display: flex; /* Flex layout for horizontal alignment */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Align items vertically */
+    gap: 20px; /* Add space between the date and content */
+}
+
+.home-announcement-date,
+.home-announcement-text {
+    font-size: 16px; /* Uniform font size for date and content */
+    font-weight: bold; /* Bold text for both date and content */
+    color: #333; /* Primary text color */
+    text-align: left; /* Align text inside individual boxes */
+}
+
+.home-announcement-date {
+    min-width: 150px; /* Ensure consistent space for the date */
+    text-align: right; /* Align the date to the right */
+}
+
+.home-announcement-text {
+    flex: 1; /* Allow the content to take up remaining space */
+    text-align: left; /* Align content text to the left */
+}
+
+.home-announcement p {
+    margin: 0; /* Reset default margin */
+}
 
  .ad-cont {
     display: flex;

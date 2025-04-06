@@ -2,6 +2,60 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
+<!-- Include the subscriptions component -->
+<?php include APPROOT . '/views/components/subscriptions.php'; ?>
+<?php
+if (
+    !isset($_SESSION['subscription_popup_shown']) &&
+    isset($_SESSION['user_role']) &&
+    $_SESSION['user_role'] > 1
+) {
+    include APPROOT . '/views/components/subscriptions.php';
+    $_SESSION['subscription_popup_shown'] = true;
+}
+?>
+
+<script>
+    // Function to hide the subscription popup
+    function hideSubscriptionPopup() {
+        document.querySelector('.sub-background').style.display = 'none';
+    }
+</script>
+
+<!-- <nav class="navbar flex-row">
+    <div class="flex-row  nav-left">
+        <div class="logo">QuickGig</div>
+        <ul class="nav-links  flex-row">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Categories</a></li>
+        </ul>
+    </div>
+
+    <div class="sign-btns">
+        <button class="btn btn-trans">Login</button>
+        <button class="btn" style="background-color: var(--brand-pri-dark);">Sign Up</button>
+    </div>
+    <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav> -->
+<div class="home-announcement">
+    <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
+        <div class="home-announcement-content">
+            <div class="home-announcement-date">
+                <?= htmlspecialchars($data['announcements'][0]->announcementDate) ?>
+            </div>
+            <div class="home-announcement-text">
+                <?= htmlspecialchars($data['announcements'][0]->content) ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <p>No announcements available.</p>
+    <?php endif; ?>
+</div>
+
 <?php
 if (
     !isset($_SESSION['subscription_popup_shown']) &&

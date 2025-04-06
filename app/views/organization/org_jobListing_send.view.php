@@ -4,6 +4,7 @@ protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -24,28 +25,44 @@ protectRoute([3]);?>
 
         <div class="employee-list">
 
+            <?php if (!empty($data['sendRequests'])): ?>
+            <?php foreach($data['sendRequests'] as $received): ?>
+
             <div class="employee-item">
                 <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture">
+                    <div class="img" >
+                        <?php if ($received->pp): ?>
+                            <?php 
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($received->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($received->pp) ?>" alt="Employee Image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="employee-details">
-                    <span class="employee-name">Kane Smith</span>
-                    <span class="job-title">Plumber</span>
-                    <span class="date-available">2024-11-30</span>
-                    <span class="time-available">03:00 PM - 05:00 PM</span>
-                    <span class="hourly-pay">$10/hour</span>
+                    <span class="employee-name"><?= htmlspecialchars($received->fname . ' ' . $received->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($received->description) ?></span>
+                    <span class="date-applied">Available Date: <?= htmlspecialchars($received->availableDate) ?></span>
+                    <span class="time-applied">Available Time: <?= htmlspecialchars($received->timeFrom)?> - <?= htmlspecialchars($received->timeTo) ?></span>
+                    <span class="date-applied">Salary: <?= htmlspecialchars($received->salary) ?> <?= htmlspecialchars($received->currency) ?>/Hr</span>
+                    <span class="date-applied">Location: <?= htmlspecialchars($received->location) ?></span>
                     <div class="ratings">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
                     </div>
                     <hr>
-                    <span class="date-applied">2024-11-22</span>
+                    <span class="date-applied">Date Requested: <?= htmlspecialchars($received->datePosted) ?></span>
+                    <span class="time-applied">Time Requested: <?= htmlspecialchars($received->timePosted)?></span>
+                    <span class="jobId-applied">ID: #<?= htmlspecialchars($received->reqID)?></span>
                 </div>
-            <!--    <button class="accept-jobReq-button btn btn-accent">Accept</button>  -->
-                <button class="reject-jobReq-button btn btn-danger">Cancel</button>
+            
+                <button class="reject-jobReq-button btn btn-danger" data-req-id="<?= htmlspecialchars($received->reqID) ?>">Cancel</button>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
@@ -54,6 +71,13 @@ protectRoute([3]);?>
                     </ul>
                 </div>
             </div>
+            <?php endforeach;?>
+            <?php else: ?>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
+                    <p class="empty-text">No Sent Requests Found</p>
+                </div>
+            <?php endif; ?>
 
         </div>
 
@@ -67,22 +91,34 @@ protectRoute([3]);?>
 
     </div>
 </body>
-<script>
-document.querySelectorAll('.accept-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById('popup-message').textContent = 'Are you sure to accept the request?';
-        document.getElementById('popup').classList.remove('hidden');
-    });
-});
 
+<script>
 document.querySelectorAll('.reject-jobReq-button').forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+        const reqID = event.target.dataset.reqId;
         document.getElementById('popup-message').textContent = 'Are you sure you want to cancel this request?';
         document.getElementById('popup').classList.remove('hidden');
+        document.getElementById('popup-yes').dataset.reqId = reqID;
     });
 });
 
 document.getElementById('popup-yes').addEventListener('click', () => {
+    const reqID = document.getElementById('popup-yes').dataset.reqId;
+    fetch('<?=ROOT?>/organization/deleteSendRequest', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reqID })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload();
+        } else {
+            alert('Failed to delete the request.');
+        }
+    });
     document.getElementById('popup').classList.add('hidden');
 });
 
@@ -90,4 +126,5 @@ document.getElementById('popup-no').addEventListener('click', () => {
     document.getElementById('popup').classList.add('hidden');
 });
 </script>
+
 </html>

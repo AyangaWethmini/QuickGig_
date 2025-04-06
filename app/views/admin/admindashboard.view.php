@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([0]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([0]); ?>
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/admin/admin_dashboard.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -10,19 +10,20 @@ protectRoute([0]);?>
         <div class="admin-announcement-header">
             <h1>Dashboard</h1>
         </div>
-        <br><hr><br>
+        <br>
+        <hr><br>
         <div class="admin-dashboard">
             <div class="dashboard-card">
                 <h2>Total Job Seekers</h2>
-                <p>25</p>
+                <p><?php echo $data['totalIndividuals']; ?></p>
             </div>
             <div class="dashboard-card">
                 <h2>Total Organizations</h2>
-                <p>34</p>
+                <p><?php echo $data['totalOrganizations']; ?></p>
             </div>
             <div class="dashboard-card">
                 <h2>Total Jobs Posted</h2>
-                <p>456</p>
+                <p><?php echo $data['totalJobs']; ?></p>
             </div>
         </div>
     </div>

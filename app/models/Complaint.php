@@ -1,7 +1,8 @@
 <?php
 // models/Complaint.php
 
-class Complaint {
+class Complaint
+{
     use Database;
 
     public $complainantID;
@@ -15,43 +16,73 @@ class Complaint {
         // $this->db = new Database; // PDO instance
     }
 
-    public function getComplaints() {
-        $id = $_SESSION['user_id'];
-        $query = 'SELECT * FROM complaint where complainantID = ? ORDER BY complaintDate DESC, complaintTime DESC';
-        return $this->query($query,[$id]);
+
+    public function updateStatus($id, $status)
+    {
+        $query = "UPDATE complaint SET complaintStatus = :status WHERE complaintID = :id";
+        $params = [
+            'id' => $id,
+            'status' => $status
+        ];
+        $result = $this->query($query, $params);
+        if (!$result) {
+            error_log('Failed to update complaint status for ID: ' . $id);
+        }
+        return $result;
     }
 
-    public function create($data) {
-        $query = "INSERT INTO complaint (complainantID, content, complaintDate, complaintTime, complaintStatus) 
-                  VALUES (:complainantID, :content, :complaintDate, :complaintTime, :complaintStatus)";
-        
+    public function getComplaints()
+    {
+        $id = $_SESSION['user_id'];
+        $query = 'SELECT * FROM complaint where complainantID = ? ORDER BY complaintDate DESC, complaintTime DESC';
+        return $this->query($query, [$id]);
+    }
+
+    public function getAllComplaints()
+    {
+        $query = 'SELECT * FROM complaint ORDER BY complaintDate DESC, complaintTime DESC';
+        return $this->query($query);
+    }
+
+    public function create($data)
+    {
+        $query = "INSERT INTO complaint (complaintID, complainantID, complaineeID, content, complaintDate, complaintTime, complaintStatus, jobOrAvailable, applicationOrReq) 
+                VALUES (:complaintID, :complainantID, :complaineeID, :content, :complaintDate, :complaintTime, :complaintStatus, :jobOrAvailable, :applicationOrReq)";
+
         $params = [
+            'complaintID' => $data['complaintID'],
             'complainantID' => $data['complainantID'],
+            'complaineeID' => $data['complaineeID'],
             'content' => $data['content'],
             'complaintDate' => $data['complaintDate'],
             'complaintTime' => $data['complaintTime'],
-            'complaintStatus' => $data['complaintStatus']
+            'complaintStatus' => $data['complaintStatus'],
+            'jobOrAvailable' => $data['jobOrAvailable'],
+            'applicationOrReq' => $data['applicationOrReq']
         ];
-        
+
         return $this->query($query, $params);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $query = "DELETE FROM complaint WHERE complaintID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
 
-    public function getComplaintById($id) {
+    public function getComplaintById($id)
+    {
         $query = "SELECT * FROM complaint WHERE complaintID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
-    
+
         return isset($result[0]) ? $result[0] : null;
     }
-    
-    
-    public function update($id, $data) {
+
+
+    public function update($id, $data)
+    {
         $query = "UPDATE complaint SET content = :content, complaintDate = :complaintDate, complaintTime = :complaintTime WHERE complaintID = :id";
         $params = [
             'id' => $id,

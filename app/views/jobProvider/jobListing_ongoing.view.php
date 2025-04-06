@@ -4,6 +4,7 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
 <div class="wrapper flex-row">
@@ -24,19 +25,36 @@ protectRoute([2]);?>
 
         <div class="employee-list">
 
+        <?php if (!empty($data['applyJobOngoing'])): ?>
+            <h2>From Applications</h2><hr>
+            <?php foreach($data['applyJobOngoing'] as $ongoing): ?>
+                
         <div class="employee-item">
                 <div class="ongoing-job-indicator"></div>
                 <div class="employee-photo">
-                    <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture">
+                    <div class="img" >
+                        <?php if ($ongoing->pp): ?>
+                            <?php 
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($ongoing->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ongoing->pp) ?>" alt="Employee Image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="employee-details">
-                    <span class="employee-name">Clara Zue</span>
-                    <span class="job-title">Baby-Sitter</span>
-                    <span class="date-available">2024-11-30</span>
-                    <span class="time-available">03:00 PM - 07:00 PM</span>
-                    <span class="hourly-pay">$13/hour</span>
+                    <span class="employee-name"><?= htmlspecialchars($ongoing->fname . ' ' . $ongoing->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($ongoing->jobTitle) ?></span>
+                    <span class="date-available">Date: <?= htmlspecialchars($ongoing->availableDate) ?> (Today)</span>
+                    <span class="time-available">Time: <?= htmlspecialchars($ongoing->timeFrom) ?> - <?= htmlspecialchars($ongoing->timeTo) ?></span>
+                    <span class="hourly-pay">Salary: <?= htmlspecialchars($ongoing->salary) ?> <?= htmlspecialchars($ongoing->currency) ?>/Hr</span>
                     <hr>
-                    <span class="date-applied">2024-11-22</span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($ongoing->dateActioned) ?></span>
+                    <span class="date-applied">Time Accepted: <?= htmlspecialchars($ongoing->timeActioned) ?></span>
+                    <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($ongoing->jobID)?></span>
+                    <span class="jobId-applied">Application ID: #<?= htmlspecialchars($ongoing->applicationID)?></span>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -46,7 +64,57 @@ protectRoute([2]);?>
                     </ul>
                 </div>
             </div>
+            <?php endforeach;?>
+        <?php endif; ?> 
 
+        <?php if (!empty($data['reqAvailableOngoing'])): ?>
+            <h2>From Requests</h2><hr>
+            <?php foreach($data['reqAvailableOngoing'] as $ongoing): ?>
+                
+        <div class="employee-item">
+                <div class="ongoing-job-indicator"></div>
+                <div class="employee-photo">
+                    <div class="img" >
+                        <?php if ($ongoing->pp): ?>
+                            <?php 
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $mimeType = $finfo->buffer($ongoing->pp);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ongoing->pp) ?>" alt="Employee Image">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="employee-details">
+                    <span class="employee-name"><?= htmlspecialchars($ongoing->fname . ' ' . $ongoing->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($ongoing->description) ?></span>
+                    <span class="date-available">Date: <?= htmlspecialchars($ongoing->availableDate) ?> (Today)</span>
+                    <span class="time-available">Time: <?= htmlspecialchars($ongoing->timeFrom) ?> - <?= htmlspecialchars($ongoing->timeTo) ?></span>
+                    <span class="hourly-pay">Salary: <?= htmlspecialchars($ongoing->salary) ?> <?= htmlspecialchars($ongoing->currency) ?>/Hr</span>
+                    <hr>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($ongoing->dateActioned) ?></span>
+                    <span class="date-applied">Time Accepted: <?= htmlspecialchars($ongoing->timeActioned) ?></span>
+                    <span class="jobId-applied">Available ID: #<?= htmlspecialchars($ongoing->availableID)?></span>
+                    <span class="jobId-applied">Request ID: #<?= htmlspecialchars($ongoing->reqID)?></span>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="#">View Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <?php endforeach;?>
+        <?php endif; ?> 
+
+        <?php if (empty($data['applyJobOngoing']) && empty($data['reqAvailableOngoing'])): ?>
+            <div class="empty-container">
+                <img src="<?=ROOT?>/assets/images/no-data.png" alt="Empty" class="empty-icon">
+                <p class="empty-text">Nothing Ongoing</p>
+            </div>
+        <?php endif; ?> 
         </div>
 
         <div id="popup" class="popup hidden">

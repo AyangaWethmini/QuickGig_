@@ -8,6 +8,7 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
 ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing_myJobs.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
 
 <body>
     <div class="wrapper flex-row">
@@ -21,31 +22,42 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             <hr> <br>
 
             <div class="list-header">
-                <p class="list-header-title">My Jobs</p>
+                <p class="list-header-title">My Availabilities</p>
                 <input type="text" class="search-input" placeholder="Search...">
                 <button class="filter-btn">Filter</button>
             </div> <br>
 
             <div class="job-list">
-                <?php foreach ($jobs as $job): ?>
-                    <div class="myjob-item">
+                <?php if (!empty($data['jobs'])): ?>
+                <?php foreach ($jobs as $job): 
+                    $categories = json_decode($job->categories, true);
+                    $categoriesString = is_array($categories) ? implode(', ', $categories) : 'N/A';
+                    $jobStatusClass = ($job->availabilityStatus == 2) ? 'inactive-job' : '';
+                ?>
+                    <div class="myjob-item <?= $jobStatusClass ?>">
                         <div class="job-details">
                             <span class="job-title"><?= htmlspecialchars($job->description) ?></span>
-                            <span class="employment-type"><?= htmlspecialchars($job->shift) ?></span>
+                            <span class="employment-type">Shift: <?= htmlspecialchars($job->shift) ?></span>
                             <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
-                            <span class="myjobs-category">Category: <?= htmlspecialchars($job->category ?? 'N/A') ?></span>
-                            <span class="skills">Skills: <?= htmlspecialchars($job->skills ?? 'N/A') ?></span>
+                            <span class="employment-type">Date: <?= htmlspecialchars($job->availableDate) ?></span>
+                            <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
                             <span class="location">Location: <?= htmlspecialchars($job->location) ?></span>
-                            <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?> per hour</span>
+                            <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?>/Hr</span>
                             <hr>
-                            <span class="date-posted">Posted on: <?= htmlspecialchars($job->availableDate) ?></span>
-                            <span class="time-posted">Posted at: <?= htmlspecialchars($job->timeFrom) ?></span>
+                            <span class="date-posted">Posted on: <?= htmlspecialchars($job->datePosted) ?></span>
+                            <span class="time-posted">Posted at: <?= htmlspecialchars($job->timePosted) ?></span>
                             <span class="my-job-id">Job id: #<?= htmlspecialchars($job->availableID) ?></span>
                         </div>
                         <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/seeker/updateAvailability/<?= $job->availableID ?>';">Update</button>
                         <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->availableID ?>" onclick="confirmDelete(this)">Delete</button>
                     </div>
                 <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="empty-container">
+                        <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Availabilities" class="empty-icon">
+                        <p class="empty-text">No Availabilities Have Been Listed</p>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <!-- Delete Confirmation Modal -->

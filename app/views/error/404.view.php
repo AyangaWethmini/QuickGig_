@@ -38,10 +38,10 @@
             }
         }
 
-        .container {
+        /* .container {
             text-align: center;
             color: #fff;
-        }
+        } */
 
         .error {
             font-size: 180px;

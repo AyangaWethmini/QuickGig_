@@ -108,6 +108,7 @@
     border: 1px solid #530980;
     border-radius: 10px;
     margin-top: 5px;
+    padding: 3px;
   }
 
   .availability-date{
@@ -121,16 +122,47 @@
     border: 1px solid #17ab24;
     border-radius: 10px;
     margin-top: 5px;
+    padding: 3px;
+  }
+
+  .availability-shift{
+    color: #ab1777;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #ab1777;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+
+  .availability-salary{
+    color: #c35704;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #c35704;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 3px;
   }
   
-  .tag{
-    margin-top: 5px;
+.tag {
+    margin-top: 2px;
+    margin-right: 5px;
     padding: 5px;
     border: 1px solid #103478;
     background-color: #acbfe2;
     border-radius: 15px;
     z-index: inherit;
-  }
+    display: inline-block;
+}
   
   
   .job-card-right{
@@ -141,6 +173,7 @@
   .request-button{
     height: 50px;
     width: 100px;
+    border-radius: 10px;
   }
   
   
@@ -195,3 +228,23 @@
   .dropdown:hover .dropdown-menu {
     display: block;
   }
+
+  .jobPostedDateTime {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.jobPostedDate, .jobPostedTime{
+    color: #25324B;
+    font-size: 16px;
+}
+
+.jobDescription p {
+  max-width: 500px;
+  /* Remove white-space: nowrap; overflow: hidden; and text-overflow: ellipsis; */
+  word-wrap: break-word; /* Optional: Allows breaking long words if needed */
+  color: #25324B;
+  font-size: 15px;
+}

@@ -8,6 +8,7 @@ class Home extends Controller
 
 	public function __construct()
 	{
+		$this->adminModel = $this->model('AdminModel');
 		$this->planModel = $this->model('Plans');
 		$this->adModel = $this->model("Advertisement");
 	}
