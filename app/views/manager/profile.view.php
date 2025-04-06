@@ -27,8 +27,8 @@ protectRoute([1]);?>
             <div class="profile-details container">
                 <div class="user-info">
                     <p class="role lbl"><strong>Role:</strong> Manager</p>
-                    <p class="name lbl"><strong>Name:</strong> Maria</p>
-                    <p class="email lbl"><strong>Email:</strong> maria@gmail.com</p>
+                    <p class="name lbl"><strong>Name:</strong> Ayanga</p>
+                    <p class="email lbl"><strong>Email:</strong>ayangawethmini@gmail.com</p>
                 </div>
 
                 <!-- Form to Update Email -->

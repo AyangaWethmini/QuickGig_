@@ -7,6 +7,7 @@ class Manager extends Controller
     protected $helpModel;
     protected $announcementModel;
     protected $advertiserModel;
+    protected $accountModel;
 
     public function __construct()
     {
@@ -15,6 +16,7 @@ class Manager extends Controller
         $this->helpModel = $this->model('Help');
         $this->announcementModel = $this->model('AdminModel');
         $this->advertiserModel = $this->model('Advertiser');
+        $this->accountModel = $this->model('Account');
     }
 
     public function index()
