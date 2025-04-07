@@ -8,6 +8,7 @@ class Manager extends Controller
     protected $announcementModel;
     protected $advertiserModel;
     protected $accountModel;
+    protected $accountSubscriptionModel; // Assuming you have this model for subscriptions
 
     public function __construct()
     {
@@ -17,15 +18,20 @@ class Manager extends Controller
         $this->announcementModel = $this->model('AdminModel');
         $this->advertiserModel = $this->model('Advertiser');
         $this->accountModel = $this->model('Account');
+        $this->accountSubscriptionModel = $this->model('AccountSubscription'); 
     }
 
     public function index()
     {
         $adCount = $this->advertisementModel->getAdsCount();
         $planCount = $this->planModel->getPlansCount();
+        $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) : null;
+        $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) : null;
+        $subsCount = $this->accountSubscriptionModel->getSubscriptionCount($startDate, $endDate);
         $data = [
             'adCount' => $adCount,
-            'planCount' => $planCount
+            'planCount' => $planCount,
+            'subsCount' => $subsCount,
         ];
         $this->view('dashboard', $data);
     }

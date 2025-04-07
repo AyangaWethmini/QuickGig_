@@ -1,6 +1,5 @@
 <?php
 
-spl_autoload_register(function ($classname) {
 
 
 spl_autoload_register(function ($classname) {

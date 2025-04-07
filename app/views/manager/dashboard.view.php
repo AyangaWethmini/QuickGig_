@@ -15,11 +15,13 @@ protectRoute([1]);?>
         <div class="header flex-row">
             <span class="greeting container">
                 <h3>Good morning! Maria</h3>
-                <p class="text-grey">Here is the statistics from 12th July - 12th August</p>
+                <p class="text-grey">Here is the statistics from <?= date('jS F', strtotime('-1 month')); ?> - <?= date('jS F'); ?></p>
             </span>
+
+
             <span class="date">
                 <div class="date-selector" onclick="openModal()">
-                    <span id="dateRange" class="date-text">Select Date Range</span>
+                    <span id="dateRange" class="date-text"><?= date('jS M', strtotime('-1 month')) . ' – ' . date('jS M'); ?></span>
                     <i class="fas fa-calendar-alt calendar-icon"></i>
                 </div>
 
@@ -27,16 +29,21 @@ protectRoute([1]);?>
                 <div id="dateModal" class="modal">
                     <div class="modal-content">
                         <h3>Select Date Range</h3>
-                        <input type="date" id="startDate" placeholder="Start Date" />
-                        <input type="date" id="endDate" placeholder="End Date" />
-                        <div class="modal-buttons">
-                            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-                            <button class="apply-btn" onclick="applyDateRange()">Apply</button>
-                        </div>
+                        <form id="dateForm" onsubmit="applyDateRange(event)">
+    <input type="date" id="startDate" name="startDate" placeholder="Start Date" value="<?= date('Y-m-d', strtotime('-1 month')); ?>" />
+    <input type="date" id="endDate" name="endDate" placeholder="End Date" value="<?= date('Y-m-d'); ?>" />
+    
+    <div class="modal-buttons">
+        <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="apply-btn">Apply</button>
+    </div>
+</form>
                     </div>
                 </div>
             </span>
         </div>
+
+
 
         <div class="overview flex-row">
             <div class="flex-row box container" style="background-color: var(--brand-primary);">
@@ -44,11 +51,11 @@ protectRoute([1]);?>
                     
             </div>
             <div class="flex-row box container" style="background-color: #56CDAD;">
-                <div><h3>400 New Subscribers</h3></div>
+                <div><h3><?= $subsCount; ?> Subscribers</h3></div>
                 
             </div>
             <div class="flex-row box container" style="background-color: #26A4FF;">
-                <div><h3>156k New Subscribers</h3></div>
+                <div><h3>156k Revenue</h3></div>
                 
             </div>
             <div class="flex-row box container" style="background-color: #FFB836;">
@@ -102,7 +109,11 @@ protectRoute([1]);?>
                         <p class="name">John Doe</p><hr>
                     </div>
                 </span>
-                <a href="https://mail.google.com/" class="email">Check Emails</a>
+                <?php if (isset($_SESSION['email'])): ?>
+                    <a href="mailto:<?= htmlspecialchars($_SESSION['email']); ?>" class="email">Check Emails</a>
+                <?php else: ?>
+                    <a href="https://mail.google.com/" class="email">Check Emails</a>
+                <?php endif; ?>
             </div>
         </div>
         
@@ -130,18 +141,48 @@ protectRoute([1]);?>
         dateModal.style.display = 'none';
     }
 
-    function applyDateRange() {
-        const options = { month: 'short', day: 'numeric' };
-        const start = new Date(startDateInput.value).toLocaleDateString('en-US', options);
-        const end = new Date(endDateInput.value).toLocaleDateString('en-US', options);
+    function applyDateRange(event) {
+    if (event) event.preventDefault(); // Prevent form from submitting traditionally
 
-        if (startDateInput.value && endDateInput.value) {
-            dateRangeDisplay.textContent = `${start} – ${end}`;
-            closeModal(); 
-        } else {
-            alert("Please select both start and end dates.");
-        }
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+
+    if (!startDate || !endDate) {
+        alert("Please select both start and end dates.");
+        return;
     }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const options = { day: 'numeric', month: 'short' };
+    const fullOptions = { day: 'numeric', month: 'long' };
+
+    // Update date range UI
+    document.getElementById("dateRange").innerText = 
+        `${start.toLocaleDateString('en-GB', options)} – ${end.toLocaleDateString('en-GB', options)}`;
+
+    document.querySelector(".greeting p").innerText = 
+        `Here is the statistics from ${start.toLocaleDateString('en-GB', fullOptions)} - ${end.toLocaleDateString('en-GB', fullOptions)}`;
+
+    // Optional: Send to backend via fetch
+    fetch('fetch-data.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ startDate, endDate })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Data:', data);
+        // TODO: Update your UI with new data
+    })
+    .catch(err => {
+        console.error('Error:', err);
+    });
+
+    closeModal();
+}
 
     // Chart.js functionality
     document.addEventListener("DOMContentLoaded", function () {

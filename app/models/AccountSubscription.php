@@ -160,4 +160,6 @@ class AccountSubscription extends Account
 
         return ['error' => 'Checkout session creation failed', 'checkout_url' => $cancel_url];
     }
+
+    
 }
