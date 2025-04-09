@@ -1,21 +1,23 @@
 <?php
 
-require_once "account.php";
+require_once "../app/models/Account.php";
 require_once '../app/services/StripeService.php';
 
-class AccountSubscription extends Account
-{
+class AccountSubscription extends Account {
     use Database;
 
+    private $accountModel;
     protected $stripeService;
+    private $db;
 
-    public function __construct()
-    {
+    public function __construct() {
+        $this->db = $this->connect();
+        parent::__construct($this->db);
         $this->stripeService = new StripeService();
+        $this->accountModel = new Account($this->db);
     }
 
-    public function createStripeCustomer($accountID, $email)
-    {
+    public function createStripeCustomer($accountID, $email) {
         $query = "SELECT * FROM account WHERE accountID = :accountID LIMIT 1";
         $params = ['accountID' => $accountID];
         $account = $this->query($query, $params);
@@ -24,17 +26,16 @@ class AccountSubscription extends Account
             return false;
         }
 
-        // Determine name based on role
-        $role = $this->findRole($accountID);
+        $role = $this->accountModel->findRole($accountID);
         $name = "User";
 
-        if ($role == 2) { // Individual
+        if ($role == 2) {
             $query = "SELECT * FROM individual WHERE accountID = :accountID LIMIT 1";
             $individual = $this->query($query, $params);
             if ($individual) {
                 $name = $individual[0]->firstName . " " . $individual[0]->lastName;
             }
-        } elseif ($role == 3) { // Business
+        } elseif ($role == 3) {
             $query = "SELECT * FROM organization WHERE accountID = :accountID LIMIT 1";
             $business = $this->query($query, $params);
             if ($business) {
@@ -58,24 +59,14 @@ class AccountSubscription extends Account
         return false;
     }
 
-    public function getStripeCustomerID($accountID)
-    {
+    public function getStripeCustomerID($accountID) {
         $query = "SELECT stripe_customer_id FROM stripe_customers WHERE accountID = :accountID LIMIT 1";
         $params = ['accountID' => $accountID];
         $customer = $this->query($query, $params);
         return $customer && count($customer) ? $customer[0]->stripe_customer_id : false;
     }
 
-    private function getStripePlanMap()
-    {
-        return [
-            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1,//individual
-            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, //organization
-        ];
-    }
-
-    public function createSubscription($accountID, $priceID)
-    {
+    public function createSubscription($accountID, $priceID) {
         $customerID = $this->getStripeCustomerID($accountID);
         if (!$customerID) {
             return ['error' => 'Customer not found in Stripe'];
@@ -113,20 +104,17 @@ class AccountSubscription extends Account
         return ['error' => 'Subscription creation failed'];
     }
 
-    public function getActiveSubscriptions($accountID)
-    {
+    public function getActiveSubscriptions($accountID) {
         $query = "SELECT * FROM subscriptions WHERE accountID = :accountID AND status = 'active'";
         return $this->query($query, ['accountID' => $accountID]);
     }
 
-    public function updateSubscriptionStatus($stripeSubscriptionID, $status)
-    {
+    public function updateSubscriptionStatus($stripeSubscriptionID, $status) {
         $query = "UPDATE subscriptions SET status = :status WHERE stripe_subscription_id = :subscriptionID";
         return $this->query($query, ['status' => $status, 'subscriptionID' => $stripeSubscriptionID]);
     }
 
-    public function cancelSubscription($subscriptionID)
-    {
+    public function cancelSubscription($subscriptionID) {
         $subscription = $this->stripeService->cancelSubscription($subscriptionID);
         if ($subscription && $subscription->id) {
             try {
@@ -141,22 +129,28 @@ class AccountSubscription extends Account
         return ['error' => 'Subscription cancellation failed'];
     }
 
-    public function createCheckoutSession($accountID, $priceID)
-    {
+    public function createCheckoutSession($accountID, $priceID) {
         $customerID = $this->getStripeCustomerID($accountID);
         if (!$customerID) {
             return ['error' => 'Customer not found in Stripe'];
         }
-
-        $success_url = "https://yourdomain.com/success"; // Change these
-        $cancel_url = "https://yourdomain.com/cancel";
-
+    
+        $success_url = ROOT . "/subscription/checkoutSuccess";
+        $cancel_url = ROOT . "/subscription/checkoutFailed"; 
+    
         $session = $this->stripeService->createCheckoutSession($customerID, $priceID, $success_url, $cancel_url);
-
+    
         if ($session && $session->id) {
             return ['success' => true, 'session_id' => $session->id, 'checkout_url' => $session->url];
         }
-
+    
         return ['error' => 'Checkout session creation failed', 'checkout_url' => $cancel_url];
+    }
+    
+    private function getStripePlanMap() {
+        return [
+            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1, // individual
+            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, // organization
+        ];
     }
 }

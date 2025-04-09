@@ -10,7 +10,7 @@
   </div>
 
 <main class="container">
-    <?php var_dump($_SESSION); ?>
+    
     <h2 class="premium-title">Premium Plans</h2>
     <div class="plans-container">
         <?php if (is_array($plans) || is_object($plans)): ?>

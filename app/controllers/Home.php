@@ -3,11 +3,13 @@
 class Home extends Controller
 {
 	protected $viewPath = "../app/views/home/";
-	protected $planModel; //temporary for testig, needto move into a ad controller
+	 //temporary for testig, needto move into a ad controller
+	protected $planModel;
 
 	public function __construct()
 	{
 		$this->planModel = $this->model('Plans');
+		
 	}
 
 	public function index()
