@@ -8,8 +8,7 @@ class StripeService{
 
     public function __construct()
     {      
-        $this->config = require_once '../app/core/stripe-config.php'; // Load Stripe configuration from config file
-        var_dump($this->config);
+        $this->config = require '../app/core/stripe-config.php'; // Load Stripe configuration from config file
         \Stripe\Stripe::setApiKey($this->config['secret_key']); // Set the Stripe API key
         $this->stripe = new \Stripe\StripeClient($this->config['secret_key']);
     }

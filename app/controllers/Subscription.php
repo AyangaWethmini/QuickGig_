@@ -3,6 +3,7 @@
 require_once '../app/services/StripeService.php';
 
 class Subscription extends Controller {
+    use Database; // Use the Database trait for database connection
     protected $viewPath = "../app/views/subscription/";
     protected $accountSubscriptionModel;
     protected $stripeService;
@@ -10,12 +11,18 @@ class Subscription extends Controller {
     private $db;
     
 
-    public function __construct(){
+    public function __construct() {
+        // parent::__construct(); // Call the parent constructor first
+        
+        // Create a database connection using the trait method
+        $db = $this->connect();
+        
+        // Instantiate the models
         $this->accountSubscriptionModel = new AccountSubscription();
-
-        $this->stripeService = new StripeService();   
-
-        $this->accountModel = $this->model('Account');
+        $this->stripeService = new StripeService();
+        
+        // Pass the db object to the Account model constructor
+        $this->accountModel = $this->model('Account', $db);
     }
 
 
@@ -24,48 +31,56 @@ class Subscription extends Controller {
     }
 
     public function subscribe(){
-        if(!isset($_SESSION['accountID']) || !isset($_POST['priceID'])){
-            header('Location: /subscribe');
+    if (!isset($_SESSION['user_id'], $_SESSION['user_email'], $_POST['priceID'])) {
+        header('Location: ' . ROOT . "/home/login");
+        exit;
+    }
+
+    $user_id = $_SESSION['user_id'];
+    $priceID = $_POST['priceID'];
+    $email = $_SESSION['user_email'];
+
+    $customerID = $this->accountSubscriptionModel->getStripeCustomerID($user_id);
+
+    if (!$customerID) {
+        $account = $this->accountModel->findByEmail($email);
+
+        var_dump($user_id);
+        var_dump($account);
+
+        if (!$account) {
+            $_SESSION['error'] = 'Account not found';
+            header('Location: ' . ROOT . '/home/premium');
             exit;
         }
 
-        $accountID = $_SESSION['accountID'];
-        $priceID = $_POST['priceID'];
+        $customerID = $this->accountSubscriptionModel->createStripeCustomer($user_id, $email);
+        var_dump($customerID);
 
-        $customenrID = $this->accountSubscriptionModel->getStripeCustomerID($accountID);
-        if(!$customenrID){ //user has no Stripe account
-            $account = $this->accountModel->findByEmail($accountID);
-
-            if(!$account){
-                $_SESSION['error'] = 'Account not found'; /*!ERRORS!*/
-                header('Location: /subscribe');
-                exit;
-            }
-
-            $customenrID = $this->accountSubscriptionModel->createStripeCustomer($accountID, $account->email);
-            if(!$customenrID){
-                $_SESSION['error'] = 'Failed to create Stripe customer'; /*!ERRORS!*/
-                header('Location: /subscribe');
-                exit;
-            }
-        }
-
-        //create the checkout session
-        $checkoutResult = $this->accountSubscriptionModel->createCheckoutSession($customenrID, $priceID);
-        
-        //if successful, redirect to checkout URL
-        if(isset($checkoutResult['success']) && $checkoutResult['checkout_url']){
-            header('Location: ' . $checkoutResult['checkout_url']);
-            exit;
-        }else{
-            $_SESSION['error'] = isset($checkoutResult['error']) ? $checkoutResult['error'] : 'Failed to create checkout session';
-            header('Location: ' . $checkoutResult['checkout_url']);
+        if (!$customerID) {
+            $_SESSION['error'] = 'Failed to create Stripe customer';
+            header('Location: ' . ROOT . '/home/premium');
             exit;
         }
     }
 
-    public function chekoutSuccess(){
-        if(!isset($_SESSION['accountID']) || !isset($_GET['session_id'])){
+    // Create the checkout session
+    $checkoutResult = $this->accountSubscriptionModel->createCheckoutSession($customerID, $priceID);
+    var_dump($checkoutResult);
+
+    if (!empty($checkoutResult['success']) && !empty($checkoutResult['checkout_url'])) {
+        header('Location: ' . $checkoutResult['checkout_url']);
+        exit;
+    } else {
+        $_SESSION['error'] = $checkoutResult['error'] ?? 'Failed to create checkout session';
+        header('Location: ' . ROOT . '/home/premium');
+        exit;
+    }
+}
+
+
+    public function checkoutSuccess(){
+        if(!isset($_SESSION['user_id']) || !isset($_GET['session_id'])){
             header('Location: /subscribe');
             exit;
         }
@@ -88,13 +103,13 @@ class Subscription extends Controller {
     }
 
     public function cancelSubscription(){
-        if(!isset($_SESSION['accountID'])){
+        if(!isset($_SESSION['user_id'])){
             header('Location: /login'); //!ERRORS!  
             exit;
         }
 
-        $accountID = $_SESSION['accountID'];
-        $result = $this->accountSubscriptionModel->cancelSubscription($accountID);
+        $user_id = $_SESSION['user_id'];
+        $result = $this->accountSubscriptionModel->cancelSubscription($user_id);
 
         if($result['success']){
             $_SESSION['success'] = 'Subscription canceled successfully!';
@@ -135,7 +150,7 @@ class Subscription extends Controller {
                 $subscription = $event->data->object;
                 // Find account by customer ID
                 $db = require 'config/database.php';
-                $query = "SELECT accountID FROM stripe_customers WHERE stripe_customer_id = :customer_id LIMIT 1";
+                $query = "SELECT user_id FROM stripe_customers WHERE stripe_customer_id = :customer_id LIMIT 1";
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':customer_id', $subscription->customer);
                 $stmt->execute();
@@ -151,10 +166,10 @@ class Subscription extends Controller {
                         $planID = isset($planMap[$priceId]) ? $planMap[$priceId] : null;
                         
                         if ($planID) {
-                            $query = "UPDATE account SET planID = :planID WHERE accountID = :accountID";
+                            $query = "UPDATE account SET planID = :planID WHERE user_id = :user_id";
                             $stmt = $db->prepare($query);
                             $stmt->bindParam(':planID', $planID);
-                            $stmt->bindParam(':accountID', $result['accountID']);
+                            $stmt->bindParam(':user_id', $result['user_id']);
                             $stmt->execute();
                         }
                     }
@@ -173,9 +188,8 @@ class Subscription extends Controller {
 
     private function getStripePlanMap() {
         return [
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 1,   
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz'   => 2,   
-            'price_1RASFHFq0GU0Vr5TM8MF8OjW' => 3   
+            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1,//individual
+            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, //organization
         ];
     }
     

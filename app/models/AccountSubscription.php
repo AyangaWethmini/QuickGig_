@@ -69,9 +69,8 @@ class AccountSubscription extends Account
     private function getStripePlanMap()
     {
         return [
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 1,
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 2, // Warning: Duplicate key
-            'price_1RASFHFq0GU0Vr5TM8MF8OjW' => 3
+            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1,//individual
+            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, //organization
         ];
     }
 
