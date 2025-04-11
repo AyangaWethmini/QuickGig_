@@ -18,11 +18,36 @@ class Admin extends Controller
         $this->view('adminannouncement');
     }
 
+    // In app/controllers/Admin.php
     function adminadvertisements()
     {
-        $ads = $this->advertisementModel->getAdvertisements();
+        // Set items per page
+        $limit = 2;
+
+        // Get current page from URL, default to 1
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Calculate offset
+        $start = ($page - 1) * $limit;
+
+        // Get total advertisements and paginated advertisements
+        $totalAds = $this->advertisementModel->getTotalAdvertisements();
+        $ads = $this->advertisementModel->getAdvertisementsPaginated($start, $limit);
+
+        // Calculate total pages
+        $totalPages = ceil($totalAds / $limit);
+
+        // Ensure current page is within valid range
+        if ($page > $totalPages && $totalPages > 0) {
+            header('Location: ' . ROOT . '/admin/adminadvertisements?page=1');
+            exit;
+        }
+
         $data = [
-            'ads' => $ads
+            'ads' => $ads,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalAds' => $totalAds
         ];
 
         $this->view('adminadvertisements', $data);
@@ -30,14 +55,42 @@ class Admin extends Controller
 
     function adminmanageusers()
     {
-        $users = $this->userModel->getUsers();
+        // Set items per page
+        $limit = 4;
+
+        // Get current page from URL, default to 1
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Calculate offset (start from 0 for first page)
+        $start = ($page - 1) * $limit;
+
+        // Get total users and paginated users
+        $totalUsers = $this->userModel->getTotalUsers();
+        $users = $this->userModel->getUsersPaginated($start, $limit);
+
+        // Calculate total pages
+        $totalPages = ceil($totalUsers / $limit);
+
+        // Ensure current page is within valid range
+        if ($page > $totalPages && $totalPages > 0) {
+            header('Location: ' . ROOT . '/admin/adminmanageusers?page=1');
+            exit;
+        }
+
+        // Debug information
+        // echo "Page: $page, Start: $start, Limit: $limit, Total Users: $totalUsers";
+        // print_r($users);
 
         $data = [
-            'users' => $users
+            'users' => $users,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalUsers' => $totalUsers
         ];
 
         $this->view('adminmanageusers', $data);
     }
+
 
     public function deactivateUser($accountID)
     {
@@ -97,12 +150,37 @@ class Admin extends Controller
 
     function adminannouncement()
     {
-        // Fetch announcements from the database
-        $announcements = $this->adminModel->getAnnouncements();
+        // Set items per page
+        $limit = 3;
 
-        // Ensure the announcements key is always defined
+        // Get current page from URL, default to 1
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Calculate offset (start from 0 for first page)
+        $start = ($page - 1) * $limit;
+
+        // Get total announcements and paginated announcements
+        $totalAnnouncements = $this->adminModel->getTotalAnnouncements();
+        $announcements = $this->adminModel->getAnnouncementsPaginated($start, $limit);
+
+        // Calculate total pages
+        $totalPages = ceil($totalAnnouncements / $limit);
+
+        // Ensure current page is within valid range
+        if ($page > $totalPages && $totalPages > 0) {
+            header('Location: ' . ROOT . '/admin/adminannouncement?page=1');
+            exit;
+        }
+
+        // Debug information (temporarily uncomment to check values)
+        // echo "Page: $page, Start: $start, Limit: $limit, Total: $totalAnnouncements<br>";
+        // print_r($announcements);
+
         $data = [
-            'announcements' => $announcements
+            'announcements' => $announcements,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalAnnouncements' => $totalAnnouncements
         ];
 
         $this->view('adminannouncement', $data);
@@ -289,23 +367,35 @@ class Admin extends Controller
 
     public function updateComplaintStatus()
     {
-        // Ensure it's a POST request
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Get the raw POST data
-            $input = json_decode(file_get_contents('php://input'), true);
-            $complaintId = $input['id'];
-            $newStatus = $input['status'];
+        try {
+            // Check if it's a POST request
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
+            }
 
-            // Update the database
-            if ($this->complaintModel->updateStatus($complaintId, $newStatus)) {
+            // Get the JSON data from the request
+            $jsonData = file_get_contents('php://input');
+            $data = json_decode($jsonData);
+
+            if (!$data || !isset($data->id) || !isset($data->status)) {
+                throw new Exception('Invalid data received');
+            }
+
+            // Update the complaint status
+            $success = $this->complaintModel->updateStatus($data->id, $data->status);
+
+            if ($success) {
                 echo json_encode(['success' => true]);
             } else {
-                echo json_encode(['success' => false]);
+                throw new Exception('Failed to update status');
             }
-        } else {
-            // Forbid non-POST requests
-            http_response_code(403);
-            echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+        } catch (Exception $e) {
+            error_log("Error in updateComplaintStatus: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
         }
     }
 
@@ -341,28 +431,67 @@ class Admin extends Controller
 
     public function getComplaintDetails($complaintId)
     {
-        // Get complaint details
-        $complaint = $this->complaintModel->getComplaintById($complaintId);
+        try {
+            // Debug logging
+            error_log("Received complaint ID: " . $complaintId);
 
-        if ($complaint) {
+            // Get complaint details
+            $complaint = $this->complaintModel->getComplaintById($complaintId);
+
+            // Debug logging
+            error_log("Complaint data: " . print_r($complaint, true));
+
+            if (!$complaint) {
+                throw new Exception('Complaint not found');
+            }
+
             // Get user details
             $complainant = $this->accountModel->getUserByID($complaint->complainantID);
             $complainee = $this->accountModel->getUserByID($complaint->complaineeID);
 
+            // Debug logging
+            error_log("Complainant data: " . print_r($complainant, true));
+            error_log("Complainee data: " . print_r($complainee, true));
+
+            if (!$complainant || !$complainee) {
+                throw new Exception('User details not found');
+            }
+
             // Prepare response data
             $response = [
-                'complaint' => $complaint,
-                'complainant' => $complainant,
-                'complainee' => $complainee
+                'complaint' => [
+                    'complaintID' => $complaint->complaintID,
+                    'content' => $complaint->content,
+                    'complaintDate' => $complaint->complaintDate,
+                    'complaintTime' => $complaint->complaintTime,
+                    'complaintStatus' => $complaint->complaintStatus
+                ],
+                'complainant' => [
+                    'email' => $complainant->email
+                ],
+                'complainee' => [
+                    'email' => $complainee->email
+                ]
             ];
 
-            // Send JSON response
+            // Set proper headers
             header('Content-Type: application/json');
+
+            // Debug logging
+            error_log("Sending response: " . json_encode($response));
+
+            // Send response
             echo json_encode($response);
-        } else {
+            exit;
+        } catch (Exception $e) {
+            // Log the error
+            error_log("Error in getComplaintDetails: " . $e->getMessage());
+
             // Send error response
+            header('Content-Type: application/json');
             http_response_code(404);
-            echo json_encode(['error' => 'Complaint not found']);
+            echo json_encode(['error' => $e->getMessage()]);
+            exit;
         }
     }
 }

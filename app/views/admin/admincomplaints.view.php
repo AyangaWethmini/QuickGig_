@@ -18,9 +18,13 @@ protectRoute([0]); ?>
         <hr>
         <!-- Pending Complaints Tab -->
         <div id="pending-complaints" class="complaints-container container tab-content active">
-            <?php foreach ($data['complaints'] as $complaint): ?>
-                <?php if ((int)$complaint->complaintStatus == 1): ?>
-                    <div class="complaint container" onclick="showComplaintPopup('<?php echo $complaint->complaintID ?>')">
+            <?php
+            $hasPendingComplaints = false;
+            foreach ($data['complaints'] as $complaint):
+                if ((int)$complaint->complaintStatus === 1):
+                    $hasPendingComplaints = true;
+            ?>
+                    <div class="complaint container" onclick="showComplaintPopup('<?php echo htmlspecialchars($complaint->complaintID) ?>')">
                         <div class="complaint-details flex-col">
                             <div class="complaint-details flex-row">
                                 <div class="the-complaint"><?php echo $complaint->content ?></div>
@@ -33,8 +37,14 @@ protectRoute([0]); ?>
                             </div>
                         </div>
                     </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <?php
+                endif;
+            endforeach;
+
+            if (!$hasPendingComplaints):
+                ?>
+                <div class="no-complaints">No pending complaints</div>
+            <?php endif; ?>
         </div>
 
         <!-- Reviewed Complaints Tab -->
@@ -51,6 +61,7 @@ protectRoute([0]); ?>
                                     echo $complaint->complaintDate . ' | ' . $formattedTime;
                                     ?>
                                 </div>
+                                <button onclick="dismissComplaint('<?php echo htmlspecialchars($complaint->complaintID) ?>')" class="dismiss-btn">Dismiss</button>
                             </div>
                         </div>
                     </div>
@@ -66,7 +77,20 @@ protectRoute([0]); ?>
                 <div id="popupContent"></div>
                 <div class="popup-buttons">
                     <button onclick="markAsReviewed()" class="review-btn">Mark as Reviewed</button>
-                    <button onclick="dismissComplaint()" class="dismiss-btn">Dismiss</button>
+                    <button onclick="dismissFromPopup()" class="dismiss-btn">Dismiss</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dismiss Confirmation Popup -->
+        <div id="dismissConfirmPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-popup" onclick="closeDismissPopup()">&times;</span>
+                <h2>Confirm Dismissal</h2>
+                <p>Are you sure you want to dismiss this complaint?</p>
+                <div class="popup-buttons">
+                    <button onclick="confirmDismiss()" class="dismiss-btn">Yes, Dismiss</button>
+                    <button onclick="closeDismissPopup()" class="review-btn">Cancel</button>
                 </div>
             </div>
         </div>
@@ -144,6 +168,7 @@ protectRoute([0]); ?>
         box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
         border: 1px solid #eee;
+        cursor: pointer;
     }
 
     .complaint:hover {
@@ -330,6 +355,57 @@ protectRoute([0]); ?>
             width: 100%;
         }
     }
+
+    /* Add this to your existing CSS */
+    .no-complaints {
+        text-align: center;
+        padding: 30px;
+        color: #666;
+        font-size: 16px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    /* Add to your existing styles */
+    #dismissConfirmPopup .popup-content {
+        max-width: 400px;
+        text-align: center;
+    }
+
+    #dismissConfirmPopup p {
+        margin: 20px 0;
+        font-size: 16px;
+        color: #2c3e50;
+        line-height: 1.5;
+    }
+
+    #dismissConfirmPopup .popup-buttons {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    #dismissConfirmPopup .popup-buttons button {
+        min-width: 120px;
+    }
+
+    #dismissConfirmPopup .review-btn {
+        background-color: #95a5a6;
+    }
+
+    #dismissConfirmPopup .review-btn:hover {
+        background-color: #7f8c8d;
+    }
+
+    /* For reviewed complaints that don't have the popup functionality */
+    #reviewed-complaints .complaint {
+        cursor: default;
+    }
+
+    /* But keep pointer cursor for the dismiss button in reviewed complaints */
+    #reviewed-complaints .dismiss-btn {
+        cursor: pointer;
+    }
 </style>
 
 <script>
@@ -350,26 +426,49 @@ protectRoute([0]); ?>
     }
 
     function showComplaintPopup(complaintId) {
+        console.log('Fetching details for complaint:', complaintId);
+
         fetch(`<?php echo ROOT ?>/admin/getComplaintDetails/${complaintId}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json()
+                        .then(err => Promise.reject(new Error(err.error || 'Failed to load complaint details')))
+                        .catch(() => Promise.reject(new Error('Failed to load complaint details')));
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Received data:', data);
                 const popup = document.getElementById('complaintPopup');
                 const content = document.getElementById('popupContent');
 
+                if (!data.complaint || !data.complainant || !data.complainee) {
+                    throw new Error('Incomplete complaint data');
+                }
+
+                // Safely access nested properties
+                const complaintData = {
+                    content: data.complaint.content || 'No content available',
+                    complainantEmail: data.complainant.email || 'No email available',
+                    complaineeEmail: data.complainee.email || 'No email available',
+                    date: data.complaint.complaintDate || 'No date available',
+                    time: data.complaint.complaintTime || 'No time available'
+                };
+
                 content.innerHTML = `
-                    <p><strong>Content:</strong> ${data.complaint.content}</p>
-                    <p><strong>Complainant Email:</strong> ${data.complainant.email}</p>
-                    <p><strong>Complainee Email:</strong> ${data.complainee.email}</p>
-                    <p><strong>Date:</strong> ${data.complaint.complaintDate}</p>
-                    <p><strong>Time:</strong> ${data.complaint.complaintTime}</p>
+                    <p><strong>Content:</strong> ${complaintData.content}</p>
+                    <p><strong>Complainant Email:</strong> ${complaintData.complainantEmail}</p>
+                    <p><strong>Complainee Email:</strong> ${complaintData.complaineeEmail}</p>
+                    <p><strong>Date:</strong> ${complaintData.date}</p>
+                    <p><strong>Time:</strong> ${complaintData.time}</p>
                 `;
 
                 popup.style.display = 'block';
                 currentComplaintId = complaintId;
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to load complaint details');
+                console.error('Detailed error:', error);
+                alert(error.message || 'Failed to load complaint details. Please try again later.');
             });
     }
 
@@ -378,14 +477,11 @@ protectRoute([0]); ?>
     }
 
     function markAsReviewed() {
-        updateComplaintStatus(3); // 3 for reviewed
-    }
+        if (!currentComplaintId) {
+            console.error('No complaint ID available');
+            return;
+        }
 
-    function dismissComplaint() {
-        updateComplaintStatus(2); // 2 for dismissed
-    }
-
-    function updateComplaintStatus(status) {
         fetch('<?php echo ROOT; ?>/admin/updateComplaintStatus', {
                 method: 'POST',
                 headers: {
@@ -393,13 +489,67 @@ protectRoute([0]); ?>
                 },
                 body: JSON.stringify({
                     id: currentComplaintId,
-                    status: status
+                    status: 3 // 3 for reviewed
                 })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     closePopup();
+                    location.reload(); // Reload to update the lists
+                } else {
+                    alert('Failed to mark complaint as reviewed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the complaint status.');
+            });
+    }
+
+    let currentComplaintId = null;
+    let complaintToDelete = null;
+
+    function dismissComplaint(complaintId = null) {
+        // Store the complaint ID to be dismissed
+        complaintToDelete = complaintId || currentComplaintId;
+
+        if (!complaintToDelete) {
+            console.error('No complaint ID available');
+            return;
+        }
+
+        // Show the confirmation popup
+        document.getElementById('dismissConfirmPopup').style.display = 'block';
+    }
+
+    function closeDismissPopup() {
+        document.getElementById('dismissConfirmPopup').style.display = 'none';
+        complaintToDelete = null;
+    }
+
+    function confirmDismiss() {
+        if (!complaintToDelete) {
+            console.error('No complaint ID available');
+            return;
+        }
+
+        fetch('<?php echo ROOT; ?>/admin/updateComplaintStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: complaintToDelete,
+                    status: 2 // 2 for dismissed
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close both popups if they're open
+                    closePopup();
+                    closeDismissPopup();
                     location.reload(); // Reload to update the lists
                 } else {
                     alert('Failed to update complaint status.');
@@ -411,13 +561,19 @@ protectRoute([0]); ?>
             });
     }
 
-    let currentComplaintId = null;
+    function dismissFromPopup() {
+        dismissComplaint();
+    }
 
     // Close popup when clicking outside
     window.onclick = function(event) {
         const popup = document.getElementById('complaintPopup');
+        const dismissPopup = document.getElementById('dismissConfirmPopup');
         if (event.target === popup) {
             closePopup();
+        }
+        if (event.target === dismissPopup) {
+            closeDismissPopup();
         }
     }
 </script>

@@ -17,18 +17,20 @@ class Complaint
     }
 
 
-    public function updateStatus($id, $status)
+    public function updateStatus($complaintId, $status)
     {
-        $query = "UPDATE complaint SET complaintStatus = :status WHERE complaintID = :id";
-        $params = [
-            'id' => $id,
-            'status' => $status
-        ];
-        $result = $this->query($query, $params);
-        if (!$result) {
-            error_log('Failed to update complaint status for ID: ' . $id);
+        try {
+            $query = "UPDATE complaint SET complaintStatus = :status WHERE complaintID = :id";
+            $params = [
+                ':status' => $status,
+                ':id' => $complaintId
+            ];
+
+            return $this->query($query, $params);
+        } catch (Exception $e) {
+            error_log("Error updating complaint status: " . $e->getMessage());
+            return false;
         }
-        return $result;
     }
 
     public function getComplaints()
@@ -67,13 +69,27 @@ class Complaint
         return $this->query($query, $params);
     }
 
-    public function getComplaintById($id)
+    public function getComplaintById($complaintId)
     {
-        $query = "SELECT * FROM complaint WHERE complaintID = :id";
-        $params = ['id' => $id];
-        $result = $this->query($query, $params);
+        try {
+            $query = "SELECT * FROM complaint WHERE complaintID = :complaintId LIMIT 1";
+            $params = [':complaintId' => $complaintId];
 
-        return isset($result[0]) ? $result[0] : null;
+            $result = $this->query($query, $params);
+
+            // Debug logging
+            error_log("Query result for complaint ID $complaintId: " . print_r($result, true));
+
+            if (!$result) {
+                error_log("No complaint found for ID: $complaintId");
+                return false;
+            }
+
+            return $result[0];
+        } catch (Exception $e) {
+            error_log("Error in getComplaintById: " . $e->getMessage());
+            return false;
+        }
     }
 
 
