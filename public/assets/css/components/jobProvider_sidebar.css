@@ -3,10 +3,14 @@ body {
     margin: 0;
 }
 
-/* to style active sidebar */
 .sidebar-item.active {
-    background-color: rgb(198, 198, 249);
-    color: white;
+    background-color: #c5c5f6;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-item.active .sidebar-icon,
+.sidebar-item.active .sidebar-label {
+    color: #3731df;
 }
 
 .sidebar-container {
