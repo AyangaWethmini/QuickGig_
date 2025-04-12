@@ -1,23 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     const sidebarItems = document.querySelectorAll('.sidebar-item');
 
-    // Function to set the active sidebar item based on the current URL
     const setActiveSidebarItem = () => {
         const currentURL = window.location.href;
+
         sidebarItems.forEach(item => {
             const itemHref = item.getAttribute('href');
+
             if (currentURL.includes(itemHref)) {
                 item.classList.add('active');
             } else {
                 item.classList.remove('active');
             }
         });
+
+        if (currentURL.includes('/jobListing_') ||currentURL.includes('/org_jobListing_') ) {
+            const jobListingItem = document.querySelector('.sidebar-item[href*="jobListing_"]' );
+            if (jobListingItem) {
+                jobListingItem.classList.add('active');
+            }
+        }
     };
 
-    // Set the active sidebar item on page load
     setActiveSidebarItem();
 
-    // Add click event listeners to toggle active class
     sidebarItems.forEach(item => {
         item.addEventListener('click', () => {
             sidebarItems.forEach(i => i.classList.remove('active'));
