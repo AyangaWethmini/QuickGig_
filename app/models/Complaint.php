@@ -46,6 +46,13 @@ class Complaint
         return $this->query($query);
     }
 
+    public function getComplaintsCount()
+    {
+        $query = "SELECT COUNT(*) AS totalComplaints FROM complaint";
+        $result = $this->query($query);
+        return $result[0]->totalComplaints ?? 0;
+    }
+
     public function create($data)
     {
         $query = "INSERT INTO complaint (complainantID, content, complaintDate, complaintTime, complaintStatus) 

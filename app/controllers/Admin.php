@@ -341,11 +341,20 @@ class Admin extends Controller
         $totalOrganizations = $this->adminModel->getCountByRoleID(3); // Count for roleID=3
         $totalJobs = $this->adminModel->getJobCount(); // Count for jobs
 
+        $totalAnnouncements = $this->adminModel->getTotalAnnouncements();
+
+        $totalAds = $this->advertisementModel->getTotalAdvertisements();
+
+        $totalComplaints = $this->complaintModel->getComplaintsCount();
+
         // Pass the counts to the view
         $data = [
             'totalIndividuals' => $totalIndividuals,
             'totalOrganizations' => $totalOrganizations,
-            'totalJobs' => $totalJobs
+            'totalJobs' => $totalJobs,
+            'totalAnnouncements' => $totalAnnouncements,
+            'totalAds' => $totalAds,
+            'totalComplaints' => $totalComplaints
         ];
 
         $this->view('admindashboard', $data);
