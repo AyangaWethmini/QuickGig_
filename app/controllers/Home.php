@@ -44,6 +44,12 @@ class Home extends Controller
 		$this->view('aboutUs');
 	}
 
+	public function premium()
+	{
+		$data = $this->planModel->getPlansWithStripe();
+		$this->view('premium', ['plans' => $data]);
+	}
+
 	
 	// public function payments()
 	// {

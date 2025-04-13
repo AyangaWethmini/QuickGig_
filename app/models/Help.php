@@ -14,57 +14,42 @@ class Help {
     }
 
     public function createQuestion($data) {
-        $query = "INSERT INTO help () 
-                  VALUES (:advertiserName, :contact)";
-        
+        $query = "INSERT INTO help (accountID, managerID, title, description, reply)
+                VALUES (:accountID, :managerID, :title, :description, :reply)";
+    
         $params = [
-            'advertiserName' => $data['advertiserName'],
-            'contact' => $data['contact'],
+            'accountID' => $data['accountID'],
+            'managerID' => $data['managerID'],
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'reply' => $data['reply']
         ];
-        
         return $this->query($query, $params);
-    }
+    }   
 
     public function delete($id) {
-        $query = "DELETE FROM advertiser WHERE advertiserID = :id";
+        $query = "DELETE FROM help WHERE helpId = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
-    }
-
-    public function getAdvertiserById($id) {
-        $query = "SELECT * FROM advertiser WHERE advertiserID = :id";
-        $params = ['id' => $id];
-        $result = $this->query($query, $params);
-    
-        return isset($result[0]) ? $result[0] : null;
-    }
-
-
-    public function findAdvertiser($data) {     //find by name and contact
-        $query = "SELECT * FROM advertiser WHERE advertiserName = :advertiserName AND contact = :contact";
-        $params = ['advertiserName' => $data['advertiserName'], 'contact' => $data['contact']];
-        $result = $this->query($query, $params);
-    
-        return isset($result[0]) ? $result[0] : null;
-    }
-    
+    }    
     
     public function update($id, $data) {
-        $query = "UPDATE advertiser 
-                  SET contact = :contact, 
-                  WHERE advertiserID = :id";
+        $query = "UPDATE help 
+                  SET title = :title, 
+                      description = :description, 
+                  WHERE helpId = :id";
     
         $params = [
             'id' => $id,
-            'contact' => $data['contact'],
-            
+            'title' => $data['title'],
+            'description' => $data['description'],
         ];
     
         return $this->query($query, $params);
     }
 
     //from manager side to reply to the question
-    public function replyToQuestion($id, $data){
+    public function replyToQuestion($id, $data) {
         // Ensure the helpId exists before updating
         $existing = $this->query("SELECT helpId FROM help WHERE helpId = :id", ['id' => $id]);
     
@@ -73,12 +58,14 @@ class Help {
         }
     
         $query = "UPDATE help
-                  SET reply = :reply
+                  SET reply = :reply,
+                      managerID = :managerID
                   WHERE helpId = :id";
     
         $params = [
             'id' => $id,
-            'reply' => $data['reply']
+            'reply' => $data['reply'],
+            'managerID' => $data['managerID']
         ];
     
         return $this->query($query, $params);

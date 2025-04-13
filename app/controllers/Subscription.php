@@ -3,198 +3,203 @@
 require_once '../app/services/StripeService.php';
 
 class Subscription extends Controller {
+    use Database;
+    
     protected $viewPath = "../app/views/subscription/";
     protected $accountSubscriptionModel;
     protected $stripeService;
     protected $accountModel;
     private $db;
-    
+    protected $planModel;
+		
 
-    public function __construct(){
+    public function __construct() {
+        $this->db = $this->connect();
         $this->accountSubscriptionModel = new AccountSubscription();
-
-        $this->stripeService = new StripeService();   
-
-        $this->accountModel = $this->model('Account');
+        $this->stripeService = new StripeService();
+        $this->accountModel = $this->model('Account', $this->db);
+        $this->planModel = $this->model('Plans');
     }
 
-
-    public function index(){
-        $this->view('subscribe');
+    public function index() {
+        $data = $this->planModel->getPlansWithStripe();
+		$this->view('premium', ['plans' => $data]);
     }
 
-    public function subscribe(){
-        if(!isset($_SESSION['accountID']) || !isset($_POST['priceID'])){
-            header('Location: /subscribe');
+    public function subscribe() {
+        if (!isset($_SESSION['user_id'], $_SESSION['user_email'], $_POST['priceID'])) {
+            header('Location: ' . ROOT . "/home/login");
             exit;
         }
 
-        $accountID = $_SESSION['accountID'];
+        $accountID = $_SESSION['user_id'];
+        $email = $_SESSION['user_email'];
         $priceID = $_POST['priceID'];
 
-        $customenrID = $this->accountSubscriptionModel->getStripeCustomerID($accountID);
-        if(!$customenrID){ //user has no Stripe account
-            $account = $this->accountModel->findByEmail($accountID);
+        $customerID = $this->accountSubscriptionModel->getStripeCustomerID($accountID);
 
-            if(!$account){
-                $_SESSION['error'] = 'Account not found'; /*!ERRORS!*/
-                header('Location: /subscribe');
+        if (!$customerID) {
+            $account = $this->accountModel->findByEmail($email);
+            if (!$account) {
+                $_SESSION['error'] = 'Account not found';
+                header('Location: ' . ROOT . '/home/premium');
                 exit;
             }
 
-            $customenrID = $this->accountSubscriptionModel->createStripeCustomer($accountID, $account->email);
-            if(!$customenrID){
-                $_SESSION['error'] = 'Failed to create Stripe customer'; /*!ERRORS!*/
-                header('Location: /subscribe');
+            $customerID = $this->accountSubscriptionModel->createStripeCustomer($accountID, $email);
+            if (!$customerID) {
+                $_SESSION['error'] = 'Failed to create Stripe customer';
+                header('Location: ' . ROOT . '/home/premium');
                 exit;
             }
         }
 
-        //create the checkout session
-        $checkoutResult = $this->accountSubscriptionModel->createCheckoutSession($customenrID, $priceID);
-        
-        //if successful, redirect to checkout URL
-        if(isset($checkoutResult['success']) && $checkoutResult['checkout_url']){
+        $checkoutResult = $this->accountSubscriptionModel->createCheckoutSession($accountID, $priceID );
+
+        if (!empty($checkoutResult['success']) && !empty($checkoutResult['checkout_url'])) {
             header('Location: ' . $checkoutResult['checkout_url']);
             exit;
-        }else{
-            $_SESSION['error'] = isset($checkoutResult['error']) ? $checkoutResult['error'] : 'Failed to create checkout session';
-            header('Location: ' . $checkoutResult['checkout_url']);
+        } else {
+            $_SESSION['error'] = $checkoutResult['error'] ?? 'Failed to create checkout session';
+            header('Location: ' . ROOT . '/home/premium');
             exit;
         }
     }
 
-    public function chekoutSuccess(){
-        if(!isset($_SESSION['accountID']) || !isset($_GET['session_id'])){
-            header('Location: /subscribe');
+    public function checkoutSuccess() {
+        if (!isset($_SESSION['user_id']) || !isset($_GET['session_id'])) {
+            $this->view('subscription/error', ['message' => 'Missing session info.']);
             exit;
         }
-
+    
+        $accountID = $_SESSION['user_id'];
         $sessionID = $_GET['session_id'];
-        
-        try{
+    
+        try {
             $session = \Stripe\Checkout\Session::retrieve($sessionID);
-
-            if($session->payment_status == 'paid'){
-                $_SESSION['success'] = 'Payment successful!';
-            }else{
-                $_SESSION['warning'] = 'Payment failed!';
+    
+            if ($session->payment_status === 'paid') {
+                $priceID = $session->metadata->price_id ?? null;
+    
+                if (!$priceID) {
+                    // fallback if priceID not in metadata, use session
+                    $priceID = $_SESSION['price_id'] ?? null;
+                }
+    
+                if ($priceID) {
+                    $result = $this->accountSubscriptionModel->createSubscription($accountID, $priceID);
+    
+                    if (isset($result['error'])) {
+                        $this->view('subscription/error', ['message' => $result['error']]);
+                        return;
+                    }
+    
+                    $this->view('subscription/success', ['message' => 'Payment successful! Welcome to Premium.']);
+                    return;
+                } else {
+                    $this->view('subscription/error', ['message' => 'Price ID missing.']);
+                    return;
+                }
+            } else {
+                $this->view('subscription/error', ['message' => 'Payment not completed.']);
             }
-        }catch(\Stripe\Exception\ApiErrorException $e){
-            $_SESSION['error'] = 'Failed to retrieve session: ' . $e->getMessage(); /*!ERRORS!*/
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            $this->view('subscription/error', ['message' => 'Stripe error: ' . $e->getMessage()]);
         }
-        header('Location: /subscribe');
-        exit;
     }
+    
 
-    public function cancelSubscription(){
-        if(!isset($_SESSION['accountID'])){
-            header('Location: /login'); //!ERRORS!  
+    public function cancelSubscription() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
             exit;
         }
 
-        $accountID = $_SESSION['accountID'];
-        $result = $this->accountSubscriptionModel->cancelSubscription($accountID);
+        $accountID = $_SESSION['user_id'];
+        $subscriptions = $this->accountSubscriptionModel->getActiveSubscriptions($accountID);
 
-        if($result['success']){
-            $_SESSION['success'] = 'Subscription canceled successfully!';
-        }else{
-            $_SESSION['error'] = isset($result['error']) ? $result['error'] : 'Failed to cancel subscription'; /*!ERRORS!*/
+        if (!empty($subscriptions)) {
+            $subscriptionID = $subscriptions[0]->stripe_subscription_id;
+            $result = $this->accountSubscriptionModel->cancelSubscription($subscriptionID);
+
+            if ($result['success']) {
+                $_SESSION['success'] = 'Subscription canceled successfully!';
+            } else {
+                $_SESSION['error'] = $result['error'] ?? 'Failed to cancel subscription';
+            }
+        } else {
+            $_SESSION['error'] = 'No active subscription found.';
         }
+
         header('Location: /subscribe');
         exit;
     }
 
-    // Handle Stripe webhooks
-    public function webhook()
-    {
+    public function webhook() {
         $config = require 'config/stripe_config.php';
         $endpoint_secret = $config['webhook_secret'];
-        
+
         $payload = @file_get_contents('php://input');
         $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-        
+
         try {
-            $event = \Stripe\Webhook::constructEvent(
-                $payload, $sig_header, $endpoint_secret
-            );
-        } catch(\UnexpectedValueException $e) {
-            // Invalid payload
-            http_response_code(400);
-            exit();
-        } catch(\Stripe\Exception\SignatureVerificationException $e) {
-            // Invalid signature
+            $event = \Stripe\Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
+        } catch (\UnexpectedValueException | \Stripe\Exception\SignatureVerificationException $e) {
             http_response_code(400);
             exit();
         }
-        
-        // Handle the event
+
         switch ($event->type) {
             case 'customer.subscription.created':
             case 'customer.subscription.updated':
                 $subscription = $event->data->object;
-                // Find account by customer ID
                 $db = require 'config/database.php';
-                $query = "SELECT accountID FROM stripe_customers WHERE stripe_customer_id = :customer_id LIMIT 1";
+                $query = "SELECT user_id FROM stripe_customers WHERE stripe_customer_id = :customer_id LIMIT 1";
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':customer_id', $subscription->customer);
                 $stmt->execute();
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 if ($result) {
                     $this->accountSubscriptionModel->updateSubscriptionStatus($subscription->id, $subscription->status);
-                    
-                    // If subscription is active, update the plan
+
                     if ($subscription->status === 'active') {
                         $planMap = $this->getStripePlanMap();
                         $priceId = $subscription->items->data[0]->price->id;
-                        $planID = isset($planMap[$priceId]) ? $planMap[$priceId] : null;
-                        
+                        $planID = $planMap[$priceId] ?? null;
+
                         if ($planID) {
-                            $query = "UPDATE account SET planID = :planID WHERE accountID = :accountID";
-                            $stmt = $db->prepare($query);
-                            $stmt->bindParam(':planID', $planID);
-                            $stmt->bindParam(':accountID', $result['accountID']);
-                            $stmt->execute();
+                            $updateQuery = "UPDATE account SET planID = :planID WHERE user_id = :user_id";
+                            $updateStmt = $db->prepare($updateQuery);
+                            $updateStmt->bindParam(':planID', $planID);
+                            $updateStmt->bindParam(':user_id', $result['user_id']);
+                            $updateStmt->execute();
                         }
                     }
                 }
                 break;
-                
+
             case 'customer.subscription.deleted':
                 $subscription = $event->data->object;
                 $this->accountSubscriptionModel->updateSubscriptionStatus($subscription->id, 'canceled');
                 break;
         }
-        
+
         http_response_code(200);
     }
 
-
     private function getStripePlanMap() {
         return [
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz' => 1,   
-            'price_1RASEUFq0GU0Vr5T2NbrfNQz'   => 2,   
-            'price_1RASFHFq0GU0Vr5TM8MF8OjW' => 3   
+            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1, // individual
+            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, // organization
         ];
+    }
+
+    public function checkoutFailed() {
+        $this->view('subscription/error', ['message' => 'Payment was canceled or failed.']);
     }
     
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+

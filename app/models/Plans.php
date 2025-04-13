@@ -7,6 +7,14 @@ class Plans {
         return $this->query($query);
     }
 
+    public function getPlansWithStripe() {
+        $query = 'SELECT plan.*, plan_price_mapping.stripe_price_id 
+                  FROM plan 
+                  LEFT JOIN plan_price_mapping ON plan.planID = plan_price_mapping.planID';
+        return $this->query($query);
+    }
+
+
     public function createPlan($data) {
         $query = "INSERT INTO plan (planName, description, price, duration, badge, postLimit) 
                   VALUES (:planName, :description, :price, :duration, :badge, :postLimit)";

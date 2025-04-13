@@ -5,14 +5,13 @@ class Controller
 
 	protected $viewPath = "../app/views/";
 
-	public function model($model)
-	{
-		// Require model file
-		require_once '../app/models/' . $model . '.php';
-		// Instantiate model
-		return new $model();
-	}
-
+	public function model($model, ...$params) {
+        // Require model file
+        require_once '../app/models/' . $model . '.php';
+        // Instantiate model
+        return new $model(...$params);
+    }
+	
 	public function view($name, $data = [])
 	{
 		$filename = $this->viewPath . $name . ".view.php";
@@ -28,3 +27,4 @@ class Controller
 		}
 	}
 }
+
