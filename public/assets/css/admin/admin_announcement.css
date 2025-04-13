@@ -39,7 +39,7 @@ hr {
 }
 
 .admin-announcement-filterheader {
-  margin-top: 20px; /* Add space above the "All Announcements" header */
+  margin-top: 0px; /* Add space above the "All Announcements" header */
 }
 
 .admin-announcement-filterheader h1 {
@@ -58,7 +58,7 @@ hr {
 }
 
 .announcement-header {
-  margin-top: 10px;
+  margin-top: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,8 +136,8 @@ hr {
 
 .complaint {
     border: 1px solid var(--neutral-80);
-    margin: 20px;
-    width: 70%;
+    margin: 0px;
+    width: 100%;
     margin: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

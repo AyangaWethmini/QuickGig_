@@ -22,7 +22,7 @@ class Admin extends Controller
     function adminadvertisements()
     {
         // Set items per page
-        $limit = 2;
+        $limit = 1;
 
         // Get current page from URL, default to 1
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
