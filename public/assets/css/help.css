@@ -184,9 +184,10 @@
     line-height: 120%;
 }
 
-.my-qheading{
-    margin-left: 10px;
-    margin-top: 20px;
+.forum .my-heading{
+    margin: 10px;
+    font-size: 26px;
+
 }
 
 .header h3 {

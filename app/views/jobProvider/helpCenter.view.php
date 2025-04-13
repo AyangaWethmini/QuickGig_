@@ -52,7 +52,7 @@ protectRoute([2]);?>
             </div>
             <hr>
             <div class="forum">
-                <div class="sort-container">
+                <!-- <div class="sort-container">
                     <span class="label">Sort by:</span>
                     <select>
                         <option value="most-relevant">Most relevant</option>
@@ -60,9 +60,9 @@ protectRoute([2]);?>
                         <option value="oldest">Oldest</option>
                         <option value="top-rated">Top rated</option>
                     </select>
-                </div>
+                </div> -->
 
-                <div class="article-card">
+                <!-- <div class="article-card">
                     <h1>What is My Applications?</h1>
                     <p class="text-grey text">
                     My Applications is a way for you to track jobs as you move through the application process. Depending on the job you applied to, you may also receive notifications indicating that an application has been actioned by an employer.
@@ -86,7 +86,7 @@ protectRoute([2]);?>
                         <button class="btn btn-trans">Yes</button>
                         <button class="btn btn-trans">No</button>
                     </div>
-                </div>
+                </div> -->
                 <hr>
                 <h1 class="my-qheading">My Questions</h1>
                 <div class="my-questions container">
