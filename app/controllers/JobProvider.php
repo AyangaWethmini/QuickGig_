@@ -365,7 +365,7 @@ class JobProvider extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $content = trim($_POST['complainInfo']);
             $complaintDate = date('Y-m-d');
-            $complaintTime = date('h:i A');
+            $complaintTime = date('h:i:s');
 
             $this->complaintModel->update($id, [
                 'content' => $content,
