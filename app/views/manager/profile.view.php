@@ -1,7 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?> 
 <?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
 protectRoute([1]);?>
-<?php include APPROOT . '/views/components/navbar.php'; ?>
+<?php include APPROOT . '/views/components/navbar.php'; ?> 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/profile.css">
 
 
@@ -16,23 +16,30 @@ protectRoute([1]);?>
     </div>
 <hr>
         
+<p><?= htmlspecialchars(print_r($manager, true)); ?></p>
 
         <section class="profile-manager flex-row container">
             <!-- Profile Image Section -->
             <div class="profile-image container">
-                <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Image">
+                
+                <?php if (!empty($manager->pp)): ?>
+                    <img src="data:image/jpeg;base64,<?= base64_encode($manager->pp); ?>" alt="Profile Image">
+                <?php else: ?>
+                    <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Image">
+                <?php endif; ?>
             </div>
 
             <!-- Profile Details Section -->
             <div class="profile-details container">
                 <div class="user-info">
                     <p class="role lbl"><strong>Role:</strong> Manager</p>
-                    <p class="name lbl"><strong>Name:</strong> Ayanga</p>
-                    <p class="email lbl"><strong>Email:</strong>ayangawethmini@gmail.com</p>
+                    <p class="name lbl"><strong>Name:</strong> <?=htmlspecialchars($manager->fname." ".$manager->lname); ?></p>
+                    <p class="email lbl"><strong>Email:</strong> <?= htmlspecialchars($manager->email); ?></p>
+                    <p class="email lbl"><strong>Phone:</strong> <?= htmlspecialchars($manager->phone); ?></p>
                 </div>
 
                 <!-- Form to Update Email -->
-                <form class="profile-form" id="emailForm" method="POST" action="<?=ROOT?>/manager/updateEmail">
+                <!-- <form class="profile-form" id="emailForm" method="POST" action="<?=ROOT?>/manager/updateEmail">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="email"><p class="lbl">Change Email:</p></label>
@@ -49,8 +56,8 @@ protectRoute([1]);?>
                     </div>
                 </form>
 
-                <!-- Form to Update Password -->
-                <form class="profile-form" id="passwordForm" method="POST" action="<?=ROOT?>/manager/updatePassword">
+                Form to Update Password -->
+                <!-- <form class="profile-form" id="passwordForm" method="POST" action="<?=ROOT?>/manager/updatePassword">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="password"><p class="lbl">Change Password</p></label>
@@ -66,7 +73,7 @@ protectRoute([1]);?>
                             <button class="btn btn-accent" onclick="showConfirmation()">Change</button>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
         </section>
     </main>

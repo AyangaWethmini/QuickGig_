@@ -9,6 +9,7 @@ class Manager extends Controller
     protected $advertiserModel;
     protected $accountModel;
     protected $accountSubscriptionModel; // Assuming you have this model for subscriptions
+    protected $managerModel;
 
     public function __construct()
     {
@@ -19,26 +20,26 @@ class Manager extends Controller
         $this->advertiserModel = $this->model('Advertiser');
         $this->accountModel = $this->model('Account');
         $this->accountSubscriptionModel = $this->model('AccountSubscription'); 
+        $this->managerModel = $this->model('ManagerModel');
     }
 
     public function index()
     {
-        $adCount = $this->advertisementModel->getAdsCount();
-        $planCount = $this->planModel->getPlansCount();
-        $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) : null;
-        $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) : null;
-        $subsCount = $this->accountSubscriptionModel->getSubscriptionCount($startDate, $endDate);
-        $data = [
-            'adCount' => $adCount,
-            'planCount' => $planCount,
-            'subsCount' => $subsCount,
-        ];
-        $this->view('dashboard', $data);
+        // $adCount = $this->advertisementModel->getAdsCount();
+        // $planCount = $this->planModel->getPlansCount();
+        // $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) : null;
+        // $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) : null;
+        //$subsCount = $this->accountSubscriptionModel->getSubscriptionCount($startDate, $endDate);
+        
+        
+        $this->view('dashboard');
     }
 
     public function profile()
     {
-        $this->view('profile');
+        $accountID = $_SESSION['user_id'];
+        $data = $this->managerModel->getManagerData($accountID);
+        $this->view('profile', ['manager' => $data]);
     }
 
     public function announcements()
@@ -364,4 +365,36 @@ class Manager extends Controller
             exit;
         }
     }
+
+
+
+    public function getDashboardData() {
+        // Get the start and end date from the POST request
+        $data = json_decode(file_get_contents('php://input'), true);
+        $startDate = $data['startDate'];
+        $endDate = $data['endDate'];
+    
+        // Fetch data from your database using the functions
+        $adCount = $this->advertisementModel->getAdsCountDateRange($startDate, $endDate);
+        $adRev = $this->advertisementModel->getAdRev($startDate, $endDate);
+        $subRevData = $this->accountSubscriptionModel->getSubRev($startDate, $endDate);
+        $planCount = $this->planModel->getPlansCount();
+        $manager = $this->managerModel->getManagerName($_SESSION['accountID']);
+    
+        // Prepare the response data
+        $response = [
+            'success' => true,
+            'adCount' => $adCount,
+            'revenue' => $adRev,
+            'subsCount' => $subRevData['active_subscriptions'],
+            'subRevenue' => $subRevData['total_revenue'],
+            'planCount' => $planCount,
+            'managerName' => $manager ? $manager->fname : 'Manager'
+        ];
+    
+        // Return data as a JSON response
+        echo json_encode($response);
+    }
+    
+    
 }

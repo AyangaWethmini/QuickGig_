@@ -4,7 +4,9 @@
   align-self: flex-start;
   margin-left: 300px;
 }
-
+.wrapper{
+  margin-top: 100px;
+}
 .header {
     justify-content: space-between; 
     margin-bottom: 10px;   

@@ -56,6 +56,8 @@ class AccountSubscription extends Account {
             return $customer->id;
         }
 
+
+
         return false;
     }
 
@@ -104,9 +106,22 @@ class AccountSubscription extends Account {
         return ['error' => 'Subscription creation failed'];
     }
 
-    public function getActiveSubscriptions($accountID) {
-        $query = "SELECT * FROM subscriptions WHERE accountID = :accountID AND status = 'active'";
-        return $this->query($query, ['accountID' => $accountID]);
+    public function getActiveSubscriptionsCount($startDate = null, $endDate = null) {
+        $query = "SELECT COUNT(stripe_subscription_id) FROM subscriptions WHERE status = 'active' AND current_period_start BETWEEN :startDate AND :endDate";
+        if($startDate >= $endDate) {
+            $_SESSION['error'] = 'Invalid date range';
+            return ['error' => 'Invalid date range'];
+        }
+        $params = [
+            'startDate' => $startDate ? date('Y-m-d H:i:s', strtotime($startDate)) : date('Y-m-d H:i:s', strtotime('-1 month')),
+            'endDate' => $endDate ? date('Y-m-d H:i:s', strtotime($endDate)) : date('Y-m-d H:i:s')
+        ];
+        $result =  $this->query($query, $params);
+        if (!$result) {
+            return ['error' => 'Database error'];
+        }
+        return $result ? $result[0]['COUNT(stripe_subscription_id)'] : 0;
+        
     }
 
     public function updateSubscriptionStatus($stripeSubscriptionID, $status) {
@@ -152,5 +167,28 @@ class AccountSubscription extends Account {
             'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1, // individual
             'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, // organization
         ];
+    }
+
+    public function getSubRev($startDate, $endDate){
+        $query = "SELECT SUM(p.amount) AS total_revenue, COUNT(s.accommID) AS active_subscriptions FROM subscriptions s JOIN prices p ON s.stripe_price_id = p.stripe_price_id
+                    WHERE s.status = 'active' AND s.current_period_start >= :startDate AND s.current_period_end <= :endDate;";
+
+        $params = [
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ];
+
+        $result = $this->query($query, $params);
+        if ($result) {
+            return [
+                'total_revenue' => $result[0]['total_revenue'],
+                'active_subscriptions' => $result[0]['active_subscriptions']
+            ];
+        } else {
+            return [
+                'total_revenue' => 0,
+                'active_subscriptions' => 0
+            ];
+        }
     }
 }

@@ -6,21 +6,33 @@
 .main-content {
     height: 100vh; 
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     margin-left: 300px;
 }
 
 .ad-form {
     justify-content: center;
+    margin-top: 30px;
 }
 
-.create-ad-form {
-    width: 100%;
-    padding: 30px;
+.equal-sections-form {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.create-ad-form form {
-    gap: 100px;
+.equal-sections-form .section {
+    flex: 1 1 30%;
+    min-width: 250px;
+    max-width: 400px;
+    padding: 20px;
+    
+}
+
+.post-ad-btn{
+    padding : 5px;
+    width: 200px;
+    height: 45px;
 }
 
 .field {
@@ -28,27 +40,23 @@
     width: 100%;
 }
 
-.create-ad-form input[type="text"],
-.create-ad-form input[type="url"],
-.create-ad-form input[type="number"],
-.create-ad-form input[type="email"],
-.create-ad-form textarea,
-.update-ad-form input[type="text"],
-.update-ad-form input[type="url"],
-.update-ad-form input[type="number"],
-.update-ad-form textarea,
-.create-ad-form input[type="date"] {
+input[type="text"],
+input[type="url"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+textarea {
     width: 100%;
-    max-width: 410px;
     height: 45px;
     padding: 10px;
-    box-sizing: border-box;
     border: 1px solid #d6ddeb;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.create-ad-form input[type="date"] {
-    width: 200px;
+textarea {
+    height: 100px;
+    resize: vertical;
 }
 
 .radio-btns {
@@ -71,69 +79,52 @@
     width: 100%;
     max-width: 300px;
     margin: 15px 0;
+    padding: 10px;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    text-align: center;
 }
 
-#preview {
+#imagePreview img {
     max-width: 100%;
     height: auto;
+    display: none;
 }
 
-.ad-card {
-    width: 100%;
-    max-width: 700px;
-    min-height: 160px;
-    margin: 15px auto;
-    padding: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    border: 1px solid #D6DDEB;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    cursor: pointer;
-}
-
-.ad-card:hover {
-    transform: translateY(-5px);
-}
-
-.ad-card .ad-details {
-    flex: 1;
-    min-width: 250px;
-}
-
-.adv-title {
-    font-size: 20px;
-    margin-top: 5px;
-    padding: 5px;
-    color: var(--Neutrals-80);
-}
-
-.header {
+.btn.btn-accent {
     margin-top: 20px;
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
 }
 
-.header h3 {
-    color: var(--Neutrals-100, #25324B);
-    font-family: Epilogue;
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 120%;
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .equal-sections-form {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
-.header button {
-    height: 50px;
-    font-size: 16px;
-    color: var(--Neutrals-80);
+@media (max-width: 768px) {
+    .equal-sections-form .section {
+        max-width: 100%;
+    }
 }
 
-.ads-wrapper {
-    justify-content: center;
+@media (max-width: 480px) {
+    input[type="text"],
+    input[type="url"],
+    input[type="number"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+        font-size: 14px;
+    }
+
+    .btn.btn-accent {
+        width: 100%;
+    }
 }
-
-

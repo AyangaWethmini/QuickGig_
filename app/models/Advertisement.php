@@ -70,7 +70,19 @@ class Advertisement
         return $this->query($query, $params);
     }
 
-    public function getAdsCount()
+    public function getAdsCountDateRange($startDate, $endDate)
+    {
+        $query = "SELECT COUNT(*) AS totalAds FROM advertisement 
+                  WHERE startDate >= :startDate AND endDate <= :endDate";
+        $params = [
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ];
+        $result = $this->query($query, $params);
+        return $result[0]->totalAds ?? 0;
+    }
+
+    public function getActiveAdsCount()
     {
         $query = "SELECT COUNT(*) AS totalAds FROM advertisement WHERE adStatus = 'active'";
         $result = $this->query($query);
@@ -100,5 +112,16 @@ class Advertisement
         $query = "UPDATE advertisement SET views = views + 1 WHERE advertisementID = :adId";
         $params = ['adId' => $adId];
         return $this->query($query, $params);
+    }
+
+    public function getAdRev($startDate, $endDate) {
+        $query = "SELECT SUM(price) AS totalRevenue FROM advertisement 
+                  WHERE startDate >= :startDate AND endDate <= :endDate";
+        $params = [
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ];
+        $result = $this->query($query, $params);    
+        return $result[0]->totalRevenue ?? 0;
     }
 }
