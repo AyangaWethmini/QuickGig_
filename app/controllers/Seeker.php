@@ -229,14 +229,94 @@ class Seeker extends Controller
         $this->view('jobListing_completed', $data);
     }
 
-    function makeComplaint()
+    public function makeComplaint($taskID)
     {
-        $this->view('makeComplaint');
+        $completedSeeker = $this->model('CompletedSeeker');
+        $employer = $completedSeeker->getEmployerDetails($taskID);
+
+        $data = [
+            'employer' => $employer
+        ];
+
+        $this->view('makeComplaint', $data);
     }
 
-    function complaints()
+    public function submitComplaint()
     {
-        $this->view('complaints');
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $complainantID = $_SESSION['user_id'];
+            $complaineeID = trim($_POST['complaineeID']);
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('H:i:s');
+            $complaintStatus = 1;
+            $complaintID = uniqid('COMP_');
+            $jobOrAvailable = trim($_POST['jobOrAvailable']);
+            $applicationOrReq = trim($_POST['applicationOrReq']);
+
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaintModel->create([
+                'complaintID' => $complaintID,
+                'complainantID' => $complainantID,
+                'complaineeID' => $complaineeID,
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime,
+                'complaintStatus' => $complaintStatus,
+                'jobOrAvailable' => $jobOrAvailable,
+                'applicationOrReq' => $applicationOrReq
+            ]);
+
+            header('Location: ' . ROOT . '/seeker/jobListing_completed');
+        }
+    }
+
+    public function complaints()
+    {
+        $complaintModel = $this->model('SeekerComplaint');
+        $complaints = $complaintModel->getComplaints();
+
+        $data = [
+            'complaints' => $complaints
+        ];
+
+        $this->view('complaints', $data);
+    }
+
+    public function updateComplaint($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('H:i:s');
+
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaintModel->update($id, [
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime
+            ]);
+
+            header('Location: ' . ROOT . '/seeker/complaints');
+        } else {
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaint = $complaintModel->getComplaintById($id);
+
+            $data = [
+                'complaint' => $complaint
+            ];
+
+            $this->view('updateComplaint', $data);
+        }
+    }
+
+    public function deleteComplaint($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaintModel->delete($id);
+            header('Location: ' . ROOT . '/seeker/complaints');
+        }
     }
 
     function settings()
