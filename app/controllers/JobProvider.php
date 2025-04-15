@@ -118,14 +118,21 @@ class JobProvider extends Controller
     }
 
 
-    function findEmployees()
-    {
-        $findEmployees = $this->findEmpModel->getEmployees();
+    function findEmployees() {
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        if (!empty($searchTerm)) {
+            $findEmployees = $this->findEmpModel->searchEmployees($searchTerm);
+        } else {
+            $findEmployees = $this->findEmpModel->getEmployees();
+        }
+    
         $data = [
             'findEmployees' => $findEmployees
         ];
+    
         $this->view('findEmployees', $data);
     }
+
     public function requestJob()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

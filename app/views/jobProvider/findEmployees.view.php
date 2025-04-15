@@ -17,10 +17,14 @@ protectRoute([2]);?>
         </div>
         <hr>
         <div class="search-container">
-            <input type="text" 
-                class="search-bar" 
-                placeholder="Find employees (e.g. waiter, bartender, etc. or by name)"
-                aria-label="Search">
+            <form method="GET" action="<?= ROOT ?>/jobProvider/findEmployees">
+                <input type="text" 
+                    name="search" 
+                    class="search-bar" 
+                    placeholder="Find employees (e.g. waiter, bartender, etc. or by name)"
+                    aria-label="Search"
+                    value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </form>
             <br><br>
             <div class="filter-container">
                 <span>Sort by:</span>
@@ -185,4 +189,17 @@ protectRoute([2]);?>
     function closePopup(popupID) {
         document.getElementById(popupID).style.display = 'none';
     }
+
+    document.querySelector('.search-bar').addEventListener('input', function() {
+        const searchTerm = this.value;
+        fetch(`<?= ROOT ?>/jobProvider/findEmployees?search=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.job-cards-container').innerHTML;
+                document.querySelector('.job-cards-container').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
