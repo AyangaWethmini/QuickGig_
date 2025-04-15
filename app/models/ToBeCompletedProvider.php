@@ -49,4 +49,37 @@ class ToBeCompletedProvider{
         
         return $result ? $result : [];
     }
+
+    public function searchToBeCompleted($userID, $searchTerm) {
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
+                  FROM apply_job a 
+                  JOIN job j ON a.jobID = j.jobID
+                  JOIN individual i ON a.seekerID = i.accountID
+                  JOIN account acc ON a.seekerID = acc.accountID
+                  WHERE j.accountID = ? 
+                  AND a.applicationStatus = 2
+                  AND (
+                      LOWER(i.fname) LIKE ? OR
+                      LOWER(i.lname) LIKE ? OR
+                      LOWER(j.jobTitle) LIKE ? OR
+                      LOWER(j.location) LIKE ?
+                  )
+                  ORDER BY datePosted DESC, timePosted DESC";
+        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+    }
+
+    public function searchReqAvailableTBC($userID, $searchTerm) {
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = "SELECT * FROM req_available 
+                  WHERE providerID = ? 
+                  AND (
+                      LOWER(i.fname) LIKE ? OR
+                      LOWER(i.lname) LIKE ? OR
+                      LOWER(description) LIKE ? OR
+                      LOWER(location) LIKE ? 
+                  )
+                  ORDER BY datePosted DESC, timePosted DESC";
+        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+    }
 }

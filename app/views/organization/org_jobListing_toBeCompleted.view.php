@@ -19,9 +19,12 @@ protectRoute([3]);?>
 
         <div class="list-header">
             <p class="list-header-title">To Be Completed</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
+            <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_toBeCompleted">
+                <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </form>
             <button class="filter-btn">Filter</button>
-        </div> <br>
+        </div> 
+        <br>
 
         <div class="employee-list">
 
@@ -163,5 +166,19 @@ document.getElementById('popup-yes').addEventListener('click', () => {
 document.getElementById('popup-no').addEventListener('click', () => {
     document.getElementById('popup').classList.add('hidden');
 });
+
+document.querySelector('.search-input').addEventListener('input', function () {
+        const searchTerm = this.value;
+
+        fetch(`<?= ROOT ?>/organization/org_jobListing_toBeCompleted?search=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.job-list').innerHTML;
+                document.querySelector('.job-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 </html>
