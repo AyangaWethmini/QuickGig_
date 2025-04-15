@@ -27,14 +27,18 @@ class Seeker extends Controller
         $this->view('seekerProfile', $data);
     }
 
-    function findEmployees()
-    {
-        $findJobs = $this->findJobModel->getJobs();
-
+    function findEmployees() {
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        if (!empty($searchTerm)) {
+            $findJobs = $this->findJobModel->searchJobs($searchTerm);
+        } else {
+            $findJobs = $this->findJobModel->getJobs();
+        }
+    
         $data = [
             'findJobs' => $findJobs
         ];
-
+    
         $this->view('findEmployees', $data);
     }
 
