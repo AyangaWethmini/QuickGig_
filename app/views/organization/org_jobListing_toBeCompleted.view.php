@@ -175,8 +175,8 @@ document.querySelector('.search-input').addEventListener('input', function () {
             .then(html => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-                const newContent = doc.querySelector('.job-list').innerHTML;
-                document.querySelector('.job-list').innerHTML = newContent;
+                const newContent = doc.querySelector('.employee-list').innerHTML;
+                document.querySelector('.employee-list').innerHTML = newContent;
             })
             .catch(error => console.error('Error:', error));
     });

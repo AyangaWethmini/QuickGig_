@@ -66,7 +66,7 @@ class ToBeCompletedProvider{
                       LOWER(j.location) LIKE ?
                   )
                   ORDER BY datePosted DESC, timePosted DESC";
-        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
 
     public function searchReqAvailableTBC($userID, $searchTerm) {
