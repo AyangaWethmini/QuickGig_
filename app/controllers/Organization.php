@@ -25,8 +25,13 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('organizationProfile',$data);
         }
 
-        function org_findEmployees(){
-            $findEmployees = $this->findEmpModel->getEmployees();
+        function org_findEmployees() {
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            if (!empty($searchTerm)) {
+                $findEmployees = $this->findEmpModel->searchEmployees($searchTerm);
+            } else {
+                $findEmployees = $this->findEmpModel->getEmployees();
+            }
 
             $data = [
                 'findEmployees' => $findEmployees

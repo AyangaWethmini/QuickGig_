@@ -57,4 +57,25 @@ class FindEmployees {
     
         return $this->query($query, [$reqID, $providerID, $availableID, $reqStatus]);
     }
+
+    public function searchEmployees($searchTerm) {
+        $id = $_SESSION['user_id'];
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = 'SELECT ma.*, i.fname, i.lname, acc.pp
+                FROM makeAvailable ma
+                JOIN individual i ON ma.accountID = i.accountID
+                JOIN account acc ON ma.accountID = acc.accountID
+                WHERE ma.accountID != ?
+                AND ma.availabilityStatus = 1
+                AND (
+                    LOWER(i.fname) LIKE ? OR
+                    LOWER(i.lname) LIKE ? OR
+                    LOWER(ma.description) LIKE ? OR
+                    LOWER(ma.location) LIKE ? OR
+                    LOWER(ma.categories) LIKE ?
+                )
+                ORDER BY ma.datePosted DESC, ma.timePosted DESC';
+        $result = $this->query($query, [$id, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+        return $result ? $result : [];
+    }
 }
