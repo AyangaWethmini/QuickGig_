@@ -38,24 +38,24 @@ protectRoute([2]); ?>
                         <div class="complaint-content flex-col">
                             <div class="complaint-details flex-row">
                                 <div class="complaint-text flex-col">
-                                    <div class="the-complaint"><?php echo $complaint->content ?></div>
+                                    <div class="the-complaint"><?php echo htmlspecialchars($complaint->content, ENT_QUOTES); ?></div>
                                     <div class="text-grey">
                                         <?php
                                         $formattedTime = date('h:i:s', strtotime($complaint->complaintTime));
-                                        echo $complaint->complaintDate . ' | ' . $formattedTime;
+                                        echo htmlspecialchars($complaint->complaintDate . ' | ' . $formattedTime, ENT_QUOTES);
                                         ?>
                                     </div>
                                 </div>
                                 <div class="complaint-status">
                                     <?php
                                     if ($complaint->complaintStatus == 1) {
-                                        echo 'Pending';
+                                        echo htmlspecialchars('Pending', ENT_QUOTES);
                                     } elseif ($complaint->complaintStatus == 2) {
-                                        echo 'Under Reviewed';
+                                        echo htmlspecialchars('Under Reviewed', ENT_QUOTES);
                                     } elseif ($complaint->complaintStatus == 3) {
-                                        echo 'Reviewed';
+                                        echo htmlspecialchars('Reviewed', ENT_QUOTES);
                                     } else {
-                                        echo 'Unknown Status'; // Fallback for unexpected values
+                                        echo htmlspecialchars('Unknown Status', ENT_QUOTES);
                                     }
                                     ?>
                                 </div>

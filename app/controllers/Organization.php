@@ -6,6 +6,7 @@ date_default_timezone_set('Asia/Colombo');
 
         use Database;
         public function __construct(){
+            $this->complaintModel = $this->model('Complaint');
             $this->findEmpModel = $this->model('FindEmployees');
             $this->jobStatusUpdater = $this->model('JobStatusUpdater');
             $this->accountModel = $this->model('Account');
@@ -255,8 +256,84 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_jobListing_completed', $data);
         }
 
-        function org_complaints(){
-            $this->view('org_complaints');
+        public function makeComplaint($taskID){
+        $completedProvider = $this->model('CompletedProvider');
+        $employee = $completedProvider->getEmployeeDetails($taskID);
+
+        $data = [
+            'employee' => $employee
+        ];
+
+        $this->view('makeComplaint', $data);
+        }
+
+        public function submitComplaint(){
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $complainantID = $_SESSION['user_id'];
+                $complaineeID = trim($_POST['complaineeID']);
+                $content = trim($_POST['complainInfo']);
+                $complaintDate = date('Y-m-d');
+                $complaintTime = date('H:i:s');
+                $complaintStatus = 1;
+                $complaintID = uniqid('COMP_');
+                $jobOrAvailable = trim($_POST['jobOrAvailable']);
+                $applicationOrReq = trim($_POST['applicationOrReq']);
+
+                $complaintModel = $this->model('Complaint');
+                $complaintModel->create([
+                    'complaintID' => $complaintID,
+                    'complainantID' => $complainantID,
+                    'complaineeID' => $complaineeID,
+                    'content' => $content,
+                    'complaintDate' => $complaintDate,
+                    'complaintTime' => $complaintTime,
+                    'complaintStatus' => $complaintStatus,
+                    'jobOrAvailable' => $jobOrAvailable,
+                    'applicationOrReq' => $applicationOrReq
+                ]);
+
+                header('Location: ' . ROOT . '/organization/org_jobListing_completed');
+            }
+        }
+
+        function complaints()
+        {
+            $complaints = $this->complaintModel->getComplaints();
+            $data = [
+                'complaints' => $complaints
+            ];
+            $this->view('org_complaints', $data);
+        }
+        public function deleteComplaint($id)
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->complaintModel->delete($id);
+                header('Location: ' . ROOT . '/organization/complaints');
+            }
+        }
+        public function updateComplaint($id = null)
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $content = trim($_POST['complainInfo']);
+                $complaintDate = date('Y-m-d');
+                $complaintTime = date('h:i:s');
+
+                $this->complaintModel->update($id, [
+                    'content' => $content,
+                    'complaintDate' => $complaintDate,
+                    'complaintTime' => $complaintTime
+                ]);
+
+                header('Location: ' . ROOT . '/organization/complaints');
+            } else {
+                $complaint = $this->complaintModel->getComplaintById($id);
+
+                $data = [
+                    'complaint' => $complaint
+                ];
+
+                $this->view('updateComplaint', $data);
+            }
         }
 
         function settings(){

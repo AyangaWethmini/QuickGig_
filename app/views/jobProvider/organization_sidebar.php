@@ -30,7 +30,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/org_complaints" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/complaints" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
                 <span class="sidebar-label">complaints</span>
             </a>
