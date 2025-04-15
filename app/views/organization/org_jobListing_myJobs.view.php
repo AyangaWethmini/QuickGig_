@@ -23,9 +23,12 @@ $jobs = $jobModel->getJobsByUser($userID);
 
         <div class="list-header">
             <p class="list-header-title">My Jobs</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
+            <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_myJobs">
+                <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </form>
             <button class="filter-btn">Filter</button>
-        </div> <br>
+        </div> 
+        <br>
 
         <div class="job-list">
             <?php if (!empty($data['jobs'])): ?>
@@ -93,5 +96,19 @@ $jobs = $jobModel->getJobsByUser($userID);
             modal.style.display = 'none';
         };
     }
+
+    document.querySelector('.search-input').addEventListener('input', function () {
+        const searchTerm = this.value;
+
+        fetch(`<?= ROOT ?>/organization/org_jobListing_myJobs?search=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.job-list').innerHTML;
+                document.querySelector('.job-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 </html>

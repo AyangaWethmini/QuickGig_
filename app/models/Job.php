@@ -103,4 +103,22 @@ class Job{
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
+
+    public function searchJobsByUser($userID, $searchTerm) {
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = "SELECT * FROM job 
+                  WHERE accountID = :accountID 
+                  AND (
+                      LOWER(jobTitle) LIKE :searchTerm OR
+                      LOWER(description) LIKE :searchTerm OR
+                      LOWER(location) LIKE :searchTerm OR
+                      LOWER(categories) LIKE :searchTerm
+                  )
+                  ORDER BY availableDate DESC, timeFrom DESC";
+        $params = [
+            'accountID' => $userID,
+            'searchTerm' => $searchTerm
+        ];
+        return $this->query($query, $params);
+    }
 }

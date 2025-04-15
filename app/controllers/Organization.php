@@ -61,14 +61,13 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_postJob');
         }
         
-        public function org_jobListing_received(){
-            $received = $this->model('ReceivedProvider');
-            $receivedRequests = $received->getReceivedRequests();
-
-            $data = [
-                'receivedRequests' => $receivedRequests
-            ];
-
+        function org_jobListing_received() {
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $receivedModel = $this->model('ReceivedProvider');
+            $receivedRequests = !empty($searchTerm) ? $receivedModel->searchReceivedRequests($userID, $searchTerm) : $receivedModel->getReceivedRequests();
+        
+            $data = ['receivedRequests' => $receivedRequests];
             $this->view('org_jobListing_received', $data);
         }
 
@@ -187,26 +186,23 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_reviews');
         }
 
-        public function org_jobListing_myJobs(){
+        function org_jobListing_myJobs() {
             $userID = $_SESSION['user_id'];
-            $jobModel = $this->model('Job'); 
-            $jobs = $jobModel->getJobsByUser($userID);
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $jobModel = $this->model('Job');
+            $jobs = !empty($searchTerm) ? $jobModel->searchJobsByUser($userID, $searchTerm) : $jobModel->getJobsByUser($userID);
         
-            $data = [
-                'jobs' => $jobs
-            ];
-        
+            $data = ['jobs' => $jobs];
             $this->view('org_jobListing_myJobs', $data);
         }
 
-        function org_jobListing_send(){
-            $send = $this->model('sendProvider');
-            $sendRequests = $send->getsendRequests();
-
-            $data = [
-                'sendRequests' => $sendRequests
-            ];
-
+        function org_jobListing_send() {
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $sendModel = $this->model('SendProvider');
+            $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
+        
+            $data = ['sendRequests' => $sendRequests];
             $this->view('org_jobListing_send', $data);
         }
 
@@ -225,11 +221,15 @@ date_default_timezone_set('Asia/Colombo');
             }
         }
 
-        function org_jobListing_toBeCompleted(){
+        function org_jobListing_toBeCompleted() {
             $this->jobStatusUpdater->updateJobStatuses();
             $tbcProvider = $this->model('ToBeCompletedProvider');
-            $applyJobTBC = $tbcProvider->getApplyJobTBC();
-            $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+            $applyJobTBC = !empty($searchTerm) ? $tbcProvider->searchToBeCompleted($userID, $searchTerm) : $tbcProvider->getApplyJobTBC();
+            $reqAvailableTBC = !empty($searchTerm) ? $tbcProvider->searchReqAvailableTBC($userID, $searchTerm) : $tbcProvider->getReqAvailableTBC();
+
             $data = [
                 'applyJobTBC' => $applyJobTBC,
                 'reqAvailableTBC' => $reqAvailableTBC
@@ -237,11 +237,15 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_jobListing_toBeCompleted', $data);
         }
 
-        function org_jobListing_ongoing(){
+        function org_jobListing_ongoing() {
             $this->jobStatusUpdater->updateJobStatuses();
             $ongoingProvider = $this->model('OngoingProvider');
-            $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
-            $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        
+            $applyJobOngoing = !empty($searchTerm) ? $ongoingProvider->searchOngoing($userID, $searchTerm) : $ongoingProvider->getApplyJobOngoing();
+            $reqAvailableOngoing = !empty($searchTerm) ? $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm) : $ongoingProvider->getReqAvailableOngoing();
+        
             $data = [
                 'applyJobOngoing' => $applyJobOngoing,
                 'reqAvailableOngoing' => $reqAvailableOngoing
@@ -249,11 +253,15 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_jobListing_ongoing', $data);
         }
 
-        function org_jobListing_completed(){
+        function org_jobListing_completed() {
             $this->jobStatusUpdater->updateJobStatuses();
             $completedProvider = $this->model('CompletedProvider');
-            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
-            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        
+            $applyJobCompleted = !empty($searchTerm) ? $completedProvider->searchCompleted($userID, $searchTerm) : $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = !empty($searchTerm) ? $completedProvider->searchReqAvailableCompleted($userID, $searchTerm) : $completedProvider->getReqAvailableCompleted();
+        
             $data = [
                 'applyJobCompleted' => $applyJobCompleted,
                 'reqAvailableCompleted' => $reqAvailableCompleted
