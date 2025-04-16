@@ -159,8 +159,16 @@ class JobProvider extends Controller
     function jobListing_received() {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $receivedModel = $this->model('ReceivedProvider');
-        $receivedRequests = !empty($searchTerm) ? $receivedModel->searchReceivedRequests($userID, $searchTerm) : $receivedModel->getReceivedRequests();
+    
+        if (!empty($filterDate)) {
+            $receivedRequests = $receivedModel->filterReceivedRequestsByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $receivedRequests = $receivedModel->searchReceivedRequests($userID, $searchTerm);
+        } else {
+            $receivedRequests = $receivedModel->getReceivedRequests();
+        }
     
         $data = ['receivedRequests' => $receivedRequests];
         $this->view('jobListing_received', $data);
@@ -246,8 +254,16 @@ class JobProvider extends Controller
     function jobListing_myJobs() {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+    
         $jobModel = $this->model('Job');
-        $jobs = !empty($searchTerm) ? $jobModel->searchJobsByUser($userID, $searchTerm) : $jobModel->getJobsByUser($userID);
+        if (!empty($filterDate)) {
+            $jobs = $jobModel->filterJobsByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $jobs = $jobModel->searchJobsByUser($userID, $searchTerm);
+        } else {
+            $jobs = $jobModel->getJobsByUser($userID);
+        }
     
         $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
@@ -256,8 +272,16 @@ class JobProvider extends Controller
     function jobListing_send() {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $sendModel = $this->model('SendProvider');
-        $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
+    
+        if (!empty($filterDate)) {
+            $sendRequests = $sendModel->filterSendRequestsByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $sendRequests = $sendModel->searchSendRequests($userID, $searchTerm);
+        } else {
+            $sendRequests = $sendModel->getSendRequests();
+        }
     
         $data = ['sendRequests' => $sendRequests];
         $this->view('jobListing_send', $data);
@@ -280,14 +304,22 @@ class JobProvider extends Controller
     }
 
     function jobListing_toBeCompleted() {
-        $this->jobStatusUpdater->updateJobStatuses();
-        $tbcProvider = $this->model('ToBeCompletedProvider');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-        $applyJobTBC = !empty($searchTerm) ? $tbcProvider->searchToBeCompleted($userID, $searchTerm) : $tbcProvider->getApplyJobTBC();
-        $reqAvailableTBC = !empty($searchTerm) ? $tbcProvider->searchReqAvailableTBC($userID, $searchTerm) : $tbcProvider->getReqAvailableTBC();
-
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        $tbcProvider = $this->model('ToBeCompletedProvider');
+    
+        if (!empty($filterDate)) {
+            $applyJobTBC = $tbcProvider->filterToBeCompletedByDate($userID, $filterDate);
+            $reqAvailableTBC = $tbcProvider->filterReqAvailableTBCByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobTBC = $tbcProvider->searchToBeCompleted($userID, $searchTerm);
+            $reqAvailableTBC = $tbcProvider->searchReqAvailableTBC($userID, $searchTerm);
+        } else {
+            $applyJobTBC = $tbcProvider->getApplyJobTBC();
+            $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+        }
+    
         $data = [
             'applyJobTBC' => $applyJobTBC,
             'reqAvailableTBC' => $reqAvailableTBC
@@ -300,9 +332,18 @@ class JobProvider extends Controller
         $ongoingProvider = $this->model('OngoingProvider');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
     
-        $applyJobOngoing = !empty($searchTerm) ? $ongoingProvider->searchOngoing($userID, $searchTerm) : $ongoingProvider->getApplyJobOngoing();
-        $reqAvailableOngoing = !empty($searchTerm) ? $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm) : $ongoingProvider->getReqAvailableOngoing();
+        if (!empty($filterDate)) {
+            $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
+            $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
+            $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
+        } else {
+            $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+            $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+        }
     
         $data = [
             'applyJobOngoing' => $applyJobOngoing,
@@ -316,9 +357,18 @@ class JobProvider extends Controller
         $completedProvider = $this->model('CompletedProvider');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
     
-        $applyJobCompleted = !empty($searchTerm) ? $completedProvider->searchCompleted($userID, $searchTerm) : $completedProvider->getApplyJobCompleted();
-        $reqAvailableCompleted = !empty($searchTerm) ? $completedProvider->searchReqAvailableCompleted($userID, $searchTerm) : $completedProvider->getReqAvailableCompleted();
+        if (!empty($filterDate)) {
+            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+        } else {
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        }
     
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
@@ -326,6 +376,7 @@ class JobProvider extends Controller
         ];
         $this->view('jobListing_completed', $data);
     }
+      
 
     public function makeComplaint($taskID)
     {

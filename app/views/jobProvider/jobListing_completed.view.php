@@ -22,7 +22,13 @@ protectRoute([2]);?>
             <form method="GET" action="<?= ROOT ?>/jobProvider/jobListing_completed">
                 <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
             </form>
-            <button class="filter-btn">Filter</button>
+            <input 
+                type="date" 
+                id="filter-date" 
+                class="filter-btn" 
+                onchange="filterByDate(this.value)" 
+                style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;"
+            />
         </div>  
         <br>
 
@@ -138,5 +144,19 @@ protectRoute([2]);?>
             })
             .catch(error => console.error('Error:', error));
     });
+
+    function filterByDate(selectedDate) {
+        if (!selectedDate) return;
+
+        fetch(`<?= ROOT ?>/jobProvider/jobListing_completed?filterDate=${encodeURIComponent(selectedDate)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.employee-list').innerHTML;
+                document.querySelector('.employee-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    }
 </script>
 </html>
