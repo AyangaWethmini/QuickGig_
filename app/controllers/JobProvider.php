@@ -150,6 +150,7 @@ class JobProvider extends Controller
             }
         }
     }
+
     function postJob()
     {
         $this->view('postJob');
@@ -164,6 +165,7 @@ class JobProvider extends Controller
         $data = ['receivedRequests' => $receivedRequests];
         $this->view('jobListing_received', $data);
     }
+
     public function acceptJobRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -195,6 +197,7 @@ class JobProvider extends Controller
             }
         }
     }
+
     public function rejectJobRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -209,18 +212,22 @@ class JobProvider extends Controller
             }
         }
     }
+
     function viewEmployeeProfile()
     {
         $this->view('viewEmployeeProfile');
     }
+
     function subscription()
     {
         $this->view('subscription');
     }
+
     function messages()
     {
         $this->view('messages');
     }
+
     function announcements()
     {
         $this->view('announcements');
@@ -230,10 +237,12 @@ class JobProvider extends Controller
     {
         $this->view('helpCenter');
     }
+
     function reviews()
     {
         $this->view('reviews');
     }
+
     function jobListing_myJobs() {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -243,6 +252,7 @@ class JobProvider extends Controller
         $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
+
     function jobListing_send() {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -285,18 +295,22 @@ class JobProvider extends Controller
         $this->view('jobListing_toBeCompleted', $data);
     }
 
-    function jobListing_ongoing()
-    {
+    function jobListing_ongoing() {
         $this->jobStatusUpdater->updateJobStatuses();
         $ongoingProvider = $this->model('OngoingProvider');
-        $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
-        $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+    
+        $applyJobOngoing = !empty($searchTerm) ? $ongoingProvider->searchOngoing($userID, $searchTerm) : $ongoingProvider->getApplyJobOngoing();
+        $reqAvailableOngoing = !empty($searchTerm) ? $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm) : $ongoingProvider->getReqAvailableOngoing();
+    
         $data = [
             'applyJobOngoing' => $applyJobOngoing,
             'reqAvailableOngoing' => $reqAvailableOngoing
         ];
         $this->view('jobListing_ongoing', $data);
     }
+
     function jobListing_completed()
     {
         $this->jobStatusUpdater->updateJobStatuses();
