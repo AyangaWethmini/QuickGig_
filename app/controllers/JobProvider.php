@@ -243,14 +243,14 @@ class JobProvider extends Controller
         $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
-    function jobListing_send()
-    {
-        $send = $this->model('sendProvider');
-        $sendRequests = $send->getsendRequests();
-        $data = [
-            'sendRequests' => $sendRequests
-        ];
-        $this->view('jobListing_send', $data);
+    function org_jobListing_send() {
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $sendModel = $this->model('SendProvider');
+        $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
+    
+        $data = ['sendRequests' => $sendRequests];
+        $this->view('org_jobListing_send', $data);
     }
 
     public function deleteSendRequest()
