@@ -117,4 +117,16 @@ class Job{
                   ORDER BY availableDate DESC, timeFrom DESC";
         return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
+
+    public function filterJobsByDate($userID, $filterDate) {
+        $query = "SELECT * FROM job 
+                  WHERE accountID = :accountID 
+                  AND availableDate = :filterDate
+                  ORDER BY availableDate DESC, timeFrom DESC";
+        $params = [
+            'accountID' => $userID,
+            'filterDate' => $filterDate
+        ];
+        return $this->query($query, $params);
+    }
 }

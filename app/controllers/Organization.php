@@ -189,8 +189,16 @@ date_default_timezone_set('Asia/Colombo');
         function org_jobListing_myJobs() {
             $userID = $_SESSION['user_id'];
             $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        
             $jobModel = $this->model('Job');
-            $jobs = !empty($searchTerm) ? $jobModel->searchJobsByUser($userID, $searchTerm) : $jobModel->getJobsByUser($userID);
+            if (!empty($filterDate)) {
+                $jobs = $jobModel->filterJobsByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $jobs = $jobModel->searchJobsByUser($userID, $searchTerm);
+            } else {
+                $jobs = $jobModel->getJobsByUser($userID);
+            }
         
             $data = ['jobs' => $jobs];
             $this->view('org_jobListing_myJobs', $data);
