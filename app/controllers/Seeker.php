@@ -194,8 +194,12 @@ class Seeker extends Controller
     {
         $this->jobStatusUpdater->updateJobStatuses();
         $tbcSeeker = $this->model('ToBeCompletedSeeker');
-        $reqAvailableTBC = $tbcSeeker->getReqAvailableTBC();
-        $applyJobTBC = $tbcSeeker->getApplyJobTBC();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $reqAvailableTBC = !empty($searchTerm) ? $tbcSeeker->searchReqAvailableTBC($userID, $searchTerm) : $tbcSeeker->getReqAvailableTBC();
+        $applyJobTBC = !empty($searchTerm) ? $tbcSeeker->searchToBeCompleted($userID, $searchTerm) : $tbcSeeker->getApplyJobTBC();
+
         $data = [
             'reqAvailableTBC' => $reqAvailableTBC,
             'applyJobTBC' => $applyJobTBC

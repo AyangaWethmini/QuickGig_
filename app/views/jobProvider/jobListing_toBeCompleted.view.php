@@ -19,7 +19,7 @@ protectRoute([2]);?>
 
         <div class="list-header">
             <p class="list-header-title">To Be Completed</p>
-            <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_toBeCompleted">
+            <form method="GET" action="<?= ROOT ?>/jobProvider/jobListing_toBeCompleted">
                 <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
             </form>
             <button class="filter-btn">Filter</button>
