@@ -67,13 +67,12 @@ class Seeker extends Controller
 
     function jobListing_received()
     {
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $receivedModel = $this->model('ReceivedSeeker');
-        $receivedRequests = $receivedModel->getReceivedRequests();
+        $receivedRequests = !empty($searchTerm) ? $receivedModel->searchReceivedRequests($userID, $searchTerm) : $receivedModel->getReceivedRequests();
 
-        $data = [
-            'receivedRequests' => $receivedRequests
-        ];
-
+        $data = ['receivedRequests' => $receivedRequests];
         $this->view('jobListing_received', $data);
     }
 
