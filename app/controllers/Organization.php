@@ -246,14 +246,22 @@ date_default_timezone_set('Asia/Colombo');
         }
 
         function org_jobListing_toBeCompleted() {
-            $this->jobStatusUpdater->updateJobStatuses();
-            $tbcProvider = $this->model('ToBeCompletedProvider');
             $userID = $_SESSION['user_id'];
             $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-            $applyJobTBC = !empty($searchTerm) ? $tbcProvider->searchToBeCompleted($userID, $searchTerm) : $tbcProvider->getApplyJobTBC();
-            $reqAvailableTBC = !empty($searchTerm) ? $tbcProvider->searchReqAvailableTBC($userID, $searchTerm) : $tbcProvider->getReqAvailableTBC();
-
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+            $tbcProvider = $this->model('ToBeCompletedProvider');
+        
+            if (!empty($filterDate)) {
+                $applyJobTBC = $tbcProvider->filterToBeCompletedByDate($userID, $filterDate);
+                $reqAvailableTBC = $tbcProvider->filterReqAvailableTBCByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobTBC = $tbcProvider->searchToBeCompleted($userID, $searchTerm);
+                $reqAvailableTBC = $tbcProvider->searchReqAvailableTBC($userID, $searchTerm);
+            } else {
+                $applyJobTBC = $tbcProvider->getApplyJobTBC();
+                $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+            }
+        
             $data = [
                 'applyJobTBC' => $applyJobTBC,
                 'reqAvailableTBC' => $reqAvailableTBC
