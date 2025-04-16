@@ -299,9 +299,18 @@ date_default_timezone_set('Asia/Colombo');
             $completedProvider = $this->model('CompletedProvider');
             $userID = $_SESSION['user_id'];
             $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         
-            $applyJobCompleted = !empty($searchTerm) ? $completedProvider->searchCompleted($userID, $searchTerm) : $completedProvider->getApplyJobCompleted();
-            $reqAvailableCompleted = !empty($searchTerm) ? $completedProvider->searchReqAvailableCompleted($userID, $searchTerm) : $completedProvider->getReqAvailableCompleted();
+            if (!empty($filterDate)) {
+                $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+                $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+                $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+            } else {
+                $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+                $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            }
         
             $data = [
                 'applyJobCompleted' => $applyJobCompleted,
