@@ -64,8 +64,16 @@ date_default_timezone_set('Asia/Colombo');
         function org_jobListing_received() {
             $userID = $_SESSION['user_id'];
             $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
             $receivedModel = $this->model('ReceivedProvider');
-            $receivedRequests = !empty($searchTerm) ? $receivedModel->searchReceivedRequests($userID, $searchTerm) : $receivedModel->getReceivedRequests();
+        
+            if (!empty($filterDate)) {
+                $receivedRequests = $receivedModel->filterReceivedRequestsByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $receivedRequests = $receivedModel->searchReceivedRequests($userID, $searchTerm);
+            } else {
+                $receivedRequests = $receivedModel->getReceivedRequests();
+            }
         
             $data = ['receivedRequests' => $receivedRequests];
             $this->view('org_jobListing_received', $data);
