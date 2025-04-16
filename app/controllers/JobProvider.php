@@ -243,14 +243,14 @@ class JobProvider extends Controller
         $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
-    function org_jobListing_send() {
+    function jobListing_send() {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $sendModel = $this->model('SendProvider');
         $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
     
         $data = ['sendRequests' => $sendRequests];
-        $this->view('org_jobListing_send', $data);
+        $this->view('jobListing_send', $data);
     }
 
     public function deleteSendRequest()
@@ -269,12 +269,15 @@ class JobProvider extends Controller
         }
     }
 
-    function jobListing_toBeCompleted()
-    {
+    function jobListing_toBeCompleted() {
         $this->jobStatusUpdater->updateJobStatuses();
         $tbcProvider = $this->model('ToBeCompletedProvider');
-        $applyJobTBC = $tbcProvider->getApplyJobTBC();
-        $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $applyJobTBC = !empty($searchTerm) ? $tbcProvider->searchToBeCompleted($userID, $searchTerm) : $tbcProvider->getApplyJobTBC();
+        $reqAvailableTBC = !empty($searchTerm) ? $tbcProvider->searchReqAvailableTBC($userID, $searchTerm) : $tbcProvider->getReqAvailableTBC();
+
         $data = [
             'applyJobTBC' => $applyJobTBC,
             'reqAvailableTBC' => $reqAvailableTBC
