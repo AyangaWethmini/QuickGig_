@@ -82,4 +82,30 @@ class OngoingProvider{
                   ORDER BY datePosted DESC, timePosted DESC";
         return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
+
+    public function filterReqAvailableOngoingByDate($userID, $filterDate) {
+        $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp
+                  FROM req_available r
+                  JOIN makeavailable m ON r.availableID = m.availableID
+                  JOIN individual i ON m.accountID = i.accountID
+                  JOIN account acc ON m.accountID = acc.accountID
+                  WHERE r.providerID = ? 
+                  AND r.reqStatus = 3
+                  AND m.availableDate = ?
+                  ORDER BY m.availableDate DESC, m.timeFrom DESC";
+        return $this->query($query, [$userID, $filterDate]);
+    }
+
+    public function filterOngoingByDate($userID, $filterDate) {
+        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency
+                  FROM apply_job a 
+                  JOIN job j ON a.jobID = j.jobID
+                  JOIN individual i ON a.seekerID = i.accountID
+                  JOIN account acc ON a.seekerID = acc.accountID
+                  WHERE j.accountID = ? 
+                  AND a.applicationStatus = 3
+                  AND j.availableDate = ?
+                  ORDER BY datePosted DESC, timePosted DESC";
+        return $this->query($query, [$userID, $filterDate]);
+    }
 }

@@ -274,9 +274,18 @@ date_default_timezone_set('Asia/Colombo');
             $ongoingProvider = $this->model('OngoingProvider');
             $userID = $_SESSION['user_id'];
             $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         
-            $applyJobOngoing = !empty($searchTerm) ? $ongoingProvider->searchOngoing($userID, $searchTerm) : $ongoingProvider->getApplyJobOngoing();
-            $reqAvailableOngoing = !empty($searchTerm) ? $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm) : $ongoingProvider->getReqAvailableOngoing();
+            if (!empty($filterDate)) {
+                $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
+                $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
+                $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
+            } else {
+                $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+                $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            }
         
             $data = [
                 'applyJobOngoing' => $applyJobOngoing,
