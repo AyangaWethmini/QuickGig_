@@ -215,8 +215,16 @@ date_default_timezone_set('Asia/Colombo');
         function org_jobListing_send() {
             $userID = $_SESSION['user_id'];
             $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
             $sendModel = $this->model('SendProvider');
-            $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
+        
+            if (!empty($filterDate)) {
+                $sendRequests = $sendModel->filterSendRequestsByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $sendRequests = $sendModel->searchSendRequests($userID, $searchTerm);
+            } else {
+                $sendRequests = $sendModel->getSendRequests();
+            }
         
             $data = ['sendRequests' => $sendRequests];
             $this->view('org_jobListing_send', $data);
