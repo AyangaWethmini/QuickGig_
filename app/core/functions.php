@@ -12,7 +12,9 @@ function esc($str)
 {
 	return htmlspecialchars($str);
 }
-
+function logError($error){
+	echo "<script>console.error('Database Error: " . addslashes($error->getMessage()) . "');</script>";
+}
 
 function redirect($path)
 {

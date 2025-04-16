@@ -192,12 +192,12 @@ class Account
         try {
             $sql = "
            SELECT 
-                a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
+                a.accountID, a.mail, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
                 i.gender, i.nic, i.fname, i.lname, i.phone, i.bio
             FROM account a
             INNER JOIN individual i ON a.accountID = i.accountID
             WHERE a.accountID = :user_id
-        ";
+        ";  
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':user_id', $userId);
@@ -205,6 +205,7 @@ class Account
 
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
+            logError($e);
             error_log("Database Error: " . $e->getMessage());
             return null;
         }
