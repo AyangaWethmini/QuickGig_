@@ -66,4 +66,32 @@ class OngoingSeeker{
         
         return $result ? $result : [];
     }
+
+    public function searchReqAvailableOngoing($userID, $searchTerm)
+    {
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = "SELECT r.*, 
+                        CASE 
+                            WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
+                            THEN CONCAT(i.fname, ' ', i.lname) 
+                            ELSE o.orgName 
+                        END AS name, 
+                        m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
+                FROM req_available r 
+                JOIN makeavailable m ON r.availableID = m.availableID
+                LEFT JOIN individual i ON r.providerID = i.accountID
+                LEFT JOIN organization o ON r.providerID = o.accountID
+                JOIN account acc ON r.providerID = acc.accountID
+                WHERE m.accountID = ? 
+                AND r.reqStatus = 3
+                AND (
+                    LOWER(i.fname) LIKE ? OR
+                    LOWER(i.lname) LIKE ? OR
+                    LOWER(m.description) LIKE ? OR
+                    LOWER(m.location) LIKE ?
+                )
+                ORDER BY datePosted DESC, timePosted DESC";
+
+        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+    }
 }

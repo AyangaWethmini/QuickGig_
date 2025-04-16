@@ -211,11 +211,15 @@ class Seeker extends Controller
     {
         $this->jobStatusUpdater->updateJobStatuses();
         $ongoingSeeker = $this->model('OngoingSeeker');
-        $reqAvailableOngoing = $ongoingSeeker->getReqAvailableOngoing();
-        $applyJobOngoing = $ongoingSeeker->getApplyJobOngoing();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $applyJobOngoing = !empty($searchTerm) ? $ongoingSeeker->searchOngoing($userID, $searchTerm) : $ongoingSeeker->getApplyJobOngoing();
+        $reqAvailableOngoing = !empty($searchTerm) ? $ongoingSeeker->searchReqAvailableOngoing($userID, $searchTerm) : $ongoingSeeker->getReqAvailableOngoing();
+
         $data = [
-            'reqAvailableOngoing' => $reqAvailableOngoing,
-            'applyJobOngoing' => $applyJobOngoing
+            'applyJobOngoing' => $applyJobOngoing,
+            'reqAvailableOngoing' => $reqAvailableOngoing
         ];
         $this->view('jobListing_ongoing', $data);
     }
