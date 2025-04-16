@@ -234,16 +234,13 @@ class JobProvider extends Controller
     {
         $this->view('reviews');
     }
-    public function jobListing_myJobs()
-    {
+    function jobListing_myJobs() {
         $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $jobModel = $this->model('Job');
-        $jobs = $jobModel->getJobsByUser($userID);
-
-        $data = [
-            'jobs' => $jobs
-        ];
-
+        $jobs = !empty($searchTerm) ? $jobModel->searchJobsByUser($userID, $searchTerm) : $jobModel->getJobsByUser($userID);
+    
+        $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
     function jobListing_send()
