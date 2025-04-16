@@ -165,13 +165,12 @@ class Seeker extends Controller
 
     function jobListing_send()
     {
-        $send = $this->model('SendSeeker');
-        $sendRequests = $send->getSendRequests();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $sendModel = $this->model('SendSeeker');
+        $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
 
-        $data = [
-            'sendRequests' => $sendRequests
-        ];
-
+        $data = ['sendRequests' => $sendRequests];
         $this->view('jobListing_send', $data);
     }
 
