@@ -155,13 +155,13 @@ class JobProvider extends Controller
         $this->view('postJob');
     }
 
-    public function jobListing_received()
-    {
-        $received = $this->model('ReceivedProvider');
-        $receivedRequests = $received->getReceivedRequests();
-        $data = [
-            'receivedRequests' => $receivedRequests
-        ];
+    function jobListing_received() {
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $receivedModel = $this->model('ReceivedProvider');
+        $receivedRequests = !empty($searchTerm) ? $receivedModel->searchReceivedRequests($userID, $searchTerm) : $receivedModel->getReceivedRequests();
+    
+        $data = ['receivedRequests' => $receivedRequests];
         $this->view('jobListing_received', $data);
     }
     public function acceptJobRequest()
