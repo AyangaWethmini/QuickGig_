@@ -71,7 +71,12 @@ protectRoute([0]);?>
 
             
                 <!-- Submit Button -->
+<<<<<<< HEAD
+                <button class="btn btn-accent srch-btn" style="margin-left: 215px; width: 940px;">Post</button>
+                <!-- <input type="submit" value="Post" class="btn btn-accent srch-btn" style="width: 900px;">     -->
+=======
                 <input type="submit" value="Post" class="btn btn-accent srch-btn" style="margin-left:22.5%; width:945px;">    
+>>>>>>> origin/AyangaW
             </form>
  
 

@@ -2,7 +2,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <body>
-    
+<script src="<?=ROOT?>/assets/js/sidebar.js"></script>    
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">

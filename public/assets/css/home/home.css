@@ -1,71 +1,3 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-/* .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 35px 60px;
-    position: sticky;
-}
-
-.nav-left {
-    display: flex; 
-    gap: 40px;
-}
-
-.nav-links {
-    display: flex; 
-    gap: 20px;
-}
-.nav-links li a{
-    text-decoration: none;
-    color: var(--color-text);
-}
-
-.nav-links li {
-    text-align: center;
-    list-style-type: none;
-    text-decoration: none;
-    font-family: Epilogue;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 160%;
-}
-
-.sign-btns {
-    margin-left: auto; 
-    display: flex; 
-    gap: 10px;
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        background-color: #333;
-        width: 200px;
-        flex-direction: column;
-        padding: 1em;
-        border-radius: 8px;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-} */
-
-
 .typography{
     color: var(--Neutrals-100, #25324B);
     font-feature-settings: 'cv11' on;
@@ -79,12 +11,13 @@ body {
 .typography span{
     color: var(--Accents-Blue, #26A4FF);
 }
+
 .hero-section {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 70px 40px 20px 126px;
-    min-height: fit-content;
+    padding: 0px 40px 20px 126px;
+    /* min-height: fit-content; */
     width: 100%; /* Makes it responsive */
     max-width: 80vw; /* Restricts the maximum width */
 
@@ -206,11 +139,10 @@ body {
     margin-left: 106px;
 }
 
-.cta {
+.cta{
     display: flex;
     justify-content: center;
-    margin-top: 100px;
-    
+    margin-top: 100px;   
 }
 
 .block {
@@ -300,3 +232,66 @@ body {
  .desc{
     margin-left: 48px;
  }
+
+ /*HOME ANNOUNCEMENT CSS*/
+ .home-announcement {
+    margin: 120px auto 10px; /* Center horizontally with top and bottom margins */
+    background-color: #f8f9fa; /* Neutral background color */
+    color: #333; /* Neutral text color */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 20px; /* Generous padding */
+    max-width: 70%; /* Narrower width for focus */
+    text-align: center; /* Center text */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+    font-family: 'Arial', sans-serif; /* Professional font */
+}
+
+.home-announcement-content {
+    display: flex; /* Flex layout for horizontal alignment */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Align items vertically */
+    gap: 20px; /* Add space between the date and content */
+}
+
+.home-announcement-date,
+.home-announcement-text {
+    font-size: 16px; /* Uniform font size for date and content */
+    font-weight: bold; /* Bold text for both date and content */
+    color: #333; /* Primary text color */
+    text-align: left; /* Align text inside individual boxes */
+}
+
+.home-announcement-date {
+    min-width: 150px; /* Ensure consistent space for the date */
+    text-align: right; /* Align the date to the right */
+}
+
+.home-announcement-text {
+    flex: 1; /* Allow the content to take up remaining space */
+    text-align: left; /* Align content text to the left */
+}
+
+.home-announcement p {
+    margin: 0; /* Reset default margin */
+}
+
+ .ad-cont {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.advertisement-content {
+    width: 828px;
+    height: 150px;
+    background-color: #777;
+    overflow: hidden;
+}
+
+.advertisement-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

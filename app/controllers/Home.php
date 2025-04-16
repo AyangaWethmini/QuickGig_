@@ -1,12 +1,29 @@
-<?php 
+<?php
 
 class Home extends Controller
 {
 	protected $viewPath = "../app/views/home/";
+	protected $planModel; //temporary for testig, needto move into a ad controller
+	protected $adModel;
+
+	public function __construct()
+	{
+		$this->adminModel = $this->model('AdminModel');
+		$this->planModel = $this->model('Plans');
+		$this->adModel = $this->model("Advertisement");
+	}
 
 	public function index()
 	{
-		$this->view('home');
+		$plans = $this->planModel->getPlans();
+		$ad = $this->adModel->getRandomActiveAd();
+
+		$data = [
+			'plans' => $plans,
+			'ad' => $ad
+		];
+
+		$this->view('home', $data);
 	}
 
 	public function signup()
@@ -25,5 +42,16 @@ class Home extends Controller
 	public function aboutUs()
 	{
 		$this->view('aboutUs');
+	}
+
+	// public function payments()
+	// {
+	// 	$this->view('payments');
+	// }
+
+	public function subscriptions()
+	{
+		$data = $this->planModel->getPlans();
+		$this->view('subscriptions', ['plans' => $data]);
 	}
 }

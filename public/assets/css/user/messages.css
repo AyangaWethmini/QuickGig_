@@ -2,6 +2,75 @@
     display: flex;
     margin-top: 100px;
     width: 100%;
+    background-color: #f9f9f9; /* Light background */
+    min-height: 100vh;
+}
+
+.individual-announcements-container {
+    padding: 20px;
+    width: 100%;
+    margin-top: 50px;
+    margin-left: 280px;
+}
+
+.announcement-container {
+    background: #ffffff;
+    border: 1px solid #dcdcdc; /* Subtle border for definition */
+    border-radius: 10px; /* Rounded corners for a card-like appearance */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px;
+    margin-bottom: 20px; /* Spacing between announcements */
+    position: relative; /* To enable pseudo-element styling */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover animations */
+}
+
+.announcement-container:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+.the-complaint {
+    font-size: 18px; /* Highlight announcement content */
+    font-weight: bold; /* Bold text for emphasis */
+    color: #333; /* Darker text for readability */
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.text-grey {
+    font-size: 16px; /* Slightly larger for emphasis */
+    color: #555; /* Dark grey for prominence */
+    text-align: right; /* Align date and time to the right */
+    margin-top: 15px;
+    font-weight: 600; /* Semi-bold to make text noticeable */
+}
+
+.text-grey span.date {
+    display: block;
+    font-size: 18px; /* Larger font size for date */
+    color: #333; /* Darker color for emphasis */
+}
+
+.text-grey span.time {
+    font-size: 14px; /* Smaller font size for time */
+    color: #777; /* Subtle grey for less focus */
+}
+
+/* Accent bar to emphasize announcements */
+.announcement-container:before {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 100%;
+    background-color: #007bff; /* Blue accent for focus */
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 10px 0 0 10px; /* Smooth rounded edges */
+}
+
+.announcement-container {
+    padding-left: 20px; /* Space for the accent line */
 }
 
 .no-messages-container {
@@ -9,17 +78,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: calc(100% - 224px);
+    height: fit-content;
     margin-left: 224px;
-    height: calc(100% - 100px);
-    text-align: center;
-    position: absolute;
+    text-align: center;   
 }
 
 .no-messages-icon {
-    width: 600px;
-    height: 600px;
-    margin-bottom: 20px;
+    width: 40%;
+    height: 40%;
+    margin-bottom: 2px;
     opacity: 0.8;
 }
 

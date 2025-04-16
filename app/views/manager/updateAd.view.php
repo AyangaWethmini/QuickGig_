@@ -15,7 +15,7 @@ protectRoute([1]);?>
     
     <div class="main-content">
     <div class="update-ad-form container flex-col" id="update-ad">
-        <div class="title flex-row">
+        <div class="ad-title flex-row">
             <i class="fa-solid fa-arrow-left" onclick="window.location.href='<?=ROOT?>/manager/advertisements'" style="cursor: pointer;"></i>
             <p class="title">Update Ad</p>
             </div>
