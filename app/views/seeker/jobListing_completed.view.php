@@ -18,10 +18,13 @@ protectRoute([2]);?>
         </div> <hr> <br>
 
         <div class="list-header">
-            <p class="list-header-title">Completed History</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
+            <p class="list-header-title">Completed List</p>
+            <form method="GET" action="<?= ROOT ?>/seeker/jobListing_completed">
+                <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </form>
             <button class="filter-btn">Filter</button>
-        </div> <br>
+        </div>
+        <br>
 
         <div class="employee-list">
 
@@ -121,4 +124,19 @@ protectRoute([2]);?>
 
     </div>
 </body>
+<script>
+    document.querySelector('.search-input').addEventListener('input', function () {
+        const searchTerm = this.value;
+
+        fetch(`<?= ROOT ?>/seeker/jobListing_completed?search=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.employee-list').innerHTML;
+                document.querySelector('.employee-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 </html>

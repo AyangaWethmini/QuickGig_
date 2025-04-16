@@ -228,11 +228,15 @@ class Seeker extends Controller
     {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedSeeker = $this->model('CompletedSeeker');
-        $reqAvailableCompleted = $completedSeeker->getReqAvailableCompleted();
-        $applyJobCompleted = $completedSeeker->getApplyJobCompleted();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $applyJobCompleted = !empty($searchTerm) ? $completedSeeker->searchCompleted($userID, $searchTerm) : $completedSeeker->getApplyJobCompleted();
+        $reqAvailableCompleted = !empty($searchTerm) ? $completedSeeker->searchReqAvailableCompleted($userID, $searchTerm) : $completedSeeker->getReqAvailableCompleted();
+
         $data = [
-            'reqAvailableCompleted' => $reqAvailableCompleted,
-            'applyJobCompleted' => $applyJobCompleted
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
         ];
         $this->view('jobListing_completed', $data);
     }
