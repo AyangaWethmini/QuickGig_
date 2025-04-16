@@ -22,10 +22,13 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             <hr> <br>
 
             <div class="list-header">
-                <p class="list-header-title">My Availabilities</p>
-                <input type="text" class="search-input" placeholder="Search...">
+                <p class="list-header-title">My Jobs</p>
+                <form method="GET" action="<?= ROOT ?>/seeker/jobListing_myJobs">
+                    <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                </form>
                 <button class="filter-btn">Filter</button>
-            </div> <br>
+            </div> 
+            <br>
 
             <div class="job-list">
                 <?php if (!empty($data['jobs'])): ?>
@@ -96,6 +99,20 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             modal.style.display = 'none'; // Hide modal
         };
     }
+
+    document.querySelector('.search-input').addEventListener('input', function () {
+        const searchTerm = this.value;
+
+        fetch(`<?= ROOT ?>/seeker/jobListing_myJobs?search=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.job-list').innerHTML;
+                document.querySelector('.job-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 
 </html>

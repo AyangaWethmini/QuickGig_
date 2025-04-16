@@ -156,13 +156,11 @@ class Seeker extends Controller
     public function jobListing_myJobs()
     {
         $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $availableModel = $this->model('Available');
-        $jobs = $availableModel->getJobsByUser($userID);
+        $jobs = !empty($searchTerm) ? $availableModel->searchJobsByUser($userID, $searchTerm) : $availableModel->getJobsByUser($userID);
 
-        $data = [
-            'jobs' => $jobs
-        ];
-
+        $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
 
