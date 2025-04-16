@@ -311,12 +311,15 @@ class JobProvider extends Controller
         $this->view('jobListing_ongoing', $data);
     }
 
-    function jobListing_completed()
-    {
+    function jobListing_completed() {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('CompletedProvider');
-        $applyJobCompleted = $completedProvider->getApplyJobCompleted();
-        $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+    
+        $applyJobCompleted = !empty($searchTerm) ? $completedProvider->searchCompleted($userID, $searchTerm) : $completedProvider->getApplyJobCompleted();
+        $reqAvailableCompleted = !empty($searchTerm) ? $completedProvider->searchReqAvailableCompleted($userID, $searchTerm) : $completedProvider->getReqAvailableCompleted();
+    
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
             'reqAvailableCompleted' => $reqAvailableCompleted
