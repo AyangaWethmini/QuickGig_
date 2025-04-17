@@ -102,7 +102,8 @@ protectRoute([2]);?>
                     <div class="dropdown">
                         <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Message</a></li>
+                        <li><a href="<?= ROOT ?>/message/startConversation/<?= $findEmp->accountID ?>">Message</a></li>
+
                             <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
                         </ul>
                     </div>

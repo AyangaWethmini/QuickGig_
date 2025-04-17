@@ -1,0 +1,128 @@
+.profileimage{
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+}
+.wrapper {
+    display: flex;
+    margin-top: 100px;
+    width: 100%;
+    background-color: #f9f9f9; /* Light background */
+    min-height: 100vh;
+}
+
+
+.text-grey {
+    font-size: 16px; /* Slightly larger for emphasis */
+    color: #555; /* Dark grey for prominence */
+    text-align: right; /* Align date and time to the right */
+    margin-top: 15px;
+    font-weight: 600; /* Semi-bold to make text noticeable */
+}
+
+.text-grey span.date {
+    display: block;
+    font-size: 18px; /* Larger font size for date */
+    color: #333; /* Darker color for emphasis */
+}
+
+.text-grey span.time {
+    font-size: 14px; /* Smaller font size for time */
+    color: #777; /* Subtle grey for less focus */
+}
+
+
+.no-messages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    margin-left: 224px;
+    text-align: center;   
+}
+
+.no-messages-icon {
+    width: 40%;
+    height: 40%;
+    margin-bottom: 2px;
+    opacity: 0.8;
+}
+
+.no-messages-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3599ff;
+}
+.conversations-list {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    margin-left: 260px;
+}
+
+.conversations-list h3 {
+    padding: 20px;
+    margin: 0;
+    font-size: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-item {
+    width: 100%; /* Full width of parent */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.list-item:hover {
+    background-color: #f9f9f9;
+}
+
+.profileimage {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.list-item a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.list-item a:hover {
+    color: #000;
+}
+.list-item span {
+    font-weight: 500;
+    text-decoration: none; /* Removes underline */
+    font-size: 24px;
+    color: #444;
+    transition: color 0.2s ease;
+    text-transform: capitalize; /* Capitalizes the first letter of each word */
+}
+
+.list-item span:hover {
+    color: #007bff; /* Change name color on hover */
+}
