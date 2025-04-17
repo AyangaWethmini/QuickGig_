@@ -3,7 +3,7 @@
 <div id="alert-container" class="alert-container"></div>
 
 <script>
-    function showAlert(message, type = 'error', duration = 10000) {
+    function showAlert(message, type = 'error', duration = 5000) {
         if (type === 'js') {
             alert(message);
             return;

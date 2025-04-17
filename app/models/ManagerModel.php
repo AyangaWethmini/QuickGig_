@@ -30,6 +30,15 @@ class ManagerModel {
         return $result ? $result[0] : null;
     }
 
+    // public function getManagerEmail($managerID){
+    //     $query = "SELECT email FROM account WHERE accountID = (SELECT accountID FROM manager WHERE managerID = :managerID)";
+    //     $params = [
+    //         ':managerID' => $managerID
+    //     ];
+    //     $result = $this->query($query, $params);
+    //     return $result ? $result[0]->email : null;
+    // }
+
 
     public function createManager($accountID, $gender, $nic, $fname, $lname, $phone) {
         // Validate NIC
@@ -87,6 +96,16 @@ class ManagerModel {
         ];
         $result =  $this->query($query, $params);
         return $result ? $result[0]->managerID : null;
+    }
+
+
+    public function getManagerAccID($managerID) {
+        $query = "SELECT accountID FROM manager WHERE managerID = :managerID";
+        $params = [
+            ':managerID' => $managerID
+        ];
+        $result =  $this->query($query, $params);
+        return $result ? $result[0]->accountID : null;
     }
 
     

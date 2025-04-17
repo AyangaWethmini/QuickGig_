@@ -102,6 +102,19 @@ protectRoute([1]);?>
     <button class="btn btn-accent">No</button>
 </div>
 
+
+<?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const emailForm = document.getElementById('emailForm');

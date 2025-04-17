@@ -160,16 +160,18 @@
                                         $time = date('H:i:s', strtotime($timestamp)); 
                                     ?>                       
                                     <p style="font-size : 11px;">Asked on <?= $date ?> at <?= $time ?></p>
+                                    <!-- <p style="font-size : 11px;">Answered by <?= htmlspecialchars($q->fname). " " .htmlspecialchars($q->lname) ?></p> -->
                                 </div>
                             </div>
                             <br>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>No replied questions!</p>
+                        
                     <?php endif; ?>
                 </div>
             </div>
-
+                        <!-- <?php print_r($questions);?> -->
             
             <script>
                 function showTab(button) {

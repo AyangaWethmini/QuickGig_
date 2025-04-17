@@ -9,26 +9,41 @@ class Help {
     }
 
     public function getAllQuestions() {
-        $query = 'SELECT * FROM help;';
+        $query = 'SELECT * FROM help WHERE deleted = 0;';
         return $this->query($query);
     }
 
+    public function getUserQuestions($accountID){
+        $query = 'SELECT * FROM help WHERE accountID = :accountID AND deleted = 0;';
+        $params = ['accountID' => $accountID];
+        $result =  $this->query($query, $params);
+
+        return $result ?? null;
+    }
+
     public function createQuestion($data) {
-        $query = "INSERT INTO help (accountID, managerID, title, description, reply)
-                VALUES (:accountID, :managerID, :title, :description, :reply)";
-    
-        $params = [
-            'accountID' => $data['accountID'],
-            'managerID' => $data['managerID'],
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'reply' => $data['reply']
-        ];
-        return $this->query($query, $params);
+        try {
+            $query = "INSERT INTO help (accountID, title, description) 
+                      VALUES (:accountID, :title, :description)";
+        
+            $params = [
+                'accountID' => $data['accountID'],
+                'title' => $data['title'],
+                'description' => $data['description'],
+            ];
+            $_SESSION['success'] = "Your question has been submitted successfully!";
+            $_SESSION['error'] = null; 
+
+            return $this->query($query, $params);
+        } catch (Exception $e) {
+            error_log("Error creating question: " . $e->getMessage());
+            $_SESSION['error'] = "An error occurred while submitting your question. Please try again later.";
+            return false;
+        }
     }   
 
     public function delete($id) {
-        $query = "DELETE FROM help WHERE helpId = :id";
+        $query = "UPDATE help SET deleted = 1 WHERE helpId = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }    
@@ -36,7 +51,7 @@ class Help {
     public function update($id, $data) {
         $query = "UPDATE help 
                   SET title = :title, 
-                      description = :description, 
+                      description = :description 
                   WHERE helpId = :id";
     
         $params = [
@@ -47,6 +62,7 @@ class Help {
     
         return $this->query($query, $params);
     }
+    
 
     //from manager side to reply to the question
     public function replyToQuestion($id, $data) {

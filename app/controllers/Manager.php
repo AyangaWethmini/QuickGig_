@@ -1,4 +1,7 @@
 <?php
+
+date_default_timezone_set('Asia/Colombo');
+
 class Manager extends Controller
 {
     protected $viewPath = "../app/views/manager/";
@@ -83,6 +86,7 @@ class Manager extends Controller
         $data = $this->advertisementModel->getAdById($id);
         $this->view('updateAd', ['ad' => $data]);
     }
+
 
     public function report()
     {
@@ -268,61 +272,90 @@ class Manager extends Controller
 
     //-------------------Plans----------------------
 
-    public function createPlan()
-    {
+    public function createPlan() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Clear any existing session errors
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+
+            $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit', 'currency', 'recInterval'];
+    
             // Validate required fields
-            $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit'];
             foreach ($requiredFields as $field) {
-                if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
-                    $_SESSION['error'] = "All fields are required";
+                if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
+                    $_SESSION['error'] = "The field '" . $field . "' is required.";
                     header('Location: ' . ROOT . '/manager/plans');
-                    return;
+                    exit;
                 }
             }
 
             // Validate numeric fields
             if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
-                $_SESSION['error'] = "Duration, price, and post limit must be numeric values";
+                $_SESSION['error'] = "Duration, price, and post limit must be numeric.";
                 header('Location: ' . ROOT . '/manager/plans');
-                return;
+                exit;
             }
 
+            if (isset($_POST['stripe_price_id']) && !preg_match('/^price_[a-zA-Z0-9]{14,}$/', $_POST['stripe_price_id'])) {
+                $_SESSION['error'] = "Invalid Stripe price ID format.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+    
+            // Validate currency
+            if (strlen(trim($_POST['currency'])) !== 3) {
+                $_SESSION['error'] = "Currency must be a 3-letter code.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+    
+            // Additional string length checks
+            if (strlen(trim($_POST['planName'])) > 20) {
+                $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+    
+            if (strlen(trim($_POST['description'])) > 1000) {
+                $_SESSION['error'] = "Description must be 1000 characters or fewer.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+    
+            // Prepare sanitized data
+            $data = [
+                'planName' => trim($_POST['planName']),
+                'description' => trim($_POST['description']),
+                'duration' => intval($_POST['duration']),
+                'price' => floatval($_POST['price']),
+                'postLimit' => intval($_POST['postLimit']),
+                'badge' => isset($_POST['badge']) ? 1 : 0,
+                'stripe_price_id' => isset($_POST['stripe_price_id']) ? trim($_POST['stripe_price_id']) : null,
+                'currency' => strtoupper(trim($_POST['currency'])),
+                'recInterval' => trim($_POST['recInterval']),
+                'active' => isset($_POST['active']) ? 1 : 0
+            ];
+    
             try {
-                // Get and sanitize form data
-                $planName = trim($_POST['planName']);
-                $description = trim($_POST['description']);
-                $duration = intval($_POST['duration']);
-                $price = floatval($_POST['price']);
-                $postLimit = intval($_POST['postLimit']);
-                $badge = isset($_POST['badge']) ? 1 : 0;
-
-                // Create the plan
-                $result = $this->planModel->createPlan([
-                    'planName' => $planName,
-                    'description' => $description,
-                    'duration' => $duration,
-                    'price' => $price,
-                    'badge' => $badge,
-                    'postLimit' => $postLimit
-                ]);
-
+                $result = $this->planModel->createPlan($data);
+    
                 if ($result) {
-                    $_SESSION['success'] = "Plan created successfully";
+                    $_SESSION['success'] = "Plan created successfully.";
                 } else {
-                    $_SESSION['error'] = "Failed to create plan";
+                    $_SESSION['error'] = "Failed to create the plan.";
                 }
             } catch (Exception $e) {
-                $_SESSION['error'] = "An error occurred while creating the plan";
+                $_SESSION['error'] = "Error creating plan: " . $e->getMessage();
                 error_log($e->getMessage());
             }
-
+    
             header('Location: ' . ROOT . '/manager/plans');
-            return;
+            exit;
         }
-
-        // If not POST request, redirect to plans page
+    
         header('Location: ' . ROOT . '/manager/plans');
+        exit;
     }
 
     // delete plan
@@ -336,6 +369,84 @@ class Manager extends Controller
             header('Location: ' . ROOT . '/manager/plans');
         }
     }
+
+    //update plan
+    public function updatePlanForm($id)
+    {
+        $data = $this->planModel->getPlanById($id);
+        $this->view('updatePlanForm', ['plan' => $data]);
+    }
+
+    public function updatePlan($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Clear any existing session errors
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+
+            // Validation: Ensure required fields are present and not empty
+            $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit'];
+            foreach ($requiredFields as $field) {
+                if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+                    $_SESSION['error'] = "The field '" . $field . "' is required.";
+                    header('Location: ' . ROOT . '/manager/plans');
+                    exit;
+                }
+            }
+
+            // Validate numeric fields
+            if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
+                $_SESSION['error'] = "Duration, price, and post limit must be numeric.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+
+            // Validate string length for plan name and description
+            if (strlen(trim($_POST['planName'])) > 20) {
+                $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+
+            if (strlen(trim($_POST['description'])) > 1000) {
+                $_SESSION['error'] = "Description must be 1000 characters or fewer.";
+                header('Location: ' . ROOT . '/manager/plans');
+                exit;
+            }
+
+            // Prepare update data
+            $updateData = [
+                'planName' => trim($_POST['planName']),
+                'description' => trim($_POST['description']),
+                'duration' => intval($_POST['duration']),
+                'price' => floatval($_POST['price']),
+                'postLimit' => intval($_POST['postLimit']),
+                'badge' => isset($_POST['badge']) ? 1 : 0,
+                'active' => isset($_POST['active']) ? 1 : 0
+            ];
+
+            // Attempt to update the plan
+            try {
+                $result = $this->planModel->update($id, $updateData);
+                if ($result) {
+                    $_SESSION['success'] = "Plan updated successfully.";
+                } else {
+                    $_SESSION['error'] = "Failed to update the plan.";
+                }
+            } catch (Exception $e) {
+                $_SESSION['error'] = "Error updating plan: " . $e->getMessage();
+                error_log($e->getMessage());
+            }
+
+            header('Location: ' . ROOT . '/manager/plans');
+            exit;
+        }
+
+        // Redirect if not a POST request
+        header('Location: ' . ROOT . '/manager/plans');
+        exit;
+    }
+
 
     //--------------------Help-------------------------
 

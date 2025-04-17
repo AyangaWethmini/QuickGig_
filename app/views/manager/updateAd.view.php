@@ -4,12 +4,6 @@ protectRoute([1]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<style>
-    .form-field{
-        margin-top: 10px;
-    }
-</style>
-
 <div class="wrapper flex-row" style="margin-top: 100px;">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
     
@@ -60,6 +54,18 @@ protectRoute([1]);?>
                 </div>
             </form>
     </div>
+
+    <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
 
     </div>
 </div>
