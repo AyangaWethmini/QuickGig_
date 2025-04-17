@@ -7,6 +7,7 @@ protectRoute([3]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
@@ -57,7 +58,7 @@ protectRoute([3]);?>
                     <div class="job-details">
                         <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
                         <h4><?= htmlspecialchars($findEmp->description) ?></h4>
-                        <span class="jobPostedDate"><?= htmlspecialchars($findEmp->location) ?></span>
+                        <span class="jobPostedDate" id="employeeLocation"><?= htmlspecialchars($findEmp->location) ?></span>
                         <div style="display:flex;flex-direction:column; gap:20px">
                         <div class="rating">
                             <span>
@@ -108,6 +109,7 @@ protectRoute([3]);?>
                         <ul class="dropdown-menu">
                             <li><a href="#">Message</a></li>
                             <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
+                            <li><a href="#" onclick="viewLocation('<?= htmlspecialchars($findEmp->location) ?>')">View Location</a></li>
                         </ul>
                     </div>
                 </div>
@@ -147,6 +149,14 @@ protectRoute([3]);?>
     </div>
 </div>
 
+<div id="mapModal" class="map-modal" style="display:none;">
+    <div id="map"></div>
+    <div class="mapBtns">
+        <button type="button" class="mapBtn" onclick="closeMapModal()">Close</button>
+    </div>
+</div>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByhOqNUkNdVh5JDlawmbh-fxmgbVvE2Cg&callback=initMap"></script>
 <script>
     let selectedJobID = null;
 
@@ -202,4 +212,42 @@ protectRoute([3]);?>
             })
             .catch(error => console.error('Error:', error));
     });
+
+    let map;
+    let marker;
+
+    function viewLocation(location) {
+        const modal = document.getElementById('mapModal');
+        modal.style.display = 'block';
+
+        // Initialize map
+        setTimeout(() => {
+            if (!map) {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 15,
+                    center: { lat: 6.9271, lng: 79.8612 }, // Default to Colombo
+                });
+            }
+
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: location }, function(results, status) {
+                if (status === "OK") {
+                    map.setCenter(results[0].geometry.location);
+                    if (marker) {
+                        marker.setMap(null);
+                    }
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                    });
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }, 200); // Delay to ensure modal is rendered
+    }
+
+    function closeMapModal() {
+        document.getElementById('mapModal').style.display = 'none';
+    }
 </script>
