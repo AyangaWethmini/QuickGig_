@@ -5,6 +5,7 @@ protectRoute([2]);?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
@@ -203,22 +204,28 @@ protectRoute([2]);?>
             </div>
             <hr>
             <div class="form-section flex-row container">
-                <div class="container right-container">
-                    <p class="title">
-                    Add Location
-                    </p>
-                    <p class="text-grey desc">Add the location where the employee should attend</p>
-                </div>
-                <div class="user-input">
-                    <button class="btn btn-trans">Add your Location</button>
-                    <p>Or</p>
-                    <input type="text" name="location" placeholder="Type your location here" required value="<?= $job->location ?>">
-                </div>
-                </div>
+            <div class="container right-container">
+                <p class="title">Add Location</p>
+                <p class="text-grey desc">Add the location where the employee should attend</p>
+            </div>
+
+            <div class="user-input">
+                <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
+                <p>Or</p>
+                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required value="<?= $job->location ?>">
+            </div></div>
                 <hr>
                 <div class="post-job-buttons flex-row">
                     <button class="btn btn-accent">Discard</button>
                     <button class="btn btn-accent" type="submit">Update</button>
+                </div>
+
+                <div id="mapModal" class="map-modal" style="display:none;">
+                    <div id="map"></div>
+                    <div class="mapBtns">
+                        <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
+                        <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -241,7 +248,13 @@ protectRoute([2]);?>
     </div>
 </div>
 
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByhOqNUkNdVh5JDlawmbh-fxmgbVvE2Cg&libraries=places&callback=initMap"></script>
 <script>
+    let map;
+    let marker;
+    let selectedLocation = '';
+    let mapInitialized = false; 
+
     function showAddTagPopup(type) {
         const tagContainer = document.getElementById('tags-container');
         if (tagContainer.children.length >= 5) {
@@ -362,5 +375,103 @@ protectRoute([2]);?>
             alert("Please select a date.");
         }
     }
+
+    function initAutocomplete() {
+        const locationInput = document.getElementById('locationInput');
+
+        // Initialize Google Places Autocomplete
+        autocomplete = new google.maps.places.Autocomplete(locationInput, {
+            //types: ['geocode'], // Restrict to geographical locations
+            componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+        });
+
+        // Listen for the place_changed event
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+                // Update the selectedLocation variable with the new coordinates
+                selectedLocation = `${place.geometry.location.lat()},${place.geometry.location.lng()}`;
+            }
+        });
+    }
+
+    function initMap() {
+        const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; // Default to Colombo
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultLatLng,
+            zoom: 13,
+            clickableIcons: false,
+        });
+
+        map.addListener("click", (e) => {
+            placeMarkerAndPanTo(e.latLng, map);
+        });
+
+        initAutocomplete();
+    }
+
+    function openMapModal() {
+        const modal = document.getElementById('mapModal');
+        modal.style.display = 'block';
+
+        // Small delay to ensure modal is rendered before initializing/resizing map
+        setTimeout(() => {
+            if (!mapInitialized) {
+                initMap();
+                mapInitialized = true;
+            } else {
+                google.maps.event.trigger(map, "resize");
+                map.setCenter(marker ? marker.getPosition() : { lat: 6.9271, lng: 79.8612 });
+            }
+        }, 200); // 200ms delay is usually enough
+    }
+
+    function closeMapModal() {
+        document.getElementById('mapModal').style.display = 'none';
+    }
+
+    function saveLocation() {
+        const geocoder = new google.maps.Geocoder();
+        const latlng = {
+            lat: parseFloat(selectedLocation.split(',')[0]),
+            lng: parseFloat(selectedLocation.split(',')[1])
+        };
+
+        geocoder.geocode({ location: latlng }, function(results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    document.getElementById('locationInput').value = results[0].formatted_address;
+                } else {
+                    document.getElementById('locationInput').value = selectedLocation; // fallback
+                }
+            } else {
+                document.getElementById('locationInput').value = selectedLocation; // fallback
+            }
+
+            closeMapModal();
+        });
+    }
+
+
+    function placeMarkerAndPanTo(latLng, map) {
+        if (marker) {
+            marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+        });
+
+        map.panTo(latLng);
+
+        selectedLocation = `${latLng.lat()},${latLng.lng()}`;
+    }
+
+    document.getElementById('locationInput').value = selectedLocation; // Update the input field with the selected location
+    closeMapModal(); // Close the modal after selecting a location
+    mapInitialized = true; // Set mapInitialized to true after the first initialization
+    document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
 
 </script>
