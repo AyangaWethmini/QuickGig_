@@ -307,8 +307,8 @@ protectRoute([3]);?>
 
         // Initialize Google Places Autocomplete
         autocomplete = new google.maps.places.Autocomplete(locationInput, {
-            types: ['geocode'], // Restrict to geographical locations
-            //componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+            //types: ['geocode'], // Restrict to geographical locations
+            componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
         });
 
         // Listen for the place_changed event
