@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/user/premium.css">
 
-<div class="main-premium">
+<div class="main-premium" style = "background-color: #f0f0f0;">
   <div class="header-title">
     <a href="<?=ROOT?>/home" class="brand-link"><h1 class="brand-name">QuickGig</h1></a>
   </div>

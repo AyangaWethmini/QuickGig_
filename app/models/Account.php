@@ -94,6 +94,17 @@ class Account
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findById($accountID)
+    {
+        $query = "SELECT * FROM account WHERE accountID = :accountID LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':accountID', $accountID);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    // Method to find an account by activation code
+
     // Method to update last login time
     public function updateLastLogin($accountID)
     {
@@ -337,5 +348,22 @@ class Account
             error_log("Database Error: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function updatePlan($accountID, $planID){
+        $query = "UPDATE account SET planID = :planID WHERE accountID = :accountID";
+        $params = [
+            'planID' => $this->planID,
+            'accountID' => $accountID
+        ];
+        return $this->query($query, $params);
+    }
+
+    public function getUserName($accountID){
+        $query = "SELECT fname, lname FROM individual WHERE accountID = :accountID LIMIT 1";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+
+        return $result ? $result[0] : null;
     }
 }

@@ -4,41 +4,44 @@
 <style>
     .status-container {
         max-width: 500px;
-        margin: 100px auto;
+        margin: 300px auto;
         padding: 40px;
         text-align: center;
-        background: #e6f9f0;
-        border: 2px solid #c0f2dc;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-family: 'Inter', sans-serif;
+        display : flex; 
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .status-container h2 {
-        color: #28a745;
         font-size: 2rem;
         margin-bottom: 20px;
+        font-weight: 600;
     }
     .status-container p {
         color: #333;
         font-size: 1.1rem;
+        line-height: 1.6;
     }
     .status-container a {
         display: inline-block;
         margin-top: 25px;
         padding: 12px 30px;
-        background-color: #28a745;
         color: white;
         text-decoration: none;
         border-radius: 6px;
         font-weight: bold;
-        transition: background 0.3s;
+        transition: transform 0.3s, background 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .status-container a:hover {
-        background-color: #218838;
+        background: linear-gradient(135deg, #218838, #1e7e34);
+        transform: translateY(-3px);
     }
 </style>
 
 <div class="status-container">
-    <h2>✅ Payment Successful!</h2>
+    <h2>Payment Successful! <i class="fa-regular fa-circle-check" style="color : green"></i></h2>
     <p>Your subscription has been activated. Thank you!</p>
-    <a href="<?php echo ROOT; ?>/home">Go to Home</a>
+    <a href="<?php echo ROOT; ?>/home" class="btn btn-accent">Go to Home</a>
 </div>

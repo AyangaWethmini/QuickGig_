@@ -17,6 +17,7 @@ if (isset($_SESSION['pp']) && !empty($_SESSION['pp'])) {
       <li class="nav-links-home"><a href="<?=ROOT?>/home">Home</a></li>
       <li><a href="<?php echo ROOT;?>/home/aboutUs">About</a></li>
       <li><a href="#">Contact Us</a></li>
+      <li><a href="<?php echo ROOT;?>/subscription/premium"><i class="fa-solid fa-crown" style="color:rgb(200, 179, 62);"></i> Premium</a></li>
     </ul>
   </div>
 

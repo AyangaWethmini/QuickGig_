@@ -1,148 +1,80 @@
 <?php
 
-require_once '../vendor/autoload.php'; // Load Stripe PHP library
+require_once '../vendor/autoload.php';
 
-class StripeService{
+class StripeService {
     private $stripe;
     private $config;
 
-    public function __construct()
-    {      
-        $this->config = require '../app/core/stripe-config.php'; // Load Stripe configuration from config file
-        \Stripe\Stripe::setApiKey($this->config['secret_key']); // Set the Stripe API key
+    public function __construct() {
+        $this->config = require '../app/core/stripe-config.php';
+        \Stripe\Stripe::setApiKey($this->config['secret_key']);
         $this->stripe = new \Stripe\StripeClient($this->config['secret_key']);
     }
-   
-    public function createCustomer($email, $name = null, $metadata = [])
-    {
+
+    public function createCustomer($email, $name = null, $metadata = []) {
         try {
-            $customer = $this->stripe->customers->create([
+            return $this->stripe->customers->create([
                 'email' => $email,
                 'name' => $name,
-                'metadata' => $metadata,
+                'metadata' => $metadata
             ]);
-            return $customer;
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
             error_log('Stripe API Error: ' . $e->getMessage());
             return null;
         }
     }
 
-    public function createSubscription($customerId, $priceId, $metadata = [])
-    {
+    public function createSubscription($customerId, $priceId, $metadata = []) {
         try {
-            $subscription = $this->stripe->subscriptions->create([
+            return $this->stripe->subscriptions->create([
                 'customer' => $customerId,
-                'items' => [
-                    ['price' => $priceId]
-                ],
+                'items' => [['price' => $priceId]],
                 'metadata' => $metadata,
+                'payment_behavior' => 'default_incomplete',
+                'expand' => ['latest_invoice.payment_intent']
             ]);
-            return $subscription;
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
             error_log('Stripe API Error: ' . $e->getMessage());
             return null;
         }
     }
 
-   
-    public function updateSubscription($subscriptionId, $priceId)
-    {
+    public function createCheckoutSession($customerId, $priceId, $successUrl, $cancelUrl, $metadata = []) {
         try {
-            $subscription = $this->stripe->subscriptions->update($subscriptionId, [
-                'items' => [
-                    [
-                        'id' => $subscriptionId,
-                        'price' => $priceId]
-                ]
-            ]);
-            return $subscription;
-        } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
-            error_log('Stripe API Error: ' . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function cancelSubscription($subscriptionId)
-    {
-        try {
-            $subscription = $this->stripe->subscriptions->cancel($subscriptionId, ['cancel_at_period_end' => true]);
-            return $subscription;
-        } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
-            error_log('Stripe API Error: ' . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function getSubsbcription($subscriptionId)
-    {
-        try {
-            $subscription = $this->stripe->subscriptions->retrieve($subscriptionId);
-            return $subscription;
-        } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
-            error_log('Stripe API Error: ' . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function getPlans()
-    {
-        try {
-            $plans = $this->stripe->prices->all(['active' => true]);
-            return $plans;
-        } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
-            error_log('Stripe API Error: ' . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function createCheckoutSession($customerId, $priceId, $successUrl, $cancelUrl)
-    {
-        try {
-            $session = $this->stripe->checkout->sessions->create([
+            return $this->stripe->checkout->sessions->create([
+                'customer' => $customerId,
                 'payment_method_types' => ['card'],
-                'mode' => 'subscription',
-                'customer' => $customerId,
                 'line_items' => [[
                     'price' => $priceId,
                     'quantity' => 1,
                 ]],
+                'mode' => 'subscription',
                 'success_url' => $successUrl,
                 'cancel_url' => $cancelUrl,
+                'metadata' => $metadata
             ]);
-            return $session;
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error !ERRORS!
             error_log('Stripe API Error: ' . $e->getMessage());
             return null;
         }
     }
 
-    public function createPaymentIntent($amount, $currency = 'lkr', $paymentMethodId, $customerId = null)
-    {
+    public function cancelSubscription($subscriptionId) {
         try {
-            $paymentIntent = $this->stripe->paymentIntents->create([
-                'amount' => $amount,
-                'currency' => $currency,
-                'payment_method' => $paymentMethodId,
-                'customer' => $customerId,
-                'payment_method_types' => ['card'], // Only implemented for the card payment method
-                'confirm' => true,
-            ]);
-            return $paymentIntent;
+            return $this->stripe->subscriptions->cancel($subscriptionId);
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            // Handle error
             error_log('Stripe API Error: ' . $e->getMessage());
             return null;
         }
     }
-   
 
-
+    public function getSubscription($subscriptionId) {
+        try {
+            return $this->stripe->subscriptions->retrieve($subscriptionId);
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            error_log('Stripe API Error: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

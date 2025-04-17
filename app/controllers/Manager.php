@@ -60,7 +60,8 @@ class Manager extends Controller
     public function plans()
     {
         $data = $this->planModel->getPlans();
-        $this->view('plans', ['plans' => $data]);
+        $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
+        $this->view('plans', ['plans' => $data, 'subs' => $subs]);
     }
 
     public function settings()
