@@ -302,7 +302,24 @@ protectRoute([3]);?>
         }
     }
 
+    function initAutocomplete() {
+        const locationInput = document.getElementById('locationInput');
 
+        // Initialize Google Places Autocomplete
+        autocomplete = new google.maps.places.Autocomplete(locationInput, {
+            types: ['geocode'], // Restrict to geographical locations
+            //componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+        });
+
+        // Listen for the place_changed event
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+                // Update the selectedLocation variable with the new coordinates
+                selectedLocation = `${place.geometry.location.lat()},${place.geometry.location.lng()}`;
+            }
+        });
+    }
 
     function initMap() {
         const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; // Default to Colombo
@@ -316,6 +333,8 @@ protectRoute([3]);?>
         map.addListener("click", (e) => {
             placeMarkerAndPanTo(e.latLng, map);
         });
+
+        initAutocomplete();
     }
 
     function openMapModal() {
