@@ -77,10 +77,10 @@ protectRoute([3]);?>
                     <div class="salary-ph flex-row">
                         <input type="text" name="salary" id="salary-per-hr" required>
                         <select id="currency-select" class="currency-select" name="currency">
+                            <option value="LKR">LKR</option>
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <option value="LKR">LKR</option>
+                            <option value="GBP">GBP</option>                           
                             <option value="AUD">AUD</option>
                             <option value="CAD">CAD</option>
                             <option value="JPY">JPY</option>
@@ -112,9 +112,7 @@ protectRoute([3]);?>
                     </div>
                     <div class="end-time flex-col">
                         <div class="label">
-                            <label for="end-time-select">
-                                <p class="lbl">End Time</p>
-                            </label>
+                            <label for="end-time-select"><p class="lbl">End Time</p></label>
                         </div>
                         <div class="input-boxes">
                             <input type="time" id="timeInput" name="timeTo" required>
@@ -186,7 +184,7 @@ protectRoute([3]);?>
                 <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
                 <p>Or</p>
                 <input type="text" name="location" id="locationInput" placeholder="Type your location here" required>
-            </div>
+            </div></div>
                 <hr>
                 <div class="post-job-buttons flex-row">
                     <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/organization/org_jobListing_myJobs'">Discard</button>
@@ -209,9 +207,11 @@ protectRoute([3]);?>
                 </div>
 
                 <div id="mapModal" class="map-modal" style="display:none;">
-                    <div id="map" style="height: 400px; width: 100%;"></div>
-                    <button type="button" onclick="saveLocation()">Save Location</button>
-                    <button type="button" onclick="closeMapModal()">Cancel</button>
+                    <div id="map"></div>
+                    <div class="mapBtns">
+                        <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
+                        <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
+                    </div>
                 </div>
             </div>
             
