@@ -69,6 +69,7 @@ protectRoute([2]);?>
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
+                        <li><a href="<?php echo ROOT;?>/jobProvider/makeComplaint/<?php echo $completed->applicationID?>">Complain</a></li>
                     </ul>
                 </div>
             </div>
@@ -110,6 +111,7 @@ protectRoute([2]);?>
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                        <li><a href="<?php echo ROOT;?>/jobProvider/makeComplaint/<?php echo $completed->applicationID?>">Complain</a></li>
                     </ul>
                 </div>
             </div>
