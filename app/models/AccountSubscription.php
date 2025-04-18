@@ -23,11 +23,11 @@ class AccountSubscription extends Account {
         $account = $this->query($query, $params);
 
         if (!$account) {
+            error_log("Account not found: $accountID");
             return false;
         }
 
         $role = $this->accountModel->findRole($accountID);
-        // $name = $this->accountModel->getUserName($accountID);
         $name = "User";
 
         if ($role == 2) {
@@ -44,7 +44,10 @@ class AccountSubscription extends Account {
             }
         }
 
-        $customer = $this->stripeService->createCustomer($email, $name, ['accountID' => $accountID,'localCreatedAt' => date('Y-m-d H:i:s')]);
+        $customer = $this->stripeService->createCustomer($email, $name, [
+            'accountID' => $accountID,
+            'localCreatedAt' => date('Y-m-d H:i:s')
+        ]);
 
         if ($customer && $customer->id) {
             $query = "INSERT INTO stripe_customers (accountID, stripe_customer_id, created_at) 
@@ -57,6 +60,7 @@ class AccountSubscription extends Account {
             return $customer->id;
         }
 
+        error_log("Failed to create Stripe customer for account: $accountID");
         return false;
     }
 
@@ -85,9 +89,14 @@ class AccountSubscription extends Account {
 
     public function createSubscription($accountID, $priceID, $subscriptionID, $status, $periodStart, $periodEnd) {
         try {
-            // Check if subscription already exists
+            if (!in_array($status, ['active', 'trialing'])) {
+                error_log("Attempt to create subscription with invalid status: $status");
+                return ['error' => 'Subscription is not active'];
+            }
+
             $existing = $this->getSubscription($subscriptionID);
             if ($existing) {
+                error_log("Subscription already exists: $subscriptionID");
                 return ['error' => 'Subscription already exists'];
             }
 
@@ -107,7 +116,20 @@ class AccountSubscription extends Account {
             $result = $this->query($query, $params);
 
             if (!$result) {
+                error_log("Failed to create subscription record: $subscriptionID");
                 return ['error' => 'Failed to create subscription record'];
+            }
+
+            $updateQuery = "UPDATE account SET planID = :plan_id WHERE accountID = :accountID";
+            $updateParams = [
+                'plan_id' => $this->getPlanIDFromPriceID($priceID),
+                'accountID' => $accountID
+            ];
+            $updateResult = $this->query($updateQuery, $updateParams);
+
+            if (!$updateResult) {
+                error_log("Failed to update account plan: $accountID");
+                return ['error' => 'Failed to update account with plan'];
             }
 
             return ['success' => true];
@@ -117,20 +139,27 @@ class AccountSubscription extends Account {
         }
     }
 
+    private function getPlanIDFromPriceID($priceID) {
+        $planMap = [
+            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1,
+            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2,
+        ];
+        return $planMap[$priceID] ?? null;
+    }
 
     public function createCheckoutSession($accountID, $priceID) {
         $account = $this->accountModel->findById($accountID);
         if (!$account) {
+            error_log("Account not found for checkout: $accountID");
             return ['error' => 'Account not found'];
         }
 
-        // Ensure customer exists in Stripe
         $customerID = $this->ensureStripeCustomer($accountID, $account->email);
         if (!$customerID) {
+            error_log("Failed to get/create customer for account: $accountID");
             return ['error' => 'Failed to create or retrieve Stripe customer'];
         }
 
-        // Create checkout session
         $success_url = ROOT . "/subscription/checkoutSuccess?session_id={CHECKOUT_SESSION_ID}";
         $cancel_url = ROOT . "/subscription/error";
 
@@ -146,6 +175,7 @@ class AccountSubscription extends Account {
         );
 
         if (!$session || !isset($session->id)) {
+            error_log("Failed to create checkout session for account: $accountID");
             return ['error' => 'Failed to create checkout session'];
         }
 
@@ -155,7 +185,6 @@ class AccountSubscription extends Account {
             'checkout_url' => $session->url
         ];
     }
-
 
     public function getSubscription($subscriptionID) {
         $query = "SELECT * FROM subscriptions WHERE stripe_subscription_id = :subscription_id LIMIT 1";
@@ -177,7 +206,13 @@ class AccountSubscription extends Account {
 
             $query .= " WHERE stripe_subscription_id = :subscription_id";
 
-            return $this->query($query, $params);
+            $result = $this->query($query, $params);
+            
+            if (!$result) {
+                error_log("Failed to update subscription: $subscriptionID");
+            }
+            
+            return $result;
         } catch (PDOException $e) {
             error_log("Database Error: " . $e->getMessage());
             return false;
@@ -188,12 +223,46 @@ class AccountSubscription extends Account {
         return $this->updateSubscription($subscriptionID, $status);
     }
 
-    public function cancelSubscription($subscriptionID) {
-        $result = $this->stripeService->cancelSubscription($subscriptionID);
-        if ($result) {
-            return $this->updateSubscriptionStatus($subscriptionID, 'canceled');
+    public function cancelSubscription($subscriptionID, $accountID) {
+        try {
+            // First check if subscription exists and belongs to this account
+            $query = "SELECT * FROM subscriptions 
+                      WHERE stripe_subscription_id = :subscription_id 
+                      AND accountID = :accountID LIMIT 1";
+            $params = [
+                'subscription_id' => $subscriptionID,
+                'accountID' => $accountID
+            ];
+            $subscription = $this->query($query, $params);
+            
+            if (!$subscription || count($subscription) === 0) {
+                error_log("Subscription not found or doesn't belong to account: $subscriptionID");
+                return false;
+            }
+    
+            // Cancel with Stripe
+            $result = $this->stripeService->cancelSubscription($subscriptionID);
+            
+            if ($result) {
+                // Update local database
+                $updateStatus = $this->updateSubscriptionStatus($subscriptionID, 'canceled');
+                
+                if ($updateStatus) {
+                    // back to free plan
+                    $query = "UPDATE account SET planID = -1 WHERE accountID = :accountID";
+                    $params = ['accountID' => $accountID];
+                    $this->query($query, $params);
+                    
+                    return true;
+                }
+            }
+            
+            error_log("Failed to cancel subscription: $subscriptionID");
+            return false;
+        } catch (Exception $e) {
+            error_log("Error canceling subscription: " . $e->getMessage());
+            return false;
         }
-        return false;
     }
 
     public function getActiveSubscriptions($accountID = null) {
@@ -206,5 +275,12 @@ class AccountSubscription extends Account {
         }
 
         return $this->query($query, $params);
+    }
+
+    public function getUserSubscriptionDetails($accountID) {
+        $query = "SELECT s.stripe_price_id, s.current_period_start, s.current_period_end, s.status, p.planName FROM subscriptions s 
+        JOIN plan p ON s.stripe_price_id = p.stripe_price_id WHERE s.accountID = :accountID AND status = 'active' LIMIT 1";
+        $params = ['accountID' => $accountID];
+        return $this->query($query, $params); 
     }
 }

@@ -114,7 +114,7 @@ if (
         <?php if (!empty($ad)): ?>
             <?= renderAdvertisement($ad, ROOT) ?>
         <?php else: ?>
-            <p>No active advertisements</p>
+            <div></div>
         <?php endif; ?>
     </div>
 </div>

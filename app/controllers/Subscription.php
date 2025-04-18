@@ -33,39 +33,52 @@ class Subscription extends Controller {
         $this->view('error', ['message' => 'Payment failed!']);
     }
 
+    public function cancelConfirm() {
+        $this->view('cancel', ['message' => 'Payment cancelled!']);
+    }
+
     public function subscribe() {
-        // Validate required session and post data
-        if (!isset($_SESSION['user_id'], $_SESSION['user_email'], $_POST['priceID'])) {
+        if (!isset($_SESSION['user_id'], $_SESSION['user_email'], $_POST['priceID'], $_SESSION['user_role'])) {
             header('Location: ' . ROOT . "/home/login");
             exit;
         }
-    
+
         $accountID = $_SESSION['user_id'];
         $email = $_SESSION['user_email'];
         $priceID = $_POST['priceID'];
-    
-        // Use the ensureStripeCustomer method to handle customer creation/retrieval
+        $userRole = $_SESSION['user_role'];
+
+        // Role-based plan restriction
+        $rolePlanMap = [
+            2 => 'price_1RBC4LFq0GU0Vr5TFeEmkI37', // Role 2 -> Individual Plan
+            3 => 'price_1RBC5KFq0GU0Vr5TMvpc9eDH', // Role 3 -> Organization Plan
+        ];
+
+        if (!isset($rolePlanMap[$userRole]) || $rolePlanMap[$userRole] !== $priceID) {
+            $_SESSION['error'] = 'You are not authorized to subscribe to this plan.';
+            header('Location: ' . ROOT . '/subscription/premium');
+            exit;
+        }
+
         $customerID = $this->accountSubscriptionModel->ensureStripeCustomer($accountID, $email);
         
         if (!$customerID) {
             $_SESSION['error'] = 'Failed to setup payment account';
-            header('Location: ' . ROOT . '/subscription');
+            header('Location: ' . ROOT . '/subscription/premium');
             exit;
         }
-    
-        // Create checkout session - now using the model's method
+
         $checkoutResult = $this->accountSubscriptionModel->createCheckoutSession(
             $accountID,
             $priceID
         );
-    
+
         if (isset($checkoutResult['error'])) {
             $_SESSION['error'] = $checkoutResult['error'];
-            header('Location: ' . ROOT . '/subscription');
+            header('Location: ' . ROOT . '/subscription/premium');
             exit;
         }
-    
-        // Redirect to Stripe checkout
+
         header('Location: ' . $checkoutResult['checkout_url']);
         exit;
     }
@@ -79,48 +92,55 @@ class Subscription extends Controller {
         $sessionID = $_GET['session_id'];
         
         try {
-            // Retrieve the session from Stripe
-            $session = \Stripe\Checkout\Session::retrieve($sessionID);
+            $session = \Stripe\Checkout\Session::retrieve([
+                'id' => $sessionID,
+                'expand' => ['payment_intent', 'subscription']
+            ]);
             
             if (!$session || $session->payment_status !== 'paid') {
+                error_log("Payment failed for session: $sessionID");
                 $this->view('error', ['message' => 'Payment not completed']);
                 return;
             }
 
-            // Get subscription ID from the session
-            $subscriptionID = $session->subscription;
-            if (!$subscriptionID) {
+            if (!$session->subscription) {
+                error_log("No subscription found for session: $sessionID");
                 $this->view('error', ['message' => 'Subscription not found']);
                 return;
             }
 
-            // Retrieve the full subscription object
-            $subscription = \Stripe\Subscription::retrieve($subscriptionID);
-            
+            $subscription = $session->subscription;
             $accountID = $session->metadata->accountID ?? null;
             $priceID = $session->metadata->priceID ?? $subscription->items->data[0]->price->id;
 
             if (!$accountID) {
+                error_log("No account ID found in session metadata: $sessionID");
                 $this->view('error', ['message' => 'Account not found']);
                 return;
             }
 
-            // Create subscription record in database
+            // Only create subscription if status is active or trialing
+            if (!in_array($subscription->status, ['active', 'trialing'])) {
+                error_log("Subscription not active: " . $subscription->status);
+                $this->view('error', ['message' => 'Subscription is not active']);
+                return;
+            }
+
             $result = $this->accountSubscriptionModel->createSubscription(
                 $accountID, 
                 $priceID, 
-                $subscriptionID,
+                $subscription->id,
                 $subscription->status,
                 $subscription->current_period_start,
                 $subscription->current_period_end
             );
 
             if (isset($result['error'])) {
+                error_log("Subscription creation failed: " . $result['error']);
                 $this->view('error', ['message' => $result['error']]);
                 return;
             }
 
-            // Update user's plan
             $planMap = $this->getStripePlanMap();
             if (isset($planMap[$priceID])) {
                 $this->accountModel->updatePlan($accountID, $planMap[$priceID]);
@@ -148,24 +168,29 @@ class Subscription extends Controller {
                 $payload, $sig_header, $config['webhook_secret']
             );
         } catch(\UnexpectedValueException $e) {
-            // Invalid payload
             http_response_code(400);
             exit();
         } catch(\Stripe\Exception\SignatureVerificationException $e) {
-            // Invalid signature
             http_response_code(400);
             exit();
         }
 
-        // Handle the event
         switch ($event->type) {
             case 'checkout.session.completed':
                 $session = $event->data->object;
-                $this->handleCheckoutSessionCompleted($session);
+                if ($session->payment_status === 'paid') {
+                    $this->handleCheckoutSessionCompleted($session);
+                }
+                break;
+                
+            case 'invoice.payment_succeeded':
+                $invoice = $event->data->object;
+                if ($invoice->subscription) {
+                    $this->handleSubscriptionPaymentSucceeded($invoice);
+                }
                 break;
                 
             case 'customer.subscription.updated':
-            case 'customer.subscription.created':
                 $subscription = $event->data->object;
                 $this->handleSubscriptionUpdate($subscription);
                 break;
@@ -174,19 +199,39 @@ class Subscription extends Controller {
                 $subscription = $event->data->object;
                 $this->handleSubscriptionCancelled($subscription);
                 break;
+
+            case 'customer.subscription.deleted':
+                $subscription = $event->data->object;
+                $this->handleSubscriptionCancelled($subscription);
+                break;
+            
                 
             default:
-                echo 'Received unknown event type ' . $event->type;
+                error_log('Received unhandled event type: ' . $event->type);
         }
 
         http_response_code(200);
     }
 
     private function handleCheckoutSessionCompleted($session) {
-        // This is already handled in checkoutSuccess, but can be used as backup
         if ($session->payment_status === 'paid' && $session->subscription) {
-            $subscription = \Stripe\Subscription::retrieve($session->subscription);
+            try {
+                $subscription = \Stripe\Subscription::retrieve($session->subscription);
+                if (in_array($subscription->status, ['active', 'trialing'])) {
+                    $this->handleSubscriptionUpdate($subscription);
+                }
+            } catch (\Stripe\Exception\ApiErrorException $e) {
+                error_log("Error retrieving subscription: " . $e->getMessage());
+            }
+        }
+    }
+
+    private function handleSubscriptionPaymentSucceeded($invoice) {
+        try {
+            $subscription = \Stripe\Subscription::retrieve($invoice->subscription);
             $this->handleSubscriptionUpdate($subscription);
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            error_log("Error handling payment succeeded: " . $e->getMessage());
         }
     }
 
@@ -196,11 +241,12 @@ class Subscription extends Controller {
         $status = $subscription->status;
         $priceID = $subscription->items->data[0]->price->id;
         
-        // Get account ID from database
         $accountID = $this->accountSubscriptionModel->getAccountIDByCustomerID($customerID);
-        if (!$accountID) return;
+        if (!$accountID) {
+            error_log("No account found for customer: $customerID");
+            return;
+        }
 
-        // Update subscription in database
         $this->accountSubscriptionModel->updateSubscription(
             $subscriptionID,
             $status,
@@ -208,7 +254,6 @@ class Subscription extends Controller {
             $subscription->current_period_end
         );
 
-        // Update user plan if active
         if ($status === 'active') {
             $planMap = $this->getStripePlanMap();
             if (isset($planMap[$priceID])) {
@@ -219,9 +264,22 @@ class Subscription extends Controller {
 
     private function handleSubscriptionCancelled($subscription) {
         $subscriptionID = $subscription->id;
+        $customerID = $subscription->customer;
+        
+        // Get account ID
+        $accountID = $this->accountSubscriptionModel->getAccountIDByCustomerID($customerID);
+        if (!$accountID) {
+            error_log("No account found for customer: $customerID");
+            return;
+        }
+        
+        // Update subscription status
         $this->accountSubscriptionModel->updateSubscriptionStatus($subscriptionID, 'canceled');
         
-        // Optionally downgrade user plan here
+        // Update account plan
+        $query = "UPDATE account SET planID = NULL WHERE accountID = :accountID";
+        $params = ['accountID' => $accountID];
+        $this->query($query, $params);
     }
 
     private function getStripePlanMap() {
@@ -229,5 +287,39 @@ class Subscription extends Controller {
             'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1, // individual
             'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, // organization
         ];
+    }
+
+
+
+    //cancelaation
+    public function cancel() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . ROOT . "/home/login");
+            exit;
+        }
+    
+        $accountID = $_SESSION['user_id'];
+        
+        // Get user's active subscription
+        $subscription = $this->accountSubscriptionModel->getActiveSubscriptions($accountID);
+        
+        if (empty($subscription)) {
+            $_SESSION['error'] = 'No active subscription found';
+            header('Location: ' . ROOT . '/subscription');
+            exit;
+        }
+    
+        $subscriptionID = $subscription[0]->stripe_subscription_id;
+        
+        $result = $this->accountSubscriptionModel->cancelSubscription($subscriptionID, $accountID);
+        
+        if ($result) {
+            $_SESSION['success'] = 'Subscription cancelled successfully';
+        } else {
+            $_SESSION['error'] = 'Failed to cancel subscription';
+        }
+        
+        header('Location: ' . ROOT . '/subscription/cancelConfirm');
+        exit;
     }
 }

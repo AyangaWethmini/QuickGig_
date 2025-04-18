@@ -395,23 +395,34 @@ class Manager extends Controller
                 }
             }
 
+            if (isset($_POST['stripe_price_id']) && trim($_POST['stripe_price_id']) !== '') {
+                if (!preg_match('/^price_[a-zA-Z0-9]{14,}$/', $_POST['stripe_price_id'])) {
+                    $_SESSION['error'] = "Invalid Stripe price ID format.";
+                    header('Location: ' . ROOT . '/manager/updatePlanForm/' . $id);
+                    exit;
+                }
+                $updateData['stripe_price_id'] = trim($_POST['stripe_price_id']);
+            } else {
+                $updateData['stripe_price_id'] = null;
+            }
+
             // Validate numeric fields
             if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
                 $_SESSION['error'] = "Duration, price, and post limit must be numeric.";
-                header('Location: ' . ROOT . '/manager/plans');
+                header('Location: ' . ROOT . '/manager/updatePlanForm.' . $id);
                 exit;
             }
 
             // Validate string length for plan name and description
             if (strlen(trim($_POST['planName'])) > 20) {
                 $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
-                header('Location: ' . ROOT . '/manager/plans');
+                header('Location: ' . ROOT . '/manager/updatePlanForm'. $id);
                 exit;
             }
 
             if (strlen(trim($_POST['description'])) > 1000) {
                 $_SESSION['error'] = "Description must be 1000 characters or fewer.";
-                header('Location: ' . ROOT . '/manager/plans');
+                header('Location: ' . ROOT . '/manager/updatePlanForm'. $id);
                 exit;
             }
 

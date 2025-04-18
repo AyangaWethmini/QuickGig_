@@ -5,7 +5,7 @@ protectRoute([2]);?>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/Seeker/seeker_sidebar.php'; ?>
     
     <?php require APPROOT . '/views/components/helpCenter.php'; ?>
         

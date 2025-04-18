@@ -3,12 +3,20 @@ date_default_timezone_set('Asia/Colombo');
 
 class JobProvider extends Controller
 {
+
+    private $helpModel;
+    private $managerModel;
+    private $accountSubscriptionModel;
+    
     public function __construct()
     {
         $this->complaintModel = $this->model('Complaint');
         $this->findEmpModel = $this->model('FindEmployees');
         $this->accountModel = $this->model('Account');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
+        $this->helpModel = $this->model('Help');
+        $this->managerModel = $this->model('ManagerModel');
+        $this->accountSubscriptionModel = $this->model('AccountSubscription');
     }
     protected $viewPath = "../app/views/jobProvider/";
 
@@ -207,8 +215,9 @@ class JobProvider extends Controller
         $this->view('viewEmployeeProfile');
     }
     function subscription()
-    {
-        $this->view('subscription');
+    {   
+        $subsDetails = $this->accountSubscriptionModel->getUserSubscriptionDetails($_SESSION['user_id']);
+        $this->view('subscription', ['subscription' => $subsDetails]);
     }
     function messages()
     {
@@ -219,14 +228,97 @@ class JobProvider extends Controller
         $this->view('announcements');
     }
 
+    //help center functionalities 
     function helpCenter()
     {
-        $this->view('helpCenter');
+        $data = $this->helpModel->getUserQuestions($_SESSION['user_id']);
+        $this->view('helpCenter', ['questions' => $data]);
     }
+
+    function submitQuestion()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+            $_SESSION['error'] = 'Title and description cannot be empty.';
+            header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+            exit;
+            }
+
+            $this->helpModel->createQuestion([
+            'accountID' => $accountID,
+            'title' => $title,
+            'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+    function editQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+            $_SESSION['error'] = 'Title and description cannot be empty.';
+            header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+            exit;
+            }
+
+            $this->helpModel->update($id, [
+            'title' => $title,
+            'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        } else {
+            $question = $this->helpModel->getQuestionById($id);
+            $data = [
+            'question' => $question
+            ];
+            $this->view('editQuestion', $data);
+        }
+    }
+
+    function deleteQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->helpModel->delete($id);
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+
+    //help center done
+
     function reviews()
     {
         $this->view('reviews');
     }
+
+    function userReport()
+    {
+        // $userID = $_SESSION['user_id'];
+        // $findEmpModel = $this->model('FindEmployees');
+        // $appliedJobs = $findEmpModel->getAppliedJobs($userID);
+        // $postedJobs = $findEmpModel->getPostedJobs($userID);
+
+        // $data = [
+        //     'appliedJobs' => $appliedJobs,
+        //     'postedJobs' => $postedJobs
+        // ];
+
+        $this->view('report');
+    }
+
+
     public function jobListing_myJobs()
     {
         $userID = $_SESSION['user_id'];

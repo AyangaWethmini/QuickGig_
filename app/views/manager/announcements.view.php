@@ -14,14 +14,8 @@ protectRoute([1]); ?>
     <div class="main-content container">
         <div>
         <div class="header flex-col">
-            <h3>Announcements</h3>
+            <h2>Announcements</h2>
             <hr>
-            <div class="search-container">
-            <input type="text" 
-                class="search-bar" 
-                placeholder="Search announcements"
-                aria-label="Search">
-        </div>
         </div>
         
         

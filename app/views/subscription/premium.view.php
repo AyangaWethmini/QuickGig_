@@ -43,6 +43,23 @@
 </main>
 
 
+<?php
+                include_once APPROOT . '/views/components/alertBox.php';
+                if (isset($_SESSION['error'])) {
+                    echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+                    
+                }
+
+                if (isset($_SESSION['success'])) {
+                    echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+                    
+                }
+
+                unset($_SESSION['error']);
+                unset($_SESSION['success']);
+            ?>
+
+
   <footer class="footer-premium">
     <p>© 2024 QuickGig. All rights reserved.</p>
   </footer>

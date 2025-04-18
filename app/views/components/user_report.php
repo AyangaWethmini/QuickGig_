@@ -1,11 +1,6 @@
-<!--
-    User Report Page
-    This page generates a user report with sections for profile summary, task statistics, payment statistics, and performance.
-    It includes a print button to download the report.  -->
 
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/report.css">
-
 
 
 <div class="wrapper">

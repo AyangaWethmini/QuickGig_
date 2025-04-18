@@ -2,6 +2,7 @@
 date_default_timezone_set('Asia/Colombo');
     class Organization extends Controller {
         
+        private $helpModel;
         protected $viewPath = "../app/views/organization/";
 
         use Database;
@@ -9,6 +10,7 @@ date_default_timezone_set('Asia/Colombo');
             $this->findEmpModel = $this->model('FindEmployees');
             $this->jobStatusUpdater = $this->model('JobStatusUpdater');
             $this->accountModel = $this->model('Account');
+            $this->helpModel = $this->model('Help');
         }
 
     
@@ -115,7 +117,7 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_viewEmployeeProfile');
         }
 
-        function org_subscription(){
+        public function org_subscription() {
             $this->view('org_subscription');
         }
 
@@ -123,6 +125,11 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_messages');
         }
 
+        function org_report(){
+            $this->view('report');
+        }
+
+     
         function org_announcements(){
             $this->view('org_announcements');
         }
@@ -173,9 +180,75 @@ date_default_timezone_set('Asia/Colombo');
             }
         }
 
-        function org_helpCenter(){
-            $this->view('org_helpCenter');
+        //help center functionalities 
+    function org_helpCenter()
+    {
+        $data = $this->helpModel->getUserQuestions($_SESSION['user_id']);
+        $this->view('org_helpCenter', ['questions' => $data]);
+    }
+
+    function submitQuestion()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+            $_SESSION['error'] = 'Title and description cannot be empty.';
+            header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+            exit;
+            }
+
+            $this->helpModel->createQuestion([
+            'accountID' => $accountID,
+            'title' => $title,
+            'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
         }
+    }
+
+    function editQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+            $_SESSION['error'] = 'Title and description cannot be empty.';
+            header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+            exit;
+            }
+
+            $this->helpModel->update($id, [
+            'title' => $title,
+            'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        } else {
+            $question = $this->helpModel->getQuestionById($id);
+            $data = [
+            'question' => $question
+            ];
+            $this->view('editQuestion', $data);
+        }
+    }
+
+    function deleteQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->helpModel->delete($id);
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+
+    //help center done
 
         function org_reviews(){
             $this->view('org_reviews');
