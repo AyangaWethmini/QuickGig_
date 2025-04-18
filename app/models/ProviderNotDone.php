@@ -1,6 +1,6 @@
 <?php
 
-class CompletedProvider{
+class ProviderNotDone{
     use Database;
 
     public $availableID;
@@ -27,7 +27,7 @@ class CompletedProvider{
         JOIN individual i ON a.seekerID = i.accountID
         JOIN account acc ON a.seekerID = acc.accountID
         WHERE j.accountID = ? 
-        AND a.applicationStatus = 4
+        AND a.applicationStatus = 6
         ORDER BY datePosted DESC, timePosted DESC";
         $result = $this->query($query, [$id]);
         
@@ -43,7 +43,7 @@ class CompletedProvider{
         JOIN individual i ON m.accountID = i.accountID
         JOIN account acc ON i.accountID = acc.accountID
         WHERE r.providerID = ?
-        AND r.reqStatus = 4
+        AND r.reqStatus = 6
         ORDER BY datePosted DESC, timePosted DESC";
         $result = $this->query($query, [$id]);
         
@@ -85,7 +85,7 @@ class CompletedProvider{
                   JOIN individual i ON a.seekerID = i.accountID
                   JOIN account acc ON a.seekerID = acc.accountID
                   WHERE j.accountID = ? 
-                  AND a.applicationStatus = 4
+                  AND a.applicationStatus = 6
                   AND (
                       LOWER(i.fname) LIKE ? OR
                       LOWER(i.lname) LIKE ? OR
@@ -104,7 +104,7 @@ class CompletedProvider{
                   JOIN individual i ON m.accountID = i.accountID
                   JOIN account acc ON i.accountID = acc.accountID
                   WHERE r.providerID = ? 
-                  AND r.reqStatus = 4
+                  AND r.reqStatus = 6
                   AND (
                       LOWER(i.fname) LIKE ? OR
                       LOWER(i.lname) LIKE ? OR
@@ -122,7 +122,7 @@ class CompletedProvider{
                   JOIN individual i ON a.seekerID = i.accountID
                   JOIN account acc ON a.seekerID = acc.accountID
                   WHERE j.accountID = ? 
-                  AND a.applicationStatus = 4
+                  AND a.applicationStatus = 6
                   AND j.availableDate = ?
                   ORDER BY datePosted DESC, timePosted DESC";
         return $this->query($query, [$userID, $filterDate]);
@@ -135,19 +135,9 @@ class CompletedProvider{
                   JOIN individual i ON m.accountID = i.accountID
                   JOIN account acc ON m.accountID = acc.accountID
                   WHERE r.providerID = ? 
-                  AND r.reqStatus = 4
+                  AND r.reqStatus = 6
                   AND m.availableDate = ?
                   ORDER BY m.availableDate DESC, m.timeFrom DESC";
         return $this->query($query, [$userID, $filterDate]);
-    }
-
-    public function updateApplicationStatus($applicationID, $status) {
-        $query = "UPDATE apply_job SET applicationStatus = ? WHERE applicationID = ?";
-        return $this->query($query, [$status, $applicationID]);
-    }
-    
-    public function updateRequestStatus($reqID, $status) {
-        $query = "UPDATE req_available SET reqStatus = ? WHERE reqID = ?";
-        return $this->query($query, [$status, $reqID]);
     }
 }
