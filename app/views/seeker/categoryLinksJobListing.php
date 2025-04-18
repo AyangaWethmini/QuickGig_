@@ -8,6 +8,8 @@
     <a href="<?php echo ROOT;?>/seeker/jobListing_send" class="category">Send</a>
     <a href="<?php echo ROOT;?>/seeker/jobListing_toBeCompleted" class="category">To be completed</a>
     <a href="<?php echo ROOT;?>/seeker/jobListing_ongoing" class="category">Ongoing</a>
-    <a href="<?php echo ROOT;?>/seeker/jobListing_completed" class="category">Completed</a>
+    <a href="<?php echo ROOT;?>/seeker/jobListing_completed" class="category">Due</a>
+    <a href="<?php echo ROOT;?>/seeker/jobListing_done" class="category">Completed</a>
+    <a href="<?php echo ROOT;?>/seeker/jobListing_notDone" class="category">Incompleted</a>
 </div>
 </body>
