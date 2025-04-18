@@ -28,7 +28,7 @@ protectRoute([3]);?>
                 </div>
                 <div class="form-section button-group">
                     <button type="submit" class="submit-btn">Submit</button>
-                    <button type="button" class="discard-btn" onclick="window.location.href='<?=ROOT?>/organization/jobListing_completed';">Discard</button>
+                    <button type="button" class="discard-btn" onclick="window.location.href='<?=ROOT?>/organization/org_jobListing_completed';">Discard</button>
                 </div>
             </form>
         </div>
