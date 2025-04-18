@@ -376,7 +376,74 @@ class JobProvider extends Controller
         ];
         $this->view('jobListing_completed', $data);
     }
-      
+
+    public function updateCompletionStatus() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $type = $_POST['type'];
+            $status = $_POST['status'];
+    
+            $completedProvider = $this->model('CompletedProvider');
+    
+            if ($type === 'application') {
+                $completedProvider->updateApplicationStatus($id, $status);
+            } elseif ($type === 'request') {
+                $completedProvider->updateRequestStatus($id, $status);
+            }
+    
+            header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
+        }
+    }
+
+    function jobListing_done() {
+        $this->jobStatusUpdater->updateJobStatuses();
+        $completedProvider = $this->model('ProviderDone');
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+    
+        if (!empty($filterDate)) {
+            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+        } else {
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        }
+    
+        $data = [
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
+        ];
+        $this->view('jobListing_done', $data);
+    }
+
+    function jobListing_notDone() {
+        $this->jobStatusUpdater->updateJobStatuses();
+        $completedProvider = $this->model('ProviderNotDone');
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+    
+        if (!empty($filterDate)) {
+            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+        } else {
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        }
+    
+        $data = [
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
+        ];
+        $this->view('jobListing_notDone', $data);
+    }  
 
     public function makeComplaint($taskID)
     {

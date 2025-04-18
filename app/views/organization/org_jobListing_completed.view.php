@@ -198,7 +198,7 @@ protectRoute([3]);?>
             form.action = `<?= ROOT ?>/organization/updateCompletionStatus`;
             document.getElementById('action-id').value = currentID;
             document.getElementById('action-type').value = currentType;
-            document.getElementById('action-status').value = currentAction === 'done' ? 5 : 6;
+            document.getElementById('action-status').value = currentAction === 'completed' ? 5 : 6;
             form.submit();
         }
         closePopup('confirmPopup');
