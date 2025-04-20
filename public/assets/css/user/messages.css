@@ -95,3 +95,14 @@
     font-weight: bold;
     color: #3599ff;
 }
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: row; /* Stack sidebar and content vertically */
+    }
+
+    .no-messages-container {
+        margin-left: 0; /* Remove sidebar margin */
+        width: 75%; /* Center the no messages container */
+    }
+}
