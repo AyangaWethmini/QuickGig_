@@ -202,10 +202,20 @@ class JobProvider extends Controller
             }
         }
     }
-    function viewEmployeeProfile()
-    {
-        $this->view('viewEmployeeProfile');
-    }
+    function viewEmployeeProfile($employeeID)
+{
+    $account = $this->model('account');
+    $role = $account->findrole($employeeID);
+    $employeeData = null;
+
+    if ($role['roleID'] == 2) {
+        $employeeData = $account->getUserData($employeeID);
+    } else if ($role['roleID']) {
+        $employeeData = $account->getOrgData($employeeID);
+    } 
+    // Pass data as associative array to the view
+    $this->view('viewEmployeeProfile', $employeeData);
+}
     function subscription()
     {
         $this->view('subscription');
@@ -220,7 +230,7 @@ class JobProvider extends Controller
     }
 
     function helpCenter()
-    {
+    {-
         $this->view('helpCenter');
     }
     function reviews()
@@ -492,5 +502,19 @@ class JobProvider extends Controller
             $this->jobModel->delete($id);
             header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
         }
+    }
+    public function addReview($accountID)
+    {
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $roleID     = 2;
+
+        $review = $this->model('review');
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID);
+        header('Location: ' . ROOT . '/seeker/jobListing_completed');
     }
 }

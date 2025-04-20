@@ -57,7 +57,7 @@ class User
         // Execute the query
         return $this->query($query, $params);
     }
-
+ 
     public function deleteUserById($accountID)
     {
         try {

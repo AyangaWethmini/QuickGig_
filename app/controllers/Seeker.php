@@ -8,7 +8,6 @@ class Seeker extends Controller
         $this->findJobModel = $this->model('FindJobs');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
-        
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -147,6 +146,14 @@ class Seeker extends Controller
     function reviews()
     {
         $this->view('reviews');
+    }
+    function review($jobId)
+    {
+        $job = $this->model('job');
+        $account = $this->model('Account');
+        $pickJob = $job->getJobById($jobId);
+        $revieweeData = $account->getUserData($pickJob->accountID);
+        $this->view('review', $revieweeData);
     }
 
     public function jobListing_myJobs()
@@ -347,5 +354,19 @@ class Seeker extends Controller
             $this->availabilityModel->delete($id);
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         }
+    }
+    public function addReview($accountID)
+    {
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $roleID     = 1;
+
+        $review = $this->model('review');
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID);
+        header('Location: ' . ROOT . '/seeker/jobListing_completed');
     }
 }

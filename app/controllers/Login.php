@@ -58,7 +58,8 @@ class Login extends Controller
                 $_SESSION['user_email'] = $user['email']; // Store user email in the session
                 $_SESSION['pp'] = $user['pp'];
                 $_SESSION['user_role'] = $userRole['roleID'];
-                $_SESSION['user_logged_in'] = true; // Store user email in the session
+                $_SESSION['user_logged_in'] = true; 
+                $_SESSION['current_role'] = 1;
                 header("Location: " . ROOT . "/home");
                 exit;
             } else {
