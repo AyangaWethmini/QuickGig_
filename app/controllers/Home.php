@@ -16,11 +16,11 @@ class Home extends Controller
 	public function index()
 	{
 		$plans = $this->planModel->getPlans();
-		$ad = $this->adModel->getRandomActiveAd();
+		$advertisements = $this->adModel->getActiveAds();
 
 		$data = [
 			'plans' => $plans,
-			'ad' => $ad
+			'advertisements' => $advertisements
 		];
 
 		$this->view('home', $data);

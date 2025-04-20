@@ -55,7 +55,7 @@ class Subscription extends Controller {
         ];
 
         if (!isset($rolePlanMap[$userRole]) || $rolePlanMap[$userRole] !== $priceID) {
-            $_SESSION['error'] = 'You are not authorized to subscribe to this plan.';
+            $_SESSION['error'] = 'Your account in not elligible to subscribe to this plan';
             header('Location: ' . ROOT . '/subscription/premium');
             exit;
         }

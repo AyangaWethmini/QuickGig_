@@ -109,15 +109,7 @@ if (
 
 </div>
 
-<div class="ad-cont flex-row"> 
-    <div class="advertisement-content">
-        <?php if (!empty($ad)): ?>
-            <?= renderAdvertisement($ad, ROOT) ?>
-        <?php else: ?>
-            <div></div>
-        <?php endif; ?>
-    </div>
-</div>
+<?php include_once APPROOT . '/views/components/advertisemetsSlideshow.php'; ?>
 
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">

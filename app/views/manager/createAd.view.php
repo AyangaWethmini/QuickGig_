@@ -18,8 +18,9 @@ protectRoute([1]);
                onclick="window.location.href='<?=ROOT?>/manager/advertisements'" 
                style="cursor: pointer;">
             </i>
-            <h3 class="title">Create Ad</h3>
+            <h2 class="title">Create Ad</h2>
         </div>
+        <hr>
 
         <div class="ad-form flex-col">
             <div class="create-ad-form" id="create-ad">
@@ -63,7 +64,7 @@ protectRoute([1]);
                         </div>
 
                         <div class="field">
-                            <div class="flex-row" style="gap: 10px;">
+                            <div class="flex-row" style="gap:93px;">
                                 <div>
                                     <label class="lbl">Start Date</label><br>
                                     <input type="date" id="startDate" name="startDate" required>
@@ -77,11 +78,11 @@ protectRoute([1]);
 
                         <div class="field radio-btns flex-row" style="gap: 30px; margin-top: 20px;">
                             <div class="flex-row" style="gap : 5px;">
-                                <input type="radio" id="status-paid" name="adStatus" value="1">
+                                <input type="radio" id="status-paid" name="adStatus" value="1" required>
                                 <label for="status-paid" class="lbl">Paid</label>
                             </div>
                             <div class="flex-row" style="gap : 5px;">
-                                <input type="radio" id="status-pending" name="adStatus" value="0">
+                                <input type="radio" id="status-pending" name="adStatus" value="0" required>
                                 <label for="status-pending" class="lbl">Payment pending</label>
                             </div>
                         </div>
@@ -108,9 +109,15 @@ protectRoute([1]);
         <?php
             include_once APPROOT . '/views/components/alertBox.php';
             if (isset($_SESSION['error'])) {
-                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            
+            }
+            if (isset($_SESSION['success'])) {
+            echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            
             }
             unset($_SESSION['error']);
+            unset($_SESSION['success']);
         ?>
     </div>
 </div>

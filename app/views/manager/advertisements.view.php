@@ -9,13 +9,15 @@ protectRoute([1]);
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
+<?php include APPROOT . '/views/components/deleteConfirmation.php'; ?>
+
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container">
         <!-- Header Section -->
         <div class="header flex-row justify-between align-center">
-            <h3>Current Advertisements</h3>
+            <h2>Current Advertisements</h2>
             <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/createAd'"> + Post Advertisement</button>
         </div>
         <hr>
@@ -56,21 +58,23 @@ protectRoute([1]);
                     <div class="ad-details flex-col">
                         <p class="adv-title"><strong><?= htmlspecialchars($ad->adTitle) ?></strong></p>
                         <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                        <p class="description"><?= htmlspecialchars(implode(' ', array_slice(explode(' ', $ad->adDescription), 0, 10))) . '...' ?></p>
-                        <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars($ad->link) ?></a></p>
+                        <p class="description"><?= htmlspecialchars(substr($ad->adDescription, 0, 100)) . '...' ?></p>
+                        <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars(substr($ad->link, 0, 100)) . '...' ?></a></p>
                         <div class="status">
-                            <span class="badge <?= $ad->adStatus == 1 ? 'active' : 'inactive' ?>">
+                            <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
                                 <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
                             </span>
                         </div>
                     </div>
                     <div class="ad-actionbtns flex-col">
                         <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
-                        <button class="btn btn-del" onclick="deleteAd(<?= $ad->advertisementID ?>)">Delete</button>
+                        <button class="btn btn-del" onclick="showConfirmation('Are you sure you want to delete the advertisement?', 
+                                () => submitForm('<?= ROOT ?>/manager/deleteAd/<?= htmlspecialchars($ad->advertisementID) ?>'))">Delete</button>
                     </div>
                 </div>
                 <?php endfor; ?>
             </div>
+            
         </div>
 
         <!-- Pagination -->
@@ -93,30 +97,26 @@ protectRoute([1]);
         </div>
 
         <!-- Error Message -->
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
+        <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+            echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            
+            }
+            if (isset($_SESSION['success'])) {
+            echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
+
+
+
+        
+            
     </div>
+
+   
 </div>
 
-<script>
-function deleteAd(adId) {
-    if (confirm('Are you sure you want to delete this advertisement?')) {
-        fetch(`<?=ROOT?>/manager/deleteAdvertisement/${adId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Advertisement deleted successfully');
-                window.location.reload();
-            } else {
-                alert('Failed to delete advertisement');
-            }
-        });
-    }
-}
-</script>

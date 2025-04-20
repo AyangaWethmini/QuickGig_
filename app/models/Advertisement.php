@@ -5,33 +5,52 @@ class Advertisement
 
     public function getAdvertisements()
     {
-        $query = 'SELECT * FROM advertisement ORDER BY createdAt ASC';
+        $query = 'SELECT * FROM advertisement WHERE deleted = 0 ORDER BY createdAt ASC;';
         return $this->query($query);
     }
 
     public function createAdvertisement($data)
-    {
-        $query = "INSERT INTO advertisement (advertiserID, adTitle, adDescription, img, link, startDate, endDate, adStatus) 
-                  VALUES (:advertiserID, :adTitle, :adDescription, :img, :link, :startDate, :endDate, :adStatus)";
+{
+    try {
+        $query = "INSERT INTO advertisement 
+
+                 (advertiserID, adTitle, adDescription, img, link, startDate, endDate, adStatus) 
+                 VALUES (:advertiserID, :adTitle, :adDescription, :adImage, :link, :startDate, :endDate, :adStatus)";
 
         $params = [
-            'advertiserID' => $data['advertiserID'],
-            'adTitle' => $data['adTitle'],
-            'adDescription' => $data['adDescription'],
-            'img' => $data['adImage'], // Corrected key
-            'link' => $data['link'],
-            'startDate' => $data['startDate'],
-            'endDate' => $data['endDate'],
-            'adStatus' => $data['adStatus']
+            'advertiserID' => $data['advertiserID'] ?? null,
+            'adTitle' => $data['adTitle'] ?? '',
+            'adDescription' => $data['adDescription'] ?? '',
+            'adImage' => $data['adImage'] ?? null, // Consider storing image path instead of binary data
+            'link' => $data['link'] ?? '',
+            'startDate' => $data['startDate'] ?? date('Y-m-d'),
+            'endDate' => $data['endDate'] ?? date('Y-m-d', strtotime('+1 month')),
+            'adStatus' => $data['adStatus'] ?? 'inactive'
         ];
 
-        return $this->query($query, $params);
+        // Validate required fields
+        if (empty($params['advertiserID']) || empty($params['adTitle'])) {
+            throw new Exception("Required fields are missing");
+        }
+
+        $result = $this->query($query, $params);
+        
+        if (!$result) {
+            // Get the specific database error if available
+            throw new Exception("Database error: " . ($errorInfo ?? 'Unknown error'));
+        }
+
+        return $result;
+    } catch (Exception $e) {
+        error_log("Advertisement creation failed: " . $e->getMessage());
+        return false;
     }
+}
 
 
     public function delete($id)
     {
-        $query = "DELETE FROM advertisement WHERE advertisementID = :id";
+        $query = "UPDATE advertisement SET deleted = 1 WHERE advertisementID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
@@ -45,30 +64,32 @@ class Advertisement
     }
 
     public function update($id, $data)
-    {
-        $query = "UPDATE advertisement 
-                  SET adTitle = :adTitle, 
-                      adDescription = :adDescription, 
-                      img = :img, 
-                      adTime = :adTime, 
-                      link = :link,
-                      duration = :duration,
-                      adStatus = :adStatus 
-                  WHERE advertisementID = :id";
+{
+    $query = "UPDATE advertisement 
+              SET adTitle = :adTitle, 
+                  adDescription = :adDescription, 
+                  img = :img, 
+                  link = :link,
+                  startDate = :startDate,
+                  endDate = :endDate,
+                  adStatus = :adStatus 
+              WHERE advertisementID = :id";
 
-        $params = [
-            'id' => $id,
-            'adTitle' => $data['adTitle'],
-            'adDescription' => $data['adDescription'],
-            'img' => $data['img'],
-            'adTime' => $data['adTime'],
-            'link' => $data['link'],
-            'duration' => $data['duration'],
-            'adStatus' => $data['adStatus']
-        ];
+    $params = [
+        'id' => $id,
+        'adTitle' => $data['adTitle'],
+        'adDescription' => $data['adDescription'],
+        'img' => $data['img'] ?? null,
+        'link' => $data['link'],
+        'startDate' => $data['startDate'],
+        'endDate' => $data['endDate'],
+        'adStatus' => $data['adStatus']
+    ];
 
-        return $this->query($query, $params);
-    }
+    return $this->query($query, $params);
+}
+
+
 
     public function getAdsCountDateRange($startDate, $endDate)
     {
@@ -89,13 +110,12 @@ class Advertisement
         return $result[0]->totalAds ?? 0;
     }
 
-    public function getRandomActiveAd()
+    public function getActiveAds()
     {
         $query = "SELECT * FROM advertisement 
-              WHERE adStatus = 'active' AND endDate > NOW()  AND startDate <= NOW();
-              ORDER BY RAND() LIMIT 1";
+              WHERE adStatus = 'active' AND endDate > NOW() AND startDate <= NOW() AND deleted = 0";
         $result = $this->query($query);
-        return $result[0] ?? null;
+        return $result ?? null;
     }
 
     public function recordClick($adId)
@@ -107,11 +127,10 @@ class Advertisement
         return $this->query($query, $params);
     }
 
-    public function addView($adId)
-    {
+    public function addView($adId) {
         $query = "UPDATE advertisement SET views = views + 1 WHERE advertisementID = :adId";
         $params = ['adId' => $adId];
-        return $this->query($query, $params);
+        $this->query($query, $params); // No return needed
     }
 
     public function getAdRev($startDate, $endDate) {

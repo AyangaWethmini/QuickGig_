@@ -95,179 +95,276 @@ class Manager extends Controller
     }
 
     public function postAdvertisement()
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            return;
-        }
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $_SESSION['error'] = "Invalid request method.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
 
-        // Form validation
-        $requiredFields = [
-            'advertiserName',
-            'contact',
-            'email',
-            'adTitle',
-            'adDescription',
-            'link',
-            'adStatus',
-            'startDate',
-            'endDate'
+      // Form validation
+      $requiredFields = [
+        'advertiserName',
+        'contact',
+        'email',
+        'adTitle',
+        'adDescription',
+        'link',
+        'adStatus',
+        'startDate',
+        'endDate',
+  
+    ];
+
+    if (!isset($_POST) || empty($_POST)) {
+        $_SESSION['error'] = "Form data is missing.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
+
+    // Validate that start date is earlier than end date
+    if (isset($_POST['startDate'], $_POST['endDate'])) {
+        $startDate = strtotime($_POST['startDate']);
+        $endDate = strtotime($_POST['endDate']);
+
+        if ($startDate === false || $endDate === false || $startDate >= $endDate) {
+            $_SESSION['error'] = "Start date must be earlier than end date.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+    }
+
+    foreach ($requiredFields as $field) {
+        if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
+            $_SESSION['error'] = "All fields are required.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+    }
+
+    if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
+        $_SESSION['error'] = "Advertisement image is required.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
+
+    if (!preg_match('/^07\d{8}$/', $_POST['contact'])) {
+        // Validate contact number format (e.g., 07XXXXXXXX)
+        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
+
+    // Clean input data
+    $advertiserName = trim($_POST['advertiserName']);
+    $contact = trim($_POST['contact']);
+    $email = trim($_POST['email']);
+    
+
+    $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
+
+    print_r($advertiserId); // Debugging line
+
+    // If advertiser does not exist, create a new advertiser
+    if (!$advertiserId) {
+        $newAdvertiserData = [
+            'advertiserName' => $advertiserName,
+            'contact' => $contact,
+            'email' => $email
         ];
 
-        foreach ($requiredFields as $field) {
-            if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
-                $_SESSION['error'] = "All fields are required.";
-                header('Location: ' . ROOT . '/manager/createAd');
-                exit;
-            }
-        }
+        $this->advertiserModel->createAdvertiser($newAdvertiserData);
 
-        if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
-            $_SESSION['error'] = "Advertisement image is required.";
+        $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
+
+        // Verify if the advertiser was successfully created
+        if (!$advertiserId) {
+            error_log("Failed to create new advertiser. Email: " . $email);
+            $_SESSION['error'] = "Failed to create new advertiser.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+    }
+    // Image handling - add more detailed error checking
+    $imageData = null;
+    if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
+
+        if (!in_array($fileType, $allowedTypes)) {
+            $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
 
-        // Clean input data
-        $advertiserName = trim($_POST['advertiserName']);
-        $contact = trim($_POST['contact']);
-        $email = trim($_POST['email']);
-
-        // Get existing advertiser ID
-        $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
-        if ($advertiserId === null) {
-            $advertiserData = [
-                'advertiserName' => $advertiserName,
-                'contact' => $contact,
-                'email' => $email
-            ];
-
-            $this->advertiserModel->createAdvertiser($advertiserData);
-
-            // Fetch the newly created advertiser ID
-            $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
-            if ($advertiserId === null) {
-                $_SESSION['error'] = "Failed to retrieve advertiser ID after creation.";
-                header('Location: ' . ROOT . '/manager/createAd');
-                exit;
-            }
+        $maxSize = 5 * 1024 * 1024; // 5MB
+        if ($_FILES['adImage']['size'] > $maxSize) {
+            $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
         }
 
-        // Handle image upload
-        $imageData = null;
-        if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
-
-            if (!in_array($fileType, $allowedTypes)) {
-                $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
-                header('Location: ' . ROOT . '/manager/createAd');
-                exit;
-            }
-
-            $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
-            if ($imageData === false) {
-                $_SESSION['error'] = "Failed to read image file.";
-                header('Location: ' . ROOT . '/manager/createAd');
-                exit;
-            }
+        $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
+        if ($imageData === false) {
+            error_log("Failed to read image file: " . $_FILES['adImage']['tmp_name']);
+            $_SESSION['error'] = "Failed to process image file.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
         }
+    }
 
-        // Prepare advertisement data
-        $advertisementData = [
-            'advertiserID' => $advertiserId,
-            'adTitle' => trim($_POST['adTitle']),
-            'adDescription' => trim($_POST['adDescription']),
-            'adImage' => $imageData,
-            'link' => trim($_POST['link']),
-            'startDate' => trim($_POST['startDate']),
-            'endDate' => trim($_POST['endDate']),
-            'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
-        ];
+    // Prepare advertisement data
+    $advertisementData = [
+        'advertiserID' => $advertiserId,
+        'adTitle' => trim($_POST['adTitle']),
+        'adDescription' => trim($_POST['adDescription']),
+        'adImage' => $imageData,
+        'link' => trim($_POST['link']),
+        'startDate' => trim($_POST['startDate']),
+        'endDate' => trim($_POST['endDate']),
+        'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
+    ];
 
-        // Create advertisement
-        if (!$this->advertisementModel->createAdvertisement($advertisementData)) {
-            $_SESSION['error'] = "Failed to create advertisement.";
+    // Create advertisement with error handling
+    try {
+        $result = $this->advertisementModel->createAdvertisement($advertisementData);
+        
+        if (!$result) {
+            error_log("Advertisement creation failed. Data: " . print_r($advertisementData, true));
+            $_SESSION['error'] = "Failed to create advertisement in database.";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
 
         $_SESSION['success'] = "Advertisement created successfully.";
-        header('Location: ' . ROOT . '/manager/advertisement');
+        header('Location: ' . ROOT . '/manager/advertisements');
+        exit;
+    } catch (Exception $e) {
+        error_log("Exception in advertisement creation: " . $e->getMessage());
+        $_SESSION['error'] = "System error occurred while creating advertisement.";
+        header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
-
+}
 
 
     // update advertisement
     public function updateAdvertisement($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation
-            if (!isset($_POST['adTitle']) || !isset($_POST['adDescription']) || !isset($_POST['link']) || !isset($_POST['adStatus'])) {
-                header('Location: ' . ROOT . '/manager/advertisements');
-                return;
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Validate required fields
+        $requiredFields = ['adTitle', 'adDescription', 'link', 'startDate', 'endDate'];
+        foreach ($requiredFields as $field) {
+            if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+                $_SESSION['error'] = "The field '{$field}' is required.";
+                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                exit;
+            }
+        }
+
+        // Validate dates
+       
+
+        $adTitle = trim($_POST['adTitle']);
+        $adDescription = trim($_POST['adDescription']);
+        $link = trim($_POST['link']);
+        $startDate = trim($_POST['startDate']);
+        $endDate = trim($_POST['endDate']);
+        $adStatus = isset($_POST['adStatus']) && $_POST['adStatus'] === 'active' ? 1 : 0;
+
+        // Prepare update data
+        $updateData = [
+            'adTitle' => $adTitle,
+            'adDescription' => $adDescription,
+            'link' => $link,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'adStatus' => $adStatus
+        ];
+
+        // Handle image upload if provided
+        if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
+
+            if (!in_array($fileType, $allowedTypes)) {
+                $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF.";
+                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                exit;
             }
 
-            $adTitle = trim($_POST['adTitle']);
-            $adDescription = trim($_POST['adDescription']);
-            $link = trim($_POST['link']);
-            $adStatus = intval($_POST['adStatus']);
-            $duration = intval($_POST['duration']);
-            //  updateData without the image field
-            $updateData = [
-                'adTitle' => $adTitle,
-                'duration' => $duration,
-                'adDescription' => $adDescription,
-                'link' => $link,
-                'adStatus' => $adStatus
-            ];
-
-            // Only update image if a new one was uploaded
-            if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
-                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $fileType = mime_content_type($_FILES['adImage']['tmp_name']);
-
-                if (in_array($fileType, $allowedTypes)) {
-                    $updateData['img'] = file_get_contents($_FILES['adImage']['tmp_name']);
-                }
-            } else {
-                // Get existing advertisement data
-                $existingAd = $this->advertisementModel->getAdById($id);
-                if ($existingAd && isset($existingAd->img)) {
-                    $updateData['img'] = $existingAd->img;
-                }
+            $maxSize = 5 * 1024 * 1024; // 5MB
+            if ($_FILES['adImage']['size'] > $maxSize) {
+                $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
+                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                exit;
             }
 
+            $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
+            if ($imageData === false) {
+                $_SESSION['error'] = "Failed to process the uploaded image.";
+                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                exit;
+            }
+
+            $updateData['img'] = $imageData;
+        } else {
+            // Retain existing image if no new image is uploaded
+            $existingAd = $this->advertisementModel->getAdById($id);
+            if ($existingAd && isset($existingAd->img)) {
+                $updateData['img'] = $existingAd->img;
+            }
+        }
+
+        // Update advertisement in the database
+        try {
             $this->advertisementModel->update($id, $updateData);
-            header('Location: ' . ROOT . '/manager/advertisements');
+            $_SESSION['success'] = "Advertisement updated successfully.";
+        } catch (Exception $e) {
+            error_log("Error updating advertisement: " . $e->getMessage());
+            $_SESSION['error'] = "Failed to update advertisement. Please try again.";
         }
+
+        header('Location: ' . ROOT . '/manager/advertisements');
+        exit;
     }
 
-    //add clicks to the ads
-    public function click($adId)
+    $_SESSION['error'] = "Invalid request method.";
+    header('Location: ' . ROOT . '/manager/advertisements');
+    exit;
+}
+    
+
+    public function incrementAdView($adId) {
+        if (!is_numeric($adId)) {
+            http_response_code(204);
+            exit;
+        }
+        $this->advertisementModel->addView($adId);
+        http_response_code(204);
+        exit;
+    }
+    
+    public function incrementAdClick($adId) {
+        if (!is_numeric($adId)) {
+            http_response_code(204);
+            exit;
+        }
+        $this->advertisementModel->recordClick($adId);
+        http_response_code(204);
+        exit;
+    }
+
+    public function deleteAD($id)
     {
-        if (isset($adId) && is_numeric($adId)) {
-            $result = $this->advertisementModel->recordClick($adId);
-            if ($result) {
-                echo json_encode(['success' => true, 'message' => 'Click recorded successfully']);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Failed to record click']);
-            }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Check for POST request
+            $this->advertisementModel->delete($id);
+            header('Location: ' . ROOT . '/manager/advertisements');
+            $_SESSION['success'] = "Advertisement deleted successfully.";
         } else {
-            echo json_encode(['success' => false, 'message' => 'Invalid ad ID']);
-        }
-    }
-
-    public function adView($adId){
-        if (isset($adId) && is_numeric($adId)) {
-            $result = $this->advertisementModel->addView($adId);
-            if ($result) {
-                echo json_encode(['success' => true, 'message' => 'Click recorded successfully']);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Failed to record click']);
-            }
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Invalid ad ID']);
+            // Handle the case where the request method is not POST
+            header('Location: ' . ROOT . '/manager/advertisements');
+            $_SESSION['error'] = "Failed to delete advertisement.";
         }
     }
 
