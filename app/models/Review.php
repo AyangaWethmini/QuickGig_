@@ -1,6 +1,7 @@
 <?php
 
-class Review{
+class Review
+{
     use Database;
     private $db;
     public function __construct($db = null)
@@ -11,29 +12,46 @@ class Review{
             $this->db = $this->connect();  // Use the connect method from the trait
         }
     }
-    public function submitReview($reviewerID,$revieweeID,$reviewDate,$reviewTime,$content,$rating,$roleID){
-        $query = "INSERT INTO review(reviewDate,reviewTime,content,rating,reviewerID,revieweeID,roleID) VALUES (:reviewDate,:reviewTime,:content,:rating,:reviewerID,:revieweeID,:roleID)";
+    public function submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID,$jobID)
+    {
+        $query = "INSERT INTO review(reviewDate,reviewTime,content,rating,reviewerID,revieweeID,roleID,jobID) VALUES (:reviewDate,:reviewTime,:content,:rating,:reviewerID,:revieweeID,:roleID,:jobID)";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':reviewerID',$reviewerID);
-        $stmt->bindParam(':reviewDate',$reviewDate);
-        $stmt->bindParam(':reviewTime',$reviewTime);
-        $stmt->bindParam(':content',$content);
-        $stmt->bindParam(':rating',$rating);
-        $stmt->bindParam(':revieweeID',$revieweeID);
-        $stmt->bindParam(':roleID',$roleID);
+        $stmt->bindParam(':reviewerID', $reviewerID);
+        $stmt->bindParam(':reviewDate', $reviewDate);
+        $stmt->bindParam(':reviewTime', $reviewTime);
+        $stmt->bindParam(':content', $content);
+        $stmt->bindParam(':rating', $rating);
+        $stmt->bindParam(':revieweeID', $revieweeID);
+        $stmt->bindParam(':roleID', $roleID);
+        $stmt->bindParam(':jobID', $jobID);
 
         return $stmt->execute();
     }
-    public function readReview($revieweeID,$roleID){
-        $query = "SELECT * FROM review WHERE revieweeID = :revieweeID AND roleID = :roleID";
+    public function readReview($revieweeID, $roleID)
+    {
+        $query = "SELECT 
+                r.*, 
+                j.jobTitle,
+                a.pp,
+                CASE
+                    WHEN i.accountID IS NOT NULL THEN CONCAT(i.fname, ' ', i.lname)
+                    WHEN o.accountID IS NOT NULL THEN o.orgName
+                    ELSE 'Unknown'
+                END AS reviewerName
+                FROM review r
+                LEFT JOIN job j ON r.jobID = j.jobID
+                LEFT JOIN account a ON r.reviewerID = a.accountID
+                LEFT JOIN individual i ON a.accountID = i.accountID
+                LEFT JOIN organization o ON a.accountID = o.accountID
+                WHERE r.revieweeID = :accountID 
+                AND r.roleID = :roleID
+                ORDER BY r.reviewDate DESC, r.reviewTime DESC;
+                ";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':revieweeID',$revieweeID);
-        $stmt->bindParam(':roleID',$roleID);
+        $stmt->bindParam(':accountID', $revieweeID);
+        $stmt->bindParam(':roleID', $roleID);
         $stmt->execute();
-        
+
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-
-
 }
-?>

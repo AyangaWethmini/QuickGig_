@@ -238,6 +238,8 @@ class JobProvider extends Controller
         $accountID = $_SESSION['user_id'];
         $review = $this->model('review');   
         $data = $review->readReview($accountID,1);
+        print_r($data);
+        exit;
         $this->view('reviews',$data);
     }
     function review($jobId)
@@ -246,6 +248,7 @@ class JobProvider extends Controller
         $account = $this->model('Account');
         $SeekerById = $job->getJobSeekerById($jobId);
         $revieweeData = $account->getUserData($SeekerById->seekerID);
+        $revieweeData['jobID'] = $jobId;
         $this->view('review', $revieweeData);
     }
     public function jobListing_myJobs()
@@ -522,10 +525,11 @@ class JobProvider extends Controller
         $reviewTime = $_POST['reviewTime'];
         $content    = $_POST['review'];
         $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
         $roleID     = 2;
 
         $review = $this->model('review');
-        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID);
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID,$jobID);
         header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
     }
 }

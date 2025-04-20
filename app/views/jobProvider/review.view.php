@@ -31,6 +31,7 @@ protectRoute([2]); ?>
             <!-- Review submission form -->
             <form action="<?= ROOT ?>/jobProvider/addReview/<?=$data['accountID']?>" method="POST" class="review-form">
                 <input type="hidden" name="receiver_id" value="<?= $receiverId ?>">
+                <input type="hidden" name="jobID" value="<?= $data['jobID'] ?>">
                 <input type="hidden" name="rating" id="rating-value" value="">
                 <input type="hidden" name="reviewDate" value="<?=date('Y-m-d')?>">
                 <input type="hidden" name="reviewTime" value="<?=date('H:i:s')?>">

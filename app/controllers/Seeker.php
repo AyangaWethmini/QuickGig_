@@ -153,6 +153,7 @@ class Seeker extends Controller
         $account = $this->model('Account');
         $pickJob = $job->getJobById($jobId);
         $revieweeData = $account->getUserData($pickJob->accountID);
+        $revieweeData['jobID'] = $jobId;
         $this->view('review', $revieweeData);
     }
 
@@ -363,10 +364,11 @@ class Seeker extends Controller
         $reviewTime = $_POST['reviewTime'];
         $content    = $_POST['review'];
         $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
         $roleID     = 1;
 
         $review = $this->model('review');
-        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID);
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID,$jobID);
         header('Location: ' . ROOT . '/seeker/jobListing_completed');
     }
 }

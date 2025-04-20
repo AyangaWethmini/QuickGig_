@@ -28,16 +28,24 @@ protectRoute([2]); ?>
             </div>
         </div>
         <div class="reviews-container container">
-            <?php if (!empty($data['reviews'])): ?>
-                <?php foreach ($data['reviews'] as $review): ?>
+            <?php if (!empty($data)): ?>
+                <?php foreach ($data as $review: ?>
                     <div class="review-card container">
                         <div class="review-card-left flex-row">
                             <div class="pfp">
-                                <img src="<?= ROOT . $review->reviewerProfilePic ?>" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                            <?php if ($review->pp): ?>
+                                <?php
+                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                    $mimeType = $finfo->buffer($review->pp);
+                                ?>
+                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($data['pp']) ?>" alt="reviewee Image" class="profile-pic-reviewed-employee">
+                            <?php else: ?>
+                                <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" class="profile-pic-reviewed-employee">
+                            <?php endif; ?>
                             </div>
 
                             <div class="review-details">
-                                <h2><?= htmlspecialchars($review->reviewerName) ?></h2>
+                                <h2><?= htmlspecialchars($review->fname . ' ' .  $review->fname) ?></h2>
                                 <p><?= htmlspecialchars($review->jobTitle) ?></p>
                                 <p><?= htmlspecialchars($review->reviewDate) ?></p>
                                 <p><?= htmlspecialchars($review->reviewTime) ?></p>
