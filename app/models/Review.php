@@ -24,6 +24,15 @@ class Review{
 
         return $stmt->execute();
     }
+    public function readReview($revieweeID,$roleID){
+        $query = "SELECT * FROM review WHERE revieweeID = :revieweeID AND roleID = :roleID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':revieweeID',$revieweeID);
+        $stmt->bindParam(':roleID',$roleID);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 
 }
