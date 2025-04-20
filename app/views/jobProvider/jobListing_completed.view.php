@@ -39,7 +39,7 @@ protectRoute([2]);?>
                             ?>
                             <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
                         <?php else: ?>
-                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                            <img src="<?=ROOT?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
                         <?php endif; ?>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ protectRoute([2]);?>
                             ?>
                             <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
                         <?php else: ?>
-                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
                         <?php endif; ?>
                     </div>
                 </div>
@@ -106,6 +106,7 @@ protectRoute([2]);?>
                         <li><a href="#">Message</a></li>
                         <li><a href="<?php echo ROOT;?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
                         <li><a href="<?php echo ROOT;?>/jobProvider/makeComplaint/<?php echo $completed->reqID?>">Complain</a></li>
+                        <li><a href="<?php echo ROOT; ?>/jobProvider/review/<?=$completed->jobID?>">review</a></li>
                     </ul>
                 </div>
             </div>

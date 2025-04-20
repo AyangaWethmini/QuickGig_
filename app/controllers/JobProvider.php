@@ -235,14 +235,17 @@ class JobProvider extends Controller
     }
     function reviews()
     {
-        $this->view('reviews');
+        $accountID = $_SESSION['user_id'];
+        $review = $this->model('review');   
+        $data = $review->readReview($accountID,1);
+        $this->view('reviews',$data);
     }
     function review($jobId)
     {
         $job = $this->model('job');
         $account = $this->model('Account');
-        $pickJob = $job->getJobById($jobId);
-        $revieweeData = $account->getUserData($pickJob->accountID);
+        $SeekerById = $job->getJobSeekerById($jobId);
+        $revieweeData = $account->getUserData($SeekerById->seekerID);
         $this->view('review', $revieweeData);
     }
     public function jobListing_myJobs()
