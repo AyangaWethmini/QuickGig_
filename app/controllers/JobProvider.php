@@ -19,6 +19,7 @@ class JobProvider extends Controller
         $this->managerModel = $this->model('ManagerModel');
         $this->accountSubscriptionModel = $this->model('AccountSubscription');
         $this->userReportModel = $this->model('userReport');
+        $this->reviewModel = $this->model('Review');
     }
     protected $viewPath = "../app/views/jobProvider/";
 
@@ -32,7 +33,8 @@ class JobProvider extends Controller
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
-        $this->view('individualProfile', $data);
+        $rating = $this->reviewModel->readReview($userId, 1);
+        $this->view('individualProfile', ['data' => $data, 'rating' => $rating]);
     }
 
 
@@ -235,7 +237,17 @@ class JobProvider extends Controller
 
     function viewEmployeeProfile()
     {
-        $this->view('viewEmployeeProfile');
+        $account = $this->model('account');
+        $role = $account->findrole($employeeID);
+        $employeeData = null;
+
+        if ($role['roleID'] == 2) {
+            $employeeData = $account->getUserData($employeeID);
+        } else if ($role['roleID']) {
+            $employeeData = $account->getOrgData($employeeID);
+        }
+        // Pass data as associative array to the view
+        $this->view('viewEmployeeProfile', $employeeData);
     }
 
     function subscription()
@@ -326,7 +338,19 @@ class JobProvider extends Controller
 
     function reviews()
     {
-        $this->view('reviews');
+        $accountID = $_SESSION['user_id'];
+        $review = $this->model('review');
+        $data = $review->readReview($accountID, 1);
+        $this->view('reviews', $data);
+    }
+    function review($jobId)
+    {
+        $job = $this->model('job');
+        $account = $this->model('Account');
+        $SeekerById = $job->getJobSeekerById($jobId);
+        $revieweeData = $account->getUserData($SeekerById->seekerID);
+        $revieweeData['jobID'] = $jobId;
+        $this->view('review', $revieweeData);
     }
 
     function userReport()
@@ -758,5 +782,20 @@ class JobProvider extends Controller
             $this->jobModel->delete($id);
             header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
         }
+    }
+    public function addReview($accountID)
+    {
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
+        $roleID     = 2;
+
+        $review = $this->model('review');
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
+        header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
     }
 }

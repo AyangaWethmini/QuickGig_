@@ -31,6 +31,13 @@ class Signup extends Controller
                 header("Location: " . ROOT . "/home/signup");
                 return false;
             }
+            $domain = substr(strrchr($email, "@"), 1);
+
+            // Check if the domain has valid DNS records
+            if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
+                echo "Invalid email domain.";
+                exit;
+            }
 
             $domain = substr(strrchr($email, "@"), 1);
 
