@@ -19,7 +19,11 @@ protectRoute([0]);
         <hr><br>
 
         <div class="complaints-container container">
-            <?php if (!empty($data['announcements'])): ?>
+            <?php if (empty($data['announcements'])): ?>
+                <div class="no-results">
+                    No announcements found.
+                </div>
+            <?php else: ?>
                 <?php foreach ($data['announcements'] as $announcement): ?>
                     <div class="complaint container">
                         <div class="complaint-content flex-col">
@@ -43,8 +47,33 @@ protectRoute([0]);
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <?php else: ?>
             <?php endif; ?>
+        </div>
+        <div class="pagination-container">
+            <div class="pagination">
+                <!-- Always show Previous button -->
+                <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= max(1, $data['currentPage'] - 1) ?>"
+                    class="page-link <?= $data['currentPage'] <= 1 ? 'disabled' : '' ?>">
+                    &laquo;
+                </a>
+
+                <!-- Always show page numbers -->
+                <?php for ($i = 1; $i <= max(1, $data['totalPages']); $i++): ?>
+                    <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= $i ?>"
+                        class="page-link <?= $i == $data['currentPage'] ? 'active' : '' ?>">
+                        <?= $i ?>
+                    </a>
+                <?php endfor; ?>
+
+                <!-- Always show Next button -->
+                <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= min($data['totalPages'], $data['currentPage'] + 1) ?>"
+                    class="page-link <?= $data['currentPage'] >= $data['totalPages'] ? 'disabled' : '' ?>">
+                    &raquo;
+                </a>
+            </div>
+            <div class="pagination-info">
+                (Total announcements: <?= $data['totalAnnouncements'] ?>)
+            </div>
         </div>
     </div>
 </div>
@@ -76,4 +105,90 @@ protectRoute([0]);
         };
     }
 </script>
+
+<style>
+    .admin-container {
+        position: relative;
+        min-height: 600px;
+        padding-bottom: 100px;
+    }
+
+    .complaints-container {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 60px;
+        width: 90%;
+    }
+
+    .pagination-container {
+        position: absolute;
+        bottom: 110px;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        padding: 15px 0;
+        margin: 0;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        min-width: 300px;
+    }
+
+    .page-link {
+        padding: 8px 16px;
+        min-width: 40px;
+        text-align: center;
+        border: 1px solid rgb(198, 198, 249);
+        border-radius: 4px;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .page-link.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        background-color: #f0f0f0;
+    }
+
+    .page-link:hover:not(.disabled) {
+        background-color: rgb(198, 198, 249);
+        color: white;
+    }
+
+    .page-link.active {
+        background-color: rgb(198, 198, 249);
+        color: white;
+    }
+
+    .pagination-info {
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    .complaint.container {
+        margin: 0;
+        width: 100%;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 30px;
+        color: #666;
+        font-size: 16px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+</style>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

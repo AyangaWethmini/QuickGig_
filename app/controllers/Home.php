@@ -17,10 +17,12 @@ class Home extends Controller
 	{
 		$plans = $this->planModel->getPlans();
 		$ad = $this->adModel->getRandomActiveAd();
+		$announcememts = $this->adminModel->getAnnouncements();
 
 		$data = [
 			'plans' => $plans,
-			'ad' => $ad
+			'ad' => $ad,
+			'announcements' => $announcememts
 		];
 
 		$this->view('home', $data);
