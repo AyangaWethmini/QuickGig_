@@ -4,7 +4,9 @@
   align-self: flex-start;
   margin-left: 300px;
 }
-
+.wrapper{
+  margin-top: 100px;
+}
 .header {
     justify-content: space-between; 
     margin-bottom: 10px;   
@@ -38,6 +40,10 @@
     color: var(--color-white);
     padding: 30px;
     margin: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
 }
 
 .box h1{

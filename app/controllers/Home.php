@@ -8,7 +8,7 @@ class Home extends Controller
 
 	public function __construct()
 	{
-		$this->adminModel = $this->model('AdminModel');
+		// $this->adminModel = $this->model('AdminModel');
 		$this->planModel = $this->model('Plans');
 		$this->adModel = $this->model("Advertisement");
 	}
@@ -16,6 +16,7 @@ class Home extends Controller
 	public function index()
 	{
 		$plans = $this->planModel->getPlans();
+<<<<<<< HEAD
 		$ad = $this->adModel->getRandomActiveAd();
 		$announcememts = $this->adminModel->getAnnouncements();
 
@@ -23,6 +24,13 @@ class Home extends Controller
 			'plans' => $plans,
 			'ad' => $ad,
 			'announcements' => $announcememts
+=======
+		$advertisements = $this->adModel->getActiveAds();
+
+		$data = [
+			'plans' => $plans,
+			'advertisements' => $advertisements
+>>>>>>> AyangaW
 		];
 
 		$this->view('home', $data);
@@ -46,6 +54,13 @@ class Home extends Controller
 		$this->view('aboutUs');
 	}
 
+	public function premium()
+	{
+		$data = $this->planModel->getPlansWithStripe();
+		$this->view('premium', ['plans' => $data]);
+	}
+
+	
 	// public function payments()
 	// {
 	// 	$this->view('payments');

@@ -1,0 +1,212 @@
+.slideshow-container {
+    width: 100%;
+    margin: auto;
+    position: relative;
+    background-color: rgba(198, 198, 198, 0.69); /* Use rgba for better readability */
+    overflow: hidden;
+    height: 400px;
+    display: flex;
+    justify-content: center; /* Center slides horizontally */
+    align-items: center; /* Center slides vertically */
+}
+
+/* Slides */
+.mySlides {
+    display: none;
+    position: relative; /* Changed to relative for better alignment */
+    width: 70%;
+    transition: transform 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Active slide */
+.active-slide {
+    display: block;
+}
+
+.promo-pair-container {
+    display: flex;
+    gap: 20px; /* Reduced gap between cards */
+    padding: 20px;
+    justify-content: center; /* Center the promo pair container */
+}
+.promo-item-box {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row; /* Image and content side by side */
+    height: 300px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+    border: 2px solid #000000;
+}
+
+.promo-visual {
+    flex: 1; /* Take up one part of the space */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.promo-image {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.promo-info-panel {
+    flex: 2; /* Take up two parts of the space */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    gap: 10px; /* Add spacing between elements */
+}
+
+.promo-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.promo-text {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.promo-actions {
+    margin-top: auto; /* Push the button to the bottom */
+}
+
+.action-btn {
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    background-color: var(--brand-primary);
+    color: white;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: #2a5db0;
+}
+
+.promo-item-box:hover .promo-image {
+    transform: scale(1.05);
+}
+
+.promo-info-panel {
+    padding: 10px; /* Reduced padding */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.promo-heading {
+    font-size: 1.2rem; /* Reduced font size */
+    margin-bottom: 10px;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.promo-text {
+    color: #555;
+    margin-bottom: 10px;
+    flex-grow: 1;
+    font-size: 0.9rem; /* Reduced font size */
+    line-height: 1.4;
+}
+
+.promo-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-btn {
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 6px;
+    font-size: 0.8rem; /* Reduced font size */
+    transition: all 0.2s ease;
+}
+
+.primary-btn {
+    background-color: var(--brand-primary);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: #3a7bd5;
+    color: white;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: var(--brand-primary);
+    font-weight: bold;
+    font-size: 24px;
+    transition: 0.3s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    right: 220px; /* Added margin of 250px from the right */
+    border-radius: 3px 0 0 3px;
+}
+
+.prev {
+    left: 220px; /* Added margin of 250px from the left */
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dots */
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.active-dot, .dot:hover {
+    background-color: #717171;
+}
+
+/* Responsive layout */
+@media (max-width: 992px) {
+    .promo-pair-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .promo-item-box {
+        height: auto;
+    }
+
+    .promo-visual {
+        height: 120px;
+    }
+}
