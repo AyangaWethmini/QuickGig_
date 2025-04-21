@@ -14,19 +14,20 @@
 
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 30px, 20px;
-}
 
-.header h2 {
-    color: var(--text-primary);
-    font-size: 1.8rem;
-    font-weight: 600;
+.header{
+    margin: 20px 20px;
     padding: 10px;
-}
+  }
+
+.header h2{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+  }
 
 .filter {
     display: flex;

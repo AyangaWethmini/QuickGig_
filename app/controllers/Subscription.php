@@ -322,4 +322,8 @@ class Subscription extends Controller {
         header('Location: ' . ROOT . '/subscription/cancelConfirm');
         exit;
     }
+
+    public function getSubIncome($startDate = null, $endDate=null){
+        
+    }
 }

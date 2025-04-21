@@ -283,4 +283,5 @@ class AccountSubscription extends Account {
         $params = ['accountID' => $accountID];
         return $this->query($query, $params); 
     }
+
 }

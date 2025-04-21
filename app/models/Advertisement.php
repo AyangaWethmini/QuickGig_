@@ -133,14 +133,15 @@ class Advertisement
         $this->query($query, $params); // No return needed
     }
 
-    public function getAdRev($startDate, $endDate) {
-        $query = "SELECT SUM(price) AS totalRevenue FROM advertisement 
-                  WHERE startDate >= :startDate AND endDate <= :endDate";
+
+
+    public function updateAdRates($data) {
+        $query = "UPDATE ad_rates SET flat_fee_weekly = :flat_fee_weekly, per_click = :per_click, per_view = :per_view;";
         $params = [
-            'startDate' => $startDate,
-            'endDate' => $endDate
+            'flat_fee_weekly' => $data['flat_fee_weekly'],
+            'per_click' => $data['per_click'],
+            'per_view' => $data['per_view']
         ];
-        $result = $this->query($query, $params);    
-        return $result[0]->totalRevenue ?? 0;
+        return $this->query($query, $params);
     }
 }

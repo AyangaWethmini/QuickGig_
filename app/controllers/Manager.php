@@ -13,6 +13,7 @@ class Manager extends Controller
     protected $accountModel;
     protected $accountSubscriptionModel; // Assuming you have this model for subscriptions
     protected $managerModel;
+    protected $systemReportModel; // Assuming you have this model for system reports
 
     public function __construct()
     {
@@ -24,6 +25,7 @@ class Manager extends Controller
         $this->accountModel = $this->model('Account');
         $this->accountSubscriptionModel = $this->model('AccountSubscription'); 
         $this->managerModel = $this->model('ManagerModel');
+        $this->systemReportModel = $this->model('SystemReport');
     }
 
     public function index()
@@ -47,8 +49,28 @@ class Manager extends Controller
 
     public function announcements()
     {
-        $data = $this->announcementModel->getAnnouncements();
-        $this->view('announcements', ['announcements' => $data]);
+        $announcements = $this->announcementModel->getAnnouncements();
+        $annCount = $this->announcementModel->getCount();
+        $this->view('announcements', ['announcements' => $announcements, 'annCount' => $annCount]);   
+    }
+
+    public function createAnnouncement()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $content = trim($_POST['content']);
+            $adminId = $_SESSION['user_id'];
+            $announcementDate = date('Y-m-d');
+            $announcementTime = date('H:i:s');
+            $data = [
+                'content' => $content,
+                'announcementDate' => $announcementDate,
+                'announcementTime' => $announcementTime
+            ];
+            $this->announcementModel->createAnnouncement($data, $adminId);
+            $_SESSION['success'] = "Announcement created successfully.";
+            header('Location: ' . ROOT . '/manager/announcements');
+            exit;
+        }
     }
 
     public function helpCenter()
@@ -90,9 +112,33 @@ class Manager extends Controller
 
 
     public function report()
-    {
-        $this->view('report');
+{
+    $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) . ' 00:00:00' : date('Y-m-01 00:00:00');
+    $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) . ' 23:59:59' : date('Y-m-d 23:59:59');
+
+
+    $adRevenue = $this->systemReportModel->getAdsRevenue($startDate, $endDate);
+    $subEarnings = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
+    $userCount = $this->systemReportModel->getUsers($startDate, $endDate);
+
+    if($subEarnings === false) {
+        $_SESSION['error'] = "Error fetching subscription revenue data.";
+    } elseif(empty($subEarnings)) {
+        $_SESSION['warning'] = "No subscription revenue data found for the selected date range.";
     }
+    
+    if($adRevenue === false) {
+        $_SESSION['error'] = "Error fetching advertisement revenue data.";
+    }
+    
+    $this->view('report', [
+        'adRevenue' => is_array($adRevenue) ? $adRevenue : [],
+        'subEarnings' => is_array($subEarnings) ? $subEarnings : [],
+        'userCount' => $userCount,
+        'startDate' => $startDate,
+        'endDate' => $endDate
+    ]);
+}
 
     public function postAdvertisement()
 {

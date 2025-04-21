@@ -3,7 +3,7 @@
 protectRoute([1]); ?>
 
 <!-- Include custom CSS -->
-<link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/report.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/mgr_report.css">
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -11,6 +11,10 @@ protectRoute([1]); ?>
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
+        <div class="header flex-col">
+            <h2>System Report</h2>
+            <hr>
+        </div>
 
         <div id="print-area">
             <!-- Print header -->
@@ -19,98 +23,123 @@ protectRoute([1]); ?>
                     <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="Logo" height="40">
                 </div>
                 <div class="heading">
-                    <p><strong>User Report</strong></p>
+                    <p><strong>System Report</strong></p>
                 </div>
             </div>
 
             <!-- Report content -->
             <div id="report-content">
-
-                <div>
-                    <div class="report-section">
-                        <h4>Profile Summary</h4><br>
-                        <p>Name: </p>
-                        <p>Account ID:</p>
-                        <p>Email:</p>
-                        <p>Plan:</p>
-                    </div>
-                    <hr>
-                    <div class="report-section">
-                        <h4>Task Statistics</h4><br>
-                        <p>Tasks Posted:</p>
-                        <!-- <table>
+                <div class="revenue">
+                    <div class="revenue">
+                        <h3>Subscription Revenue</h3>
+                        <table class="report-table">
                             <thead>
                                 <tr>
-                                    <th>Job ID</th>
-                                    <th>Job Title</th>
-                                    <th>Date Posted</th>
-                                    <th>Description</th>
-                                    <th>Location</th>
-                                    <th>No. of Applicants</th>
+                                    <th>Plan ID</th>
+                                    <th>Plan Name</th>
+                                    <th>Price</th>
+                                    <th>Duration</th>
+                                    <th>Subscriptions</th>
+                                    <th>Total Revenue</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($data['postedJobs'] as $job): ?>
+                                <?php foreach ($subEarnings as $plan): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($job['jobID']) ?></td>
-                                        <td><?= htmlspecialchars($job['jobTitle']) ?></td>
-                                        <td><?= htmlspecialchars($job['datePosted']) ?></td>
-                                        <td><?= htmlspecialchars($job['description']) ?></td>
-                                        <td><?= htmlspecialchars($job['location']) ?></td>
-                                        <td><?= htmlspecialchars($job['noOfApplicants']) ?></td>
+                                        <td><?= htmlspecialchars($plan->planID) ?></td>
+                                        <td><?= htmlspecialchars($plan->planName) ?></td>
+                                        <td><?= htmlspecialchars($plan->price) ?></td>
+                                        <td><?= htmlspecialchars($plan->duration) ?></td>
+                                        <td><?= htmlspecialchars($plan->subscription_count) ?></td>
+                                        <td><?= htmlspecialchars($plan->total_revenue) ?><?= htmlspecialchars($plan->currency);?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table> -->
-                        <p>Tasks Completed: From where Can i Find this (din see in any tables)</p>
-                        <p>Applied:</p>
-                        <!-- <table>
+                        </table>
+                    </div>
+                    <div class="revenue">
+                        <h3>Advertisement Revenue</h3>
+                        <table class="report-table">
                             <thead>
                                 <tr>
-                                    <th>Job Name</th>
-                                    <th>Date Applied</th>
+                                    <th>Ad ID</th>
+                                    <th>Title</th>
+                                    <th>Days Active</th>
+                                    <th>Weeks Active</th>
+                                    <th>Revenue</th>
+                                    <th>Paid Amount</th>
+                                    <th>To Be Charged</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($data['appliedJobs'] as $job): ?>
+                                <?php foreach ($adRevenue['ads'] as $ad): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($job['jobname']) ?></td>
-                                        <td><?= htmlspecialchars($job['dateApplied']) ?></td>
+                                        <td><?= htmlspecialchars($ad['adId']) ?></td>
+                                        <td><?= htmlspecialchars($ad['title']) ?></td>
+                                        <td><?= htmlspecialchars($ad['daysActive']) ?></td>
+                                        <td><?= htmlspecialchars($ad['weeksActive']) ?></td>
+                                        <td><?= htmlspecialchars($ad['revenue']) ?></td>
+                                        <td><?= htmlspecialchars($ad['paidAmount']) ?></td>
+                                        <td><?= htmlspecialchars($ad['toBeCharged']) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table> -->
-                        <!-- <p>Accepted:</p>
-                        <p>Rejected:</p> -->
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><strong>Total Revenue</strong></td>
+                                    <td colspan="3"><?= htmlspecialchars($adRevenue['totalRevenue']).'LKR' ?></td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
-                    <hr>
-                    <div class="report-section">
-                        <h4>Payment Statistics</h4><br>
-                        <p>Total Earnings:</p>
-                        <p>Total Spent:</p>
-                        <p>Pending Payments:</p>
-                        <p>History:</p>
+                    <div>
+                        <h3>Users</h3>
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                $roles = [
+                                    0 => 'Admin',
+                                    1 => 'Manager',
+                                    2 => 'Individual',
+                                    3 => 'Organization'
+                                ];
+                                foreach ($userCount as $user): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($roles[$user->roleID]) ?></td>
+                                        <td><?= htmlspecialchars($user->role_count) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
-                    <hr>
-                    <div class="report-section">
-                        <h4>Performance</h4><br>
-                        <p>Rating:</p>
-                        <p>No. of Reviews:</p>
-                        <p>Reports:</p>
-                        <p>Complaints:</p>
+                    <div>
+                        <h3>Tasks</h3>
+                        <p>Posted: </p>
+                        <p>Completed : </p>
                     </div>
                 </div>
+                    
             </div>
-
+            
             <!-- Print footer -->
             <div class="print-footer">
                 Generated on <?= date("Y-m-d H:i"); ?>
             </div>
         </div>
 
+    
+        
+
         <!-- Print button -->
         <button class="no-print btn btn-accent" onclick="printDiv()">Download Report</button>
     </div>
+ 
 
     <?php
             include_once APPROOT . '/views/components/alertBox.php';

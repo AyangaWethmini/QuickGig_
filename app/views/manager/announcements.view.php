@@ -26,11 +26,11 @@ protectRoute([1]); ?>
         <div class="announcements container flex-row">
             <div class="create-announcement-form container flex-col">
                 <h3>Create Announcement</h3>
-                <form action="" method="POST">
-                    <div class="form-field">
+                <form action="manager/createAnnouncement" method="POST">
+                    <!-- <div class="form-field">
                         <label class="lbl">Title</label><br>
                         <input type="text" name="title" required style="width: 400px; padding: 0px;">
-                    </div>
+                    </div> -->
                     
                     <div class="form-field">    
                         <label class="lbl">Content</label><br>
@@ -44,17 +44,17 @@ protectRoute([1]); ?>
                     <div class="filter flex-row">
                         <span>
                             <h3>All Announcements</h3>
-                            <p class="text-grey">Showing 0 results</p>
+                            <p class="text-grey">Showing <?= htmlspecialchars($annCount); ?> results</p>
                         </span>
 
-                        <div class="filter-container">
+                        <!-- <div class="filter-container">
                             <span>Sort by:</span>
                             <select id="sortSelect" onchange="sortContent()">
                                 <option value="recent">Most recent</option>
                                 <option value="views">Highest views</option>
                             </select>
                             <button id="gridButton" onclick="toggleView()">☰</button>
-                        </div>
+                        </div> -->
                     </div>
 
                     <?php if (!empty($announcements) && (is_array($announcements) || is_object($announcements))): ?>

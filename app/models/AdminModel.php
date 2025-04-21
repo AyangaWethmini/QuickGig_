@@ -114,4 +114,16 @@ class AdminModel
 
         return $this->query($query, $params);
     }
+
+    public function getCount(){
+        $query = "SELECT COUNT(*) AS count FROM announcement";
+        $result = $this->query($query);
+
+        // Ensure the result is an array and has at least one element
+        if (is_array($result) && isset($result[0]->count)) {
+            return $result[0]->count; // Access the 'count' property from the first object
+        }
+
+        return 0; // Return 0 if no rows match or query fails
+    }
 }

@@ -1,12 +1,12 @@
 <?php
-class Plans {
+class userReport {
     use Database;
 
     protected $accountID;
 
     public function __construct() {
         // Assuming session is already started elsewhere in your application
-        $this->accountID = $_SESSION['accountID'] ?? null;
+        $this->accountID = $_SESSION['user_id'] ?? null;
         if (!$this->accountID) {
             throw new Exception("User not logged in.");
             exit;

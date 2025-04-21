@@ -7,6 +7,7 @@ class JobProvider extends Controller
     private $helpModel;
     private $managerModel;
     private $accountSubscriptionModel;
+    private $userReportModel;
     
     public function __construct()
     {
@@ -17,6 +18,7 @@ class JobProvider extends Controller
         $this->helpModel = $this->model('Help');
         $this->managerModel = $this->model('ManagerModel');
         $this->accountSubscriptionModel = $this->model('AccountSubscription');
+        $this->userReportModel = $this->model('userReport');
     }
     protected $viewPath = "../app/views/jobProvider/";
 
@@ -304,19 +306,42 @@ class JobProvider extends Controller
     }
 
     function userReport()
-    {
-        // $userID = $_SESSION['user_id'];
-        // $findEmpModel = $this->model('FindEmployees');
-        // $appliedJobs = $findEmpModel->getAppliedJobs($userID);
-        // $postedJobs = $findEmpModel->getPostedJobs($userID);
+{
+    // Check if user is logged in
+    // if (!isset($_SESSION['user_id'])) {
+    //     // Redirect to login or handle unauthorized access
+    //     header('Location: /login');
+    //     exit();
+    // }
 
-        // $data = [
-        //     'appliedJobs' => $appliedJobs,
-        //     'postedJobs' => $postedJobs
-        // ];
+    // $userID = $_SESSION['user_id'];
+    
+    // try {
+    //     $profile = $this->userReportModel->getUserDetails($userID);
+        
+        
+    //     $appliedJobs = [];
+    //     $postedJobs = [];
+        
+    //     $findEmpModel = $this->model('FindEmployees');
+    //     $appliedJobs = $findEmpModel->getAppliedJobs($userID);
+    //     $postedJobs = $findEmpModel->getPostedJobs($userID);
+        
+        
+    //     $data = [
+    //         'profile' => $profile,
+         
+    //         // 'appliedJobs' => $appliedJobs,
+    //         // 'postedJobs' => $postedJobs
+    //     ];
 
-        $this->view('report');
-    }
+        $this->view('report'/*,$data*/);
+    // } catch (Exception $e) {
+    //     // Log the error and show a user-friendly message
+    //     error_log("Error in userReport: " . $e->getMessage());
+    //     $this->view('error', ['message' => 'Failed to generate report']);
+    // }
+}
 
 
     public function jobListing_myJobs()

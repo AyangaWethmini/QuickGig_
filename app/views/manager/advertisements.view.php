@@ -64,6 +64,8 @@ protectRoute([1]);
                             <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
                                 <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
                             </span>
+                            <br>
+                            <p class="text-grey">Clicks: <?= htmlspecialchars($ad->clicks) ?> | Views: <?= htmlspecialchars($ad->views) ?></p>
                         </div>
                     </div>
                     <div class="ad-actionbtns flex-col">
