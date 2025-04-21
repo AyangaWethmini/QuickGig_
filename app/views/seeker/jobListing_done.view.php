@@ -18,7 +18,7 @@ protectRoute([2]);?>
         </div> <hr> <br>
 
         <div class="list-header">
-            <p class="list-header-title">Due List</p>
+            <p class="list-header-title">Completed List</p>
             <form method="GET" action="<?= ROOT ?>/seeker/jobListing_completed">
                 <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
             </form>
@@ -62,7 +62,6 @@ protectRoute([2]);?>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
                         <li><a href="<?php echo ROOT;?>/seeker/viewEmployeeProfile">View Profile</a></li>
                         <li><a href="<?= ROOT ?>/seeker/makeComplaint/<?= $completed->reqID ?>">Complain</a></li>
                     </ul>
@@ -105,7 +104,6 @@ protectRoute([2]);?>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
                         <li><a href="<?php echo ROOT;?>/seeker/viewEmployeeProfile">View Profile</a></li>
                         <li><a href="<?= ROOT ?>/seeker/makeComplaint/<?= $completed->applicationID ?>">Complain</a></li>
                     </ul>
@@ -128,7 +126,7 @@ protectRoute([2]);?>
     document.querySelector('.search-input').addEventListener('input', function () {
         const searchTerm = this.value;
 
-        fetch(`<?= ROOT ?>/seeker/jobListing_completed?search=${encodeURIComponent(searchTerm)}`)
+        fetch(`<?= ROOT ?>/seeker/jobListing_done?search=${encodeURIComponent(searchTerm)}`)
             .then(response => response.text())
             .then(html => {
                 const parser = new DOMParser();

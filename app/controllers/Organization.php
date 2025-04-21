@@ -7,6 +7,7 @@ date_default_timezone_set('Asia/Colombo');
 
         use Database;
         public function __construct(){
+            $this->complaintModel = $this->model('Complaint');
             $this->findEmpModel = $this->model('FindEmployees');
             $this->jobStatusUpdater = $this->model('JobStatusUpdater');
 
@@ -29,6 +30,13 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('organizationProfile',$data);
         }
 
+        function org_findEmployees() {
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            if (!empty($searchTerm)) {
+                $findEmployees = $this->findEmpModel->searchEmployees($searchTerm);
+            } else {
+                $findEmployees = $this->findEmpModel->getEmployees();
+            }
 
 
     function org_findEmployees()
@@ -52,6 +60,25 @@ date_default_timezone_set('Asia/Colombo');
 
             $success = $jobModel->applyForJob($reqID, $providerID, $availableID);
 
+        function org_postJob(){
+            $this->view('org_postJob');
+        }
+        
+        function org_jobListing_received() {
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+            $receivedModel = $this->model('ReceivedProvider');
+        
+            if (!empty($filterDate)) {
+                $receivedRequests = $receivedModel->filterReceivedRequestsByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $receivedRequests = $receivedModel->searchReceivedRequests($userID, $searchTerm);
+            } else {
+                $receivedRequests = $receivedModel->getReceivedRequests();
+            }
+        
+            $data = ['receivedRequests' => $receivedRequests];
             $this->view('org_jobListing_received', $data);
         }
 
@@ -241,26 +268,39 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_reviews');
         }
 
-        public function org_jobListing_myJobs(){
+        function org_jobListing_myJobs() {
             $userID = $_SESSION['user_id'];
-            $jobModel = $this->model('Job'); 
-            $jobs = $jobModel->getJobsByUser($userID);
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         
-            $data = [
-                'jobs' => $jobs
-            ];
+            $jobModel = $this->model('Job');
+            if (!empty($filterDate)) {
+                $jobs = $jobModel->filterJobsByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $jobs = $jobModel->searchJobsByUser($userID, $searchTerm);
+            } else {
+                $jobs = $jobModel->getJobsByUser($userID);
+            }
         
+            $data = ['jobs' => $jobs];
             $this->view('org_jobListing_myJobs', $data);
         }
 
-        function org_jobListing_send(){
-            $send = $this->model('sendProvider');
-            $sendRequests = $send->getsendRequests();
-
-            $data = [
-                'sendRequests' => $sendRequests
-            ];
-
+        function org_jobListing_send() {
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+            $sendModel = $this->model('SendProvider');
+        
+            if (!empty($filterDate)) {
+                $sendRequests = $sendModel->filterSendRequestsByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $sendRequests = $sendModel->searchSendRequests($userID, $searchTerm);
+            } else {
+                $sendRequests = $sendModel->getSendRequests();
+            }
+        
+            $data = ['sendRequests' => $sendRequests];
             $this->view('org_jobListing_send', $data);
         }
 
@@ -279,11 +319,23 @@ date_default_timezone_set('Asia/Colombo');
             }
         }
 
-        function org_jobListing_toBeCompleted(){
-            $this->jobStatusUpdater->updateJobStatuses();
+        function org_jobListing_toBeCompleted() {
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
             $tbcProvider = $this->model('ToBeCompletedProvider');
-            $applyJobTBC = $tbcProvider->getApplyJobTBC();
-            $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+        
+            if (!empty($filterDate)) {
+                $applyJobTBC = $tbcProvider->filterToBeCompletedByDate($userID, $filterDate);
+                $reqAvailableTBC = $tbcProvider->filterReqAvailableTBCByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobTBC = $tbcProvider->searchToBeCompleted($userID, $searchTerm);
+                $reqAvailableTBC = $tbcProvider->searchReqAvailableTBC($userID, $searchTerm);
+            } else {
+                $applyJobTBC = $tbcProvider->getApplyJobTBC();
+                $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+            }
+        
             $data = [
                 'applyJobTBC' => $applyJobTBC,
                 'reqAvailableTBC' => $reqAvailableTBC
@@ -291,11 +343,24 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_jobListing_toBeCompleted', $data);
         }
 
-        function org_jobListing_ongoing(){
+        function org_jobListing_ongoing() {
             $this->jobStatusUpdater->updateJobStatuses();
             $ongoingProvider = $this->model('OngoingProvider');
-            $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
-            $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        
+            if (!empty($filterDate)) {
+                $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
+                $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
+                $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
+            } else {
+                $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+                $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            }
+        
             $data = [
                 'applyJobOngoing' => $applyJobOngoing,
                 'reqAvailableOngoing' => $reqAvailableOngoing
@@ -303,11 +368,24 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_jobListing_ongoing', $data);
         }
 
-        function org_jobListing_completed(){
+        function org_jobListing_completed() {
             $this->jobStatusUpdater->updateJobStatuses();
             $completedProvider = $this->model('CompletedProvider');
-            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
-            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        
+            if (!empty($filterDate)) {
+                $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+                $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+                $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+            } else {
+                $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+                $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            }
+        
             $data = [
                 'applyJobCompleted' => $applyJobCompleted,
                 'reqAvailableCompleted' => $reqAvailableCompleted
@@ -315,8 +393,152 @@ date_default_timezone_set('Asia/Colombo');
             $this->view('org_jobListing_completed', $data);
         }
 
-        function org_complaints(){
-            $this->view('org_complaints');
+        public function updateCompletionStatus() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $id = $_POST['id'];
+                $type = $_POST['type'];
+                $status = $_POST['status'];
+        
+                $completedProvider = $this->model('CompletedProvider');
+        
+                if ($type === 'application') {
+                    $completedProvider->updateApplicationStatus($id, $status);
+                } elseif ($type === 'request') {
+                    $completedProvider->updateRequestStatus($id, $status);
+                }
+        
+                header('Location: ' . ROOT . '/organization/org_jobListing_completed');
+            }
+        }
+
+        function org_jobListing_done() {
+            $this->jobStatusUpdater->updateJobStatuses();
+            $completedProvider = $this->model('ProviderDone');
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        
+            if (!empty($filterDate)) {
+                $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+                $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+                $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+            } else {
+                $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+                $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            }
+        
+            $data = [
+                'applyJobCompleted' => $applyJobCompleted,
+                'reqAvailableCompleted' => $reqAvailableCompleted
+            ];
+            $this->view('org_jobListing_done', $data);
+        }
+
+        function org_jobListing_notDone() {
+            $this->jobStatusUpdater->updateJobStatuses();
+            $completedProvider = $this->model('ProviderNotDone');
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        
+            if (!empty($filterDate)) {
+                $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+                $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+                $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+            } else {
+                $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+                $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            }
+        
+            $data = [
+                'applyJobCompleted' => $applyJobCompleted,
+                'reqAvailableCompleted' => $reqAvailableCompleted
+            ];
+            $this->view('org_jobListing_notDone', $data);
+        }
+
+        public function makeComplaint($taskID){
+        $completedProvider = $this->model('CompletedProvider');
+        $employee = $completedProvider->getEmployeeDetails($taskID);
+
+        $data = [
+            'employee' => $employee
+        ];
+
+        $this->view('makeComplaint', $data);
+        }
+
+        public function submitComplaint(){
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $complainantID = $_SESSION['user_id'];
+                $complaineeID = trim($_POST['complaineeID']);
+                $content = trim($_POST['complainInfo']);
+                $complaintDate = date('Y-m-d');
+                $complaintTime = date('H:i:s');
+                $complaintStatus = 1;
+                $complaintID = uniqid('COMP_');
+                $jobOrAvailable = trim($_POST['jobOrAvailable']);
+                $applicationOrReq = trim($_POST['applicationOrReq']);
+
+                $complaintModel = $this->model('Complaint');
+                $complaintModel->create([
+                    'complaintID' => $complaintID,
+                    'complainantID' => $complainantID,
+                    'complaineeID' => $complaineeID,
+                    'content' => $content,
+                    'complaintDate' => $complaintDate,
+                    'complaintTime' => $complaintTime,
+                    'complaintStatus' => $complaintStatus,
+                    'jobOrAvailable' => $jobOrAvailable,
+                    'applicationOrReq' => $applicationOrReq
+                ]);
+
+                header('Location: ' . ROOT . '/organization/org_jobListing_completed');
+            }
+        }
+
+        function complaints()
+        {
+            $complaints = $this->complaintModel->getComplaints();
+            $data = [
+                'complaints' => $complaints
+            ];
+            $this->view('org_complaints', $data);
+        }
+        public function deleteComplaint($id)
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->complaintModel->delete($id);
+                header('Location: ' . ROOT . '/organization/complaints');
+            }
+        }
+        public function updateComplaint($id = null)
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $content = trim($_POST['complainInfo']);
+                $complaintDate = date('Y-m-d');
+                $complaintTime = date('h:i:s');
+
+                $this->complaintModel->update($id, [
+                    'content' => $content,
+                    'complaintDate' => $complaintDate,
+                    'complaintTime' => $complaintTime
+                ]);
+
+                header('Location: ' . ROOT . '/organization/complaints');
+            } else {
+                $complaint = $this->complaintModel->getComplaintById($id);
+
+                $data = [
+                    'complaint' => $complaint
+                ];
+
+                $this->view('updateComplaint', $data);
+            }
         }
 
         function settings(){

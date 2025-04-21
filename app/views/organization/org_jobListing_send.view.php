@@ -19,9 +19,18 @@ protectRoute([3]);?>
 
         <div class="list-header">
             <p class="list-header-title">Send History</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
-            <button class="filter-btn">Filter</button>
-        </div> <br>
+            <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_send">
+                <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </form>
+            <input 
+                type="date" 
+                id="filter-date" 
+                class="filter-btn" 
+                onchange="filterByDate(this.value)" 
+                style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;"
+            />
+        </div> 
+        <br>
 
         <div class="employee-list">
 
@@ -125,6 +134,35 @@ document.getElementById('popup-yes').addEventListener('click', () => {
 document.getElementById('popup-no').addEventListener('click', () => {
     document.getElementById('popup').classList.add('hidden');
 });
+
+document.querySelector('.search-input').addEventListener('input', function () {
+    const searchTerm = this.value;
+
+    fetch(`<?= ROOT ?>/organization/org_jobListing_send?search=${encodeURIComponent(searchTerm)}`)
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContent = doc.querySelector('.employee-list').innerHTML;
+            document.querySelector('.employee-list').innerHTML = newContent;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+function filterByDate(selectedDate) {
+        if (!selectedDate) return;
+
+        // Fetch filtered sent requests
+        fetch(`<?= ROOT ?>/organization/org_jobListing_send?filterDate=${encodeURIComponent(selectedDate)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.employee-list').innerHTML;
+                document.querySelector('.employee-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+}
 </script>
 
 </html>
