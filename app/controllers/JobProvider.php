@@ -238,8 +238,6 @@ class JobProvider extends Controller
         $accountID = $_SESSION['user_id'];
         $review = $this->model('review');   
         $data = $review->readReview($accountID,1);
-        print_r($data);
-        exit;
         $this->view('reviews',$data);
     }
     function review($jobId)

@@ -145,7 +145,10 @@ class Seeker extends Controller
 
     function reviews()
     {
-        $this->view('reviews');
+        $accountID = $_SESSION['user_id'];
+        $review = $this->model('review');   
+        $data = $review->readReview($accountID,2);
+        $this->view('reviews',$data);
     }
     function review($jobId)
     {

@@ -29,7 +29,7 @@ protectRoute([2]); ?>
         </div>
         <div class="reviews-container container">
             <?php if (!empty($data)): ?>
-                <?php foreach ($data as $review: ?>
+                <?php foreach ($data as $review): ?>
                     <div class="review-card container">
                         <div class="review-card-left flex-row">
                             <div class="pfp">
@@ -45,7 +45,7 @@ protectRoute([2]); ?>
                             </div>
 
                             <div class="review-details">
-                                <h2><?= htmlspecialchars($review->fname . ' ' .  $review->fname) ?></h2>
+                                <h2><?= htmlspecialchars($review->reviewerName) ?></h2>
                                 <p><?= htmlspecialchars($review->jobTitle) ?></p>
                                 <p><?= htmlspecialchars($review->reviewDate) ?></p>
                                 <p><?= htmlspecialchars($review->reviewTime) ?></p>
