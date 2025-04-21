@@ -57,7 +57,11 @@ if (
 </div>
 
 <?php
-if (!isset($_SESSION['subscription_popup_shown'])) {
+if (
+    !isset($_SESSION['subscription_popup_shown']) &&
+    isset($_SESSION['user_role']) &&
+    $_SESSION['user_role'] > 1
+) {
     include APPROOT . '/views/components/subscriptions.php';
     $_SESSION['subscription_popup_shown'] = true;
 }
