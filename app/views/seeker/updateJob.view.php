@@ -6,6 +6,7 @@ protectRoute([2]);?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/post_job.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/errorPopUp.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
@@ -14,7 +15,7 @@ protectRoute([2]);?>
         <p class="heading">
             Update Availability
         </p>
-        <form class="form-section container" action="<?= ROOT ?>/seeker/updateAvailability/<?= htmlspecialchars($availability->availableID) ?>" method="POST">
+        <form id="updateJobForm" class="form-section container" action="<?= ROOT ?>/seeker/updateAvailability/<?= htmlspecialchars($availability->availableID) ?>" method="POST">
             <hr>
 
             <!-- Description Field -->
@@ -55,16 +56,16 @@ protectRoute([2]);?>
                     <div class="salary-ph flex-row">
                         <input type="number" name="salary" id="salary-per-hr" value="<?= htmlspecialchars($availability->salary) ?>" min="0" required>
                         <select id="currency-select" class="currency-select" name="currency">
-                            <option value="USD" <?= $availability->currency === 'USD' ? 'selected' : '' ?>>USD</option>
-                            <option value="EUR" <?= $availability->currency === 'EUR' ? 'selected' : '' ?>>EUR</option>
-                            <option value="GBP" <?= $availability->currency === 'GBP' ? 'selected' : '' ?>>GBP</option>
-                            <option value="LKR" <?= $availability->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>
-                            <option value="AUD" <?= $availability->currency === 'AUD' ? 'selected' : '' ?>>AUD</option>
-                            <option value="CAD" <?= $availability->currency === 'CAD' ? 'selected' : '' ?>>CAD</option>
-                            <option value="CNY" <?= $availability->currency === 'CNY' ? 'selected' : '' ?>>CNY</option>
-                            <option value="INR" <?= $availability->currency === 'INR' ? 'selected' : '' ?>>INR</option>
-                            <option value="JPY" <?= $availability->currency === 'JPY' ? 'selected' : '' ?>>JPY</option>
-                            <option value="NZD" <?= $availability->currency === 'NZD' ? 'selected' : '' ?>>NZD</option>
+                            <option value="LKR" <?= $job->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>    
+                            <option value="USD" <?= $job->currency === 'USD' ? 'selected' : '' ?>>USD</option>
+                            <option value="EUR" <?= $job->currency === 'EUR' ? 'selected' : '' ?>>EUR</option>
+                            <option value="GBP" <?= $job->currency === 'GBP' ? 'selected' : '' ?>>GBP</option>
+                            <option value="AUD" <?= $job->currency === 'AUD' ? 'selected' : '' ?>>AUD</option>
+                            <option value="CAD" <?= $job->currency === 'CAD' ? 'selected' : '' ?>>CAD</option>
+                            <option value="CNY" <?= $job->currency === 'CNY' ? 'selected' : '' ?>>CNY</option>
+                            <option value="INR" <?= $job->currency === 'INR' ? 'selected' : '' ?>>INR</option>
+                            <option value="JPY" <?= $job->currency === 'JPY' ? 'selected' : '' ?>>JPY</option>
+                            <option value="NZD" <?= $job->currency === 'NZD' ? 'selected' : '' ?>>NZD</option>
                         </select>
                     </div>
                 </div>
@@ -154,6 +155,7 @@ protectRoute([2]);?>
                         <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
                     </div>
             </div>
+            <div id="error-popup"></div>
                         </div>
         </form>
     </div>
@@ -246,7 +248,7 @@ protectRoute([2]);?>
 
     // Set today's date as the minimum allowed date
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById('availableDate').setAttribute('min', today);
+    document.getElementById('dateInput').setAttribute('min', today);
 
     function initAutocomplete() {
         const locationInput = document.getElementById('locationInput');
@@ -345,4 +347,46 @@ protectRoute([2]);?>
     closeMapModal(); // Close the modal after selecting a location
     mapInitialized = true; // Set mapInitialized to true after the first initialization
     document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
+
+    const form = document.getElementById("updateJobForm");
+    const popup = document.getElementById("error-popup");
+
+    form.addEventListener("submit", function(e) {
+        
+        const description = document.querySelector("textarea[name='description']").value.trim();
+        const salary = document.getElementById("salary-per-hr").value.trim();
+
+        let errors = [];
+
+        // Validate job title
+        
+
+        // Validate description
+        if (!description) {
+            errors.push("Description is required and cannot be just spaces.");
+        }
+
+        // Validate salary
+        if (!salary) {
+            errors.push("Salary is required.");
+        } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
+            errors.push("Salary must be a valid number (e.g., 500, 500.75).");
+        } else if (salary.length > 8) {
+            errors.push("Salary must not exceed 8 characters in total.");
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault(); // Stop form submission
+            showPopup(errors.join("<br>"));
+        }
+    });
+
+    function showPopup(message) {
+        popup.innerHTML = message;
+        popup.style.display = "block";
+
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 3000); // Hide after 3 seconds
+    }
 </script>
