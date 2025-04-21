@@ -54,4 +54,20 @@ class Review
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
+    public function getRatingDistribution($accountID,$roleID) {
+        $query = "SELECT rating, COUNT(*) as total 
+                  FROM review 
+                  WHERE revieweeID = :accountID AND roleID = :roleID
+                  GROUP BY rating";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':accountID', $accountID);
+        $stmt->bindParam(':roleID', $roleID);
+        $stmt->execute();
+    
+        $ratings = [1=>0, 2=>0, 3=>0, 4=>0, 5=>0];
+        while($row = $stmt->fetch(PDO::FETCH_OBJ)) {
+            $ratings[$row->rating] = $row->total;
+        }
+        return $ratings;
+    }
 }

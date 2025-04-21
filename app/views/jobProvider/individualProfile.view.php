@@ -1,7 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
 protectRoute([2]); ?>
-<?php require APPROOT . '/views/components/navbar.php'; ?> 
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/individualProfile.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/reviews.css">
@@ -72,61 +72,65 @@ protectRoute([2]); ?>
                                     <div class="col-md-4 d-flex flex-row">
                                         <div class="col-md-4 d-flex flex-column">
                                             <div class="rating-box">
-                                                <p class="pt-4">4.0</p>
+                                            <p class="pt-4"><?= number_format($rating['avgRate'], 1) ?></p>
+
                                             </div>
-                                            <div> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-inactive mx-1"></span> </div>
+                                            <div class="rating-stars">
+                                                <?php
+                                                $stars = 5;
+                                                $remaining = $rating['avgRate'];
+
+                                                for ($i = 0; $i < $stars; $i++) {
+                                                    if ($remaining >= 1) {
+                                                        echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
+                                                        $remaining -= 1;
+                                                    } elseif ($remaining >= 0.75) {
+                                                        echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
+                                                        $remaining = 0;
+                                                    } elseif ($remaining >= 0.5) {
+                                                        echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
+                                                        $remaining = 0;
+                                                    } elseif ($remaining >= 0.25) {
+                                                        echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
+                                                        $remaining = 0;
+                                                    } else {
+                                                        echo '<img src="' . ROOT . '/assets/images/emptystar.png" class="star-img">';
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+
                                         </div>
+                                        <?php
+                                        $totalRatings = array_sum($data['ratings']);
+                                        function getBarWidth($count, $total)
+                                        {
+                                            return $total > 0 ? ($count / $total) * 100 : 0;
+                                        }
+                                        ?>
                                         <div class="bar-block">
                                             <div class="rating-bar0 justify-content-center">
                                                 <table class="text-left mx-auto">
-                                                    <tr>
-                                                        <td class="rating-label">Excellent</td>
-                                                        <td class="rating-bar">
-                                                            <div class="bar-container">
-                                                                <div class="bar-5"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">123</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="rating-label">Good</td>
-                                                        <td class="rating-bar">
-                                                            <div class="bar-container">
-                                                                <div class="bar-4"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">23</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="rating-label">Average</td>
-                                                        <td class="rating-bar">
-                                                            <div class="bar-container">
-                                                                <div class="bar-3"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="rating-label">Poor</td>
-                                                        <td class="rating-bar">
-                                                            <div class="bar-container">
-                                                                <div class="bar-2"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">3</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="rating-label">Terrible</td>
-                                                        <td class="rating-bar">
-                                                            <div class="bar-container">
-                                                                <div class="bar-1"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">0</td>
-                                                    </tr>
+                                                    <?php
+                                                    $labels = ['5' => 'Excellent', '4' => 'Good', '3' => 'Average', '2' => 'Poor', '1' => 'Terrible'];
+                                                    foreach ($labels as $star => $label) :
+                                                        $count = $data['ratings'][$star];
+                                                        $width = getBarWidth($count, $totalRatings);
+                                                    ?>
+                                                        <tr>
+                                                            <td class="rating-label"><?= $label ?></td>
+                                                            <td class="rating-bar">
+                                                                <div class="bar-container">
+                                                                    <div class="bar-<?= $star ?>" style="width: <?= $width ?>%;"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-right"><?= $count ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 </table>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

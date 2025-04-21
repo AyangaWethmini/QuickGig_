@@ -8,6 +8,7 @@ class Seeker extends Controller
         $this->findJobModel = $this->model('FindJobs');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
+        $this->reviewModel = $this->model('Review');
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -23,8 +24,17 @@ class Seeker extends Controller
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
-        $this->view('seekerProfile', $data);
-    }
+        $rating = $this->reviewModel->readReview($userId, 2);
+        $finalrate = 0;
+        $length = 0;
+        $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 2);
+        $finalrate = 0;
+        foreach ($rating as $rate){
+            $finalrate = $finalrate + $rate->rating;
+            $length += 1;
+        }
+        $rating['avgRate'] = round((float)$finalrate / (float)$length, 1);
+        $this->view('seekerProfile', ['data' => $data,'rating' => $rating]);    }
 
     function findEmployees()
     {

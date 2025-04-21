@@ -262,6 +262,11 @@ a:hover {
 td {
     padding-bottom: 10px
 }
+.star-img {
+    width: 30px;
+    height: 30px;
+    margin: 0 2px;
+}
 
 .star-active {
     color: #FBC02D;

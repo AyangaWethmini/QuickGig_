@@ -24,6 +24,15 @@ class JobProvider extends Controller
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
         $rating = $this->reviewModel->readReview($userId, 1);
+        $finalrate = 0;
+        $length = 0;
+        $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 1);
+        $finalrate = 0;
+        foreach ($rating as $rate){
+            $finalrate = $finalrate + $rate->rating;
+            $length += 1;
+        }
+        $rating['avgRate'] = round((float)$finalrate / (float)$length, 1);
         $this->view('individualProfile', ['data' => $data,'rating' => $rating]);
     }
 
