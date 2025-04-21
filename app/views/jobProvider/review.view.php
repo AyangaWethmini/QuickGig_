@@ -9,7 +9,7 @@ protectRoute([2]); ?>
 
     <div class="wrapper flex-row">
 
-        <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
 
         <div class="review-section">
 

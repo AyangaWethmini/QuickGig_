@@ -71,7 +71,6 @@ protectRoute([2]); ?>
                 <?php endif; ?>
 
                 <?php if (!empty($data['applyJobCompleted'])): ?>
-                    <?php print_r($data['applyJobCompleted']);?>
                     <h2>From Applications</h2>
                     <hr>
                     <?php foreach ($data['applyJobCompleted'] as $completed): ?>

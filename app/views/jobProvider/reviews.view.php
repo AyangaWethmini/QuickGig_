@@ -38,7 +38,7 @@ protectRoute([2]); ?>
                                     $finfo = new finfo(FILEINFO_MIME_TYPE);
                                     $mimeType = $finfo->buffer($review->pp);
                                 ?>
-                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($data['pp']) ?>" alt="reviewee Image" class="profile-pic-reviewed-employee">
+                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($review->pp) ?>" alt="reviewee Image" class="profile-pic-reviewed-employee">
                             <?php else: ?>
                                 <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" class="profile-pic-reviewed-employee">
                             <?php endif; ?>
