@@ -6,6 +6,7 @@ protectRoute([3]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/errorPopUp.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
@@ -16,7 +17,7 @@ protectRoute([3]);?>
         </p>
         <hr>
 
-        <form class="form-section container" action="<?php echo ROOT ?>/organization/job" method="POST">
+        <form id="postJobForm" class="form-section container" action="<?php echo ROOT ?>/organization/job" method="POST">
             <div class="form-section flex-row container">
                 <div class="container right-container">
                     <p class="title">
@@ -213,6 +214,8 @@ protectRoute([3]);?>
                         <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
                     </div>
                 </div>
+
+                <div id="error-popup"></div>
             </div>
             
         </form>
@@ -290,7 +293,7 @@ protectRoute([3]);?>
     }
 
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById('availableDate').setAttribute('min', today);
+    document.getElementById('dateInput').setAttribute('min', today);
 
     function submitDate() {
         const selectedDate = document.getElementById('availableDate').value;
@@ -399,5 +402,49 @@ protectRoute([3]);?>
     closeMapModal(); // Close the modal after selecting a location
     mapInitialized = true; // Set mapInitialized to true after the first initialization
     document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
+
+    const form = document.getElementById("postJobForm");
+    const popup = document.getElementById("error-popup");
+
+    form.addEventListener("submit", function(e) {
+        const jobTitle = document.getElementById("job-title").value.trim();
+        const description = document.querySelector("textarea[name='description']").value.trim();
+        const salary = document.getElementById("salary-per-hr").value.trim();
+
+        let errors = [];
+
+        // Validate job title
+        if (!jobTitle) {
+            errors.push("Job Title is required and cannot be just spaces.");
+        }
+
+        // Validate description
+        if (!description) {
+            errors.push("Description is required and cannot be just spaces.");
+        }
+
+        // Validate salary
+        if (!salary) {
+            errors.push("Salary is required.");
+        } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
+            errors.push("Salary must be a valid number (e.g., 500, 500.75).");
+        } else if (salary.length > 8) {
+            errors.push("Salary must not exceed 8 characters in total.");
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault(); // Stop form submission
+            showPopup(errors.join("<br>"));
+        }
+    });
+
+    function showPopup(message) {
+        popup.innerHTML = message;
+        popup.style.display = "block";
+
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 3000); // Hide after 3 seconds
+    }
 
 </script>
