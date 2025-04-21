@@ -3,6 +3,13 @@ body {
     margin: 0;
 }
 
+
+/* Make icons and labels white when sidebar item is active */
+.sidebar-item.active .sidebar-icon,
+.sidebar-item.active .sidebar-label {
+    color: white;
+}
+
 /* to style active sidebar */
 .sidebar-item.active {
     background-color: rgb(198, 198, 249);

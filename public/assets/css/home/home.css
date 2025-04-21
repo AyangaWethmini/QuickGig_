@@ -304,9 +304,9 @@ body {
  /*HOME ANNOUNCEMENT CSS*/
  .home-announcement {
     margin: 120px auto 10px; /* Center horizontally with top and bottom margins */
-    background-color: #f8f9fa; /* Neutral background color */
+    background-color: #f09191; /* Neutral background color */
     color: #333; /* Neutral text color */
-    border: 1px solid #ddd; /* Subtle border */
+    border: 1px solid #e77d7d; /* Subtle border */
     border-radius: 8px; /* Slightly more rounded corners */
     padding: 20px; /* Generous padding */
     max-width: 70%; /* Narrower width for focus */
