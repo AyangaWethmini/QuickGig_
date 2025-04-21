@@ -423,7 +423,7 @@ date_default_timezone_set('Asia/Colombo');
                     'applicationOrReq' => $applicationOrReq
                 ]);
 
-                header('Location: ' . ROOT . '/organization/org_jobListing_completed');
+                header('Location: ' . ROOT . '/organization/org_complaints');
             }
         }
 

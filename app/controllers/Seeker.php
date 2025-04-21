@@ -347,7 +347,7 @@ class Seeker extends Controller
                 'applicationOrReq' => $applicationOrReq
             ]);
 
-            header('Location: ' . ROOT . '/seeker/jobListing_completed');
+            header('Location: ' . ROOT . '/seeker/complaints');
         }
     }
 

@@ -483,7 +483,7 @@ class JobProvider extends Controller
                 'applicationOrReq' => $applicationOrReq
             ]);
 
-            header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
+            header('Location: ' . ROOT . '/jobProvider/complaints');
         }
     }
 
