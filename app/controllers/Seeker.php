@@ -7,14 +7,12 @@ class Seeker extends Controller
     {
         $this->findJobModel = $this->model('FindJobs');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
+        $this->accountModel = $this->model('Account');
+        
     }
 
     protected $viewPath = "../app/views/seeker/";
-    public function __construct()
-    {
-        $db = $this->connect();
-        $this->accountModel = new Account($db);
-    }
+
 
     function index()
     {
