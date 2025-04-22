@@ -577,6 +577,7 @@ class Organization extends Controller
 
             // Redirect or handle based on success or failure
             if ($isPosted) {
+                $this->accountModel->incrementCounter($accountID);
                 header('Location: ' . ROOT . '/organization/org_jobListing_myJobs'); // Replace with the appropriate success page
                 exit();
             } else {
@@ -623,10 +624,19 @@ class Organization extends Controller
                 'categories' => json_encode($categories)
             ]);
 
-            // Redirect to the availability page or another appropriate page
-            header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
+            header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
         } else {
-            echo json_encode(["status" => "error", "message" => "You have already requested for this."]);
+            // Get the current availability details for the given ID
+            $this->jobModel = $this->model('Job');
+            $job = $this->jobModel->getJobById($id);
+
+            // Pass the current availability data to the view
+            $data = [
+                'job' => $job
+            ];
+
+            // Load the update form view
+            $this->view('updateJob', $data);
         }
     }
 

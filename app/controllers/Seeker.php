@@ -515,6 +515,7 @@ class Seeker extends Controller
 
             // Redirect or handle based on success or failure
             if ($isPosted) {
+                $this->accountModel->incrementCounter($accountID);
                 header('Location: ' . ROOT . '/seeker/jobListing_myJobs'); // Replace with the appropriate success page
                 exit();
             } else {

@@ -366,4 +366,10 @@ class Account
 
         return $result ? $result[0] : null;
     }
+
+    public function incrementCounter($accountID) {
+        $query = "UPDATE account SET counter = counter + 1 WHERE accountID = :accountID";
+        $params = ['accountID' => $accountID];
+        return $this->query($query, $params);
+    }
 }
