@@ -632,7 +632,7 @@ class Organization extends Controller
                 'categories' => json_encode($categories)
             ]);
 
-            header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
+            header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
         } else {
             // Get the current availability details for the given ID
             $this->jobModel = $this->model('Job');
