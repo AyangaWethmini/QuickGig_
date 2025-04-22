@@ -101,4 +101,25 @@ class Advertisement
         $params = ['adId' => $adId];
         return $this->query($query, $params);
     }
+
+    public function getTotalAdvertisements()
+    {
+        $query = "SELECT COUNT(*) as count FROM advertisement";
+        $result = $this->query($query);
+        return $result[0]->count;
+    }
+
+    public function getAdvertisementsPaginated($start, $limit)
+    {
+        // Cast parameters to integers to ensure proper SQL syntax
+        $start = (int)$start;
+        $limit = (int)$limit;
+
+        $query = "SELECT * FROM advertisement 
+                  ORDER BY createdAt DESC 
+                  LIMIT $start, $limit";
+
+        $result = $this->query($query);
+        return $result ?: [];
+    }
 }
