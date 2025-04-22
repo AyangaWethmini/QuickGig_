@@ -17,13 +17,13 @@
             <hr>
         </div>
 
-        <div class="flex-row" style="gap: 20px;" class="ann-container flex-row">
+        <div class="flex-row"  class="ann-container">
             <!-- Create Form -->
             <div class="create-announcement-form container flex-col">
                 <h3>Create Announcement</h3>
                 <form action="<?=ROOT?>/manager/createAnnouncement" method="POST">
                     <div class="form-field">
-                        <label for="content">Content</label><br>
+                        <label for="content" class="text text-grey">Content</label><br>
                         <textarea name="content" id="content" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-accent">Create Announcement</button>
@@ -67,3 +67,10 @@
         ?>
     </div>
 </div>
+
+
+
+
+
+
+

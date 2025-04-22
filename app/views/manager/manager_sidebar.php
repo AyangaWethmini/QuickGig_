@@ -16,10 +16,14 @@ $isPlansParentActive = $plansActive || $subsActive;
 ?>
 
 <body>
+
+<div class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</div>
     <div class="sidebar-container">
         <div class="sidebar-items-container">
 
-            <a href="<?=ROOT?>/manager/profile" class="sidebar-item <?= strpos($current, '/manager/profile') !== false ? 'active' : '' ?>">
+            <a href="<?=ROOT?>/manager/profile" class="sidebar-item <?= strpos($current, '/manager/profile') !== false ? 'active' : '' ?>" data-tooltip="Profile">
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">Profile</span>
             </a>
@@ -85,5 +89,30 @@ $isPlansParentActive = $plansActive || $subsActive;
             const submenu = element.nextElementSibling;
             submenu.style.display = submenu.style.display === "block" ? "none" : "block";
         }
+
+
+        function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar-container');
+        sidebar.classList.toggle('expanded');
+    }
+
+    function toggleSubMenu(element) {
+        // Only toggle if sidebar is expanded on mobile
+        if (window.innerWidth > 768 || document.querySelector('.sidebar-container').classList.contains('expanded')) {
+            const submenu = element.nextElementSibling;
+            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        }
+    }
+
+    // Add tooltip data attributes to all sidebar items
+    document.addEventListener('DOMContentLoaded', function() {
+        const items = document.querySelectorAll('.sidebar-item:not(.sub-item)');
+        items.forEach(item => {
+            const label = item.querySelector('.sidebar-label');
+            if (label) {
+                item.setAttribute('data-tooltip', label.textContent);
+            }
+        });
+    });
     </script>
 </body>
