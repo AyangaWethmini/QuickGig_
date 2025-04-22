@@ -1,4 +1,3 @@
-
 .wrapper {
   margin-top: 100px;
   display: flex;
@@ -11,6 +10,7 @@
   margin-left: 300px;
   flex: 1;
   padding: 20px;
+  background-color: aqua;
 }
 
 .report-table {
@@ -56,74 +56,107 @@
   line-height: 120%;
 }
 
-/* Print-specific styles */
+/* Hide print header and footer on screen */
+.print-header,
+.print-footer {
+  display: none;
+}
+
 @media print {
-  /* Reset body visibility - don't hide everything by default */
+  /* Reset body margins for printing */
   body {
-      visibility: visible;
-      background: white;
-      margin: 0;
-      padding: 0;
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: black;
+    font-size: 12pt;
   }
 
-  /* Main content area */
-  .print-area {
-      width: 100%;
-      position: relative;
-      margin-top: 100px; /* Space for header */
-      margin-bottom: 80px; /* Space for footer */
+  /* Hide everything except print area */
+  body * {
+    visibility: hidden;
   }
 
-  /* Header and footer positioning */
+  #print-area, 
+  #print-area * {
+    visibility: visible;
+  }
+
+  /* Position print area properly */
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Show and position print header/footer */
   .print-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: white;
-      padding: 100px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ccc;
-      z-index: 1000;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10mm;
+    border-bottom: 1px solid #ccc;
+    background: white;
   }
 
   .print-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: white;
-      padding: 10px 0;
-      border-top: 1px solid #ccc;
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10mm;
+    border-top: 1px solid #ccc;
+    background: white;
+    text-align: center;
+    font-size: 10pt;
+  }
+
+  /* Adjust report content to avoid header/footer */
+  #report-content {
+    margin-top: 30mm;  /* Space for header */
+    margin-bottom: 20mm; /* Space for footer */
   }
 
   /* Table styling for print */
   .report-table {
-      page-break-inside: auto;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    page-break-inside: auto;
   }
 
-  tr {
-      page-break-inside: avoid;
-      page-break-after: auto;
+  .report-table th, 
+  .report-table td {
+    border: 1px solid #ddd;
+    padding: 4pt;
   }
 
-  /* Page margin settings */
-  @page {
-      size: auto;
-      margin: 100px 30px 80px 30px; /* top, right, bottom, left */
+  .report-table thead {
+    display: table-header-group;
   }
 
-  /* Ensure content starts after header */
-  body:first-child {
-      margin-top: 100px;
+  .report-table tfoot {
+    display: table-footer-group;
   }
 
-  /* Prevent elements from breaking across pages */
-  .no-break {
-      page-break-inside: avoid;
+  /* Prevent page breaks inside important elements */
+  h3, tr, td, th {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid page breaks right after headings */
+  h3 {
+    page-break-after: avoid;
+  }
+
+  /* Hide non-print elements */
+  .no-print {
+    display: none !important;
   }
 }
