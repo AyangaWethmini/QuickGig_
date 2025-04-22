@@ -35,7 +35,7 @@ protectRoute([2]);?>
                     <p class="text-grey  desc">Explain the kind of job you are offering</p>
                 </div>
                 <div class="user-input">
-                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required value="<?= $job->jobTitle ?>">
+                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required value="<?= htmlspecialchars($job->jobTitle) ?>">
                 </div>
             </div>
             <hr>
@@ -46,7 +46,7 @@ protectRoute([2]);?>
                     </p>
                 </div>
                 <div class="user-input" style="align-items: center; margin-top: 10px;">
-                    <textarea placeholder="Simple description about the job." name="description" rows="10" cols="60" required><?= $job->description?></textarea>
+                    <textarea placeholder="Simple description about the job." name="description" rows="10" cols="60" required><?= htmlspecialchars($job->description)?></textarea>
                 </div>
             </div>
             <hr>
@@ -213,7 +213,7 @@ protectRoute([2]);?>
             <div class="user-input">
                 <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
                 <p>Or</p>
-                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required value="<?= $job->location ?>">
+                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required value="<?= htmlspecialchars($job->location) ?>">
             </div></div>
                 <hr>
                 <div class="post-job-buttons flex-row">
