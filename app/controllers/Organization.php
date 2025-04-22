@@ -37,7 +37,7 @@ date_default_timezone_set('Asia/Colombo');
             } else {
                 $findEmployees = $this->findEmpModel->getEmployees();
             }
-
+        }
 
     function org_findEmployees()
     {
@@ -59,7 +59,8 @@ date_default_timezone_set('Asia/Colombo');
             $reqID = uniqid('REQ_');
 
             $success = $jobModel->applyForJob($reqID, $providerID, $availableID);
-
+        }
+    }
         function org_postJob(){
             $this->view('org_postJob');
         }
@@ -81,6 +82,8 @@ date_default_timezone_set('Asia/Colombo');
             $data = ['receivedRequests' => $receivedRequests];
             $this->view('org_jobListing_received', $data);
         }
+        
+
 
         public function rejectJobRequest() {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -933,4 +936,4 @@ date_default_timezone_set('Asia/Colombo');
             header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
         }
     }
-}
+

@@ -1,0 +1,238 @@
+/* ===== Base Layout Styles ===== */
+.wrapper {
+    margin-top: 100px;
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 100px);
+}
+
+.main-content {
+    width: 100%;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ad-title {
+    margin-bottom: 20px;
+}
+
+.ad-title .title {
+    font-size: 30px; /* Increased font size */
+    color: #1f2a3e; /* Darkened color */
+    font-weight: 600;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #c5cbd8; /* Darkened color */
+    margin: 15px 0 25px;
+}
+
+/* ===== Form Container ===== */
+.ad-form {
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
+    padding: 30px;
+    margin-top: 20px;
+    width: 95%; /* Adjusted width to take 95% of the page */
+    margin-left: auto;
+    margin-right: auto; /* Center the form horizontally */
+}
+
+/* ===== Form Layout ===== */
+.equal-sections-form {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.section {
+    flex: 1;
+    min-width: 350px; /* Increased minimum width */
+    padding: 20px;
+    /* border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); Slightly darker shadow */
+}
+
+.section h4 {
+    margin-bottom: 20px;
+    font-size: 20px; /* Increased font size */
+    color: #1f2a3e; /* Darkened color */
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #c5cbd8; /* Darkened color */
+}
+
+/* ===== Form Fields ===== */
+.field {
+    margin-bottom: 20px;
+}
+
+.lbl {
+    display: block;
+    font-weight: 500;
+    color: #3a475b; /* Darkened color */
+    font-size: 16px; /* Increased font size */
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="date"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px; /* Increased font size */
+    border: 1px solid #a3b0c0; /* Darkened color */
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="file"],
+textarea {
+    width: 100%;
+    
+}
+
+input[type='date']{
+    width: 80%;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #3b36c8; /* Darkened color */
+    box-shadow: 0 0 0 3px rgba(59, 54, 200, 0.1); /* Adjusted shadow */
+}
+
+/* Date fields container */
+.field > .flex-row {
+    gap: 15px;
+}
+
+/* ===== Radio Buttons ===== */
+.radio-btns {
+    margin-top: 15px;
+    gap: 20px;
+}
+
+.radio-btns > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #3b36c8; /* Darkened color */
+}
+
+/* ===== File Input ===== */
+.custom-file-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed #a3b0c0; /* Darkened color */
+    border-radius: 8px;
+    background-color: #f0f4f8; /* Darkened color */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.custom-file-input:hover {
+    border-color: #3b36c8; /* Darkened color */
+    background-color: #e6ebf2; /* Darkened color */
+}
+
+/* ===== Image Preview ===== */
+.image-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#imagePreview {
+    width: 100%;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#preview {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    border: 1px solid #c5cbd8; /* Darkened color */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
+    display: none;
+}
+
+/* ===== Submit Button ===== */
+.post-ad-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #3b36c8; /* Darkened color */
+    color: white;
+    font-weight: 600;
+    font-size: 18px; /* Increased font size */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.post-ad-btn:hover {
+    background-color: #2f2a9e; /* Darkened color */
+}
+
+/* ===== Responsive Design ===== */
+@media screen and (max-width: 768px) {
+    .equal-sections-form {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .section {
+        min-width: 100%;
+    }
+    
+    .field > .flex-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .radio-btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ad-form {
+        padding: 20px 15px;
+    }
+    
+    .section {
+        padding: 15px;
+    }
+    
+    .ad-title .title {
+        font-size: 26px; /* Increased font size */
+    }
+}
