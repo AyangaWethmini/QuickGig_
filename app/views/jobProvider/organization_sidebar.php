@@ -2,7 +2,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <body>
-    
+<script src="<?=ROOT?>/assets/js/sidebar.js"></script>      
     <div class="sidebar-container">
 
         <div class="sidebar-items-container">
@@ -30,7 +30,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-pen-clip"></i></span>
                 <span class="sidebar-label">Reviews</span>
             </a>
-            <a href="<?php echo ROOT;?>/organization/org_complaints" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/complaints" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
                 <span class="sidebar-label">complaints</span>
             </a>

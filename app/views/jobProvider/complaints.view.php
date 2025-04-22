@@ -3,7 +3,7 @@
 protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/complaints.css">
-
+<body>
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
 
@@ -27,70 +27,85 @@ protectRoute([2]); ?>
             </div>
         </div>
         <div class="complaints-container container">
-
-            <?php foreach ($data['complaints'] as $complaint): ?>
-                <div class="complaint container">
-                    <div class="complaint-content flex-col">
-                        <div class="complaint-details flex-row">
-                            <div class="complaint-text flex-col">
-                                <div class="the-complaint"><?php echo $complaint->content ?></div>
-                                <div class="text-grey">
+            <?php if (empty($data['complaints'])): ?>
+                <div class="empty-container">
+                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Complaints" class="empty-icon">
+                    <p class="empty-text">No Complaints Have Been Made Yet</p>
+                </div>
+            <?php else: ?>
+                <?php foreach ($data['complaints'] as $complaint): ?>
+                    <div class="complaint container">
+                        <div class="complaint-content flex-col">
+                            <div class="complaint-details flex-row">
+                                <div class="complaint-text flex-col">
+                                    <div class="the-complaint"><?php echo htmlspecialchars($complaint->content, ENT_QUOTES); ?></div>
+                                    <div class="text-grey">
+                                        <?php
+                                        $formattedTime = date('h:i:s', strtotime($complaint->complaintTime));
+                                        echo htmlspecialchars($complaint->complaintDate . ' | ' . $formattedTime, ENT_QUOTES);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="complaint-status">
                                     <?php
-                                    $formattedTime = date('h:i A', strtotime($complaint->complaintTime));
-                                    echo $complaint->complaintDate . ' | ' . $formattedTime;
+                                    if ($complaint->complaintStatus == 1) {
+                                        echo htmlspecialchars('Pending', ENT_QUOTES);
+                                    } elseif ($complaint->complaintStatus == 2) {
+                                        echo htmlspecialchars('Under Reviewed', ENT_QUOTES);
+                                    } elseif ($complaint->complaintStatus == 3) {
+                                        echo htmlspecialchars('Reviewed', ENT_QUOTES);
+                                    } else {
+                                        echo htmlspecialchars('Unknown Status', ENT_QUOTES);
+                                    }
                                     ?>
                                 </div>
                             </div>
-                            <div class="complaint-status">
-                                <?php
-                                if ($complaint->complaintStatus == 1) {
-                                    echo 'Pending';
-                                } elseif ($complaint->complaintStatus == 2) {
-                                    echo 'Under Reviewed';
-                                } elseif ($complaint->complaintStatus == 3) {
-                                    echo 'Reviewed';
-                                } else {
-                                    echo 'Unknown Status'; // Fallback for unexpected values
-                                }
-                                ?>
+                            <div class="complaint-actions flex-row">
+                                <button 
+                                    class="btn btn-update <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>" 
+                                    <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?> 
+                                    onClick="window.location.href='<?= ROOT ?>/jobProvider/updateComplaint/<?= $complaint->complaintID ?>';">
+                                    Update
+                                </button>
+                                <button 
+                                    class="btn btn-delete <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>" 
+                                    <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?> 
+                                    onclick="showDeletePopup('<?php echo htmlspecialchars($complaint->complaintID, ENT_QUOTES) ?>')">
+                                    Delete
+                                </button>
                             </div>
                         </div>
-                        <div class="complaint-actions flex-row">
-                            <button class="btn btn-update" onClick="window.location.href='<?= ROOT ?>/jobProvider/updateComplaint/<?= $complaint->complaintID ?>';">Update</button>
-                            <button class="btn btn-delete" onclick="confirmDelete(<?php echo $complaint->complaintID ?>)">Delete</button>
-                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
-<div id="delete-confirmation" class="modal" style="display: none;">
+<div id="delete-popup" class="modal" style="display: none;">
     <div class="modal-content">
         <p>Are you sure you want to delete this complaint?</p>
-        <button id="confirm-yes" class="popup-btn-delete-complaint">Yes</button>
-        <button id="confirm-no" class="popup-btn-delete-complaint">No</button>
+        <button id="delete-confirm-yes" class="popup-btn-delete-complaint">Yes</button>
+        <button id="delete-confirm-no" class="popup-btn-delete-complaint">No</button>
     </div>
 </div>
 
 <form id="delete-form" method="POST" style="display: none;"></form>
-
+</body>
 <script>
-    function confirmDelete(id) {
-        var modal = document.getElementById('delete-confirmation');
-        modal.style.display = 'flex';
+    function showDeletePopup(complaintID) {
+    const modal = document.getElementById('delete-popup');
+    modal.style.display = 'flex';
 
-        document.getElementById('confirm-yes').onclick = function() {
-            var form = document.getElementById('delete-form');
-            form.action = '<?= ROOT ?>/jobProvider/deleteComplaint/' + id;
-            modal.style.display = 'none';
+    document.getElementById('delete-confirm-yes').onclick = function () {
+        const form = document.getElementById('delete-form');
+        form.action = '<?= ROOT ?>/jobProvider/deleteComplaint/' + complaintID;
+        modal.style.display = 'none';
+        form.submit();
+    };
 
-            form.submit();
-        };
-
-        document.getElementById('confirm-no').onclick = function() {
-            modal.style.display = 'none';
-        };
-    }
+    document.getElementById('delete-confirm-no').onclick = function () {
+        modal.style.display = 'none';
+    };
+}
 </script>

@@ -12,6 +12,36 @@ class User
         // $this->db = Database; // PDO instance
     }
 
+    use Model;
+
+    // Add these new methods
+    public function getTotalUsers()
+    {
+        $query = "SELECT COUNT(*) as count 
+              FROM account_role ar 
+              JOIN account a ON ar.accountID = a.accountID 
+              WHERE ar.roleID NOT IN (0, 1)";
+        $result = $this->query($query);
+        return $result[0]->count;
+    }
+
+    public function getUsersPaginated($start, $limit)
+    {
+        // Cast parameters to integers to ensure proper SQL syntax
+        $start = (int)$start;
+        $limit = (int)$limit;
+
+        $query = "SELECT ar.roleID, a.accountID, a.email, a.activationCode 
+              FROM account_role ar
+              JOIN account a ON ar.accountID = a.accountID 
+              WHERE ar.roleID NOT IN (0, 1)
+              ORDER BY a.accountID  -- Add an ORDER BY clause for consistent pagination
+              LIMIT $start, $limit";  // Use direct integers instead of parameters for LIMIT
+
+        $result = $this->query($query);
+        return $result ?: [];
+    }
+
     public function getUsers()
     {
         $query = 'SELECT ar.roleID, a.accountID, a.email, a.activationCode 
@@ -57,7 +87,7 @@ class User
         // Execute the query
         return $this->query($query, $params);
     }
-
+ 
     public function deleteUserById($accountID)
     {
         try {
@@ -78,5 +108,14 @@ class User
             error_log('Failed to delete user: ' . $e->getMessage());
             return false;
         }
+    }
+
+    public function getUserById($userId)
+    {
+        $query = "SELECT * FROM account WHERE accountID = :userId";
+        $params = [':userId' => $userId];
+
+        $result = $this->query($query, $params);
+        return $result ? $result[0] : false;
     }
 }

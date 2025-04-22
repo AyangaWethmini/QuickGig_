@@ -19,9 +19,11 @@ protectRoute([2]);?>
 
         <div class="list-header">
             <p class="list-header-title">Received History</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
-            <button class="filter-btn">Filter</button>
-        </div> <br>
+            <form method="GET" action="<?= ROOT ?>/seeker/jobListing_received">
+                <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </form>
+        </div> 
+        <br>
 
         <div class="employee-list">
             
@@ -120,5 +122,19 @@ protectRoute([2]);?>
     function closePopup(popupID) {
         document.getElementById(popupID).classList.add('hidden');
     }
+
+    document.querySelector('.search-input').addEventListener('input', function () {
+        const searchTerm = this.value;
+
+        fetch(`<?= ROOT ?>/seeker/jobListing_received?search=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.job-list').innerHTML;
+                document.querySelector('.job-list').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 </html>

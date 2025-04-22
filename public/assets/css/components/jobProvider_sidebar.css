@@ -3,21 +3,31 @@ body {
     margin: 0;
 }
 
+
+/* Make icons and labels white when sidebar item is active */
+.sidebar-item.active .sidebar-icon,
+.sidebar-item.active .sidebar-label {
+    color: white;
+}
+
 /* to style active sidebar */
 .sidebar-item.active {
-    background-color: rgb(198, 198, 249);
-    color: white;
+    background-color: #c5c5f6;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-container {
     width: 224px;
-    height: 100vh;
+    height: 85%; /* Full height of the viewport */
     background-color: white;
     display: flex;
     flex-direction: column;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     position: fixed;
+    overflow-y: auto; /* Enable scrolling for long content */
+    z-index: 10; /* Ensure it stays above other content */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for toggling */
 }
 
 .sidebar-items-container{
@@ -57,4 +67,20 @@ body {
     font-size: 1rem;
     font-weight: 600;
     color: #7C8493;
+}
+
+@media (max-width: 768px) {
+    .sidebar-container {
+        width: 25%; /* Full width for smaller screens */
+        height: auto; /* Adjust height */
+        position: relative; /* Allow it to flow with the page */
+    }
+
+    .sidebar-item {
+        justify-content: center; /* Center items for smaller screens */
+    }
+}
+
+.sidebar-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Edge: hide scrollbar */
 }

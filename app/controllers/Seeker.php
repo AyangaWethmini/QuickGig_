@@ -10,7 +10,6 @@ class Seeker extends Controller
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
         $this->helpModel = $this->model('Help');
-        
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -31,7 +30,12 @@ class Seeker extends Controller
 
     function findEmployees()
     {
-        $findJobs = $this->findJobModel->getJobs();
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        if (!empty($searchTerm)) {
+            $findJobs = $this->findJobModel->searchJobs($searchTerm);
+        } else {
+            $findJobs = $this->findJobModel->getJobs();
+        }
 
         $data = [
             'findJobs' => $findJobs
@@ -65,13 +69,12 @@ class Seeker extends Controller
 
     function jobListing_received()
     {
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $receivedModel = $this->model('ReceivedSeeker');
-        $receivedRequests = $receivedModel->getReceivedRequests();
+        $receivedRequests = !empty($searchTerm) ? $receivedModel->searchReceivedRequests($userID, $searchTerm) : $receivedModel->getReceivedRequests();
 
-        $data = [
-            'receivedRequests' => $receivedRequests
-        ];
-
+        $data = ['receivedRequests' => $receivedRequests];
         $this->view('jobListing_received', $data);
     }
 
@@ -141,7 +144,8 @@ class Seeker extends Controller
         $this->view('individualEditProfile');
     }
 
-    function report(){
+    function report()
+    {
         $this->view('report');
     }
 
@@ -161,9 +165,9 @@ class Seeker extends Controller
 
             // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
-            $_SESSION['error'] = 'Title and description cannot be empty.';
-            header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
-            exit;
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+                exit;
             }
 
             $helpID = uniqid("HLP", true);
@@ -187,21 +191,21 @@ class Seeker extends Controller
 
             // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
-            $_SESSION['error'] = 'Title and description cannot be empty.';
-            header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
-            exit;
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+                exit;
             }
 
             $this->helpModel->update($id, [
-            'title' => $title,
-            'description' => $description
+                'title' => $title,
+                'description' => $description
             ]);
 
             header('Location: ' . ROOT . '/jobProvider/helpCenter');
         } else {
             $question = $this->helpModel->getQuestionById($id);
             $data = [
-            'question' => $question
+                'question' => $question
             ];
             $this->view('editQuestion', $data);
         }
@@ -220,31 +224,40 @@ class Seeker extends Controller
 
     function reviews()
     {
-        $this->view('reviews');
+        $accountID = $_SESSION['user_id'];
+        $review = $this->model('review');
+        $data = $review->readReview($accountID, 2);
+        $this->view('reviews', $data);
+    }
+    function review($jobId)
+    {
+        $job = $this->model('job');
+        $account = $this->model('Account');
+        $pickJob = $job->getJobById($jobId);
+        $revieweeData = $account->getUserData($pickJob->accountID);
+        $revieweeData['jobID'] = $jobId;
+        $this->view('review', $revieweeData);
     }
 
     public function jobListing_myJobs()
     {
         $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $availableModel = $this->model('Available');
-        $jobs = $availableModel->getJobsByUser($userID);
+        $jobs = !empty($searchTerm) ? $availableModel->searchJobsByUser($userID, $searchTerm) : $availableModel->getJobsByUser($userID);
 
-        $data = [
-            'jobs' => $jobs
-        ];
-
+        $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
 
     function jobListing_send()
     {
-        $send = $this->model('SendSeeker');
-        $sendRequests = $send->getSendRequests();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $sendModel = $this->model('SendSeeker');
+        $sendRequests = !empty($searchTerm) ? $sendModel->searchSendRequests($userID, $searchTerm) : $sendModel->getSendRequests();
 
-        $data = [
-            'sendRequests' => $sendRequests
-        ];
-
+        $data = ['sendRequests' => $sendRequests];
         $this->view('jobListing_send', $data);
     }
 
@@ -268,8 +281,12 @@ class Seeker extends Controller
     {
         $this->jobStatusUpdater->updateJobStatuses();
         $tbcSeeker = $this->model('ToBeCompletedSeeker');
-        $reqAvailableTBC = $tbcSeeker->getReqAvailableTBC();
-        $applyJobTBC = $tbcSeeker->getApplyJobTBC();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $reqAvailableTBC = !empty($searchTerm) ? $tbcSeeker->searchReqAvailableTBC($userID, $searchTerm) : $tbcSeeker->getReqAvailableTBC();
+        $applyJobTBC = !empty($searchTerm) ? $tbcSeeker->searchToBeCompleted($userID, $searchTerm) : $tbcSeeker->getApplyJobTBC();
+
         $data = [
             'reqAvailableTBC' => $reqAvailableTBC,
             'applyJobTBC' => $applyJobTBC
@@ -281,11 +298,15 @@ class Seeker extends Controller
     {
         $this->jobStatusUpdater->updateJobStatuses();
         $ongoingSeeker = $this->model('OngoingSeeker');
-        $reqAvailableOngoing = $ongoingSeeker->getReqAvailableOngoing();
-        $applyJobOngoing = $ongoingSeeker->getApplyJobOngoing();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $applyJobOngoing = !empty($searchTerm) ? $ongoingSeeker->searchOngoing($userID, $searchTerm) : $ongoingSeeker->getApplyJobOngoing();
+        $reqAvailableOngoing = !empty($searchTerm) ? $ongoingSeeker->searchReqAvailableOngoing($userID, $searchTerm) : $ongoingSeeker->getReqAvailableOngoing();
+
         $data = [
-            'reqAvailableOngoing' => $reqAvailableOngoing,
-            'applyJobOngoing' => $applyJobOngoing
+            'applyJobOngoing' => $applyJobOngoing,
+            'reqAvailableOngoing' => $reqAvailableOngoing
         ];
         $this->view('jobListing_ongoing', $data);
     }
@@ -294,23 +315,178 @@ class Seeker extends Controller
     {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedSeeker = $this->model('CompletedSeeker');
-        $reqAvailableCompleted = $completedSeeker->getReqAvailableCompleted();
-        $applyJobCompleted = $completedSeeker->getApplyJobCompleted();
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $applyJobCompleted = !empty($searchTerm) ? $completedSeeker->searchCompleted($userID, $searchTerm) : $completedSeeker->getApplyJobCompleted();
+        $reqAvailableCompleted = !empty($searchTerm) ? $completedSeeker->searchReqAvailableCompleted($userID, $searchTerm) : $completedSeeker->getReqAvailableCompleted();
+
         $data = [
-            'reqAvailableCompleted' => $reqAvailableCompleted,
-            'applyJobCompleted' => $applyJobCompleted
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
         ];
         $this->view('jobListing_completed', $data);
     }
 
-    function makeComplaint()
+    public function updateCompletionStatus()
     {
-        $this->view('makeComplaint');
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $type = $_POST['type'];
+            $status = $_POST['status'];
+
+            $completedProvider = $this->model('CompletedProvider');
+
+            if ($type === 'application') {
+                $completedProvider->updateApplicationStatus($id, $status);
+            } elseif ($type === 'request') {
+                $completedProvider->updateRequestStatus($id, $status);
+            }
+
+            header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
+        }
     }
 
-    function complaints()
+    function jobListing_done()
     {
-        $this->view('complaints');
+        $this->jobStatusUpdater->updateJobStatuses();
+        $completedProvider = $this->model('SeekerDone');
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+
+        if (!empty($filterDate)) {
+            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+        } else {
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        }
+
+        $data = [
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
+        ];
+        $this->view('jobListing_done', $data);
+    }
+
+    function jobListing_notDone()
+    {
+        $this->jobStatusUpdater->updateJobStatuses();
+        $completedProvider = $this->model('SeekerNotDone');
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+
+        if (!empty($filterDate)) {
+            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+        } else {
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        }
+
+        $data = [
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
+        ];
+        $this->view('jobListing_notDone', $data);
+    }
+
+    public function makeComplaint($taskID)
+    {
+        $completedSeeker = $this->model('CompletedSeeker');
+        $employer = $completedSeeker->getEmployerDetails($taskID);
+
+        $data = [
+            'employer' => $employer
+        ];
+
+        $this->view('makeComplaint', $data);
+    }
+
+    public function submitComplaint()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $complainantID = $_SESSION['user_id'];
+            $complaineeID = trim($_POST['complaineeID']);
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('H:i:s');
+            $complaintStatus = 1;
+            $complaintID = uniqid('COMP_');
+            $jobOrAvailable = trim($_POST['jobOrAvailable']);
+            $applicationOrReq = trim($_POST['applicationOrReq']);
+
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaintModel->create([
+                'complaintID' => $complaintID,
+                'complainantID' => $complainantID,
+                'complaineeID' => $complaineeID,
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime,
+                'complaintStatus' => $complaintStatus,
+                'jobOrAvailable' => $jobOrAvailable,
+                'applicationOrReq' => $applicationOrReq
+            ]);
+
+            header('Location: ' . ROOT . '/seeker/jobListing_completed');
+        }
+    }
+
+    public function complaints()
+    {
+        $complaintModel = $this->model('SeekerComplaint');
+        $complaints = $complaintModel->getComplaints();
+
+        $data = [
+            'complaints' => $complaints
+        ];
+
+        $this->view('complaints', $data);
+    }
+
+    public function updateComplaint($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('H:i:s');
+
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaintModel->update($id, [
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime
+            ]);
+
+            header('Location: ' . ROOT . '/seeker/complaints');
+        } else {
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaint = $complaintModel->getComplaintById($id);
+
+            $data = [
+                'complaint' => $complaint
+            ];
+
+            $this->view('updateComplaint', $data);
+        }
+    }
+
+    public function deleteComplaint($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $complaintModel = $this->model('SeekerComplaint');
+            $complaintModel->delete($id);
+            header('Location: ' . ROOT . '/seeker/complaints');
+        }
     }
 
     function settings()
@@ -421,5 +597,20 @@ class Seeker extends Controller
             $this->availabilityModel->delete($id);
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         }
+    }
+    public function addReview($accountID)
+    {
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
+        $roleID     = 1;
+
+        $review = $this->model('review');
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
+        header('Location: ' . ROOT . '/seeker/jobListing_completed');
     }
 }

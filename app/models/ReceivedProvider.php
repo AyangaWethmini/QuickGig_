@@ -67,4 +67,36 @@ class ReceivedProvider{
         $result = $this->query($query, [$applicationID]);
         return $result ? $result[0] : null;
     }
+
+    public function searchReceivedRequests($userID, $searchTerm) {
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
+                  FROM apply_job a 
+                  JOIN job j ON a.jobID = j.jobID
+                  JOIN individual i ON a.seekerID = i.accountID
+                  JOIN account acc ON a.seekerID = acc.accountID
+                  WHERE j.accountID = ? 
+                  AND a.applicationStatus = 1
+                  AND (
+                      LOWER(i.fname) LIKE ? OR
+                      LOWER(i.lname) LIKE ? OR
+                      LOWER(j.jobTitle) LIKE ? OR
+                      LOWER(j.location) LIKE ?
+                  )
+                  ORDER BY datePosted DESC, timePosted DESC";
+        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+    }
+
+    public function filterReceivedRequestsByDate($userID, $filterDate) {
+        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
+                  FROM apply_job a 
+                  JOIN job j ON a.jobID = j.jobID
+                  JOIN individual i ON a.seekerID = i.accountID
+                  JOIN account acc ON a.seekerID = acc.accountID
+                  WHERE j.accountID = ? 
+                  AND a.applicationStatus = 1
+                  AND a.dateApplied = ?
+                  ORDER BY datePosted DESC, timePosted DESC";
+        return $this->query($query, [$userID, $filterDate]);
+    }
 }

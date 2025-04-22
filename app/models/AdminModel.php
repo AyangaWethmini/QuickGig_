@@ -17,6 +17,27 @@ class AdminModel
         // $this->db = new Database; // PDO instance
     }
 
+    public function getTotalAnnouncements()
+    {
+        $query = "SELECT COUNT(*) as count FROM announcement";
+        $result = $this->query($query);
+        return $result[0]->count;
+    }
+
+    public function getAnnouncementsPaginated($start, $limit)
+    {
+        // Cast parameters to integers to ensure proper SQL syntax
+        $start = (int)$start;
+        $limit = (int)$limit;
+
+        $query = "SELECT * FROM announcement 
+                  ORDER BY announcementDate DESC, announcementTime DESC 
+                  LIMIT $start, $limit";  // Use direct integers instead of parameters
+
+        $result = $this->query($query);
+        return $result ?: [];
+    }
+
     public function getJobCount()
     {
         $query = 'SELECT COUNT(*) AS jobcount FROM job';
@@ -80,12 +101,18 @@ class AdminModel
 
     public function getAnnouncementById($announcementID)
     {
-        $query = "SELECT * FROM announcement where announcementID = :announcementID";
+        $query = "SELECT * FROM announcement WHERE announcementID = :announcementID LIMIT 1";
         $params = [
             ':announcementID' => $announcementID
         ];
 
-        return $this->get_row($query, $params);
+        $result = $this->query($query, $params);
+
+        // Debug the query result
+        // var_dump($result);
+        // exit;
+
+        return $result ? $result[0] : false;
     }
 
     public function delete($announcementID)

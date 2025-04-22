@@ -5,6 +5,7 @@ protectRoute([3]);?>
 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
@@ -76,10 +77,10 @@ protectRoute([3]);?>
                     <div class="salary-ph flex-row">
                         <input type="text" name="salary" id="salary-per-hr" required>
                         <select id="currency-select" class="currency-select" name="currency">
+                            <option value="LKR">LKR</option>
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <option value="LKR">LKR</option>
+                            <option value="GBP">GBP</option>                           
                             <option value="AUD">AUD</option>
                             <option value="CAD">CAD</option>
                             <option value="JPY">JPY</option>
@@ -111,9 +112,7 @@ protectRoute([3]);?>
                     </div>
                     <div class="end-time flex-col">
                         <div class="label">
-                            <label for="end-time-select">
-                                <p class="lbl">End Time</p>
-                            </label>
+                            <label for="end-time-select"><p class="lbl">End Time</p></label>
                         </div>
                         <div class="input-boxes">
                             <input type="time" id="timeInput" name="timeTo" required>
@@ -154,26 +153,6 @@ protectRoute([3]);?>
                 </div>
             </div>
             <hr>
-            <!--<div class="form-section flex-row container">
-                <div class="container right-container">
-                    <p class="title">
-                    Required Skills
-                    </p>
-                    <p class="text-grey desc">Add required skills for the job</p>
-                </div>
-                <div class="user-input flex-col">
-                    <div class="flex-row" style="gap: 20px;">
-                    <div class="btn btn-trans" onclick="addTag('skill')">+ Add Skills</div>
-                    <div class="btn btn-trans" onclick="addTag('language')">+ Add Languages</div>
-                    </div>
-                    <div class="tags-container" id="tags-container">
-                        ---Dynamic tags will appear here ---
-                    </div>
-                </div>
-            </div> 
-            
-            <hr>
-            -->
 
             <div class="form-section flex-row container">
                 <div class="container right-container">
@@ -196,18 +175,16 @@ protectRoute([3]);?>
             </div>
             <hr>
             <div class="form-section flex-row container">
-                <div class="container right-container">
-                    <p class="title">
-                    Add Location
-                    </p>
-                    <p class="text-grey desc">Add the location where the employee should attend</p>
-                </div>
-                <div class="user-input">
-                    <button class="btn btn-trans">Add your Location</button>
-                    <p>Or</p>
-                    <input type="text" name="location" placeholder="Type your location here" required>
-                    </div>
-                </div>
+            <div class="container right-container">
+                <p class="title">Add Location</p>
+                <p class="text-grey desc">Add the location where the employee should attend</p>
+            </div>
+
+            <div class="user-input">
+                <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
+                <p>Or</p>
+                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required>
+            </div></div>
                 <hr>
                 <div class="post-job-buttons flex-row">
                     <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/organization/org_jobListing_myJobs'">Discard</button>
@@ -228,59 +205,27 @@ protectRoute([3]);?>
                         <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>
                     </div>
                 </div>
+
+                <div id="mapModal" class="map-modal" style="display:none;">
+                    <div id="map"></div>
+                    <div class="mapBtns">
+                        <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
+                        <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
+                    </div>
+                </div>
             </div>
+            
         </form>
     </div>
 </div>
 
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByhOqNUkNdVh5JDlawmbh-fxmgbVvE2Cg&libraries=places&callback=initMap"></script>
+
 <script>
-/*
-  // Function to populate time dropdowns
-  function populateTimeDropdown(selectElement) {
-    for (let hour = 1; hour <= 12; hour++) {
-      for (let minutes = 0; minutes < 60; minutes += 30) {
-        const time = `${hour}:${String(minutes).padStart(2, '0')}`;
-        const option = document.createElement('option');
-        option.value = time;
-        option.textContent = time;
-        selectElement.appendChild(option);
-      }
-    }
-  }
-
-  // Select elements for start and end times
-  const startTimeSelect = document.getElementById('start-time-select');
-  const endTimeSelect = document.getElementById('end-time-select');
-
-  // Populate both dropdowns
-  populateTimeDropdown(startTimeSelect);
-  populateTimeDropdown(endTimeSelect);
-
-  function addTag(type) {
-        const tagText = prompt(`Enter ${type === 'skill' ? 'Skill' : 'Language'}`);
-        if (tagText) {
-            const tagContainer = document.getElementById('tags-container');
-            
-            // Create tag element
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = tagText;
-            
-            // Add remove button
-            const removeBtn = document.createElement('span');
-            removeBtn.className = 'remove-btn';
-            removeBtn.textContent = '×';
-            removeBtn.onclick = () => tag.remove();
-            
-            // Append remove button to tag
-            tag.appendChild(removeBtn);
-            
-            // Append tag to container
-            tagContainer.appendChild(tag);
-        }
-    }
-        */
-    // Set today's date as the minimum date
+    let map;
+    let marker;
+    let selectedLocation = '';
+    let mapInitialized = false; 
 
     function showAddTagPopup(type) {
         const tagContainer = document.getElementById('tags-container');
@@ -356,5 +301,103 @@ protectRoute([3]);?>
             alert("Please select a date.");
         }
     }
+
+    function initAutocomplete() {
+        const locationInput = document.getElementById('locationInput');
+
+        // Initialize Google Places Autocomplete
+        autocomplete = new google.maps.places.Autocomplete(locationInput, {
+            //types: ['geocode'], // Restrict to geographical locations
+            componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+        });
+
+        // Listen for the place_changed event
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+                // Update the selectedLocation variable with the new coordinates
+                selectedLocation = `${place.geometry.location.lat()},${place.geometry.location.lng()}`;
+            }
+        });
+    }
+
+    function initMap() {
+        const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; // Default to Colombo
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultLatLng,
+            zoom: 13,
+            clickableIcons: false,
+        });
+
+        map.addListener("click", (e) => {
+            placeMarkerAndPanTo(e.latLng, map);
+        });
+
+        initAutocomplete();
+    }
+
+    function openMapModal() {
+        const modal = document.getElementById('mapModal');
+        modal.style.display = 'block';
+
+        // Small delay to ensure modal is rendered before initializing/resizing map
+        setTimeout(() => {
+            if (!mapInitialized) {
+                initMap();
+                mapInitialized = true;
+            } else {
+                google.maps.event.trigger(map, "resize");
+                map.setCenter(marker ? marker.getPosition() : { lat: 6.9271, lng: 79.8612 });
+            }
+        }, 200); // 200ms delay is usually enough
+    }
+
+    function closeMapModal() {
+        document.getElementById('mapModal').style.display = 'none';
+    }
+
+    function saveLocation() {
+        const geocoder = new google.maps.Geocoder();
+        const latlng = {
+            lat: parseFloat(selectedLocation.split(',')[0]),
+            lng: parseFloat(selectedLocation.split(',')[1])
+        };
+
+        geocoder.geocode({ location: latlng }, function(results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    document.getElementById('locationInput').value = results[0].formatted_address;
+                } else {
+                    document.getElementById('locationInput').value = selectedLocation; // fallback
+                }
+            } else {
+                document.getElementById('locationInput').value = selectedLocation; // fallback
+            }
+
+            closeMapModal();
+        });
+    }
+
+
+    function placeMarkerAndPanTo(latLng, map) {
+    if (marker) {
+        marker.setMap(null);
+    }
+
+    marker = new google.maps.Marker({
+        position: latLng,
+        map: map,
+    });
+
+    map.panTo(latLng);
+
+    selectedLocation = `${latLng.lat()},${latLng.lng()}`;
+}
+
+    document.getElementById('locationInput').value = selectedLocation; // Update the input field with the selected location
+    closeMapModal(); // Close the modal after selecting a location
+    mapInitialized = true; // Set mapInitialized to true after the first initialization
+    document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
 
 </script>

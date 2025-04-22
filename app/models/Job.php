@@ -97,10 +97,42 @@ class Job{
         $result = $this->query($query, $params);
         return isset($result[0]) ? $result[0] : null;
     }
+    public function getJobSeekerById($id) {
+        $query = "SELECT seekerID FROM apply_job WHERE jobID = :id";
+        $params = ['id' => $id];
+        $result = $this->query($query, $params);
+        return isset($result[0]) ? $result[0] : null;
+    }
 
     public function delete($id) {
         $query = "DELETE FROM job WHERE jobID = :id";
         $params = ['id' => $id];
+        return $this->query($query, $params);
+    }
+
+    public function searchJobsByUser($userID, $searchTerm) {
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $query = "SELECT * FROM job 
+                  WHERE accountID = ? 
+                  AND (
+                      LOWER(jobTitle) LIKE ? OR
+                      LOWER(description) LIKE ? OR
+                      LOWER(location) LIKE ? OR
+                      LOWER(categories) LIKE ?
+                  )
+                  ORDER BY availableDate DESC, timeFrom DESC";
+        return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+    }
+
+    public function filterJobsByDate($userID, $filterDate) {
+        $query = "SELECT * FROM job 
+                  WHERE accountID = :accountID 
+                  AND availableDate = :filterDate
+                  ORDER BY availableDate DESC, timeFrom DESC";
+        $params = [
+            'accountID' => $userID,
+            'filterDate' => $filterDate
+        ];
         return $this->query($query, $params);
     }
 }
