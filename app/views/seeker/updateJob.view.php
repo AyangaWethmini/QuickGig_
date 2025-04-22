@@ -54,18 +54,18 @@ protectRoute([2]);?>
                 </div>
                 <div class="user-input">
                     <div class="salary-ph flex-row">
-                        <input type="number" name="salary" id="salary-per-hr" value="<?= htmlspecialchars($availability->salary) ?>" min="0" required>
+                        <input type="text" name="salary" id="salary-per-hr" required value="<?= $availability->salary?>">
                         <select id="currency-select" class="currency-select" name="currency">
-                            <option value="LKR" <?= $job->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>    
-                            <option value="USD" <?= $job->currency === 'USD' ? 'selected' : '' ?>>USD</option>
-                            <option value="EUR" <?= $job->currency === 'EUR' ? 'selected' : '' ?>>EUR</option>
-                            <option value="GBP" <?= $job->currency === 'GBP' ? 'selected' : '' ?>>GBP</option>
-                            <option value="AUD" <?= $job->currency === 'AUD' ? 'selected' : '' ?>>AUD</option>
-                            <option value="CAD" <?= $job->currency === 'CAD' ? 'selected' : '' ?>>CAD</option>
-                            <option value="CNY" <?= $job->currency === 'CNY' ? 'selected' : '' ?>>CNY</option>
-                            <option value="INR" <?= $job->currency === 'INR' ? 'selected' : '' ?>>INR</option>
-                            <option value="JPY" <?= $job->currency === 'JPY' ? 'selected' : '' ?>>JPY</option>
-                            <option value="NZD" <?= $job->currency === 'NZD' ? 'selected' : '' ?>>NZD</option>
+                            <option value="LKR" <?= $availability->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>    
+                            <option value="USD" <?= $availability->currency === 'USD' ? 'selected' : '' ?>>USD</option>
+                            <option value="EUR" <?= $availability->currency === 'EUR' ? 'selected' : '' ?>>EUR</option>
+                            <option value="GBP" <?= $availability->currency === 'GBP' ? 'selected' : '' ?>>GBP</option>
+                            <option value="AUD" <?= $availability->currency === 'AUD' ? 'selected' : '' ?>>AUD</option>
+                            <option value="CAD" <?= $availability->currency === 'CAD' ? 'selected' : '' ?>>CAD</option>
+                            <option value="CNY" <?= $availability->currency === 'CNY' ? 'selected' : '' ?>>CNY</option>
+                            <option value="INR" <?= $availability->currency === 'INR' ? 'selected' : '' ?>>INR</option>
+                            <option value="JPY" <?= $availability->currency === 'JPY' ? 'selected' : '' ?>>JPY</option>
+                            <option value="NZD" <?= $availability->currency === 'NZD' ? 'selected' : '' ?>>NZD</option>
                         </select>
                     </div>
                 </div>
