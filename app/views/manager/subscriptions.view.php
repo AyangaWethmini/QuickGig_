@@ -18,7 +18,7 @@ protectRoute([1]); ?>
 
             
         <div class="all-subscriptions">
-            <p>Here , some changes has to be  done!</p>
+            <!-- <p>Here , some changes has to be  done!</p> -->
             <!-- <h2>Subscribers</h2> -->
     
             <?php if (isset($subs) && is_array($subs)): ?>

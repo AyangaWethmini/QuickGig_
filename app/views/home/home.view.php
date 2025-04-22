@@ -109,7 +109,7 @@ if (
 
 </div>
 
-<?php include_once APPROOT . '/views/components/advertisemetsSlideshow.php'; ?>
+<?php include_once APPROOT . '/views/components/ad-popup.php'; ?>
 
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">

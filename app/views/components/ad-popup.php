@@ -1,77 +1,164 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/ads.css">
 
-<div class="slideshow-container">
-    <?php 
-    // Shuffle advertisements randomly
-    $shuffledAds = $advertisements;
-    shuffle($shuffledAds);
-    
-    // Handle circular pairing if the number of ads is odd
-    $advertisementsCount = count($shuffledAds);
-    if ($advertisementsCount % 2 !== 0) {
-        // Add random ad to make it even (not always first one)
-        $shuffledAds[] = $shuffledAds[array_rand($shuffledAds)];
+<!-- Add this new CSS for the popup -->
+<style>
+    .ad-popup {
+        position: fixed;
+        bottom: -400px; /* Start hidden below viewport */
+        left: 0;
+        right: 0;
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 -2px 20px rgba(0,0,0,0.2);
+        border-radius: 10px 10px 0 0;
+        z-index: 1000;
+        transition: bottom 0.5s ease-in-out;
+        padding: 20px;
+        box-sizing: border-box;
     }
+    
+    .ad-popup.show {
+        bottom: 0; /* Show at bottom of viewport */
+    }
+    
+    .popup-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+        background: none;
+        border: none;
+    }
+    
+    .popup-close:hover {
+        color: #000;
+    }
+    
+    .popup-content {
+        position: relative;
+    }
+    
+    /* Override some styles for popup layout */
+    .popup-content .promo-item-box {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .popup-content .promo-pair-container {
+        flex-direction: column;
+    }
+</style>
 
-    // Group ads into randomized pairs
-    $adPairs = array_chunk($shuffledAds, 2);
+<!-- Popup container (initially hidden) -->
+<div class="ad-popup" id="adPopup">
+    <button class="popup-close" onclick="closePopup()">&times;</button>
+    <div class="popup-content">
 
-    foreach ($adPairs as $index => $pair): ?>
-        <div class="mySlides <?= $index === 0 ? 'active-slide' : '' ?>">
-            <div class="promo-pair-container">
-                <?php foreach ($pair as $ad): ?>
-                    <div class="promo-item-box" data-ad-id="<?= $ad->advertisementID ?>">
-                        <div class="promo-visual">
-                            <?php if ($ad->img): ?>
-                                <?php 
-                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
-                                    $mimeType = $finfo->buffer($ad->img);
-                                ?>
-                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" 
-                                     alt="<?= htmlspecialchars($ad->adTitle) ?>" 
-                                     class="promo-image">
-                            <?php else: ?>
-                                <img src="<?= ROOT ?>/assets/images/placeholder.jpg" 
-                                     alt="No image available" 
-                                     class="promo-image">
-                            <?php endif; ?>
-                        </div>
-                        <div class="promo-info-panel">
-                            <h3 class="promo-heading"><?= htmlspecialchars($ad->adTitle) ?></h3>
-                            <p class="promo-text"><?= htmlspecialchars($ad->adDescription) ?></p>
-                            <div class="promo-actions">
-                                <a href="<?= htmlspecialchars($ad->link) ?>" 
-                                   class="action-btn primary-btn" 
-                                   target="_blank" 
-                                   rel="noopener noreferrer"
-                                   onclick="trackAdClick(<?= $ad->advertisementID ?>)">
-                                    Discover More
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+
+    heloooooooo
+        <!-- Single ad will be shown here -->
+        <div class="promo-item-box" id="popupAdContainer">
+            <!-- Ad content will be inserted here by JavaScript -->
         </div>
-    <?php endforeach; ?>
-
-    <!-- Next and previous buttons -->
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-</div>
-
-<!-- Dots/circles -->
-<div style="text-align:center; margin-top: 10px;">
-    <?php foreach ($adPairs as $index => $pair): ?>
-        <span class="dot" onclick="currentSlide(<?= $index + 1 ?>)"></span>
-    <?php endforeach; ?>
+    </div>
 </div>
 
 <script>
 // Track viewed ads to prevent duplicate counting
 const viewedAds = new Set();
+let popupTimeout;
+let adRefreshInterval;
 
-// Silent ad view tracking
+// Function to get a random ad
+function getRandomAd() {
+    const ads = <?= json_encode($advertisements) ?>;
+    return ads[Math.floor(Math.random() * ads.length)];
+}
+
+// Function to display an ad in the popup
+function displayAdInPopup(ad) {
+    const container = document.getElementById('popupAdContainer');
+    
+    // Clear previous ad
+    container.innerHTML = '';
+    
+    // Set ad ID for tracking
+    container.dataset.adId = ad.advertisementID;
+    
+    // Create ad HTML
+    let adHtml = `
+    <div class="promo-visual">
+        ${ad.img ? 
+            `<img src="data:${getMimeType(ad.img)};base64,${arrayBufferToBase64(ad.img)}" 
+                  alt="${escapeHtml(ad.adTitle)}" 
+                  class="promo-image">` : 
+            `<img src="<?= ROOT ?>/assets/images/placeholder.jpg" 
+                  alt="No image available" 
+                  class="promo-image">`
+        }
+    </div>
+    <div class="promo-info-panel">
+        <h3 class="promo-heading">${escapeHtml(ad.adTitle)}</h3>
+        <p class="promo-text">${escapeHtml(ad.adDescription)}</p>
+        <div class="promo-actions">
+            <a href="${escapeHtml(ad.link)}" 
+               class="action-btn primary-btn" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               onclick="trackAdClick(${ad.advertisementID}); return true;">
+                Discover More
+            </a>
+        </div>
+    </div>
+`;
+
+// Add this helper function to properly convert ArrayBuffer to base64
+function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+}
+    
+    container.innerHTML = adHtml;
+    
+    // Track the view
+    trackAdView(container);
+}
+
+// Helper function to get MIME type (simplified version)
+function getMimeType(buffer) {
+    // In a real implementation, you would detect the actual MIME type
+    return 'image/jpeg'; // Default to JPEG for this example
+}
+
+// Helper function to safely encode binary data to Base64
+function encodeToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+}
+
+// Helper function to escape HTML
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
+// Track ad view
 function trackAdView(adElement) {
     const adId = adElement.dataset.adId;
     if (viewedAds.has(adId)) return;
@@ -110,79 +197,49 @@ function trackAdClick(adId) {
     return true; // Allow default link behavior
 }
 
-let slideIndex = 1;
-let slideInterval;
-
-// Initialize the slideshow
-function showSlides(n) {
-    let slides = document.getElementsByClassName("mySlides");
-    let dots = document.getElementsByClassName("dot");
-
-    if (n > slides.length) { slideIndex = 1; }
-    if (n < 1) { slideIndex = slides.length; }
-
-    // Hide all slides
-    for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-        slides[i].classList.remove("active-slide");
-    }
-
-    // Remove active class from all dots
-    for (let i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active-dot", "");
-    }
-
-    // Show the current slide and mark the dot as active
-    slides[slideIndex - 1].style.display = "block";
-    slides[slideIndex - 1].classList.add("active-slide");
-    dots[slideIndex - 1].className += " active-dot";
-
-    // Track view for the current slide's ads
-    const currentSlideAds = slides[slideIndex - 1].querySelectorAll('[data-ad-id]');
-    currentSlideAds.forEach(ad => {
-        trackAdView(ad);
-    });
-
-    // Animation
-    for (let i = 0; i < slides.length; i++) {
-        if (i === slideIndex - 1) {
-            slides[i].style.transform = "translateX(0)";
-        } else if (i < slideIndex - 1) {
-            slides[i].style.transform = "translateX(-100%)";
-        } else {
-            slides[i].style.transform = "translateX(100%)";
-        }
-    }
+// Show the popup with a random ad
+function showPopupWithAd() {
+    const popup = document.getElementById('adPopup');
+    const ad = getRandomAd();
+    
+    displayAdInPopup(ad);
+    popup.classList.add('show');
+    
+    // Set timeout to show next ad in 15 minutes (900000 ms)
+    adRefreshInterval = setInterval(() => {
+        const newAd = getRandomAd();
+        displayAdInPopup(newAd);
+    }, 900000);
 }
 
-// Change slide
-function plusSlides(n) {
-    clearInterval(slideInterval); // Pause auto-advance
-    showSlides(slideIndex += n);
-    slideInterval = setInterval(() => plusSlides(1), 5000); // Resume
+// Close the popup
+function closePopup() {
+    const popup = document.getElementById('adPopup');
+    popup.classList.remove('show');
+    
+    // Clear any pending timeouts/intervals
+    clearTimeout(popupTimeout);
+    clearInterval(adRefreshInterval);
 }
 
-// Set the current slide
-function currentSlide(n) {
-    clearInterval(slideInterval);
-    showSlides(slideIndex = n);
-    slideInterval = setInterval(() => plusSlides(1), 5000);
-}
-
-// Start the slideshow
+// Initialize the popup when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    showSlides(slideIndex);
+    // Show popup after a short delay (1 second)
+    popupTimeout = setTimeout(showPopupWithAd, 1000);
     
-    // Auto-play the slideshow every 5 seconds
-    slideInterval = setInterval(() => plusSlides(1), 5000);
-    
-    // Track initial slide views
-    const initialSlide = document.querySelector('.mySlides.active-slide');
-    if (initialSlide) {
-        const initialAds = initialSlide.querySelectorAll('[data-ad-id]');
-        initialAds.forEach(ad => {
-            trackAdView(ad);
-        });
+    // Close popup when clicking outside of it
+    document.addEventListener('click', function(e) {
+        const popup = document.getElementById('adPopup');
+        if (!popup.contains(e.target) && e.target.className !== 'popup-close') {
+            closePopup();
+        }
+    });
+});
+
+// Also close when pressing Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePopup();
     }
 });
 </script>

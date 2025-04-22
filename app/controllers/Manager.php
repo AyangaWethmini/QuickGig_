@@ -15,6 +15,7 @@ class Manager extends Controller
     protected $managerModel;
     protected $systemReportModel; 
     protected $managerDashboardModel;
+    protected $adminModel;
 
     public function __construct()
     {
@@ -28,6 +29,7 @@ class Manager extends Controller
         $this->managerModel = $this->model('ManagerModel');
         $this->systemReportModel = $this->model('SystemReport');
         $this->managerDashboardModel = $this->model('ManagerDashboard');
+        $this->adminModel = $this->model('AdminModel');
     }
 
     public function index()
@@ -235,7 +237,7 @@ class Manager extends Controller
         header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
-
+// 
     if (!preg_match('/^07\d{8}$/', $_POST['contact'])) {
         // Validate contact number format (e.g., 07XXXXXXXX)
         $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
@@ -721,6 +723,25 @@ class Manager extends Controller
             }
 
             header('Location: ' . ROOT . '/manager/helpCenter');
+            exit;
+        }
+    }
+
+    //announcements
+    public function createAnnouncements($data){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $content = trim($_POST['content']);
+            $adminId = $_SESSION['user_id'];
+            $announcementDate = date('Y-m-d');
+            $announcementTime = date('H:i:s');
+            $data = [
+                'content' => $content,
+                'announcementDate' => $announcementDate,
+                'announcementTime' => $announcementTime
+            ];
+            $this->adminModel->createannouncement($data, $adminId);
+            $_SESSION['success'] = "Announcement created successfully.";
+            header('Location: ' . ROOT . '/manager/announcements');
             exit;
         }
     }

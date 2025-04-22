@@ -154,11 +154,11 @@ document.getElementById('email').addEventListener('blur', function() {
     }).then(res => res.json()).then(data => {
     
         if(data.error){
-            document.getElementById('advertiserName').value = '';
-            document.getElementById('contact').value = '';
+            document.getElementById('advertiserName').value = null;
+            document.getElementById('contact').value = null;
         }else{
-            document.getElementById('advertiserName').value = data.advertiser.advertiserName ?? "";
-            document.getElementById('contact').value = data.advertiser.contact ?? "";
+            document.getElementById('advertiserName').value = data.advertiser.advertiserName ?? null;
+            document.getElementById('contact').value = data.advertiser.contact ?? null;
         }
     }).catch(err => {
         console.error('Error:', err);    
