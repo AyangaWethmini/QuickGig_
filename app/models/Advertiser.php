@@ -57,6 +57,20 @@ class Advertiser {
             return false;
         }
     }
+
+    public function getAdvertiserByEmail($email){
+        $query = "SELECT * FROM advertiser WHERE LOWER(email) = LOWER(:email) LIMIT 1";
+        $params = ['email' => trim($email)];
+        
+        $result = $this->query($query, $params);
+        
+        return !empty($result) ? json_decode(json_encode($result[0]), true) : false;
+    }
+
+
+    // public function checkForActiveAds(){
+    //     $query = 
+    // }
     
     
     

@@ -29,6 +29,10 @@ protectRoute([1]);
                     <div class="advertiser_details section">
                         <h4>Advertiser Details</h4>
                         <div class="field">
+                            <label class="lbl">Email</label><br>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="field">
                             <label class="lbl">Advertiser Name</label><br>
                             <input type="text" id="advertiserName" name="advertiserName" required>
                         </div>
@@ -38,10 +42,7 @@ protectRoute([1]);
                             <input type="text" id="contact" name="contact" required>
                         </div>
 
-                        <div class="field">
-                            <label class="lbl">Email</label><br>
-                            <input type="email" id="email" name="email" required>
-                        </div>
+                        
                     </div>
 
                     <!-- Advertisement Details -->
@@ -140,4 +141,29 @@ function previewImage(input) {
         preview.style.display = 'none';
     }
 }
+
+
+document.getElementById('email').addEventListener('blur', function() {
+    const email = this.value.trim();
+    if(!email) return;
+
+    fetch('<?=ROOT?>/manager/getAdvertiserByEmail', {
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body : `email=${encodeURIComponent(email)}`
+    }).then(res => res.json()).then(data => {
+    
+        if(data.error){
+            document.getElementById('advertiserName').value = '';
+            document.getElementById('contact').value = '';
+        }else{
+            document.getElementById('advertiserName').value = data.advertiser.advertiserName ?? "";
+            document.getElementById('contact').value = data.advertiser.contact ?? "";
+        }
+    }).catch(err => {
+        console.error('Error:', err);    
+    });
+});
 </script>

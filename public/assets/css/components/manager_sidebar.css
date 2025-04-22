@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.sidebar-container {
+    width: 224px;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+}
+
+.sidebar-items-container {
+    margin-top: 0px;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.sidebar-item:hover {
+    background-color: #E9EBFD;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-icon {
+    font-size: 20px;
+    margin-right: 15px;
+    color: #333;
+}
+
+.sidebar-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #7C8493;
+}
+
+/* Submenu styling */
+.sidebar-submenu {
+    padding-left: 20px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.sidebar-item.sub-item {
+    padding: 10px 15px 10px 45px;
+    background-color: #f9f9f9;
+    font-size: 0.9rem; /* Reduced font size by 1px */
+    color: #666;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    margin-left: 15px; /* Added margin-left for indentation */
+    transition: background-color 0.3s ease, color 0.3s ease, margin-left 0.3s ease;
+}
+
+.sidebar-item.sub-item:hover {
+    background-color: #E9EBFD;
+    color: #4640DE;
+}
+
+.sidebar-item.active,
+.sidebar-item.active-parent {
+    background-color: #E9EBFD;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #4640DE;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-item.active .sidebar-label,
+.sidebar-item.active-parent .sidebar-label {
+    color: #4640DE;
+    transition: color 0.3s ease;
+}
+
+.sidebar-item.active .sidebar-icon,
+.sidebar-item.active-parent .sidebar-icon {
+    color: #4640DE;
+    transition: color 0.3s ease;
+}

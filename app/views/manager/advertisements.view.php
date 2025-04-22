@@ -98,6 +98,8 @@ protectRoute([1]);
             <?php endif; ?>
         </div>
 
+        
+
         <!-- Error Message -->
         <?php
             include_once APPROOT . '/views/components/alertBox.php';
