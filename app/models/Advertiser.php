@@ -27,22 +27,35 @@ class Advertiser {
             'contact' => $data['contact'],
             'email' => $data['email']
         ];
-        
-        return $this->query($query, $params);
+    
+        try {
+            $this->query($query, $params);
+            return $this->lastInsertId(); 
+            print_r($this->lastInsertID());// Return the new advertiser ID
+        } catch (PDOException $e) {
+            error_log("Failed to create advertiser: " . $e->getMessage());
+            return false;
+        }
     }
 
 
-    // Checks if the advertiser exists and if yes returns the ID; if not, returns null
+    // Checks if the advertiser exists and if yes returns the ID; if not, returns false
     public function isAdvertiserExist($email) {
-        $query = "SELECT advertiserID FROM advertiser WHERE email = :email";
-        $params = ['email' => $email];
-        $result = $this->query($query, $params);
+        try {
+            if (empty($email)) {
+                return false;
+            }
     
-        if (!empty($result)) {
-            return is_object($result[0]) ? $result[0]->advertiserID : $result[0]['advertiserID'];
+            $query = "SELECT advertiserID FROM advertiser WHERE LOWER(email) = LOWER(:email) LIMIT 1";
+            $params = ['email' => trim($email)];
+            
+            $result = $this->query($query, $params);
+            
+            return !empty($result) ? $result[0]->advertiserID : false;
+        } catch (Exception $e) {
+            error_log("Error in isAdvertiserExist: " . $e->getMessage());
+            return false;
         }
-    
-        return null;
     }
     
     

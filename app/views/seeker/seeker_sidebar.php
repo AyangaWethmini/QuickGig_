@@ -34,6 +34,12 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
                 <span class="sidebar-label">complaints</span>
             </a>
+
+            <a href="<?php echo ROOT;?>/seeker/report" class="sidebar-item">
+                <span class="sidebar-icon"><i class="fa-regular fa-chart-bar"></i></span>
+                <span class="sidebar-label">Report</span>
+            </a>
+            
              <br><br>
             <a href="<?php echo ROOT;?>/seeker/subscription" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-certificate"></i></span>

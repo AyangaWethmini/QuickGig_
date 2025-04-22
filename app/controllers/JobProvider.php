@@ -3,12 +3,23 @@ date_default_timezone_set('Asia/Colombo');
 
 class JobProvider extends Controller
 {
+
+    private $helpModel;
+    private $managerModel;
+    private $accountSubscriptionModel;
+    private $userReportModel;
+
     public function __construct()
     {
         $this->complaintModel = $this->model('Complaint');
         $this->findEmpModel = $this->model('FindEmployees');
         $this->accountModel = $this->model('Account');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
+        $this->adminModel = $this->model('AdminModel');
+        $this->helpModel = $this->model('Help');
+        $this->managerModel = $this->model('ManagerModel');
+        $this->accountSubscriptionModel = $this->model('AccountSubscription');
+        $this->userReportModel = $this->model('userReport');
     }
     protected $viewPath = "../app/views/jobProvider/";
 
@@ -24,7 +35,6 @@ class JobProvider extends Controller
         $data = $this->accountModel->getUserData($userId);
         $this->view('individualProfile', $data);
     }
-
 
     public function changePassword()
     {
@@ -117,19 +127,19 @@ class JobProvider extends Controller
         }
     }
 
-
-    function findEmployees() {
+    function findEmployees()
+    {
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         if (!empty($searchTerm)) {
             $findEmployees = $this->findEmpModel->searchEmployees($searchTerm);
         } else {
             $findEmployees = $this->findEmpModel->getEmployees();
         }
-    
+
         $data = [
             'findEmployees' => $findEmployees
         ];
-    
+
         $this->view('findEmployees', $data);
     }
 
@@ -156,12 +166,13 @@ class JobProvider extends Controller
         $this->view('postJob');
     }
 
-    function jobListing_received() {
+    function jobListing_received()
+    {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $receivedModel = $this->model('ReceivedProvider');
-    
+
         if (!empty($filterDate)) {
             $receivedRequests = $receivedModel->filterReceivedRequestsByDate($userID, $filterDate);
         } elseif (!empty($searchTerm)) {
@@ -169,7 +180,7 @@ class JobProvider extends Controller
         } else {
             $receivedRequests = $receivedModel->getReceivedRequests();
         }
-    
+
         $data = ['receivedRequests' => $receivedRequests];
         $this->view('jobListing_received', $data);
     }
@@ -228,34 +239,173 @@ class JobProvider extends Controller
 
     function subscription()
     {
-        $this->view('subscription');
+        $subsDetails = $this->accountSubscriptionModel->getUserSubscriptionDetails($_SESSION['user_id']);
+        $this->view('subscription', ['subscription' => $subsDetails]);
     }
 
     function messages()
     {
         $this->view('messages');
     }
-
     function announcements()
     {
-        $this->view('announcements');
+        // Set items per page
+        $limit = 3;
+
+        // Get current page from URL, default to 1
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Calculate offset (start from 0 for first page)
+        $start = ($page - 1) * $limit;
+
+        // Get total announcements and paginated announcements
+        $totalAnnouncements = $this->adminModel->getTotalAnnouncements();
+        $announcements = $this->adminModel->getAnnouncementsPaginated($start, $limit);
+
+        // Calculate total pages
+        $totalPages = ceil($totalAnnouncements / $limit);
+
+        // Ensure current page is within valid range
+        if ($page > $totalPages && $totalPages > 0) {
+            header('Location: ' . ROOT . '/admin/adminannouncement?page=1');
+            exit;
+        }
+
+        // Debug information (temporarily uncomment to check values)
+        // echo "Page: $page, Start: $start, Limit: $limit, Total: $totalAnnouncements<br>";
+        // print_r($announcements);
+
+        $data = [
+            'announcements' => $announcements,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalAnnouncements' => $totalAnnouncements
+        ];
+
+        $this->view('announcements', $data);
     }
 
+    //help center functionalities 
     function helpCenter()
     {
-        $this->view('helpCenter');
+        $data = $this->helpModel->getUserQuestions($_SESSION['user_id']);
+        $this->view('helpCenter', ['questions' => $data]);
     }
+
+    function submitQuestion()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+                exit;
+            }
+
+            $this->helpModel->createQuestion([
+                'accountID' => $accountID,
+                'title' => $title,
+                'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+    function editQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+                exit;
+            }
+
+            $this->helpModel->update($id, [
+                'title' => $title,
+                'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        } else {
+            $question = $this->helpModel->getQuestionById($id);
+            $data = [
+                'question' => $question
+            ];
+            $this->view('editQuestion', $data);
+        }
+    }
+
+    function deleteQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->helpModel->delete($id);
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+
+    //help center done
 
     function reviews()
     {
         $this->view('reviews');
     }
 
-    function jobListing_myJobs() {
+
+    function userReport()
+    {
+        // Check if user is logged in
+        // if (!isset($_SESSION['user_id'])) {
+        //     // Redirect to login or handle unauthorized access
+        //     header('Location: /login');
+        //     exit();
+        // }
+
+        // $userID = $_SESSION['user_id'];
+
+        // try {
+        //     $profile = $this->userReportModel->getUserDetails($userID);
+
+
+        //     $appliedJobs = [];
+        //     $postedJobs = [];
+
+        //     $findEmpModel = $this->model('FindEmployees');
+        //     $appliedJobs = $findEmpModel->getAppliedJobs($userID);
+        //     $postedJobs = $findEmpModel->getPostedJobs($userID);
+
+
+        //     $data = [
+        //         'profile' => $profile,
+
+        //         // 'appliedJobs' => $appliedJobs,
+        //         // 'postedJobs' => $postedJobs
+        //     ];
+
+        $this->view('report'/*,$data*/);
+        // } catch (Exception $e) {
+        //     // Log the error and show a user-friendly message
+        //     error_log("Error in userReport: " . $e->getMessage());
+        //     $this->view('error', ['message' => 'Failed to generate report']);
+        // }
+    }
+
+
+    public function jobListing_myJobs()
+    {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         $jobModel = $this->model('Job');
         if (!empty($filterDate)) {
             $jobs = $jobModel->filterJobsByDate($userID, $filterDate);
@@ -264,17 +414,18 @@ class JobProvider extends Controller
         } else {
             $jobs = $jobModel->getJobsByUser($userID);
         }
-    
+
         $data = ['jobs' => $jobs];
         $this->view('jobListing_myJobs', $data);
     }
 
-    function jobListing_send() {
+    function jobListing_send()
+    {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $sendModel = $this->model('SendProvider');
-    
+
         if (!empty($filterDate)) {
             $sendRequests = $sendModel->filterSendRequestsByDate($userID, $filterDate);
         } elseif (!empty($searchTerm)) {
@@ -282,7 +433,7 @@ class JobProvider extends Controller
         } else {
             $sendRequests = $sendModel->getSendRequests();
         }
-    
+
         $data = ['sendRequests' => $sendRequests];
         $this->view('jobListing_send', $data);
     }
@@ -303,12 +454,13 @@ class JobProvider extends Controller
         }
     }
 
-    function jobListing_toBeCompleted() {
+    function jobListing_toBeCompleted()
+    {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $tbcProvider = $this->model('ToBeCompletedProvider');
-    
+
         if (!empty($filterDate)) {
             $applyJobTBC = $tbcProvider->filterToBeCompletedByDate($userID, $filterDate);
             $reqAvailableTBC = $tbcProvider->filterReqAvailableTBCByDate($userID, $filterDate);
@@ -319,7 +471,7 @@ class JobProvider extends Controller
             $applyJobTBC = $tbcProvider->getApplyJobTBC();
             $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
         }
-    
+
         $data = [
             'applyJobTBC' => $applyJobTBC,
             'reqAvailableTBC' => $reqAvailableTBC
@@ -327,13 +479,14 @@ class JobProvider extends Controller
         $this->view('jobListing_toBeCompleted', $data);
     }
 
-    function jobListing_ongoing() {
+    function jobListing_ongoing()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $ongoingProvider = $this->model('OngoingProvider');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         if (!empty($filterDate)) {
             $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
             $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
@@ -344,7 +497,7 @@ class JobProvider extends Controller
             $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
             $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
         }
-    
+
         $data = [
             'applyJobOngoing' => $applyJobOngoing,
             'reqAvailableOngoing' => $reqAvailableOngoing
@@ -352,13 +505,14 @@ class JobProvider extends Controller
         $this->view('jobListing_ongoing', $data);
     }
 
-    function jobListing_completed() {
+    function jobListing_completed()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('CompletedProvider');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         if (!empty($filterDate)) {
             $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
             $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
@@ -369,7 +523,7 @@ class JobProvider extends Controller
             $applyJobCompleted = $completedProvider->getApplyJobCompleted();
             $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
         }
-    
+
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
             'reqAvailableCompleted' => $reqAvailableCompleted
@@ -377,31 +531,33 @@ class JobProvider extends Controller
         $this->view('jobListing_completed', $data);
     }
 
-    public function updateCompletionStatus() {
+    public function updateCompletionStatus()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $type = $_POST['type'];
             $status = $_POST['status'];
-    
+
             $completedProvider = $this->model('CompletedProvider');
-    
+
             if ($type === 'application') {
                 $completedProvider->updateApplicationStatus($id, $status);
             } elseif ($type === 'request') {
                 $completedProvider->updateRequestStatus($id, $status);
             }
-    
+
             header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
         }
     }
 
-    function jobListing_done() {
+    function jobListing_done()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('ProviderDone');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         if (!empty($filterDate)) {
             $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
             $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
@@ -412,7 +568,7 @@ class JobProvider extends Controller
             $applyJobCompleted = $completedProvider->getApplyJobCompleted();
             $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
         }
-    
+
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
             'reqAvailableCompleted' => $reqAvailableCompleted
@@ -420,13 +576,14 @@ class JobProvider extends Controller
         $this->view('jobListing_done', $data);
     }
 
-    function jobListing_notDone() {
+    function jobListing_notDone()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('ProviderNotDone');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         if (!empty($filterDate)) {
             $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
             $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
@@ -437,13 +594,13 @@ class JobProvider extends Controller
             $applyJobCompleted = $completedProvider->getApplyJobCompleted();
             $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
         }
-    
+
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
             'reqAvailableCompleted' => $reqAvailableCompleted
         ];
         $this->view('jobListing_notDone', $data);
-    }  
+    }
 
     public function makeComplaint($taskID)
     {

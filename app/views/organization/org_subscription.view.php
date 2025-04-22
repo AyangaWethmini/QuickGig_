@@ -2,48 +2,20 @@
 <?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
 protectRoute([3]);?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
-
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/subscription.css">
-
-<body>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="<?=ROOT?>/assets/css/components/user_plan.css" rel="stylesheet">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
-
-    <div class="inclusion-container-subscription">
-        
-    <div class="subscription-plan">
-            <div class="subscription-plan-name">Basic</div>
-            <div class="subscription-plan-price">$15.00/Month</div>
-            <ul class="subscription-plan-options">
-                <li>10 Posts per month</li>
-                <li>Messaging</li>
-            </ul>
-            <button class="subscription-plan-btn">Select Plan</button>
-        </div>
-
-        <div class="subscription-plan">
-            <div class="subscription-plan-name">Standard</div>
-            <div class="subscription-plan-price">$25.00/Month</div>
-            <ul class="subscription-plan-options">
-                <li>25 Posts per month</li>
-                <li>Messaging</li>
-                <li>Scheduling</li>
-            </ul>
-            <button class="subscription-plan-btn">Select Plan</button>
-        </div>
-
-        <div class="subscription-plan">
-            <div class="subscription-plan-name">Premium</div>
-            <div class="subscription-plan-price">$35.00/Month</div>
-            <ul class="subscription-plan-options">
-                <li>Unlimited Posts</li>
-                <li>Messaging</li>
-                <li>Scheduling</li>
-                <li>verified Badge</li>
-            </ul>
-            <button class="subscription-plan-btn">Select Plan</button>
-        </div>
+    
+    <?php require APPROOT . '/views/components/userPlan.php'; ?>
+   
 
     </div>
+
 </div>
+
+
+
+
+<?php require APPROOT . '/views/inc/footer.php'; ?>

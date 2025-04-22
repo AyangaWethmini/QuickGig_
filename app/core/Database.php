@@ -51,4 +51,14 @@ trait Database
         }
         return false;
     }
+
+    public function lastInsertId() {
+        try {
+            $con = $this->connect(); // Connect to the database
+            return $con->lastInsertId(); // Get the last inserted ID
+        } catch (PDOException $e) {
+            error_log("Error getting last insert ID: " . $e->getMessage());
+            return false;
+        }
+    }
 }
