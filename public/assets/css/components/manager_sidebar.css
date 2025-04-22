@@ -59,14 +59,16 @@ body {
 .sidebar-item.sub-item {
     padding: 10px 15px 10px 45px;
     background-color: #f9f9f9;
-    font-size: 0.9rem; /* Reduced font size by 1px */
+    font-size: 0.9rem; 
     color: #666;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     margin-bottom: 5px;
-    margin-left: 15px; /* Added margin-left for indentation */
-    transition: background-color 0.3s ease, color 0.3s ease, margin-left 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.sidebar-item .sub-item .sidebar-lable{
+    margin-left: 15px; 
+}
 .sidebar-item.sub-item:hover {
     background-color: #E9EBFD;
     color: #4640DE;
@@ -75,9 +77,9 @@ body {
 .sidebar-item.active,
 .sidebar-item.active-parent {
     background-color: #E9EBFD;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     color: #4640DE;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .sidebar-item.active .sidebar-label,

@@ -201,7 +201,10 @@ date_default_timezone_set('Asia/Colombo');
             exit;
             }
 
+            $helpID = uniqid("HLP", true);
+
             $this->helpModel->createQuestion([
+            'helpID' => $helpID,
             'accountID' => $accountID,
             'title' => $title,
             'description' => $description

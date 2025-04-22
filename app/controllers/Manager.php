@@ -188,8 +188,11 @@ class Manager extends Controller
         exit;
     }
 
-      // Form validation
-      $requiredFields = [
+    // Generate a unique advertisement ID
+    $advertisementID = uniqid("AD", true);
+
+    // Form validation
+    $requiredFields = [
         'advertiserName',
         'contact',
         'email',
@@ -199,7 +202,6 @@ class Manager extends Controller
         'adStatus',
         'startDate',
         'endDate',
-  
     ];
 
     if (!isset($_POST) || empty($_POST)) {
@@ -245,15 +247,28 @@ class Manager extends Controller
     $advertiserName = trim($_POST['advertiserName']);
     $contact = trim($_POST['contact']);
     $email = trim($_POST['email']);
-    
 
     $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
-    print_r($advertiserId); // Debugging line
+    // If advertiser does not exist, create a new advertiser
+    if (!$advertiserId) {
+        // Validate contact number format (e.g., 07XXXXXXXX)
+        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
+
+    // Clean input data
+    $advertiserName = trim($_POST['advertiserName']);
+    $contact = trim($_POST['contact']);
+    $email = trim($_POST['email']);
+
+    $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
     // If advertiser does not exist, create a new advertiser
     if (!$advertiserId) {
         $newAdvertiserData = [
+            'advertiserID' => $advertiserId,
             'advertiserName' => $advertiserName,
             'contact' => $contact,
             'email' => $email
@@ -271,6 +286,7 @@ class Manager extends Controller
             exit;
         }
     }
+
     // Image handling - add more detailed error checking
     $imageData = null;
     if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
@@ -301,6 +317,7 @@ class Manager extends Controller
 
     // Prepare advertisement data
     $advertisementData = [
+        'advertisementID' => $advertisementID,
         'advertiserID' => $advertiserId,
         'adTitle' => trim($_POST['adTitle']),
         'adDescription' => trim($_POST['adDescription']),
@@ -314,7 +331,7 @@ class Manager extends Controller
     // Create advertisement with error handling
     try {
         $result = $this->advertisementModel->createAdvertisement($advertisementData);
-        
+
         if (!$result) {
             error_log("Advertisement creation failed. Data: " . print_r($advertisementData, true));
             $_SESSION['error'] = "Failed to create advertisement in database.";
@@ -332,7 +349,6 @@ class Manager extends Controller
         exit;
     }
 }
-
 
     public function getAdvertiserByEmail(){
         if($_SERVER['REQUEST_METHOD'] == 'POST'){

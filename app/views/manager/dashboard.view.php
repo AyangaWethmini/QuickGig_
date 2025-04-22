@@ -83,11 +83,11 @@ protectRoute([1]); ?>
             </div>
         </div>
 
-                <?php if (isset($_SESSION['email'])): ?>
+                <!-- <?php if (isset($_SESSION['email'])): ?>
                     <a href="mailto:<?= htmlspecialchars($_SESSION['email']); ?>" class="email">Check Emails</a>
                 <?php else: ?>
                     <a href="https://mail.google.com/" class="email">Check Emails</a>
-                <?php endif; ?>
+                <?php endif; ?> -->
             </div>
         </div>
 

@@ -25,7 +25,7 @@ protectRoute([1]); ?>
             <table class="subscribers-table">
                 <thead>
                 <tr>
-                    <th>Subscriber ID</th>
+                    <!-- <th>Subscriber ID</th> -->
                     <th>Account ID</th>
                     <th>Subscription ID</th>
                     <th>Current Period Start</th>
@@ -35,7 +35,7 @@ protectRoute([1]); ?>
                 <tbody>
                 <?php foreach ($subs as $subscriber): ?>
                     <tr>
-                    <td><?= htmlspecialchars($subscriber->id) ?></td>
+                    <!-- <td><?= htmlspecialchars($subscriber->id) ?></td> -->
                     <td><?= htmlspecialchars($subscriber->accountID) ?></td>
                     <td><?= htmlspecialchars($subscriber->stripe_subscription_id) ?></td>
                     <td><?= htmlspecialchars($subscriber->current_period_start) ?></td>
