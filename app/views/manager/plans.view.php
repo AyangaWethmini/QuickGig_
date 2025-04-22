@@ -112,18 +112,17 @@ protectRoute([1]); ?>
         </div>
         <br>
     </div>
-
     <?php
-        include_once APPROOT . '/views/components/alertBox.php';
-        if (isset($_SESSION['error'])) {
-            echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
-        }
-        if (isset($_SESSION['success'])) {
-            echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
-        }
-        unset($_SESSION['error']);
-        unset($_SESSION['success']);
-    ?>
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
 </div>
 
 <script>

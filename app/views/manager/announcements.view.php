@@ -54,13 +54,16 @@
         </div>
 
         <!-- Alert Boxes -->
-        <?php include_once APPROOT . '/views/components/alertBox.php'; ?>
-        <?php if (isset($_SESSION['error'])): ?>
-            <script>showAlert("<?= htmlspecialchars($_SESSION['error']) ?>", "error");</script>
-        <?php endif; ?>
-        <?php if (isset($_SESSION['success'])): ?>
-            <script>showAlert("<?= htmlspecialchars($_SESSION['success']) ?>", "success");</script>
-        <?php endif; ?>
-        <?php unset($_SESSION['error'], $_SESSION['success']); ?>
+        <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
     </div>
 </div>

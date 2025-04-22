@@ -179,7 +179,7 @@ protectRoute([1]); ?>
 
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
         <div class="header flex-col">
-            <h2>System Report</h2>
+            <h2>System Report</h2> 
             <hr>
         </div>
 
