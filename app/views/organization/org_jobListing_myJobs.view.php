@@ -44,22 +44,22 @@ $jobs = $jobModel->getJobsByUser($userID);
                     $jobStatusClass = ($job->jobStatus == 2) ? 'inactive-job' : '';
                 ?>
                     <div class="myjob-item <?= $jobStatusClass ?>">
-                        <div class="job-details">
-                            <span class="job-title"><?= $job->jobTitle ?></span>
-                            <span class="employment-type">Shift: <?= $job->shift ?></span>
-                            <span class="duration">Duration: <?= $job->timeFrom ?> - <?= $job->timeTo ?></span>
-                            <span class="employment-type">Date: <?= $job->availableDate ?></span>
-                            <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
-                            <span class="location">Location: <?= $job->location ?></span>
-                            <span class="salary">Salary: <?= $job->salary ?> <?= $job->currency ?>/Hr</span>
-                            <span class="employment-type">No. Of Employees: <?= $job->noOfApplicants ?></span>
-                            <hr>
-                            <div class="jobDescription"><p><?= $job->description ?></p></div>
-                            <hr> 
-                            <span class="date-posted">Posted on: <?= $job->datePosted ?></span>
-                            <span class="time-posted">Posted at: <?= $job->timePosted ?></span>
-                            <span class="my-job-id">Job id: #<?= $job->jobID ?></span>
-                        </div>
+                    <div class="job-details">
+                        <span class="job-title"><?= htmlspecialchars($job->jobTitle) ?></span>
+                        <span class="employment-type">Shift: <?= htmlspecialchars($job->shift) ?></span>
+                        <span class="duration">Duration: <?= htmlspecialchars($job->timeFrom) ?> - <?= htmlspecialchars($job->timeTo) ?></span>
+                        <span class="employment-type">Date: <?= htmlspecialchars($job->availableDate) ?></span>
+                        <span class="myjobs-category">Tags: <?= htmlspecialchars($categoriesString) ?></span>
+                        <span class="location">Location: <?= htmlspecialchars($job->location) ?></span>
+                        <span class="salary">Salary: <?= htmlspecialchars($job->salary) ?> <?= htmlspecialchars($job->currency) ?>/Hr</span>
+                        <span class="employment-type">No. Of Employees: <?= htmlspecialchars($job->noOfApplicants) ?></span>
+                        <hr>
+                        <div class="jobDescription"><p><?= htmlspecialchars($job->description) ?></p></div>
+                        <hr> 
+                        <span class="date-posted">Posted on: <?= htmlspecialchars($job->datePosted) ?></span>
+                        <span class="time-posted">Posted at: <?= htmlspecialchars($job->timePosted) ?></span>
+                        <span class="my-job-id">Job id: #<?= htmlspecialchars($job->jobID) ?></span>
+                    </div>
                         <button class="update-jobReq-button btn btn-accent" onClick="window.location.href='<?= ROOT ?>/organization/updateJob/<?= $job->jobID ?>';">Update</button>
                         <button class="delete-jobReq-button btn btn-danger" data-jobid="<?= $job->jobID ?>" onclick="confirmDelete(this)">Delete</button>
                     </div>
