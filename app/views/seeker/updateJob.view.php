@@ -181,7 +181,7 @@ protectRoute([2]);?>
 <script>
     let map;
     let marker;
-    let selectedLocation = '';
+    //let selectedLocation = '';
     let mapInitialized = false; 
 
     function showAddTagPopup(type) {
