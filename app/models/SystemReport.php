@@ -13,7 +13,8 @@ class SystemReport {
         try {
             $query = "SELECT p.planID, p.planName, p.price, p.duration, p.currency, 
                       COUNT(s.id) AS subscription_count, 
-                      COUNT(s.id) * p.price AS total_revenue
+                      COUNT(s.id) * p.price AS total_revenue,
+                      SUM(COUNT(s.id) * p.price) OVER () AS total_earning
                       FROM subscriptions s
                       JOIN plan p ON s.stripe_price_id = p.stripe_price_id
                       WHERE 
@@ -25,15 +26,14 @@ class SystemReport {
                           p.planID, p.planName, p.price, p.duration, p.currency
                       ORDER BY 
                           total_revenue DESC";
-    //  s.created_at >= '2025-01-01 00:00:00'
-    //                       AND s.created_at <= '2025-12-31 23:59:59'
+    
             $params = [
                 ':startDate' => $startDate,
                 ':endDate' => $endDate
             ];
             
             $result = $this->query($query, $params) ?? [];
-
+    
             return $result;
         } catch (Exception $e) {
             error_log("Error fetching subscription revenue: " . $e->getMessage());

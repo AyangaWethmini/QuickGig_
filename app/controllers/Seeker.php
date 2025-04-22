@@ -169,7 +169,10 @@ class Seeker extends Controller
             exit;
             }
 
+            $helpID = uniqid("HLP", true);
+
             $this->helpModel->createQuestion([
+            'helpID' => $helpID,
             'accountID' => $accountID,
             'title' => $title,
             'description' => $description

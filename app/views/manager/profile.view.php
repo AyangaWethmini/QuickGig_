@@ -1,8 +1,8 @@
-<?php require APPROOT . '/views/inc/header.php'; ?> 
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([1]);?>
-<?php include APPROOT . '/views/components/navbar.php'; ?> 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/profile.css">
+<?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([1]); ?>
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/profile.css">
 
 
 <div class="wrapper flex-row" style="margin-top: 100px;">
@@ -10,22 +10,21 @@ protectRoute([1]);?>
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container flex-col">
-    <div class="header">
+        <div class="header">
             <h3>Profile</h3>
-            
-    </div>
-<hr>
-        
-<p><?= htmlspecialchars(print_r($manager, true)); ?></p>
+
+        </div>
+        <hr>
+
 
         <section class="profile-manager flex-row container">
             <!-- Profile Image Section -->
             <div class="profile-image container">
-                
+
                 <?php if (!empty($manager->pp)): ?>
                     <img src="data:image/jpeg;base64,<?= base64_encode($manager->pp); ?>" alt="Profile Image">
                 <?php else: ?>
-                    <img src="<?=ROOT?>/assets/images/profile.png" alt="Profile Image">
+                    <img src="<?= ROOT ?>/assets/images/profile.png" alt="Profile Image">
                 <?php endif; ?>
             </div>
 
@@ -33,13 +32,13 @@ protectRoute([1]);?>
             <div class="profile-details container">
                 <div class="user-info">
                     <p class="role lbl"><strong>Role:</strong> Manager</p>
-                    <p class="name lbl"><strong>Name:</strong> <?=htmlspecialchars($manager->fname." ".$manager->lname); ?></p>
+                    <p class="name lbl"><strong>Name:</strong> <?= htmlspecialchars($manager->fname . " " . $manager->lname); ?></p>
                     <p class="email lbl"><strong>Email:</strong> <?= htmlspecialchars($manager->email); ?></p>
                     <p class="email lbl"><strong>Phone:</strong> <?= htmlspecialchars($manager->phone); ?></p>
                 </div>
 
                 <!-- Form to Update Email -->
-                <!-- <form class="profile-form" id="emailForm" method="POST" action="<?=ROOT?>/manager/updateEmail">
+                <!-- <form class="profile-form" id="emailForm" method="POST" action="<?= ROOT ?>/manager/updateEmail">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="email"><p class="lbl">Change Email:</p></label>
@@ -57,7 +56,7 @@ protectRoute([1]);?>
                 </form>
 
                 Form to Update Password -->
-                <!-- <form class="profile-form" id="passwordForm" method="POST" action="<?=ROOT?>/manager/updatePassword">
+                <!-- <form class="profile-form" id="passwordForm" method="POST" action="<?= ROOT ?>/manager/updatePassword">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="password"><p class="lbl">Change Password</p></label>
@@ -76,44 +75,44 @@ protectRoute([1]);?>
                 </form> -->
             </div>
         </section>
-    </main>
+        </main>
+    </div>
+
+
 </div>
 
 
-    </div>
-        
 
 
 
 
-         
-        
 
 
-        
-    
+
+
+
 </div>
 
 
 <div class="confirmation-modal">
     <h3>Confirmation</h3>
     <p id="confirmation-message">Are you sure you want to proceed?</p>
-    <button class="btn btn-accent" type="submit" >Yes</button>
+    <button class="btn btn-accent" type="submit">Yes</button>
     <button class="btn btn-accent">No</button>
 </div>
 
 
 <?php
-            include_once APPROOT . '/views/components/alertBox.php';
-            if (isset($_SESSION['error'])) {
-                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
-            }
-            if (isset($_SESSION['success'])) {
-                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
-            }
-            unset($_SESSION['error']);
-            unset($_SESSION['success']);
-        ?>
+include_once APPROOT . '/views/components/alertBox.php';
+if (isset($_SESSION['error'])) {
+    echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+}
+if (isset($_SESSION['success'])) {
+    echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+}
+unset($_SESSION['error']);
+unset($_SESSION['success']);
+?>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -130,6 +129,3 @@ protectRoute([1]);?>
         });
     });
 </script>
-
-
-

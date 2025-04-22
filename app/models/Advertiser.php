@@ -19,10 +19,15 @@ class Advertiser {
     }
 
     public function createAdvertiser($data) {
-        $query = "INSERT INTO advertiser (advertiserName, contact, email) 
-                  VALUES (:advertiserName, :contact, :email)";
+        $query = "INSERT INTO advertiser (advertiserID, advertiserName, contact, email) 
+                  VALUES (:advertiserID, :advertiserName, :contact, :email)";
         
+        if (empty($data['advertiserID'])) {
+            $data['advertiserID'] = uniqid(); // Generate a unique ID if not provided
+        }
+
         $params = [
+            'advertiserID' => $data['advertiserID'],
             'advertiserName' => $data['advertiserName'],
             'contact' => $data['contact'],
             'email' => $data['email']
@@ -30,8 +35,7 @@ class Advertiser {
     
         try {
             $this->query($query, $params);
-            return $this->lastInsertId(); 
-            print_r($this->lastInsertID());// Return the new advertiser ID
+            return $data['advertiserID']; // Return the unique advertiser ID
         } catch (PDOException $e) {
             error_log("Failed to create advertiser: " . $e->getMessage());
             return false;
@@ -57,6 +61,20 @@ class Advertiser {
             return false;
         }
     }
+
+    public function getAdvertiserByEmail($email){
+        $query = "SELECT * FROM advertiser WHERE LOWER(email) = LOWER(:email) LIMIT 1";
+        $params = ['email' => trim($email)];
+        
+        $result = $this->query($query, $params);
+        
+        return !empty($result) ? json_decode(json_encode($result[0]), true) : false;
+    }
+
+
+    // public function checkForActiveAds(){
+    //     $query = 
+    // }
     
     
     

@@ -1,0 +1,100 @@
+<?php 
+require APPROOT . '/views/inc/header.php'; 
+require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([1]); 
+?>
+
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
+
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+
+<?php include APPROOT . '/views/components/deleteConfirmation.php'; ?>
+
+<div class="wrapper flex-row">
+    <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
+
+    <div class="main-content container">
+        <!-- Header Section -->
+        <div class="header flex-row justify-between align-center">
+            <h2>Advertisers</h2>
+            <!-- <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/createAd'"> + Post Advertisement</button> -->
+             
+        </div>
+        <hr>
+
+        <div class="advertisers">
+                        <h3>Advertisers</h3>
+                        <table class="advertiser-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <!-- <th>Options</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($advertisers as $advertiser): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($advertiser->advertiserName) ?></td>
+                                        <td><?= htmlspecialchars($advertiser->email) ?></td>
+                                        <td><?= htmlspecialchars($advertiser->contact) ?></td>
+                                        <!-- <td>
+                                           <form action="<?= ROOT ?>/manager/deleteAdvertiser" method="POST">
+                                                <input type="hidden" name="id" value="<?= $advertiser->id ?>">
+                                                <button type="submit" class="btn btn-del">Delete</button>
+                                </form>
+                                        </td> -->
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+        
+
+        <!-- Pagination -->
+        <!-- <div class="pagination flex-row">
+            <?php
+            $totalPages = ceil(count($advertisements) / $adsPerPage);
+            if ($currentPage > 1): ?>
+                <a href="?page=<?= $currentPage - 1 ?>" class="btn btn-trans">Previous</a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?= $i ?>" class="btn <?= $i === $currentPage ? 'btn-accent' : 'btn-trans' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($currentPage < $totalPages): ?>
+                <a href="?page=<?= $currentPage + 1 ?>" class="btn btn-trans">Next</a>
+            <?php endif; ?>
+        </div> -->
+
+        
+        <!-- Error Message -->
+        <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+            echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            
+            }
+            if (isset($_SESSION['success'])) {
+            echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
+
+
+
+        
+            
+    </div>
+
+   
+</div>
+

@@ -23,10 +23,11 @@ class Help {
 
     public function createQuestion($data) {
         try {
-            $query = "INSERT INTO help (accountID, title, description) 
-                      VALUES (:accountID, :title, :description)";
+            $query = "INSERT INTO help (accountID, helpID,  title, description) 
+                      VALUES (:accountID, :helpID, :title, :description)";
         
             $params = [
+                'helpID' => $data['helpID'],
                 'accountID' => $data['accountID'],
                 'title' => $data['title'],
                 'description' => $data['description'],

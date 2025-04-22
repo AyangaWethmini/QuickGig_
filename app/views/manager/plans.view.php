@@ -110,38 +110,7 @@ protectRoute([1]); ?>
                 </div>
             </div>
         </div>
-        <br><hr><br>
-        <div class="all-subscriptions">
-            <p>Here , some changes has to be  done!</p>
-            <h2>Subscribers</h2>
-    
-            <?php if (isset($subs) && is_array($subs)): ?>
-            <table class="subscribers-table">
-                <thead>
-                <tr>
-                    <th>Subscriber ID</th>
-                    <th>Account ID</th>
-                    <th>Subscription ID</th>
-                    <th>Current Period Start</th>
-                    <th>Current Period End</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($subs as $subscriber): ?>
-                    <tr>
-                    <td><?= htmlspecialchars($subscriber->id) ?></td>
-                    <td><?= htmlspecialchars($subscriber->accountID) ?></td>
-                    <td><?= htmlspecialchars($subscriber->stripe_subscription_id) ?></td>
-                    <td><?= htmlspecialchars($subscriber->current_period_start) ?></td>
-                    <td><?= htmlspecialchars($subscriber->current_period_end) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-            <?php else: ?>
-            <p>No subscribers available.</p>
-            <?php endif; ?>
-        </div>
+        <br>
     </div>
 
     <?php

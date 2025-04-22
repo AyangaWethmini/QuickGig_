@@ -306,7 +306,10 @@ class JobProvider extends Controller
                 exit;
             }
 
+            $helpID = uniqid("HLP", true);
+
             $this->helpModel->createQuestion([
+                'helpID' => $helpID,
                 'accountID' => $accountID,
                 'title' => $title,
                 'description' => $description
@@ -360,43 +363,40 @@ class JobProvider extends Controller
         $this->view('reviews');
     }
 
-
     function userReport()
     {
         // Check if user is logged in
-        // if (!isset($_SESSION['user_id'])) {
-        //     // Redirect to login or handle unauthorized access
-        //     header('Location: /login');
-        //     exit();
-        // }
+        if (!isset($_SESSION['user_id'])) {
+            // Redirect to login or handle unauthorized access
+            header('Location: /login');
+            exit();
+        }
 
-        // $userID = $_SESSION['user_id'];
+        $userID = $_SESSION['user_id'];
 
-        // try {
-        //     $profile = $this->userReportModel->getUserDetails($userID);
+        try {
+            $profile = $this->userReportModel->getUserDetails($userID);
+            $appliedJobs = $this->userReportModel->getAppliedJobs($userID);
+            $postedJobs = $this->userReportModel->getPostedJobs($userID);
+            // $appliedJobs = [];
+            // $postedJobs = [];
+
+            // $findEmpModel = $this->model('FindEmployees');
+            // $postedJobs = $findEmpModel->getPostedJobs($userID);
 
 
-        //     $appliedJobs = [];
-        //     $postedJobs = [];
+            $data = [
+                'profile' => $profile,
+                'appliedJobs' => $appliedJobs,
+                'postedJobs' => $postedJobs
+            ];
 
-        //     $findEmpModel = $this->model('FindEmployees');
-        //     $appliedJobs = $findEmpModel->getAppliedJobs($userID);
-        //     $postedJobs = $findEmpModel->getPostedJobs($userID);
-
-
-        //     $data = [
-        //         'profile' => $profile,
-
-        //         // 'appliedJobs' => $appliedJobs,
-        //         // 'postedJobs' => $postedJobs
-        //     ];
-
-        $this->view('report'/*,$data*/);
-        // } catch (Exception $e) {
-        //     // Log the error and show a user-friendly message
-        //     error_log("Error in userReport: " . $e->getMessage());
-        //     $this->view('error', ['message' => 'Failed to generate report']);
-        // }
+            $this->view('report', $data);
+        } catch (Exception $e) {
+            //     // Log the error and show a user-friendly message
+            error_log("Error in userReport: " . $e->getMessage());
+            //     $this->view('error', ['message' => 'Failed to generate report']);
+        }
     }
 
 

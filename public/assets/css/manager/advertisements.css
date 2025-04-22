@@ -341,7 +341,62 @@ textarea:focus {
     margin: 0;
 }
 
+.advertisers  h3{
+    margin : 20px 20px;
+}
 
+.advertiser-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+}
+
+.advertiser-table thead {
+    background-color: rgba(98, 70, 234, 0.8);
+    color: #ffffff;
+}
+
+.advertiser-table thead th {
+    padding: 15px;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.advertiser-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.advertiser-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.advertiser-table tbody td {
+    padding: 15px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.advertiser-table tbody td:first-child {
+    font-weight: bold;
+    color: #333;
+}
+
+.advertiser-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.advertiser-table p {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
 
 /* Responsive adjustments */
 @media (max-width: 992px) {

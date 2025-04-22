@@ -11,9 +11,10 @@ class Manager extends Controller
     protected $announcementModel;
     protected $advertiserModel;
     protected $accountModel;
-    protected $accountSubscriptionModel; // Assuming you have this model for subscriptions
+    protected $accountSubscriptionModel;
     protected $managerModel;
-    protected $systemReportModel; // Assuming you have this model for system reports
+    protected $systemReportModel; 
+    protected $managerDashboardModel;
 
     public function __construct()
     {
@@ -26,18 +27,45 @@ class Manager extends Controller
         $this->accountSubscriptionModel = $this->model('AccountSubscription'); 
         $this->managerModel = $this->model('ManagerModel');
         $this->systemReportModel = $this->model('SystemReport');
+        $this->managerDashboardModel = $this->model('ManagerDashboard');
     }
 
     public function index()
     {
-        // $adCount = $this->advertisementModel->getAdsCount();
-        // $planCount = $this->planModel->getPlansCount();
-        // $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) : null;
-        // $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) : null;
-        //$subsCount = $this->accountSubscriptionModel->getSubscriptionCount($startDate, $endDate);
+        $startDate = isset($_POST['startDate']) ? $_POST['startDate'] . ' 00:00:00' : date('Y-m-01 00:00:00');
+        $endDate = isset($_POST['endDate']) ? $_POST['endDate'] . ' 23:59:59' : date('Y-m-d 23:59:59');
+
+        $subscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
+        $extractedData = array_map(function($item) {
+            return [
+            'planName' => $item->planName,
+            'subscriptionCount' => $item->subscription_count
+            ];
+        }, $subscriptionData);
+
+        // print_r($extractedData); // Debugging line
+        $response = [
+            'adCount' => $this->managerDashboardModel->adsPosted($startDate, $endDate),
+            'subCount' => $this->managerDashboardModel->getSubscribersCount($startDate, $endDate),
+            'planCount' => $this->managerDashboardModel->getPlanCount(),
+            'revenue' => [
+                'totalEarnings' => isset($this->systemReportModel->getSubscriptionRevenue($startDate, $endDate)[0]->total_earning) ? $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate)[0]->total_earning : 0, // You'll need to sum this from getSubscriptionRevenue results
+                'totalRevenue' => $this->systemReportModel->getAdsRevenue($startDate, $endDate)['totalRevenue']    // Same as above
+            ],
+            'adViews' => $this->managerDashboardModel->getTotalAdViews($startDate, $endDate),
+            'adClicks' => $this->managerDashboardModel->getTotalAdClicks($startDate, $endDate),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'subscriptionData' => $extractedData,
+            'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
+        ];
+
+       
+        // print_r($response); // Debugging line
+
         
-        
-        $this->view('dashboard');
+
+        $this->view('dashboard', $response);
     }
 
     public function profile()
@@ -82,8 +110,8 @@ class Manager extends Controller
     public function plans()
     {
         $data = $this->planModel->getPlans();
-        $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
-        $this->view('plans', ['plans' => $data, 'subs' => $subs]);
+        // $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
+        $this->view('plans', ['plans' => $data]);
     }
 
     public function settings()
@@ -93,8 +121,20 @@ class Manager extends Controller
 
     public function advertisements()
     {
+        // $advertisers = $this->advertiserModel->getAdvertisers();
         $data = $this->advertisementModel->getAdvertisements();
         $this->view('advertisements', ['advertisements' => $data]);
+    }
+
+    public function advertisers()
+    {
+        $data = $this->advertiserModel->getAdvertisers();
+        $this->view('advertisers', ['advertisers' => $data]);
+    }
+
+    public function subscriptions(){
+        $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
+        $this->view('subscriptions', ['subs' => $subs]);
     }
 
 
@@ -148,8 +188,11 @@ class Manager extends Controller
         exit;
     }
 
-      // Form validation
-      $requiredFields = [
+    // Generate a unique advertisement ID
+    $advertisementID = uniqid("AD", true);
+
+    // Form validation
+    $requiredFields = [
         'advertiserName',
         'contact',
         'email',
@@ -159,7 +202,6 @@ class Manager extends Controller
         'adStatus',
         'startDate',
         'endDate',
-  
     ];
 
     if (!isset($_POST) || empty($_POST)) {
@@ -205,15 +247,28 @@ class Manager extends Controller
     $advertiserName = trim($_POST['advertiserName']);
     $contact = trim($_POST['contact']);
     $email = trim($_POST['email']);
-    
 
     $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
-    print_r($advertiserId); // Debugging line
+    // If advertiser does not exist, create a new advertiser
+    if (!$advertiserId) {
+        // Validate contact number format (e.g., 07XXXXXXXX)
+        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
+
+    // Clean input data
+    $advertiserName = trim($_POST['advertiserName']);
+    $contact = trim($_POST['contact']);
+    $email = trim($_POST['email']);
+
+    $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
     // If advertiser does not exist, create a new advertiser
     if (!$advertiserId) {
         $newAdvertiserData = [
+            'advertiserID' => $advertiserId,
             'advertiserName' => $advertiserName,
             'contact' => $contact,
             'email' => $email
@@ -231,6 +286,7 @@ class Manager extends Controller
             exit;
         }
     }
+
     // Image handling - add more detailed error checking
     $imageData = null;
     if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
@@ -261,6 +317,7 @@ class Manager extends Controller
 
     // Prepare advertisement data
     $advertisementData = [
+        'advertisementID' => $advertisementID,
         'advertiserID' => $advertiserId,
         'adTitle' => trim($_POST['adTitle']),
         'adDescription' => trim($_POST['adDescription']),
@@ -274,7 +331,7 @@ class Manager extends Controller
     // Create advertisement with error handling
     try {
         $result = $this->advertisementModel->createAdvertisement($advertisementData);
-        
+
         if (!$result) {
             error_log("Advertisement creation failed. Data: " . print_r($advertisementData, true));
             $_SESSION['error'] = "Failed to create advertisement in database.";
@@ -292,6 +349,29 @@ class Manager extends Controller
         exit;
     }
 }
+
+    public function getAdvertiserByEmail(){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $email = trim($_POST['email']);
+
+            if(empty($email)){
+                echo json_encode(['error' => 'Email is required.']);
+                exit;
+            }
+
+            $advertiser = $this->advertiserModel->getAdvertiserByEmail($email);
+
+            if($advertiser){
+                echo json_encode(['advertiser' => $advertiser]);
+            }else{
+                echo json_encode(['error' => 'No advertiser found with this email.']);
+            }
+        }else{
+            http_response_code(405); // Method Not Allowed
+            echo json_encode(['error' => 'Invalid request method.']);
+            exit;
+        }
+    }
 
 
     // update advertisement
@@ -379,6 +459,7 @@ class Manager extends Controller
     header('Location: ' . ROOT . '/manager/advertisements');
     exit;
 }
+
     
 
     public function incrementAdView($adId) {
@@ -411,6 +492,18 @@ class Manager extends Controller
             // Handle the case where the request method is not POST
             header('Location: ' . ROOT . '/manager/advertisements');
             $_SESSION['error'] = "Failed to delete advertisement.";
+        }
+    }
+
+
+    public function deleteAdvertiser($id){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $this->advertiserModel->delete($id);
+            header('Location:'  . ROOT . '/manager/advertisements');
+            $_SESSION['success'] = "Advertiser Deleted Successfully";
+        }else{
+            header('Location: ' . ROOT . '/manager/advertisements');
+            $_SESSION['error'] = "Failed to delete advertiser.";
         }
     }
 
