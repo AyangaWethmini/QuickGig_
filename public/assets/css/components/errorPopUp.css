@@ -11,3 +11,19 @@
     font-weight: bold;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     z-index: 1000; }
+
+.popup-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ff4d4d; /* Slightly lighter dark background */
+    color: white; /* Gold text for emphasis */
+    font-size: 24px; /* Larger font size */
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 40px; /* Larger padding */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    z-index: 1000;
+}

@@ -372,4 +372,21 @@ class Account
         $params = ['accountID' => $accountID];
         return $this->query($query, $params);
     }
+
+    public function getAccountData($accountID){
+        try {
+            $sql = "SELECT a.counter, p.postLimit 
+                    FROM account a 
+                    JOIN plan p ON a.planID = p.planID 
+                    WHERE a.accountID = :accountID";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':accountID' => $accountID]);
+
+            return $stmt->fetch(PDO::FETCH_OBJ); // Fetch as an object
+        } catch (PDOException $e) {
+            error_log("Database Error: " . $e->getMessage());
+            return null; // Return null on failure
+        }
+    }
 }
