@@ -34,7 +34,7 @@ function renderAdvertisement($ad, $ROOT, $placeholder = 'placeholders/ad-size-ba
 			$html .= '<img src="data:' . $mimeType . ';base64,' . base64_encode($ad->img) . '" alt="Advertisement image">';
 			$html .= '</a>';
 		} else {
-			$html .= '<img src="' . $ROOT . '/assets/images/' . $placeholder . '" alt="No image available">';
+			 $html .= '<img src="' . $ROOT . '/assets/images/' . $placeholder . '" alt="No image available">';
 		}
 	} else {
 		$html .= '<p>No active advertisements</p>';
@@ -45,3 +45,23 @@ function renderAdvertisement($ad, $ROOT, $placeholder = 'placeholders/ad-size-ba
 
 	return $html;
 }
+
+
+function generateCustomID($db, $table, $prefix, $idColumn = 'id') {
+    $query = "SELECT AUTO_INCREMENT 
+              FROM information_schema.TABLES 
+              WHERE TABLE_SCHEMA = DATABASE() 
+              AND TABLE_NAME = :table";
+
+    $params = [':table' => $table];
+    $result = $db->query($query, $params);
+
+    if (!$result || !isset($result[0]['AUTO_INCREMENT'])) {
+        $_SESSION['error'] = "ID creation failed";
+        return false;
+    }
+
+    $nextID = $result[0]['AUTO_INCREMENT'];
+    return $prefix . str_pad($nextID, 6, '0', STR_PAD_LEFT);
+}
+

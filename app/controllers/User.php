@@ -18,6 +18,10 @@
         function settings(){
             $this->view('settings');
         }
+
+        function userReport(){
+            $this->view('user_report');
+        }
         
         
     }

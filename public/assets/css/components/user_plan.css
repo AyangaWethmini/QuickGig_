@@ -1,0 +1,160 @@
+.wrapper {
+    margin-top: 100px;
+    width: 100%;
+    position: relative;
+}
+
+.main-content {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.user-plan-container {
+    width: 100%;
+    justify-content: center;
+}
+
+.user-plan-main {
+    padding: 20px;
+}
+
+.user-plan-column {
+    width: 100%;
+    gap: 20px;
+}
+
+.user-plan-header {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.user-plan-header h3 {
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
+}
+
+.user-plan-dashboard {
+    width: 100%;
+    gap: 20px;
+}
+
+.user-plan-forum {
+    width: 100%;
+}
+
+.user-plan-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.user-plan-title {
+    font-size: 22px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.user-plan-details {
+    margin-bottom: 20px;
+}
+
+.user-plan-details p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.user-plan-details strong {
+    color: #333;
+    font-weight: 600;
+    min-width: 120px;
+    display: inline-block;
+}
+
+.status-active {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-inactive {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.status-pending {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.user-plan-actions {
+    gap: 15px;
+    margin-top: 20px;
+}
+
+
+.user-plan-text {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.user-plan-discover {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+}
+
+.user-plan-cancel {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-plan-cancel:hover {
+    background-color: #cc0000;
+}
+
+.status-active {
+    color: #00C851;
+}
+
+.status-trialing {
+    color: #ffbb33;
+}
+
+.status-canceled, status-unpaid {
+    color: #ff4444;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .wrapper {
+        margin-top: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-plan-actions {
+        flex-direction: column;
+    }
+    
+    .btn-accent, .btn-del {
+        width: 100%;
+    }
+}

@@ -2,6 +2,7 @@
 date_default_timezone_set('Asia/Colombo');
 class Organization extends Controller
 {
+    private $helpModel;
 
     protected $viewPath = "../app/views/organization/";
 
@@ -13,6 +14,7 @@ class Organization extends Controller
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
         $this->adminModel = $this->model('AdminModel');
+        $this->helpModel = $this->model('Help');
     }
 
 
@@ -117,7 +119,7 @@ class Organization extends Controller
         $this->view('org_viewEmployeeProfile');
     }
 
-    function org_subscription()
+    public function org_subscription()
     {
         $this->view('org_subscription');
     }
@@ -127,6 +129,10 @@ class Organization extends Controller
         $this->view('org_messages');
     }
 
+    function org_report()
+    {
+        $this->view('report');
+    }
 
     function organizationEditProfile()
     {
@@ -137,49 +143,105 @@ class Organization extends Controller
 
         // Get user data
         $userId = $_SESSION['user_id'];
-        $data = $this->accountModel->getOrgData($userId);
 
-        // Load the view and pass user data
-        $this->view('organizationEditProfile', $data);
-    }
-    public function updateProfile()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $userId = $_SESSION['user_id'];
-
-            $data = [
-                'orgName' => trim($_POST['orgName']),
-                'email' => trim($_POST['email']),
-                'phone' => trim($_POST['phone']),
-                'district' => trim($_POST['district']),
-                'addressLine1' => trim($_POST['addressLine1']),
-                'addressLine2' => trim($_POST['addressLine2']),
-                'city' => trim($_POST['city']),
-                'linkedIn' => trim($_POST['linkedIn']),
-                'facebook' => trim($_POST['facebook']),
-                'bio' => trim($_POST['bio']),
-                'pp' => null
-            ];
+        $data = [
+            'orgName' => trim($_POST['orgName']),
+            'email' => trim($_POST['email']),
+            'phone' => trim($_POST['phone']),
+            'district' => trim($_POST['district']),
+            'addressLine1' => trim($_POST['addressLine1']),
+            'addressLine2' => trim($_POST['addressLine2']),
+            'city' => trim($_POST['city']),
+            'linkedIn' => trim($_POST['linkedIn']),
+            'facebook' => trim($_POST['facebook']),
+            'bio' => trim($_POST['bio']),
+            'pp' => null
+        ];
 
 
-            // Handle profile picture upload
-            if (!empty($_FILES['pp']['tmp_name'])) {
-                $imageData = file_get_contents($_FILES['pp']['tmp_name']);
-                $data['pp'] = $imageData;
-                $_SESSION['pp'] = $imageData;
-            }
-            if ($this->accountModel->updateOrgData($userId, $data)) {
-                redirect('organization/organizationProfile'); // Reload page with updated data
-            } else {
-                die("Something went wrong. Please try again.");
-            }
+        // Handle profile picture upload
+        if (!empty($_FILES['pp']['tmp_name'])) {
+            $imageData = file_get_contents($_FILES['pp']['tmp_name']);
+            $data['pp'] = $imageData;
+            $_SESSION['pp'] = $imageData;
+        }
+        if ($this->accountModel->updateOrgData($userId, $data)) {
+            redirect('organization/organizationProfile'); // Reload page with updated data
+        } else {
+            die("Something went wrong. Please try again.");
         }
     }
 
+
+    //help center functionalities 
     function org_helpCenter()
     {
-        $this->view('org_helpCenter');
+        $data = $this->helpModel->getUserQuestions($_SESSION['user_id']);
+        $this->view('org_helpCenter', ['questions' => $data]);
     }
+
+    function submitQuestion()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+                exit;
+            }
+
+            $this->helpModel->createQuestion([
+                'accountID' => $accountID,
+                'title' => $title,
+                'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+    function editQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+                exit;
+            }
+
+            $this->helpModel->update($id, [
+                'title' => $title,
+                'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        } else {
+            $question = $this->helpModel->getQuestionById($id);
+            $data = [
+                'question' => $question
+            ];
+            $this->view('editQuestion', $data);
+        }
+    }
+
+    function deleteQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->helpModel->delete($id);
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+
+    //help center done
 
     function org_reviews()
     {

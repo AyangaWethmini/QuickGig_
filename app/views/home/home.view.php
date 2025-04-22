@@ -3,12 +3,13 @@
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
 <!-- Include the subscriptions component -->
-<?php include APPROOT . '/views/components/subscriptions.php'; ?>
+
 <?php
 if (
     !isset($_SESSION['subscription_popup_shown']) &&
-    isset($_SESSION['user_role']) &&
-    $_SESSION['user_role'] > 1
+    isset($_SESSION['role']) &&
+    $_SESSION['role'] !== 1 &&
+    $_SESSION['role'] > 1
 ) {
     include APPROOT . '/views/components/subscriptions.php';
     $_SESSION['subscription_popup_shown'] = true;
@@ -21,26 +22,6 @@ if (
         document.querySelector('.sub-background').style.display = 'none';
     }
 </script>
-
-<!-- <nav class="navbar flex-row">
-    <div class="flex-row  nav-left">
-        <div class="logo">QuickGig</div>
-        <ul class="nav-links  flex-row">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">Categories</a></li>
-        </ul>
-    </div>
-
-    <div class="sign-btns">
-        <button class="btn btn-trans">Login</button>
-        <button class="btn" style="background-color: var(--brand-pri-dark);">Sign Up</button>
-    </div>
-    <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</nav> -->
 <div class="home-announcement">
     <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
         <div class="home-announcement-content">
@@ -56,12 +37,7 @@ if (
     <?php endif; ?>
 </div>
 
-<?php
-if (!isset($_SESSION['subscription_popup_shown'])) {
-    include APPROOT . '/views/components/subscriptions.php';
-    $_SESSION['subscription_popup_shown'] = true;
-}
-?>
+
 
 <div class="hero-section flex-row" style="margin-top:80px;">
     <div class="job-search">
@@ -133,15 +109,7 @@ if (!isset($_SESSION['subscription_popup_shown'])) {
 
 </div>
 
-<div class="ad-cont flex-row">
-    <div class="advertisement-content">
-        <?php if (!empty($ad)): ?>
-            <?= renderAdvertisement($ad, ROOT) ?>
-        <?php else: ?>
-            <p>No active advertisements</p>
-        <?php endif; ?>
-    </div>
-</div>
+<?php include_once APPROOT . '/views/components/advertisemetsSlideshow.php'; ?>
 
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">
