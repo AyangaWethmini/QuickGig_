@@ -10,7 +10,7 @@ class Seeker extends Controller
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
         $this->helpModel = $this->model('Help');
-        
+        $this->userModel = $this->model('User');
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -29,18 +29,204 @@ class Seeker extends Controller
         $this->view('seekerProfile', $data);
     }
 
-    function findEmployees() {
+    public function changePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $response = ['success' => false, 'errors' => []];
+            $oldPassword = trim($_POST['oldpw']);
+            $newPassword = trim($_POST['newpw']);
+            $reNewPassword = trim($_POST['renewpw']);
+            $accountID = $_SESSION['user_id'];
+
+            if ($newPassword !== $reNewPassword) {
+                $response['errors']['newPassword'] = 'New passwords do not match!';
+                echo json_encode($response);
+                exit;
+            }
+
+            $currentUser = $this->accountModel->getUserByID($accountID);
+
+            if (!password_verify($oldPassword, $currentUser->password)) {
+                $response['errors']['oldPassword'] = 'Old password is incorrect!';
+                echo json_encode($response);
+                exit;
+            }
+
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            if ($this->accountModel->changePassword($accountID, $hashedPassword)) {
+                $response['success'] = true;
+            } else {
+                $response['errors']['general'] = 'Something went wrong, please try again.';
+            }
+
+            echo json_encode($response);
+            exit;
+        }
+    }
+
+    public function deleteAccount()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+            $confirmText = trim($_POST['confirmText']);
+
+            error_log("Delete account attempt for ID: " . $accountID);
+
+            // Verify email matches the account
+            $userData = $this->accountModel->getUserByID($accountID);
+            if ($userData->email !== $email) {
+                // Email doesn't match
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    http_response_code(401);
+                    echo json_encode(['success' => false, 'message' => 'Email address does not match your account.']);
+                    exit;
+                } else {
+                    $_SESSION['delete_error'] = 'Email address does not match your account.';
+                    header('Location: ' . ROOT . '/seeker/settings');
+                    exit;
+                }
+            }
+
+            // Verify password
+            if (!password_verify($password, $userData->password)) {
+                // Password incorrect
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    http_response_code(401);
+                    echo json_encode(['success' => false, 'message' => 'Incorrect password.']);
+                    exit;
+                } else {
+                    $_SESSION['delete_error'] = 'Incorrect password.';
+                    header('Location: ' . ROOT . '/seeker/settings');
+                    exit;
+                }
+            }
+
+            // Verify confirmation text
+            if ($confirmText !== 'Delete my account') {
+                // Confirmation text incorrect
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'Please type "Delete my account" exactly as shown.']);
+                    exit;
+                } else {
+                    $_SESSION['delete_error'] = 'Please type "Delete my account" exactly as shown.';
+                    header('Location: ' . ROOT . '/seeker/settings');
+                    exit;
+                }
+            }
+
+            // All validations passed, proceed with account deletion
+            $result = $this->userModel->deleteUserById($accountID);
+            error_log("Delete result: " . ($result ? "success" : "failure"));
+
+            if ($result) {
+                // Success
+                session_destroy(); // Log out the user
+
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    echo json_encode(['success' => true]);
+                    exit;
+                } else {
+                    header('Location: ' . ROOT . '/home/login');
+                    exit;
+                }
+            } else {
+                // Handle error
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    http_response_code(500);
+                    echo json_encode(['success' => false, 'message' => 'Failed to delete account. Please try again.']);
+                    exit;
+                } else {
+                    $_SESSION['delete_error'] = 'Failed to delete account. Please try again.';
+                    header('Location: ' . ROOT . '/seeker/settings');
+                    exit;
+                }
+            }
+        }
+    }
+
+    public function deactivateAccount()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+
+            // Check if the confirmation was sent
+            if (isset($_POST['confirm']) && $_POST['confirm'] === 'true') {
+                // Log attempt for debugging
+                error_log("Attempting to deactivate account ID: " . $accountID);
+
+                try {
+                    // Try the model method first
+                    $success = false;
+                    if (method_exists($this->userModel, 'deactivateUserById')) {
+                        $success = $this->userModel->deactivateUserById($accountID);
+                    }
+
+                    // If model method fails or doesn't exist, try direct database query
+                    if (!$success) {
+                        $db = new Database();
+                        $query = "UPDATE account SET activationCode = 0 WHERE accountID = :accountID";
+                        $params = [':accountID' => $accountID];
+                        $success = $db->query($query, $params);
+                        error_log("Direct DB deactivation result: " . ($success ? "success" : "failed"));
+                    }
+
+                    // For AJAX requests
+                    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                        if ($success) {
+                            echo json_encode(['success' => true]);
+                        } else {
+                            http_response_code(500);
+                            echo json_encode(['success' => false, 'message' => 'Failed to deactivate account']);
+                        }
+                        exit;
+                    } else {
+                        // For non-AJAX requests
+                        if ($success) {
+                            session_destroy();
+                            header('Location: ' . ROOT . '/');
+                        } else {
+                            $_SESSION['error'] = 'Failed to deactivate account';
+                            header('Location: ' . ROOT . '/seeker/settings');
+                        }
+                        exit;
+                    }
+                } catch (Exception $e) {
+                    error_log("Error deactivating account: " . $e->getMessage());
+
+                    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                        http_response_code(500);
+                        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+                    } else {
+                        $_SESSION['error'] = 'Error deactivating account';
+                        header('Location: ' . ROOT . '/seeker/settings');
+                    }
+                    exit;
+                }
+            }
+        }
+
+        // If not a POST request or confirmation not provided, redirect
+        header('Location: ' . ROOT . '/seeker/settings');
+        exit;
+    }
+
+    function findEmployees()
+    {
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         if (!empty($searchTerm)) {
             $findJobs = $this->findJobModel->searchJobs($searchTerm);
         } else {
             $findJobs = $this->findJobModel->getJobs();
         }
-    
+
         $data = [
             'findJobs' => $findJobs
         ];
-    
+
         $this->view('findEmployees', $data);
     }
 
@@ -144,7 +330,8 @@ class Seeker extends Controller
         $this->view('individualEditProfile');
     }
 
-    function report(){
+    function report()
+    {
         $this->view('report');
     }
 
@@ -164,18 +351,18 @@ class Seeker extends Controller
 
             // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
-            $_SESSION['error'] = 'Title and description cannot be empty.';
-            header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
-            exit;
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+                exit;
             }
 
             $helpID = uniqid("HLP", true);
 
             $this->helpModel->createQuestion([
-            'helpID' => $helpID,
-            'accountID' => $accountID,
-            'title' => $title,
-            'description' => $description
+                'helpID' => $helpID,
+                'accountID' => $accountID,
+                'title' => $title,
+                'description' => $description
             ]);
 
             header('Location: ' . ROOT . '/jobProvider/helpCenter');
@@ -190,21 +377,21 @@ class Seeker extends Controller
 
             // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
-            $_SESSION['error'] = 'Title and description cannot be empty.';
-            header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
-            exit;
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+                exit;
             }
 
             $this->helpModel->update($id, [
-            'title' => $title,
-            'description' => $description
+                'title' => $title,
+                'description' => $description
             ]);
 
             header('Location: ' . ROOT . '/jobProvider/helpCenter');
         } else {
             $question = $this->helpModel->getQuestionById($id);
             $data = [
-            'question' => $question
+                'question' => $question
             ];
             $this->view('editQuestion', $data);
         }
@@ -315,31 +502,33 @@ class Seeker extends Controller
         $this->view('jobListing_completed', $data);
     }
 
-    public function updateCompletionStatus() {
+    public function updateCompletionStatus()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $type = $_POST['type'];
             $status = $_POST['status'];
-    
+
             $completedProvider = $this->model('CompletedProvider');
-    
+
             if ($type === 'application') {
                 $completedProvider->updateApplicationStatus($id, $status);
             } elseif ($type === 'request') {
                 $completedProvider->updateRequestStatus($id, $status);
             }
-    
+
             header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
         }
     }
 
-    function jobListing_done() {
+    function jobListing_done()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('SeekerDone');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         if (!empty($filterDate)) {
             $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
             $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
@@ -350,7 +539,7 @@ class Seeker extends Controller
             $applyJobCompleted = $completedProvider->getApplyJobCompleted();
             $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
         }
-    
+
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
             'reqAvailableCompleted' => $reqAvailableCompleted
@@ -358,13 +547,14 @@ class Seeker extends Controller
         $this->view('jobListing_done', $data);
     }
 
-    function jobListing_notDone() {
+    function jobListing_notDone()
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('SeekerNotDone');
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-    
+
         if (!empty($filterDate)) {
             $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
             $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
@@ -375,7 +565,7 @@ class Seeker extends Controller
             $applyJobCompleted = $completedProvider->getApplyJobCompleted();
             $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
         }
-    
+
         $data = [
             'applyJobCompleted' => $applyJobCompleted,
             'reqAvailableCompleted' => $reqAvailableCompleted
@@ -473,7 +663,7 @@ class Seeker extends Controller
         }
     }
 
-    function settings()
+    public function settings()
     {
         $this->view('settings');
     }

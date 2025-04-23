@@ -20,7 +20,7 @@ protectRoute([0]); ?>
             <?php else: ?>
                 <?php foreach ($data['ads'] as $ad): ?>
                     <div class="complaint" style="padding: 35px;">
-                        <div class="complaint-details flex-col">
+                        <div class="complaint-details" style="display: flex; flex-direction: row; align-items: flex-start; gap: 20px;">
                             <div class="admin-ad" style="flex: 1; padding: 10px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                 <strong style="display: inline-block; width: 180px; color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Advertisement ID:</strong>
                                 <span style="color: #34495e;"><?php echo $ad->advertisementID; ?></span><br>
@@ -28,13 +28,16 @@ protectRoute([0]); ?>
                                 <strong style="display: inline-block; width: 180px; color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Advertisement Title:</strong>
                                 <span style="color: #34495e; font-size: 1.1em;"><?php echo $ad->adTitle; ?></span><br>
 
-                                <strong style="display: inline-block; width: 180px; color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Advertisement Date:</strong>
-                                <span style="color: #34495e;"><?php echo $ad->adDate; ?></span><br>
+                                <strong style="display: inline-block; width: 180px; color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Start Date:</strong>
+                                <span style="color: #34495e;"><?php echo $ad->startDate; ?></span><br>
+
+                                <strong style="display: inline-block; width: 180px; color: #2c3e50; font-weight: 600; margin-bottom: 10px;">End Date:</strong>
+                                <span style="color: #34495e;"><?php echo $ad->endDate; ?></span><br>
 
                                 <strong style="display: inline-block; width: 180px; color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Advertisement Description:</strong>
                                 <span style="color: #34495e; line-height: 1.5;"><?php echo $ad->adDescription; ?></span><br>
                             </div>
-                            <div class="image" style="flex: 0 0 300px; margin-left: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div class="image" style="flex: 0 0 300px; height: 220px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                 <?php if ($ad->img): ?>
                                     <?php
                                     $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -52,40 +55,40 @@ protectRoute([0]); ?>
                                         onmouseover="this.style.transform='scale(1.05)'"
                                         onmouseout="this.style.transform='scale(1)'">
                                 <?php endif; ?>
-
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
                     </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-                    <div class="pagination-container">
-                        <div class="pagination">
-                            <!-- Previous button -->
-                            <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= max(1, $data['currentPage'] - 1) ?>"
-                                class="page-link <?= $data['currentPage'] <= 1 ? 'disabled' : '' ?>">
-                                &laquo;
-                            </a>
+        <div class="pagination-container">
+            <div class="pagination">
+                <!-- Previous button -->
+                <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= max(1, $data['currentPage'] - 1) ?>"
+                    class="page-link <?= $data['currentPage'] <= 1 ? 'disabled' : '' ?>">
+                    &laquo;
+                </a>
 
-                            <!-- Page numbers -->
-                            <?php for ($i = 1; $i <= max(1, $data['totalPages']); $i++): ?>
-                                <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= $i ?>"
-                                    class="page-link <?= $i == $data['currentPage'] ? 'active' : '' ?>">
-                                    <?= $i ?>
-                                </a>
-                            <?php endfor; ?>
+                <!-- Page numbers -->
+                <?php for ($i = 1; $i <= max(1, $data['totalPages']); $i++): ?>
+                    <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= $i ?>"
+                        class="page-link <?= $i == $data['currentPage'] ? 'active' : '' ?>">
+                        <?= $i ?>
+                    </a>
+                <?php endfor; ?>
 
-                            <!-- Next button -->
-                            <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= min($data['totalPages'], $data['currentPage'] + 1) ?>"
-                                class="page-link <?= $data['currentPage'] >= $data['totalPages'] ? 'disabled' : '' ?>">
-                                &raquo;
-                            </a>
-                        </div>
-                        <div class="pagination-info">
-                            (Total advertisements: <?= $data['totalAds'] ?>)
-                        </div>
-                    </div>
+                <!-- Next button -->
+                <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= min($data['totalPages'], $data['currentPage'] + 1) ?>"
+                    class="page-link <?= $data['currentPage'] >= $data['totalPages'] ? 'disabled' : '' ?>">
+                    &raquo;
+                </a>
+            </div>
+            <div class="pagination-info">
+                (Total advertisements: <?= $data['totalAds'] ?>)
+            </div>
         </div>
     </div>
+</div>
 
-    <?php require APPROOT . '/views/inc/footer.php'; ?>
+<?php require APPROOT . '/views/inc/footer.php'; ?>
