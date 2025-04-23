@@ -3,7 +3,7 @@
 if($_SERVER['SERVER_NAME'] == 'localhost')
 {
 	/** database config **/
-	define('DBNAME', 'quicgigold');
+	define('DBNAME', 'quickgig');
 	define('DBHOST', 'localhost');
 	define('DBUSER', 'root');
 	define('DBPASS', '');
@@ -26,8 +26,6 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 
 
 define('APPROOT', dirname(dirname(__FILE__)));
-
-define('UPLOAD_ROOT', dirname(APPROOT) . '/public/uploads');
 
 define('APP_NAME', "QuickGig");
 define('APP_DESC', "On-Demand job searching platform");

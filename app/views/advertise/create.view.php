@@ -2,10 +2,40 @@
 require APPROOT . '/views/inc/header.php'; 
 ?>
 
+
+<style>
+.price-estimate {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border: 1px solid #dee2e6;
+}
+
+.price-estimate p {
+    margin: 0;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.spinner-border {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.d-none {
+    display: none;
+}
+</style>     
+
+
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/home/advertise.css"> 
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
+
+
+<!-- <link rel="stylesheet" href="<?=ROOT?>/assets/css/advertisement/create.css">  -->
 
 <div class="wrapper flex-row" style="margin-top: 100px;">
     <div class="main-content">
@@ -61,7 +91,7 @@ require APPROOT . '/views/inc/header.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="field radio-btns flex-row" style="gap: 30px; margin-top: 20px;">
+                        <!-- <div class="field radio-btns flex-row" style="gap: 30px; margin-top: 20px;">
                             <div class="flex-row" style="gap : 5px;">
                                 <input type="radio" id="status-paid" name="adStatus" value="1" required>
                                 <label for="status-paid" class="lbl">Paid</label>
@@ -70,7 +100,7 @@ require APPROOT . '/views/inc/header.php';
                                 <input type="radio" id="status-pending" name="adStatus" value="0" required>
                                 <label for="status-pending" class="lbl">Payment pending</label>
                             </div>
-                        </div>
+                        </div> -->
                         <div id="priceEstimate" class="price-estimate" style="display: none;">
                             <p>Estimated cost: <span id="estimatedAmount">LKR 0</span> (<span id="estimatedWeeks">0</span> weeks)</p>
                         </div>
@@ -97,6 +127,7 @@ require APPROOT . '/views/inc/header.php';
             </div>
         </div>
 
+
         <?php
             include_once APPROOT . '/views/components/alertBox.php';
             if (isset($_SESSION['error'])) {
@@ -108,11 +139,14 @@ require APPROOT . '/views/inc/header.php';
             unset($_SESSION['error']);
             unset($_SESSION['success']);
         ?>
+
+        <?php include_once APPROOT . '/views/components/alertBox.php'; ?>
     </div>
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+// Preview image functionality
 function previewImage(input) {
     const preview = document.getElementById('preview');
     if (input.files && input.files[0]) {
@@ -128,80 +162,75 @@ function previewImage(input) {
     }
 }
 
+// Fetch advertiser details by email
 document.getElementById('email').addEventListener('blur', function() {
     const email = this.value.trim();
-    if(!email) return;
+    if (!email) return;
 
-    fetch('<?=ROOT?>/manager/getAdvertiserByEmail', {
+    fetch('<?php echo ROOT; ?>/manager/getAdvertiserByEmail', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: `email=${encodeURIComponent(email)}`
     }).then(res => res.json()).then(data => {
-        if(data.error){
+        if (data.error) {
             document.getElementById('advertiserName').value = '';
             document.getElementById('contact').value = '';
-        }else{
+        } else {
             document.getElementById('advertiserName').value = data.advertiser.advertiserName ?? "";
             document.getElementById('contact').value = data.advertiser.contact ?? "";
         }
     }).catch(err => {
-        console.error('Error:', err);    
+        console.error('Error:', err);
     });
 });
 
 // Handle form submission
 document.getElementById('advertisementForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     const spinner = document.getElementById('spinner');
-    
+
     // Show loading state
     submitBtn.disabled = true;
     btnText.textContent = 'Processing...';
     spinner.classList.remove('d-none');
-    
+
     try {
         const formData = new FormData(this);
-        
-        // Submit to your backend
-        const response = await fetch('<?=ROOT?>/manager/postAdvertisement', {
+
+        const response = await fetch('<?=ROOT?>/advertise/postAdvertisement', {
             method: 'POST',
             body: formData
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const responseText = await response.text();
 
         let result;
         try {
-            result = await response.json();
-        } catch (error) {
-            throw new Error('Invalid JSON response from server');
+            result = JSON.parse(responseText);
+        } catch (err) {
+            console.error('Server response is not valid JSON:', responseText);
+            throw new Error('Server returned invalid JSON or HTML.');
         }
-        
+
         if (result.status === 'payment_required') {
-            // Redirect to Stripe Checkout
             window.location.href = result.redirectUrl;
         } else if (result.success) {
-            // Handle successful submission without payment
             showAlert('Advertisement submitted successfully!', 'success');
             this.reset();
             document.getElementById('preview').src = '';
             document.getElementById('priceEstimate').style.display = 'none';
         } else {
-            // Handle errors
             showAlert(result.error || 'An error occurred. Please try again.', 'error');
         }
     } catch (error) {
         console.error('Error:', error);
         showAlert('An error occurred. Please try again.', 'error');
     } finally {
-        // Reset button state
         submitBtn.disabled = false;
         btnText.textContent = 'Submit Ad';
         spinner.classList.add('d-none');
@@ -212,15 +241,15 @@ document.getElementById('advertisementForm').addEventListener('submit', async fu
 function calculatePrice() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
-    
+
     if (!startDate || !endDate) return;
-    
+
     const start = new Date(startDate);
     const end = new Date(endDate);
     const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
     const weeks = Math.ceil(days / 7);
     const amount = 1000 * weeks;
-    
+
     document.getElementById('estimatedAmount').textContent = `LKR ${amount.toLocaleString()}`;
     document.getElementById('estimatedWeeks').textContent = weeks;
     document.getElementById('priceEstimate').style.display = 'block';
@@ -229,12 +258,12 @@ function calculatePrice() {
 document.getElementById('endDate').addEventListener('change', function() {
     const startDate = new Date(document.getElementById('startDate').value);
     const endDate = new Date(this.value);
-    
+
     if (startDate && endDate && startDate >= endDate) {
         showAlert('End date must be after start date', 'error');
         this.value = '';
     }
-    
+
     if (document.getElementById('status-paid').checked) {
         calculatePrice();
     }
@@ -245,13 +274,13 @@ document.getElementById('startDate').addEventListener('change', function() {
     if (endDate) {
         const startDate = new Date(this.value);
         const endDateObj = new Date(endDate);
-        
+
         if (startDate >= endDateObj) {
             showAlert('Start date must be before end date', 'error');
             document.getElementById('endDate').value = '';
         }
     }
-    
+
     if (document.getElementById('status-paid').checked) {
         calculatePrice();
     }
@@ -268,29 +297,3 @@ document.querySelectorAll('input[name="adStatus"]').forEach(radio => {
     });
 });
 </script>
-
-<style>
-.price-estimate {
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-    border: 1px solid #dee2e6;
-}
-
-.price-estimate p {
-    margin: 0;
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-.spinner-border {
-    vertical-align: middle;
-    margin-left: 5px;
-}
-
-.d-none {
-    display: none;
-}
-</style>     
-
