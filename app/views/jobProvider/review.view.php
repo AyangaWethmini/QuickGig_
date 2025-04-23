@@ -9,7 +9,7 @@ protectRoute([2]); ?>
 
     <div class="wrapper flex-row">
 
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
 
         <div class="review-section">
 
@@ -27,14 +27,17 @@ protectRoute([2]); ?>
                     <?php endif; ?>
                 </div>
                 <h3 class="receiver-name"><?= $data['fname'] . ' ' . $data['lname'] ?></h3>
+                <div class="job-id-display">
+                    Job ID: <span><?= htmlspecialchars($data['jobID']) ?></span>
+                </div>
             </div>
             <!-- Review submission form -->
-            <form action="<?= ROOT ?>/jobProvider/addReview/<?=$data['accountID']?>" method="POST" class="review-form">
+            <form action="<?= ROOT ?>/jobProvider/addReview/<?= $data['accountID'] ?>" method="POST" class="review-form">
                 <input type="hidden" name="receiver_id" value="<?= $receiverId ?>">
                 <input type="hidden" name="jobID" value="<?= $data['jobID'] ?>">
-                <input type="hidden" name="rating" id="rating-value" value="<?= !empty($data['rating']) ? $data['rating'] : '' ?>">
-                <input type="hidden" name="reviewDate" value="<?=date('Y-m-d')?>">
-                <input type="hidden" name="reviewTime" value="<?=date('H:i:s')?>">
+                <input type="hidden" name="rating" id="rating-value" value="<?= htmlspecialchars($data['rating']) ?>">
+                <input type="hidden" name="reviewDate" value="<?= date('Y-m-d') ?>">
+                <input type="hidden" name="reviewTime" value="<?= date('H:i:s') ?>">
 
 
                 <label for="rating">Rating:</label>
@@ -47,7 +50,7 @@ protectRoute([2]); ?>
                 </div>
 
                 <label for="review">Review:</label>
-                <textarea name="review" id="review" rows="4" placeholder="Write your review..." value="<?= !empty($data['content']) ? $data['content'] : '' ?>" required></textarea>
+                <textarea name="review" id="review" rows="4" placeholder="Write your review..." required><?= htmlspecialchars($data['content']) ?></textarea>
 
                 <button type="submit" class="btn-submit-review">Submit Review</button>
             </form>
@@ -88,6 +91,16 @@ protectRoute([2]); ?>
             star.addEventListener('mouseout', () => {
                 stars.forEach(s => s.classList.remove('hover'));
             });
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentRating = ratingValue.value;
+            if (currentRating) {
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= currentRating) {
+                        s.classList.add('selected');
+                    }
+                });
+            }
         });
     </script>
 

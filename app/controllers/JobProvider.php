@@ -261,15 +261,17 @@ class JobProvider extends Controller
         $job = $this->model('job');
         $account = $this->model('Account');
         $reviewModel = $this->model('review');
+
+        $accountID = $_SESSION['user_id'];
         $SeekerById = $job->getJobSeekerById($jobId);
         $revieweeData = $account->getUserData($SeekerById->seekerID);
-        $review = $reviewModel->readReview($SeekerById->seekerID,2);
+        $review = $reviewModel->readReviewSpecific($accountID,$SeekerById->seekerID,2);
         $revieweeData['jobID'] = $jobId;
+        
         if(!empty($review)){
-            $revieweeData['rating'] = $review['rating'] ?? NULL;
-            $revieweeData['content'] = $review['content'] ?? '';
+            $revieweeData['rating'] = $review->rating ?? NULL;
+            $revieweeData['content'] = $review->content ?? '';
         }
-
         $this->view('review', $revieweeData);
     }
     public function addReview($accountID)
@@ -287,7 +289,14 @@ class JobProvider extends Controller
         $review = $this->model('review');
         $delete = $review->deleteReview($reviewerID,$revieweeID,2);
         $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
-        header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
+        header('Location: ' . ROOT . '/jobProvider/reviews');
+    }
+    public function deleteReview($reviewID)
+    {
+        $reviewModel = $this->model('Review');
+        $review = $reviewModel->reviewById($reviewID);
+        $delete = $reviewModel->deleteReview($review->reviewerID,$review->revieweeID,2);
+        header('Location: ' . ROOT . '/jobProvider/reviews');
     }
     public function jobListing_myJobs()
     {
