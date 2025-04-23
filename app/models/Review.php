@@ -43,7 +43,7 @@ class Review
                 LEFT JOIN account a ON r.reviewerID = a.accountID
                 LEFT JOIN individual i ON a.accountID = i.accountID
                 LEFT JOIN organization o ON a.accountID = o.accountID
-                WHERE r.revieweeID = :accountID 
+                WHERE r.reviewerID = :accountID 
                 AND r.roleID = :roleID
                 ORDER BY r.reviewDate DESC, r.reviewTime DESC;
                 ";
@@ -69,5 +69,15 @@ class Review
             $ratings[$row->rating] = $row->total;
         }
         return $ratings;
+    }
+    public function deleteReview($reviewerID,$revieweeID, $roleID){
+        $query = ("DELETE FROM review WHERE revieweeID = :revieweeID AND roleID = :roleID AND reviewerID = :reviewerID");
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':revieweeID', $revieweeID);
+        $stmt->bindParam(':roleID', $roleID);
+        $stmt->bindParam(':reviewerID', $reviewerID);
+
+        return $stmt->execute();
+
     }
 }

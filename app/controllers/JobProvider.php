@@ -32,7 +32,12 @@ class JobProvider extends Controller
             $finalrate = $finalrate + $rate->rating;
             $length += 1;
         }
-        $rating['avgRate'] = round((float)$finalrate / (float)$length, 1);
+        if($finalrate != 0){
+            $rating['avgRate'] = round((float)$finalrate / (float)$length, 1);
+        }else{
+            $rating['avgRate'] = 0;
+        }
+        
         $this->view('individualProfile', ['data' => $data,'rating' => $rating]);
     }
 
@@ -248,17 +253,41 @@ class JobProvider extends Controller
     {
         $accountID = $_SESSION['user_id'];
         $review = $this->model('review');
-        $data = $review->readReview($accountID, 1);
+        $data = $review->readReview($accountID, 2);
         $this->view('reviews', $data);
     }
     function review($jobId)
     {
         $job = $this->model('job');
         $account = $this->model('Account');
+        $reviewModel = $this->model('review');
         $SeekerById = $job->getJobSeekerById($jobId);
         $revieweeData = $account->getUserData($SeekerById->seekerID);
+        $review = $reviewModel->readReview($SeekerById->seekerID,2);
         $revieweeData['jobID'] = $jobId;
+        if(!empty($review)){
+            $revieweeData['rating'] = $review['rating'] ?? NULL;
+            $revieweeData['content'] = $review['content'] ?? '';
+        }
+
         $this->view('review', $revieweeData);
+    }
+    public function addReview($accountID)
+    {
+        
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
+        $roleID     = 2;
+
+        $review = $this->model('review');
+        $delete = $review->deleteReview($reviewerID,$revieweeID,2);
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
+        header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
     }
     public function jobListing_myJobs()
     {
@@ -526,19 +555,5 @@ class JobProvider extends Controller
             header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
         }
     }
-    public function addReview($accountID)
-    {
-        $reviewerID = $_SESSION['user_id'];
-        $revieweeID = $accountID;
-        $reviewDate = $_POST['reviewDate'];
-        $reviewTime = $_POST['reviewTime'];
-        $content    = $_POST['review'];
-        $rating     = $_POST['rating'];
-        $jobID      = $_POST['jobID'];
-        $roleID     = 2;
-
-        $review = $this->model('review');
-        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
-        header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
-    }
+   
 }

@@ -32,7 +32,7 @@ protectRoute([2]); ?>
             <form action="<?= ROOT ?>/jobProvider/addReview/<?=$data['accountID']?>" method="POST" class="review-form">
                 <input type="hidden" name="receiver_id" value="<?= $receiverId ?>">
                 <input type="hidden" name="jobID" value="<?= $data['jobID'] ?>">
-                <input type="hidden" name="rating" id="rating-value" value="">
+                <input type="hidden" name="rating" id="rating-value" value="<?= !empty($data['rating']) ? $data['rating'] : '' ?>">
                 <input type="hidden" name="reviewDate" value="<?=date('Y-m-d')?>">
                 <input type="hidden" name="reviewTime" value="<?=date('H:i:s')?>">
 
@@ -47,7 +47,7 @@ protectRoute([2]); ?>
                 </div>
 
                 <label for="review">Review:</label>
-                <textarea name="review" id="review" rows="4" placeholder="Write your review..." required></textarea>
+                <textarea name="review" id="review" rows="4" placeholder="Write your review..." value="<?= !empty($data['content']) ? $data['content'] : '' ?>" required></textarea>
 
                 <button type="submit" class="btn-submit-review">Submit Review</button>
             </form>

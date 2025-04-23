@@ -11,9 +11,25 @@ protectRoute([2]); ?>
 
         <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
         <div class="inner-wrapper">
-            <div class="chat-start">
-                <h3>Start of the chat</h3>
+            <div class="chat-header">
+                <button onclick="history.back()" class="back-btn">← Back</button>
+                <div class="chat-header-content">
+                    <div class="image">
+                        <?php if ($data['pp']): ?>
+                            <?php
+                            $finfo = new finfo(FILEINFO_MIME_TYPE);
+                            $mimeType = $finfo->buffer($data['pp']);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($data['pp']) ?>" alt="Profile Picture">
+                        <?php else: ?>
+                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available">
+                        <?php endif; ?>
+                    </div>
+                    <span class="username"><?= $data['username'] ?></span>
+                </div>
             </div>
+
+
             <div id="chat-box"></div>
             <form id="send-message-form">
                 <input type="hidden" id="receiver_id" value="<?= $data['receiver_id'] ?>">
@@ -67,6 +83,6 @@ protectRoute([2]); ?>
             xhr.send("receiver_id=" + receiver_id + "&message=" + encodeURIComponent(message));
         }
     </script>
-    
+
 
 </body>

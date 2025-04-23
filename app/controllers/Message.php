@@ -1,9 +1,11 @@
 <?php
 class Message extends Controller {
     private $messageModel;
+    private $accountModel;
 
     public function __construct() {
         $this->messageModel = $this->model('MessageModel');
+        $this->accountModel = $this->model('Account');
     }
     
 
@@ -51,9 +53,8 @@ class Message extends Controller {
         ]);
     }
     public function userchat($conversationId) {
+        $user = [];
         $conversation = $this->messageModel->getConversationById($conversationId);
-        
-    
         if (!$conversation) {
             redirect('pages/notfound');
         }
@@ -61,10 +62,28 @@ class Message extends Controller {
         // Determine who the other user is
         $currentUserId = $_SESSION['user_id'];
         $receiverId = ($conversation->user1_id == $currentUserId) ? $conversation->user2_id : $conversation->user1_id;
+        $role = $this->accountModel->findRole($receiverId);
+        $userData = [];
         $data = [
             'receiver_id' => $receiverId
         ];
-    
+        if($role['roleID'] == 2){
+            $userData = $this->accountModel->getUserData($receiverId);
+            
+            $data = [
+                'receiver_id' => $receiverId,
+                'pp' => $userData['pp'],
+                'username' => ($userData['fname'] . ' ' . $userData['lname'])
+            ];
+            
+        }else if($role['roleID'] == 3){
+            $userData = $this->accountModel->getOrgData($receiverId);
+            $data = [
+                'receiver_id' => $receiverId,   
+                'pp' => $userData['pp'],
+                'username' => ($userData['orgName'])
+            ];
+        }    
         $this->view('messages/userchat', $data);
     }
 }
