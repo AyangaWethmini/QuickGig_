@@ -246,7 +246,8 @@ if (is_array($subscriptionData)) {
         exit;
     }
 // 
-    if (!preg_match('/^07\d{8}$/', $_POST['contact'])) {
+    $contact = trim($_POST['contact']);
+    if (!preg_match('/^07\d{8}$/', $contact)) {
         // Validate contact number format (e.g., 07XXXXXXXX)
         $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
         header('Location: ' . ROOT . '/manager/createAd');
