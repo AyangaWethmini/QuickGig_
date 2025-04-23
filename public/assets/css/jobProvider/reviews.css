@@ -57,9 +57,14 @@
     margin-left: 20px;
 }
 
-.rating .fa-star {
+
+ .star-active {
     margin-top: 5PX;
     color: gold;
+}
+ .star-inactive{
+    margin-top: 5PX;
+    color: rgb(187, 187, 187);
 }
 
 .review-text {
