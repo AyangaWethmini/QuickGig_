@@ -103,6 +103,12 @@ class Job{
         $result = $this->query($query, $params);
         return isset($result[0]) ? $result[0] : null;
     }
+    public function getJobProviderById($id) {
+        $query = "SELECT accountID FROM job WHERE jobID = :id";
+        $params = ['id' => $id];
+        $result = $this->query($query, $params);
+        return isset($result[0]) ? $result[0] : null;
+    }
 
     public function delete($id) {
         $query = "DELETE FROM job WHERE jobID = :id";

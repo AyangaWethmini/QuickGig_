@@ -24,7 +24,7 @@ class Seeker extends Controller
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
-        $rating = $this->reviewModel->readReview($userId, 2);
+        $rating = $this->reviewModel->readMyReview($userId, 2);
         $finalrate = 0;
         $length = 0;
         $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 2);
@@ -33,9 +33,15 @@ class Seeker extends Controller
             $finalrate = $finalrate + $rate->rating;
             $length += 1;
         }
-        $rating['avgRate'] = round((float)$finalrate / (float)$length, 1);
-        $this->view('seekerProfile', ['data' => $data,'rating' => $rating]);    }
-
+        $avgRate = 0;
+        if($finalrate != 0){
+            $avgRate = round((float)$finalrate / (float)$length, 1);
+        }else{
+            $avgRate = 0;
+        }
+        
+        $this->view('seekerProfile', ['data' => $data,'reviews' => $rating,'avgRate' => $avgRate]);
+    }
     function findEmployees()
     {
         $findJobs = $this->findJobModel->getJobs();
@@ -156,18 +162,51 @@ class Seeker extends Controller
     function reviews()
     {
         $accountID = $_SESSION['user_id'];
-        $review = $this->model('review');   
-        $data = $review->readReview($accountID,2);
-        $this->view('reviews',$data);
+        $review = $this->model('review');
+        $data = $review->readReview($accountID, 1);
+        $this->view('reviews', $data);
     }
     function review($jobId)
     {
         $job = $this->model('job');
         $account = $this->model('Account');
-        $pickJob = $job->getJobById($jobId);
-        $revieweeData = $account->getUserData($pickJob->accountID);
+        $reviewModel = $this->model('review');
+
+        $accountID = $_SESSION['user_id'];
+        $providerById = $job->getJobProviderById($jobId);
+        $revieweeData = $account->getUserData($providerById->accountID);
+        $review = $reviewModel->readReviewSpecific($accountID,$providerById->accountID,$jobId,1);
         $revieweeData['jobID'] = $jobId;
+        
+        if(!empty($review)){
+            $revieweeData['rating'] = $review->rating ?? NULL;
+            $revieweeData['content'] = $review->content ?? '';
+        }
         $this->view('review', $revieweeData);
+    }
+    public function addReview($accountID)
+    {
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
+        $roleID     = 1;
+
+        $review = $this->model('review');
+        $delete = $review->deleteReview($reviewerID,$revieweeID,$jobID,$roleID);
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID,$jobID);
+        
+        header('Location: ' . ROOT . '/seeker/reviews');
+    }
+    public function deleteReview($reviewID)
+    {
+        $reviewModel = $this->model('Review');
+        $review = $reviewModel->reviewById($reviewID);
+        $delete = $reviewModel->deleteReview($review->reviewerID,$review->revieweeID,$review->jobID,1);
+        header('Location: ' . ROOT . '/seeker/reviews');
     }
 
     public function jobListing_myJobs()
@@ -369,19 +408,5 @@ class Seeker extends Controller
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         }
     }
-    public function addReview($accountID)
-    {
-        $reviewerID = $_SESSION['user_id'];
-        $revieweeID = $accountID;
-        $reviewDate = $_POST['reviewDate'];
-        $reviewTime = $_POST['reviewTime'];
-        $content    = $_POST['review'];
-        $rating     = $_POST['rating'];
-        $jobID      = $_POST['jobID'];
-        $roleID     = 1;
-
-        $review = $this->model('review');
-        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID,$jobID);
-        header('Location: ' . ROOT . '/seeker/jobListing_completed');
-    }
+    
 }

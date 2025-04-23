@@ -329,3 +329,225 @@
     object-fit: cover;
     display: block;
 }
+.job-cards-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.job-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 20px 0;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pfp img {
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+}
+
+.rating .fa-star {
+    color: gold;
+}
+
+.job-card-left{
+    gap: 10px;
+  }
+  
+  .job-details h2{
+    color: var(--Neutrals-100, #25324B);
+    font-family: Epilogue;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+  }
+  
+  .job-details p{
+    color: var(--Neutrals-60, #7C8493);
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+  }
+  
+  .rating i{
+    color: rgba(242, 206, 30, 0.733);
+    height: 8px;
+    width: 8px;
+    margin-right: 8px;
+  }
+
+  .availability{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .availability-time{
+    color: #530980;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #530980;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+
+  .availability-date{
+    color: #17ab24;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #17ab24;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+
+  .availability-shift{
+    color: #ab1777;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #ab1777;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+
+  .availability-salary{
+    color: #c35704;
+    text-align: center;
+    font-family: Epilogue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; 
+    border: 1px solid #c35704;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+  
+.tag {
+    margin-top: 2px;
+    margin-right: 5px;
+    padding: 5px;
+    border: 1px solid #103478;
+    background-color: #acbfe2;
+    border-radius: 15px;
+    z-index: inherit;
+    display: inline-block;
+}
+  
+  
+  .job-card-right{
+    justify-content: right;
+    gap: 10px;
+  }
+  
+  .request-button{
+    height: 50px;
+    width: 100px;
+    border-radius: 10px;
+  }
+  
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  
+  .dropdown-toggle {
+    color: black;
+    padding: 10px 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .dropdown-menu li {
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+  }
+  
+  .dropdown-menu li:last-child {
+    border-bottom: none;
+  }
+  
+  .dropdown-menu li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+  }
+  
+  .dropdown-menu li:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .jobPostedDateTime {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.jobPostedDate, .jobPostedTime{
+    color: #25324B;
+    font-size: 16px;
+}
+
+.jobDescription p {
+  max-width: 500px;
+  /* Remove white-space: nowrap; overflow: hidden; and text-overflow: ellipsis; */
+  word-wrap: break-word; /* Optional: Allows breaking long words if needed */
+  color: #25324B;
+  font-size: 15px;
+}

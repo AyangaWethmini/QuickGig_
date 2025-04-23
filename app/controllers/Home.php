@@ -11,12 +11,14 @@ class Home extends Controller
 		$this->adminModel = $this->model('AdminModel');
 		$this->planModel = $this->model('Plans');
 		$this->adModel = $this->model("Advertisement");
+		$this->jobForHomeModel = $this->model("JobsForHome");
 	}
 
 	public function index()
 	{
 		$plans = $this->planModel->getPlans();
 		$ad = $this->adModel->getRandomActiveAd();
+
 
 		$data = [
 			'plans' => $plans,

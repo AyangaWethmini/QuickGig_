@@ -23,7 +23,7 @@ class JobProvider extends Controller
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
-        $rating = $this->reviewModel->readReview($userId, 1);
+        $rating = $this->reviewModel->readMyReview($userId, 1);
         $finalrate = 0;
         $length = 0;
         $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 1);
@@ -32,13 +32,14 @@ class JobProvider extends Controller
             $finalrate = $finalrate + $rate->rating;
             $length += 1;
         }
+        $avgRate = 0;
         if($finalrate != 0){
-            $rating['avgRate'] = round((float)$finalrate / (float)$length, 1);
+            $avgRate = round((float)$finalrate / (float)$length, 1);
         }else{
-            $rating['avgRate'] = 0;
+            $avgRate = 0;
         }
         
-        $this->view('individualProfile', ['data' => $data,'rating' => $rating]);
+        $this->view('individualProfile', ['data' => $data,'reviews' => $rating,'avgRate' => $avgRate]);
     }
 
 
@@ -265,7 +266,7 @@ class JobProvider extends Controller
         $accountID = $_SESSION['user_id'];
         $SeekerById = $job->getJobSeekerById($jobId);
         $revieweeData = $account->getUserData($SeekerById->seekerID);
-        $review = $reviewModel->readReviewSpecific($accountID,$SeekerById->seekerID,2);
+        $review = $reviewModel->readReviewSpecific($accountID,$SeekerById->seekerID,$jobId,2);
         $revieweeData['jobID'] = $jobId;
         
         if(!empty($review)){
@@ -287,7 +288,7 @@ class JobProvider extends Controller
         $roleID     = 2;
 
         $review = $this->model('review');
-        $delete = $review->deleteReview($reviewerID,$revieweeID,2);
+        $delete = $review->deleteReview($reviewerID,$revieweeID,$jobID,$roleID);
         $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
         header('Location: ' . ROOT . '/jobProvider/reviews');
     }
@@ -295,7 +296,7 @@ class JobProvider extends Controller
     {
         $reviewModel = $this->model('Review');
         $review = $reviewModel->reviewById($reviewID);
-        $delete = $reviewModel->deleteReview($review->reviewerID,$review->revieweeID,2);
+        $delete = $reviewModel->deleteReview($review->reviewerID,$review->revieweeID,$review->jobID,2);
         header('Location: ' . ROOT . '/jobProvider/reviews');
     }
     public function jobListing_myJobs()

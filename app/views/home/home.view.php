@@ -1,5 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
+
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
 <!-- Include the subscriptions component -->
@@ -154,12 +156,6 @@ if (!isset($_SESSION['subscription_popup_shown'])) {
         Featured <span>Jobs</span>
     </p>
     <a href="#" class="flex-row" style="gap: 10px; padding-top:5px; ">Show all jobs<img style="height: 15px; width: auto; padding-top: 5px;" src="<?= ROOT ?>/assets/images/ArrowRight.svg" /></a>
-</div>
-
-
-<div style="height: 500px;" id="more-jobs">
-    jobs goes here
-
 </div>
 
 <div class="footer" style="color : white">
