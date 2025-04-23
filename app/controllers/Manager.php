@@ -182,10 +182,13 @@ class Manager extends Controller
 public function postAdvertisement()
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Content-Type: application/json');
-        echo json_encode(['error' => "Invalid request method."]);
+        $_SESSION['error'] = "Invalid request method.";
+        header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
+
+    // Generate a unique advertisement ID
+    $advertisementID = uniqid("AD", true);
 
     // Form validation
     $requiredFields = [
@@ -200,119 +203,116 @@ public function postAdvertisement()
         'endDate',
     ];
 
-    if (empty($_POST)) {
-        header('Content-Type: application/json');
-        echo json_encode(['error' => "Form data is missing."]);
+    if (!isset($_POST) || empty($_POST)) {
+        $_SESSION['error'] = "Form data is missing.";
+        header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
 
-    // Validate dates
+    // Validate that start date is earlier than end date
     if (isset($_POST['startDate'], $_POST['endDate'])) {
         $startDate = strtotime($_POST['startDate']);
         $endDate = strtotime($_POST['endDate']);
 
         if ($startDate === false || $endDate === false || $startDate >= $endDate) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "Start date must be earlier than end date."]);
+            $_SESSION['error'] = "Start date must be earlier than end date.";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
     }
 
     foreach ($requiredFields as $field) {
         if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "All fields are required."]);
+            $_SESSION['error'] = "All fields are required.";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
     }
 
     if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
-        header('Content-Type: application/json');
-        echo json_encode(['error' => "Advertisement image is required."]);
+        $_SESSION['error'] = "Advertisement image is required.";
+        header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
-
+// 
     if (!preg_match('/^07\d{8}$/', $_POST['contact'])) {
-        header('Content-Type: application/json');
-        echo json_encode(['error' => "Invalid contact number. It must be in the format 07XXXXXXXX."]);
+        // Validate contact number format (e.g., 07XXXXXXXX)
+        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
+        header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
 
-    // Process advertiser
+    // Clean input data
     $advertiserName = trim($_POST['advertiserName']);
     $contact = trim($_POST['contact']);
     $email = trim($_POST['email']);
 
     $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
+    // If advertiser does not exist, create a new advertiser
+    if (!$advertiserId) {
+        // Validate contact number format (e.g., 07XXXXXXXX)
+        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
+    }
+
+    // Clean input data
+    $advertiserName = trim($_POST['advertiserName']);
+    $contact = trim($_POST['contact']);
+    $email = trim($_POST['email']);
+
+    $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
+
+    // If advertiser does not exist, create a new advertiser
     if (!$advertiserId) {
         $newAdvertiserData = [
+            'advertiserID' => $advertiserId,
             'advertiserName' => $advertiserName,
             'contact' => $contact,
             'email' => $email
         ];
 
         $this->advertiserModel->createAdvertiser($newAdvertiserData);
+
         $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
+        // Verify if the advertiser was successfully created
         if (!$advertiserId) {
             error_log("Failed to create new advertiser. Email: " . $email);
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "Failed to create new advertiser."]);
+            $_SESSION['error'] = "Failed to create new advertiser.";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
     }
 
-    // Process image
-    $imagePath = null;
+    // Image handling - add more detailed error checking
+    $imageData = null;
     if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
 
         if (!in_array($fileType, $allowedTypes)) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "Invalid image type. Allowed types: JPEG, PNG, GIF"]);
+            $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
 
         $maxSize = 5 * 1024 * 1024; // 5MB
         if ($_FILES['adImage']['size'] > $maxSize) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "Image file is too large. Maximum size is 5MB."]);
+            $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
 
-        // Generate unique filename
-        $extension = pathinfo($_FILES['adImage']['name'], PATHINFO_EXTENSION);
-        $filename = uniqid('ad_') . '.' . $extension;
-        $uploadDir = UPLOAD_ROOT . '/advertisements/';
-        
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-
-        $imagePath = $uploadDir . $filename;
-        
-        if (!move_uploaded_file($_FILES['adImage']['tmp_name'], $imagePath)) {
-            error_log("Failed to move uploaded file: " . $_FILES['adImage']['tmp_name']);
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "Failed to process image file."]);
+        $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
+        if ($imageData === false) {
+            error_log("Failed to read image file: " . $_FILES['adImage']['tmp_name']);
+            $_SESSION['error'] = "Failed to process image file.";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
-
-        // Store relative path
-        $imagePath = '/uploads/advertisements/' . $filename;
     }
-
-    // Generate unique ID for the advertisement
-    $advertisementID = uniqid("AD", true);
-
-    // Calculate payment amount (1000 LKR per week)
-    $start = new DateTime($_POST['startDate']);
-    $end = new DateTime($_POST['endDate']);
-    $days = $end->diff($start)->days;
-    $weeks = ceil($days / 7);
-    $amount = 1000 * $weeks;
 
     // Prepare advertisement data
     $advertisementData = [
@@ -320,111 +320,33 @@ public function postAdvertisement()
         'advertiserID' => $advertiserId,
         'adTitle' => trim($_POST['adTitle']),
         'adDescription' => trim($_POST['adDescription']),
-        'img' => $imagePath,
+        'adImage' => $imageData,
         'link' => trim($_POST['link']),
         'startDate' => trim($_POST['startDate']),
         'endDate' => trim($_POST['endDate']),
-        'adStatus' => ($_POST['adStatus'] == 1) ? 'pending_payment' : 'inactive',
-        'amount' => $amount,
-        'paymentStatus' => ($_POST['adStatus'] == 1) ? 'pending' : 'none'
+        'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
     ];
 
-    // Create advertisement in database first
+    // Create advertisement with error handling
     try {
         $result = $this->advertisementModel->createAdvertisement($advertisementData);
 
         if (!$result) {
             error_log("Advertisement creation failed. Data: " . print_r($advertisementData, true));
-            header('Content-Type: application/json');
-            echo json_encode(['error' => "Failed to create advertisement in database."]);
+            $_SESSION['error'] = "Failed to create advertisement in database.";
+            header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
 
-        // If payment is required (adStatus = 1)
-        if ($_POST['adStatus'] == 1) {
-            // Create Stripe Checkout Session
-            \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
-            
-            $checkoutSession = \Stripe\Checkout\Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'lkr',
-                        'product_data' => [
-                            'name' => 'Advertisement: ' . $advertisementData['adTitle'],
-                            'description' => 'From ' . $advertisementData['startDate'] . ' to ' . $advertisementData['endDate']
-                        ],
-                        'unit_amount' => $amount * 100, // Convert to cents
-                    ],
-                    'quantity' => 1,
-                ]],
-                'mode' => 'payment',
-                'success_url' => ROOT . '/manager/advertisementPaymentSuccess?session_id={CHECKOUT_SESSION_ID}&ad_id=' . $advertisementID,
-                'cancel_url' => ROOT . '/manager/advertisements?canceled=true',
-                'metadata' => [
-                    'advertisement_id' => $advertisementID,
-                    'advertiser_id' => $advertiserId
-                ]
-            ]);
-
-            // Return JSON response with redirect URL
-            header('Content-Type: application/json');
-            echo json_encode([
-                'status' => 'payment_required',
-                'redirectUrl' => $checkoutSession->url
-            ]);
-            exit;
-        } else {
-            // If no payment required (inactive status)
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true]);
-            exit;
-        }
-
-    } catch (Exception $e) {
-        error_log("Exception in advertisement creation: " . $e->getMessage());
-        header('Content-Type: application/json');
-        echo json_encode(['error' => "System error occurred while creating advertisement."]);
-        exit;
-    }
-}
-
-public function advertisementPaymentSuccess()
-{
-    $sessionId = $_GET['session_id'] ?? null;
-    $advertisementId = $_GET['ad_id'] ?? null;
-
-    if (!$sessionId || !$advertisementId) {
-        $_SESSION['error'] = 'Invalid payment confirmation';
+        $_SESSION['success'] = "Advertisement created successfully.";
         header('Location: ' . ROOT . '/manager/advertisements');
         exit;
-    }
-
-    try {
-        // Verify the payment with Stripe
-        \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
-        $session = \Stripe\Checkout\Session::retrieve($sessionId);
-
-        if ($session->payment_status === 'paid') {
-            // Update advertisement status
-            $this->advertisementModel->updateAdvertisementStatus($advertisementId, [
-                'adStatus' => 'active',
-                'paymentStatus' => 'paid',
-                'paymentDate' => date('Y-m-d H:i:s'),
-                'transactionId' => $session->payment_intent
-            ]);
-
-            $_SESSION['success'] = 'Advertisement and payment processed successfully!';
-        } else {
-            $_SESSION['error'] = 'Payment verification failed. Your advertisement is pending payment.';
-        }
     } catch (Exception $e) {
-        error_log("Payment verification error: " . $e->getMessage());
-        $_SESSION['error'] = 'Error verifying payment. Please contact support.';
+        error_log("Exception in advertisement creation: " . $e->getMessage());
+        $_SESSION['error'] = "System error occurred while creating advertisement.";
+        header('Location: ' . ROOT . '/manager/createAd');
+        exit;
     }
-
-    header('Location: ' . ROOT . '/manager/advertisements');
-    exit;
 }
 
     public function getAdvertiserByEmail(){
