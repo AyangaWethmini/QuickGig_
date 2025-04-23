@@ -60,6 +60,7 @@ class Login extends Controller
                 $_SESSION['user_role'] = $userRole['roleID'];
                 $_SESSION['user_logged_in'] = true; 
                 $_SESSION['current_role'] = 1;
+                $_SESSION['plan_id'] = $user['planID'];
                 header("Location: " . ROOT . "/home");
                 exit;
             } else {

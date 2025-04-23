@@ -112,7 +112,8 @@ class Advertisement
     public function getActiveAds()
     {
         $query = "SELECT * FROM advertisement 
-              WHERE adStatus = 'active' AND endDate > NOW() AND startDate <= NOW() AND deleted = 0";
+              WHERE adStatus = 'active' AND endDate > NOW() AND startDate <= NOW() AND deleted = 0 
+              ORDER BY RAND() LIMIT 1";
         $result = $this->query($query);
         return $result ?? null;
     }

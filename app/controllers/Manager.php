@@ -38,12 +38,20 @@ class Manager extends Controller
         $endDate = isset($_POST['endDate']) ? $_POST['endDate'] . ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $subscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
-        $extractedData = array_map(function($item) {
-            return [
+
+$extractedData = [];
+
+if (is_array($subscriptionData)) {
+    $extractedData = array_map(function($item) {
+        return [
             'planName' => $item->planName,
             'subscriptionCount' => $item->subscription_count
-            ];
-        }, $subscriptionData);
+        ];
+    }, $subscriptionData);
+} else {
+    error_log("getSubscriptionRevenue() did not return an array. Check your DB query or model.");
+}
+
 
         // print_r($extractedData); // Debugging line
         $response = [

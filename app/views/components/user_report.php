@@ -1,43 +1,167 @@
-<link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/report.css">
-
+<!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/report.css"> -->
 <style>
-    .posted-job-section table {
+.wrapper {
+    margin-top: 100px;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  
+  .main-content {
+    margin-left: 300px;
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Header */
+  .print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+  
+  .print-header img {
+    height: 40px;
+  }
+  
+  .heading p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Footer */
+  .print-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  /* Table styling */
+  .report-table,
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .report-table th,
+  .report-table td,
+  table th,
+  table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .report-table thead {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  /* Section headings */
+  .report-section h4 {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Print Styles */
+  @media print {
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 12pt;
+      color: #000;
+      background: #fff;
+    }
+  
+    body * {
+      visibility: hidden;
+    }
+  
+    #print-area,
+    #print-area * {
+      visibility: visible;
+    }
+  
+    #print-area {
+      position: absolute;
+      left: 0;
+      top: 0;
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+      padding: 0;
+      margin: 0;
     }
   
-    .posted-job-section table th, table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
+    .print-header {
+      display: flex;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10mm;
+      border-bottom: 1px solid #ccc;
+      background: white;
     }
   
-    .posted-job-section table th {
-      background-color: #f2f2f2;
-      font-weight: bold;
+    .print-footer {
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10mm;
+      border-top: 1px solid #ccc;
+      background: white;
+      font-size: 10pt;
     }
   
-    .posted-job-section table tr:nth-child(even) {
-      background-color: #f9f9f9;
+    #report-content {
+      margin-top: 30mm;
+      margin-bottom: 20mm;
     }
   
-    .posted-job-section table tr:hover {
-      background-color: #f1f1f1;
+    .report-table,
+    table {
+      font-size: 10pt;
+      page-break-inside: auto;
     }
   
-    .report-section {
-      margin-bottom: 20px;
+    .report-table th,
+    .report-table td,
+    table th,
+    table td {
+      padding: 6pt;
+      border: 1px solid #999;
     }
   
-    .report-section h4 {
-      font-size: 18px;
-      margin-bottom: 10px;
+    h4, tr, td, th {
+      page-break-inside: avoid;
     }
   
-    .posted-jobs-section p {
-      margin-bottom: 10px;
+    h4 {
+      page-break-after: avoid;
     }
+  
+    .no-print {
+      display: none !important;
+    }
+  }
+  
+  .report-section p{
+    font-size: 16px;
+    margin: 8px 0;
+  }
+
 </style>
 <div class="wrapper">
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
@@ -51,6 +175,7 @@
                     <p><strong>User Report</strong></p>
                 </div>
             </div>
+            <br>
 
             <!-- Report content -->
             <div id="report-content">
@@ -131,16 +256,17 @@
                         <h4>Payment Statistics</h4><br>
                         <p>Total Earnings:</p>
                         <p>Total Spent:</p>
-                        <p>Pending Payments:</p>
-                        <p>History:</p>
+                        <!-- <p>Pending Payments:</p> -->
+                        <!-- <p>History:</p> -->
                     </div>
                     <hr>
                     <div class="report-section">
                         <h4>Performance</h4><br>
-                        <p>Rating:</p>
-                        <p>No. of Reviews:</p>
-                        <p>Reports:</p>
-                        <p>Complaints:</p>
+                        <p>Rating: <?= htmlspecialchars($averageRating ?? 'N/A') ?></p>
+                        <p>No. of Reviews Given: <?= htmlspecialchars($reviewsGivenCount ?? 0) ?></p>
+                        <p>No. of Reviews Received: <?= htmlspecialchars($reviewsReceivedCount ?? 0) ?></p>
+                        <p>Complaints Made: <?= htmlspecialchars($complaintsMadeCount ?? 0) ?></p>
+                        <p>Complaints Received: <?= htmlspecialchars($complaintsReceivedCount ?? 0) ?></p>
                     </div>
                 </div>
             </div>

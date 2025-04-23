@@ -4,12 +4,14 @@ date_default_timezone_set('Asia/Colombo');
 class Seeker extends Controller
 {
     private $helpModel;
+    private $userReportModel;
     public function __construct()
     {
         $this->findJobModel = $this->model('FindJobs');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
         $this->helpModel = $this->model('Help');
+        $this->userReportModel = $this->model('userReport');
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -144,9 +146,58 @@ class Seeker extends Controller
         $this->view('individualEditProfile');
     }
 
-    function report()
+    function userReport()
     {
-        $this->view('report');
+        // Check if user is logged in
+        // if (!isset($_SESSION['user_id'])) {
+        //     // Redirect to login or handle unauthorized access
+        //     header('Location: /login');
+        //     exit();
+        // }
+
+        $userID = $_SESSION['user_id'];
+
+        try {
+            $profile = $this->userReportModel->getUserDetails($userID);
+            $appliedJobs = $this->userReportModel->getAppliedJobs($userID);
+            $postedJobs = $this->userReportModel->getPostedJobs($userID);
+            // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
+            // $totalSpent = $this->userReportModel->getTotalSpent($userID);
+            $reviewsGivenCount = $this->userReportModel->getReviewsGivenCount($userID);
+            $reviewsReceivedCount = $this->userReportModel->getReviewsReceivedCount($userID);
+            $averageRating = $this->userReportModel->getAverageRating($userID);
+            $complaintsMadeCount = $this->userReportModel->getComplaintsMadeCount($userID);
+            $complaintsReceivedCount = $this->userReportModel->getComplaintsReceivedCount($userID);
+            // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
+            // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
+
+            $data = [];
+            $data = array_merge($data, [
+                // 'totalEarnings' => $totalEarnings,
+                // 'totalSpent' => $totalSpent,
+                
+                // 'completedTasks' => $completedTasks,
+                // 'ongoingTasks' => $ongoingTasks
+            ]);
+
+            $data = [
+                'profile' => $profile,
+                'appliedJobs' => $appliedJobs,
+                'postedJobs' => $postedJobs,
+                'reviewsGivenCount' => $reviewsGivenCount,
+                'reviewsReceivedCount' => $reviewsReceivedCount,
+                'averageRating' => $averageRating,
+                'complaintsMadeCount' => $complaintsMadeCount,
+                'complaintsReceivedCount' => $complaintsReceivedCount,
+            ];
+
+            ;
+            $this->view('report', $data);
+        } catch (Exception $e) {
+            // Log the error and show a user-friendly message
+            error_log("Error in userReport: " . $e->getMessage());
+            $this->view('error', ['message' => 'Failed to generate report']);
+        }
     }
 
     //help center functionalities 

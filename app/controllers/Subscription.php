@@ -280,6 +280,7 @@ class Subscription extends Controller {
         $query = "UPDATE account SET planID = NULL WHERE accountID = :accountID";
         $params = ['accountID' => $accountID];
         $this->query($query, $params);
+        $_SESSION['plan_id'] = -1;
     }
 
     private function getStripePlanMap() {
@@ -315,6 +316,7 @@ class Subscription extends Controller {
         
         if ($result) {
             $_SESSION['success'] = 'Subscription cancelled successfully';
+            $_SESSION['plan_id'] = -1; // Reset plan ID in session
         } else {
             $_SESSION['error'] = 'Failed to cancel subscription';
         }

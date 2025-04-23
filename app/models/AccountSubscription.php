@@ -243,22 +243,30 @@ class AccountSubscription extends Account {
             // Cancel with Stripe
             $result = $this->stripeService->cancelSubscription($subscriptionID);
             
-            if ($result) {
-                // Update local database
-                $updateStatus = $this->updateSubscriptionStatus($subscriptionID, 'canceled');
-                
-                if ($updateStatus) {
-                    // back to free plan
-                    $query = "UPDATE account SET planID = -1 WHERE accountID = :accountID";
-                    $params = ['accountID' => $accountID];
-                    $this->query($query, $params);
-                    
-                    return true;
-                }
+            if (!$result) {
+                error_log("Stripe API failed to cancel subscription: $subscriptionID");
+                return false;
             }
+
+            // Update local database
+            $updateStatus = $this->updateSubscriptionStatus($subscriptionID, 'canceled');
             
-            error_log("Failed to cancel subscription: $subscriptionID");
-            return false;
+            if (!$updateStatus) {
+                error_log("Failed to update subscription status in database: $subscriptionID");
+                return false;
+            }
+
+            // Back to free plan
+            $query = "UPDATE account SET planID = -1 WHERE accountID = :accountID";
+            $params = ['accountID' => $accountID];
+            $freePlanUpdate = $this->query($query, $params);
+
+            if (!$freePlanUpdate) {
+                error_log("Failed to update account to free plan: $accountID");
+                return false;
+            }
+
+            return true;
         } catch (Exception $e) {
             error_log("Error canceling subscription: " . $e->getMessage());
             return false;

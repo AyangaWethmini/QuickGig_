@@ -35,7 +35,7 @@
                 <span class="sidebar-label">complaints</span>
             </a>
 
-            <a href="<?php echo ROOT;?>/organization/org_report" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/organization/userReport" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-chart-bar"></i></span>
                 <span class="sidebar-label">Report</span>
             </a>

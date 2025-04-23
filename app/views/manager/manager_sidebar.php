@@ -76,7 +76,7 @@ $isPlansParentActive = $plansActive || $subsActive;
                 <span class="sidebar-label">Help Center</span>
             </a>
 
-            <div class="sidebar-item" data-link="login-logout.php">
+            <div class="sidebar-item" data-link="login-logout.php" href="<?=ROOT?>/login/logout" onclick="window.location.href='<?=ROOT?>/login/logout'">
                 <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
                 <span class="sidebar-label">Log Out</span>
             </div>

@@ -16,12 +16,61 @@ if (
 }
 ?>
 
-<script>
-    // Function to hide the subscription popup
-    function hideSubscriptionPopup() {
-        document.querySelector('.sub-background').style.display = 'none';
+<style>
+    .blurred {
+      filter: blur(5px);
+      transition: filter 0.3s ease;
     }
-</script>
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .popup-content {
+      position: relative;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 600px;
+      height: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .popup-content img {
+      width: calc(100% - 20px); /* Fit the width with a small margin */
+      margin: 10px; /* Small margin around the image */
+      max-height: 90vh;
+      border-radius: 10px;
+    }
+
+    .cancel-button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #ff4d4f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cancel-button:hover {
+      background: #ff7875;
+    }
+</style>
+
 <div class="home-announcement">
     <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
         <div class="home-announcement-content">
@@ -109,7 +158,7 @@ if (
 
 </div>
 
-<?php include_once APPROOT . '/views/components/ad-popup.php'; ?>
+
 
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">
@@ -144,13 +193,54 @@ if (
     </footer>
 </div>
 
+<?php
+if (
+    isset($_SESSION['user_role']) &&
+    $_SESSION['user_role'] != 0 &&
+    $_SESSION['user_role'] != 1 &&
+    isset($_SESSION['plan_id']) &&
+    $_SESSION['plan_id'] == -1
+) {
+    $lastAdTime = $_SESSION['last_ad_time'] ?? 0;
+    $currentTime = time();
+    $timeDifference = $currentTime - $lastAdTime;
+
+    // Show the ad only if 20 minutes have passed since the last ad
+    if ($timeDifference >= 1200) {
+        $_SESSION['last_ad_time'] = $currentTime;
+        $ad = $data['advertisements'][0] ?? null;
+        ?>
+        <div id="ad-popup" class="popup-overlay">
+            <div class="popup-content">
+                <?php if ($ad && !empty($ad->img)): ?>
+                <?php 
+                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                    $mimeType = $finfo->buffer($ad->img);
+                ?>
+                <a href="<?= $ad->link ?>" target="_blank" onclick="recordAdClick(event, <?= $ad->id ?>, '<?= $ad->link ?>')">
+                    <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad Image" style="width: 200px; height: 200px;">
+                </a>
+                <script>
+                    // Record ad view on page load
+                    recordAdView(<?= $ad->id ?>);
+                </script>
+                <?php else: ?>
+                <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available">
+                <?php endif; ?>
+                <button class="cancel-button" onclick="closePopup()">Cancel</button>
+            </div>
+        </div>
+        <?php
+    }
+}
+?>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
-
 <script>
-    function hideSubscriptionPopup() {
-        document.querySelector('.sub-background').style.display = 'none';
-    }
+    // function hideSubscriptionPopup() {
+    //     document.querySelector('.sub-background').style.display = 'none';
+    // }
 
     function recordAdClick(event, adId, adLink) {
         event.preventDefault();
@@ -195,4 +285,24 @@ if (
             console.error('Invalid ad ID');
         }
     }
+
+const popup = document.getElementById('ad-popup');
+const content = document.getElementById('main-content');
+
+function closePopup() {
+    if (popup) popup.style.display = 'none';
+    if (content) content.classList.remove('blurred');
+}
+
+window.onload = function () {
+    if (popup) {
+        popup.style.display = 'flex';
+        if (content) content.classList.add('blurred');
+        setTimeout(() => {
+            closePopup();
+        }, 10000);
+    }
+};
+
+
 </script>
