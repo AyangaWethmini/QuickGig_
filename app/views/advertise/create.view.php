@@ -110,9 +110,9 @@ require APPROOT . '/views/inc/header.php';
                         </div>
                         <button class="btn btn-accent post-ad-btn" type="submit" id="submitBtn">
                             <span id="btnText">Submit Ad</span>
-                            <div id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
+                            <!-- <div id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
                                 <span class="visually-hidden">Loading...</span>
-                            </div>
+                            </div> -->
                         </button>
                     </div>
 

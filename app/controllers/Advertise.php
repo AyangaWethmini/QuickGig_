@@ -1,10 +1,8 @@
 <?php
 class Advertise extends Controller {
+    protected $viewPath = "../app/views/advertise/";
     private $advertisementModel;
     private $advertiserModel;
-
-    protected $viewPath = "../app/views/advertise/";
-    private const DEBUG_MODE = true;
 
     public function __construct() {
         $this->advertisementModel = $this->model('Advertisement');
@@ -14,6 +12,7 @@ class Advertise extends Controller {
     public function index() {
         $this->view('create');
     }
+
     public function postAdvertisement() {
         header('Content-Type: application/json');
 
@@ -95,7 +94,6 @@ class Advertise extends Controller {
             ];
 
             if (!$this->advertisementModel->createAdvertisementRecievedOnline($adData)) {
-                error_log("Ad DB creation failed: " . print_r($adData, true));
                 return $this->respondWithError("Failed to store advertisement.");
             }
 
@@ -112,130 +110,47 @@ class Advertise extends Controller {
                     'quantity' => 1,
                 ]],
                 'mode' => 'payment',
-                'success_url' => ROOT . "/advertise/checkoutSuccess?session_id={CHECKOUT_SESSION_ID}&ad_id={$adId}",
-                'cancel_url' => ROOT . "/advertise/paymentCanceled?ad_id={$adId}",
+                'success_url' => ROOT . "/advertise/success?ad_id={$adId}",
+                'cancel_url' => ROOT . "/advertise/cancel?ad_id={$adId}",
                 'metadata' => [
                     'advertisement_id' => $adId,
                     'advertiser_email' => $_POST['email']
                 ]
             ]);
 
-            // Update the advertisement status to 'active' after successful payment
-            // $this->advertisementModel->updateAdStatus($adId, 'active'); //manager does this
-
             echo json_encode(['status' => 'payment_required', 'redirectUrl' => $session->url]);
             return;
 
         } catch (Exception $e) {
             http_response_code(500);
-            error_log("Ad creation exception: " . $e->getMessage());
-            return $this->respondWithError("System error occurred during ad creation.", $e);
+            return $this->respondWithError("System error occurred during ad creation.");
         }
     }
 
-    public function checkoutSuccess() {
-        $session_id = $_GET['session_id'] ?? null;
+    public function success() {
         $ad_id = $_GET['ad_id'] ?? null;
-
-        if (!$session_id || !$ad_id) {
-            return $this->renderInvoiceView(false, "Invalid request.");
-        }
-
-        try {
-            \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
-            $session = \Stripe\Checkout\Session::retrieve($session_id);
-
-            if ($session->payment_status === 'paid') {
-                $this->advertisementModel->updatePaymentStatus($ad_id, 'paid');
-
-                echo "<script>console.log('Advertisement details retrieved: " . json_encode($ad_id) . "');</script>";
-                echo "<script>console.log('Session details retrieved: " . json_encode($this->advertisementModel->isAdExists($ad_id)) . "');</script>";
-                // echo "<script>console.log('Session details retrieved: " . json_encode($session) . "');</script>";
-                $advertisement = $this->advertisementModel->getAdDetailsWithoutImage($ad_id);
-                echo "<script>console.log('Advertisement details retrieved: " . json_encode($advertisement) . "');</script>";
-
-                if (!$advertisement) {
-                    return $this->renderInvoiceView(false, "Advertisement not found.");
-                }
-
-                $invoiceData = [
-                    'advertisement' => $advertisement,
-                    'payment_status' => $session->payment_status,
-                    'amount' => $session->amount_total / 100,
-                    'session_id' => $session_id,
-                    'ad_id' => $ad_id
-                ];
-
-                return $this->renderInvoiceView(true, "Payment successful. Your ad has been submitted.", $invoiceData);
+        echo "<script>console.log('Ad ID: " . htmlspecialchars($ad_id, ENT_QUOTES, 'UTF-8') . "');</script>";
+        if ($ad_id) {
+            $updateSuccess = $this->advertisementModel->updatePaymentStatus($ad_id, 'paid');
+            if (!$updateSuccess) {
+                return $this->respondWithError("Failed to update payment status for advertisement ID: {$ad_id}.");
             }
-
-            return $this->renderInvoiceView(false, "Payment not completed.");
-        } catch (Exception $e) {
-            error_log("Stripe invoice error: " . $e->getMessage());
-            return $this->renderInvoiceView(false, "Could not retrieve invoice details.");
         }
+        $this->view('success');
     }
 
-    public function paymentCanceled() {
+    public function cancel() {
         $ad_id = $_GET['ad_id'] ?? null;
         if ($ad_id) {
             $this->advertisementModel->updateAdStatus($ad_id, 'inactive');
         }
-        return $this->renderInvoiceView(false, "Payment was canceled.");
+        $this->view('cancel');
     }
 
-    public function invoice() {
-        $session_id = $_GET['session_id'] ?? null;
-        $ad_id = $_GET['ad_id'] ?? null;
-
-        if (!$session_id || !$ad_id) {
-            return $this->renderInvoiceView(false, "Invalid invoice request.");
-        }
-
-        try {
-            \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
-            $session = \Stripe\Checkout\Session::retrieve($session_id);
-
-            if ($session->payment_status === 'paid') {
-                $advertisement = $this->advertisementModel->getAdDetailsWithoutImage($ad_id);
-
-                if (!$advertisement) {
-                    return $this->renderInvoiceView(false, "Advertisement not found.");
-                }
-
-                $invoiceData = [
-                    'advertisement' => $advertisement,
-                    'payment_status' => $session->payment_status,
-                    'amount' => $session->amount_total / 100,
-                    'session_id' => $session_id,
-                    'ad_id' => $ad_id
-                ];
-
-                return $this->renderInvoiceView(true, "Invoice generated successfully.", $invoiceData);
-            }
-
-            return $this->renderInvoiceView(false, "Payment not completed.");
-        } catch (Exception $e) {
-            error_log("Stripe invoice error: " . $e->getMessage());
-            return $this->renderInvoiceView(false, "Invoice generation failed.");
-        }
-    }
-
-    private function respondWithError($message, $exception = null) {
+    private function respondWithError($message) {
         header('Content-Type: application/json');
         http_response_code(400);
-        if (self::DEBUG_MODE && $exception) {
-            $message .= ' | Debug: ' . $exception->getMessage();
-        }
         echo json_encode(['error' => $message]);
         exit;
-    }
-
-    private function renderInvoiceView($success, $message, $invoiceData = null) {
-        $this->view('invoice', [
-            'success' => $success,
-            'message' => $message,
-            'invoiceData' => $invoiceData
-        ]);
     }
 }

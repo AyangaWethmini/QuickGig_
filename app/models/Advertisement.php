@@ -189,10 +189,9 @@ public function updateAdvertisementStatus($advertisementId, $data)
         try {
             $query = "INSERT INTO advertisement 
                      (advertisementID, advertiserID, adTitle, adDescription, img, link, 
-                      startDate, endDate, adStatus, amount, paymentStatus, online)
+                      startDate, endDate, adStatus, amount, paymentStatus, onlineAd)
                      VALUES (:advertisementID, :advertiserID, :adTitle, :adDescription, :img, :link, 
-                             :startDate, :endDate, :adStatus, :amount, :paymentStatus, :online)";
-    
+                             :startDate, :endDate, :adStatus, :amount, :paymentStatus, :onlineAd)";    
             $params = [
                 'advertisementID' => $data['advertisementID'],
                 'advertiserID' => $data['advertiserID'],
@@ -205,7 +204,7 @@ public function updateAdvertisementStatus($advertisementId, $data)
                 'adStatus' => 'inactive',  // Default ad status
                 'amount' => $data['amount'],
                 'paymentStatus' => 'pending',
-                'online' => 1
+                'onlineAd' => 1
             ];
     
             $result = $this->query($query, $params);
@@ -245,11 +244,23 @@ public function updateAdvertisementStatus($advertisementId, $data)
         return $result[0] ?? null; // Return the first row or null if no result
     }
 
-    public function isAdExists($adId) {
-        $query = "SELECT COUNT(*) as count FROM advertisement WHERE advertisementID = :adId AND deleted = 0";
+    // public function isAdExists($adId) {
+    //     $query = "SELECT COUNT(*) as count FROM advertisement WHERE advertisementID = :adId AND deleted = 0";
+    //     $params = ['adId' => $adId];
+    //     $result = $this->query($query, $params);
+    //     return $result[0]->count > 0; // Return true if count is greater than 0
+    // }
+
+    public function getAdsToBeReviewed() {
+        $query = "SELECT * FROM advertisement WHERE adStatus = 'inactive' AND onlineAd = 1 ORDER BY createdAt DESC";
+        $result = $this->query($query);
+        return $result ?: [];
+    }
+
+    public function approveAd($adId) {
+        $query = "UPDATE advertisement SET adStatus = 'active' WHERE advertisementID = :adId";
         $params = ['adId' => $adId];
-        $result = $this->query($query, $params);
-        return $result[0]->count > 0; // Return true if count is greater than 0
+        return $this->query($query, $params);
     }
     
 }

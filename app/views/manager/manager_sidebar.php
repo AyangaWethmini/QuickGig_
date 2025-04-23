@@ -7,6 +7,7 @@ $current = $_SERVER['REQUEST_URI'];
 // Advertisement section logic
 $adsActive = strpos($current, '/manager/advertisements') !== false;
 $advrsActive = strpos($current, '/manager/advertisers') !== false;
+$revActive = strpos($current, '/manager/adsToBeReviewed') !== false;
 $isAdsParentActive = $adsActive || $advrsActive;
 
 // Plans section logic
@@ -40,6 +41,9 @@ $isPlansParentActive = $plansActive || $subsActive;
                 </a>
                 <a href="<?=ROOT?>/manager/advertisers" class="sidebar-item sub-item <?= $advrsActive ? 'active' : '' ?>">
                     <span class="sidebar-label">Advertisers</span>
+                </a>
+                <a href="<?=ROOT?>/manager/adsToBeReviewed" class="sidebar-item sub-item <?= $revActive ? 'active' : '' ?>">
+                    <span class="sidebar-label">To Review</span>
                 </a>
             </div>
 
