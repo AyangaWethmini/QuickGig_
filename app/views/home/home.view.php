@@ -4,17 +4,6 @@
 
 <!-- Include the subscriptions component -->
 
-<?php
-if (
-    !isset($_SESSION['subscription_popup_shown']) &&
-    isset($_SESSION['role']) &&
-    $_SESSION['role'] !== 1 &&
-    $_SESSION['role'] > 1
-) {
-    include APPROOT . '/views/components/subscriptions.php';
-    $_SESSION['subscription_popup_shown'] = true;
-}
-?>
 
 <script>
     // Function to hide the subscription popup
@@ -109,7 +98,7 @@ if (
 
 </div>
 
-<?php include_once APPROOT . '/views/components/advertisemetsSlideshow.php'; ?>
+<!-- <?php include_once APPROOT . '/views/components/advertisemetsSlideshow.php'; ?> -->
 
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">
