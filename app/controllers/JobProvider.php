@@ -28,18 +28,18 @@ class JobProvider extends Controller
         $length = 0;
         $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 1);
         $finalrate = 0;
-        foreach ($rating as $rate){
+        foreach ($rating as $rate) {
             $finalrate = $finalrate + $rate->rating;
             $length += 1;
         }
         $avgRate = 0;
-        if($finalrate != 0){
+        if ($finalrate != 0) {
             $avgRate = round((float)$finalrate / (float)$length, 1);
-        }else{
+        } else {
             $avgRate = 0;
         }
-        
-        $this->view('individualProfile', ['data' => $data,'reviews' => $rating,'avgRate' => $avgRate]);
+
+        $this->view('individualProfile', ['data' => $data, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
 
 
@@ -138,11 +138,32 @@ class JobProvider extends Controller
     function findEmployees()
     {
         $findEmployees = $this->findEmpModel->getEmployees();
+
+        foreach ($findEmployees as &$employee) {
+            $sumRate = 0;
+            $avgRate = 0;
+
+            $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
+
+            $length = count($rating);
+            foreach ($rating as $rate) {
+                $sumRate += $rate->rating;
+            }
+
+            if ($length > 0) {
+                $avgRate = $sumRate / $length;
+            }
+
+            $employee->rating = $avgRate;
+        }
+
         $data = [
             'findEmployees' => $findEmployees
         ];
+
         $this->view('findEmployees', $data);
     }
+
     public function requestJob()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -169,6 +190,24 @@ class JobProvider extends Controller
     {
         $received = $this->model('ReceivedProvider');
         $receivedRequests = $received->getReceivedRequests();
+        foreach ($receivedRequests as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
         $data = [
             'receivedRequests' => $receivedRequests
         ];
@@ -230,8 +269,24 @@ class JobProvider extends Controller
         } else if ($role['roleID']) {
             $employeeData = $account->getOrgData($employeeID);
         }
+        $rating = $this->reviewModel->readMyReview($employeeData['accountID'], 2);
+        $finalrate = 0;
+        $length = 0;
+        $employeeData['ratings'] = $this->reviewModel->getRatingDistribution($employeeData['accountID'], 2);
+        $finalrate = 0;
+        foreach ($rating as $rate) {
+            $finalrate = $finalrate + $rate->rating;
+            $length += 1;
+        }
+        $avgRate = 0;
+        if ($finalrate != 0) {
+            $avgRate = round((float)$finalrate / (float)$length, 1);
+        } else {
+            $avgRate = 0;
+        }
+
         // Pass data as associative array to the view
-        $this->view('viewEmployeeProfile', $employeeData);
+        $this->view('viewEmployeeProfile', ['data' => $employeeData, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
     function subscription()
     {
@@ -266,10 +321,10 @@ class JobProvider extends Controller
         $accountID = $_SESSION['user_id'];
         $SeekerById = $job->getJobSeekerById($jobId);
         $revieweeData = $account->getUserData($SeekerById->seekerID);
-        $review = $reviewModel->readReviewSpecific($accountID,$SeekerById->seekerID,$jobId,2);
+        $review = $reviewModel->readReviewSpecific($accountID, $SeekerById->seekerID, $jobId, 2);
         $revieweeData['jobID'] = $jobId;
-        
-        if(!empty($review)){
+
+        if (!empty($review)) {
             $revieweeData['rating'] = $review->rating ?? NULL;
             $revieweeData['content'] = $review->content ?? '';
         }
@@ -277,7 +332,7 @@ class JobProvider extends Controller
     }
     public function addReview($accountID)
     {
-        
+
         $reviewerID = $_SESSION['user_id'];
         $revieweeID = $accountID;
         $reviewDate = $_POST['reviewDate'];
@@ -288,7 +343,7 @@ class JobProvider extends Controller
         $roleID     = 2;
 
         $review = $this->model('review');
-        $delete = $review->deleteReview($reviewerID,$revieweeID,$jobID,$roleID);
+        $delete = $review->deleteReview($reviewerID, $revieweeID, $jobID, $roleID);
         $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
         header('Location: ' . ROOT . '/jobProvider/reviews');
     }
@@ -296,7 +351,7 @@ class JobProvider extends Controller
     {
         $reviewModel = $this->model('Review');
         $review = $reviewModel->reviewById($reviewID);
-        $delete = $reviewModel->deleteReview($review->reviewerID,$review->revieweeID,$review->jobID,2);
+        $delete = $reviewModel->deleteReview($review->reviewerID, $review->revieweeID, $review->jobID, 2);
         header('Location: ' . ROOT . '/jobProvider/reviews');
     }
     public function jobListing_myJobs()
@@ -304,6 +359,7 @@ class JobProvider extends Controller
         $userID = $_SESSION['user_id'];
         $jobModel = $this->model('Job');
         $jobs = $jobModel->getJobsByUser($userID);
+
 
         $data = [
             'jobs' => $jobs
@@ -315,6 +371,25 @@ class JobProvider extends Controller
     {
         $send = $this->model('sendProvider');
         $sendRequests = $send->getsendRequests();
+
+        foreach ($sendRequests as $request) {
+            $userId = $request->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $request->avgRate = $avgRate;
+        }
         $data = [
             'sendRequests' => $sendRequests
         ];
@@ -343,6 +418,43 @@ class JobProvider extends Controller
         $tbcProvider = $this->model('ToBeCompletedProvider');
         $applyJobTBC = $tbcProvider->getApplyJobTBC();
         $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
+        foreach ($applyJobTBC as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
+        foreach ($reqAvailableTBC as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
+        
         $data = [
             'applyJobTBC' => $applyJobTBC,
             'reqAvailableTBC' => $reqAvailableTBC
@@ -565,5 +677,4 @@ class JobProvider extends Controller
             header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
         }
     }
-   
 }

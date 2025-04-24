@@ -81,18 +81,18 @@ protectRoute([2]); ?>
                                                 <?php
                                                 $stars = 5;
                                                 $remaining = $avgRate;
-
+ 
                                                 for ($i = 0; $i < $stars; $i++) {
                                                     if ($remaining >= 1) {
                                                         echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
                                                         $remaining -= 1;
-                                                    } elseif ($remaining >= 0.75) {
+                                                    } elseif ($remaining > 0.5) {
                                                         echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
                                                         $remaining = 0;
-                                                    } elseif ($remaining >= 0.5) {
+                                                    } elseif ($remaining == 0.5){
                                                         echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
                                                         $remaining = 0;
-                                                    } elseif ($remaining >= 0.25) {
+                                                    } elseif ($remaining < 0.5 && $remaining > 0 ){
                                                         echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
                                                         $remaining = 0;
                                                     } else {

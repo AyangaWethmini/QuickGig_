@@ -49,13 +49,31 @@ protectRoute([2]);?>
                     <span class="time-applied">Available Time: <?= htmlspecialchars($received->timeFrom)?> - <?= htmlspecialchars($received->timeTo) ?></span>
                     <span class="date-applied">Salary: <?= htmlspecialchars($received->salary) ?> <?= htmlspecialchars($received->currency) ?>/Hr</span>
                     <span class="date-applied">Location: <?= htmlspecialchars($received->location) ?></span>
-                    <div class="ratings">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
+                    <div class="rating">
+                                    <?php
+                                    $stars = 5;
+                                    $remaining = $received->avgRate;
+
+                                    for ($i = 0; $i < $stars; $i++) {
+                                        if ($remaining >= 1) {
+                                            echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
+                                            $remaining -= 1;
+                                        } elseif ($remaining > 0.5) {
+                                            echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
+                                            $remaining = 0;
+                                        } elseif ($remaining == 0.5) {
+                                            echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
+                                            $remaining = 0;
+                                        } elseif ($remaining < 0.5 && $remaining > 0) {
+                                            echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
+                                            $remaining = 0;
+                                        } else {
+                                            echo '<img src="' . ROOT . '/assets/images/emptystar.png" class="star-img">';
+                                        }
+                                    }
+
+                                    ?>
+                                </div>
                     <hr>
                     <span class="date-applied">Date Requested: <?= htmlspecialchars($received->datePosted) ?></span>
                     <span class="time-applied">Time Requested: <?= htmlspecialchars($received->timePosted)?></span>

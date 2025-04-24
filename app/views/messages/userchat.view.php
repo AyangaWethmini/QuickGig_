@@ -32,11 +32,11 @@ protectRoute([2]); ?>
 
             <div id="chat-box"></div>
             <form id="send-message-form">
-                <input type="hidden" id="receiver_id" value="<?= $data['receiver_id'] ?>">
-
-                <textarea id="message"></textarea>
-                <button type="submit">Send</button>
-            </form>
+    <input type="hidden" id="receiver_id" value="<?= $data['receiver_id'] ?>">
+    
+    <textarea id="message" placeholder="Type your message..."></textarea>
+    <button type="submit" id="send-btn" disabled>Send</button>
+</form>
 
         </div>
 
@@ -82,6 +82,13 @@ protectRoute([2]); ?>
             }
             xhr.send("receiver_id=" + receiver_id + "&message=" + encodeURIComponent(message));
         }
+        const messageInput = document.getElementById('message');
+    const sendBtn = document.getElementById('send-btn');
+
+    messageInput.addEventListener('input', () => {
+        const hasText = messageInput.value.trim().length > 0;
+        sendBtn.disabled = !hasText;
+    });
     </script>
 
 

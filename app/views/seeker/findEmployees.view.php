@@ -6,7 +6,7 @@ protectRoute([2]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
-
+ 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
     
@@ -55,15 +55,31 @@ protectRoute([2]);?>
                             <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
                             <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
                             <div style="display:flex;flex-direction:column; gap:20px">
-                                <div class="rating">
-                                    <span>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                    </span>
-                                </div>
+                            <div class="rating">
+                                        <?php
+                                        $stars = 5;
+                                        $remaining = $findJob->rating;
+
+                                        for ($i = 0; $i < $stars; $i++) {
+                                            if ($remaining >= 1) {
+                                                echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
+                                                $remaining -= 1;
+                                            } elseif ($remaining > 0.5) {
+                                                echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } elseif ($remaining == 0.5) {
+                                                echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } elseif ($remaining < 0.5 && $remaining > 0) {
+                                                echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } else {
+                                                echo '<img src="' . ROOT . '/assets/images/emptystar.png" class="star-img">';
+                                            }
+                                        }
+
+                                        ?>
+                                    </div>
                                 <div class="availability">
                                     <div class="availability-time">
                                         <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>

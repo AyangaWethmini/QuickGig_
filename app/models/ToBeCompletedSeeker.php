@@ -28,6 +28,11 @@ class ToBeCompletedSeeker{
                              THEN CONCAT(i.fname, ' ', i.lname) 
                              ELSE o.orgName 
                          END AS name, 
+                         CASE 
+                             WHEN i.accountID IS NOT NULL  
+                             THEN i.accountID
+                             ELSE o.accountID 
+                         END AS accountID, 
                          m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
                   FROM req_available r 
                   JOIN makeavailable m ON r.availableID = m.availableID
@@ -53,6 +58,11 @@ class ToBeCompletedSeeker{
                              THEN CONCAT(i.fname, ' ', i.lname) 
                              ELSE o.orgName 
                          END AS name,
+                         CASE 
+                             WHEN i.accountID IS NOT NULL  
+                             THEN i.accountID
+                             ELSE o.accountID 
+                         END AS accountID, 
                          j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
         FROM apply_job a 
         JOIN job j ON a.jobID = j.jobID

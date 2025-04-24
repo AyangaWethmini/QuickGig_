@@ -5,6 +5,7 @@ class Seeker extends Controller
 {
     public function __construct()
     {
+        $this->jobModel = $this->model('Job');
         $this->findJobModel = $this->model('FindJobs');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
         $this->accountModel = $this->model('Account');
@@ -46,8 +47,27 @@ class Seeker extends Controller
     {
         $findJobs = $this->findJobModel->getJobs();
 
+        foreach ($findJobs as &$job) {
+            $sumRate = 0;
+            $avgRate = 0;
+            $provider = $this->jobModel->getJobProviderById($job->jobID);
+            $rating = $this->reviewModel->readMyReview($provider->accountID, 1); 
+
+            $length = count($rating);
+            foreach ($rating as $rate) {
+                $sumRate += $rate->rating;
+            }
+
+            if ($length > 0) {
+                $avgRate = $sumRate / $length;
+            }
+
+            $job->rating = $avgRate;
+        }
+
         $data = [
-            'findJobs' => $findJobs
+            'findJobs' => $findJobs,
+            'avgRate' => $avgRate
         ];
 
         $this->view('findEmployees', $data);
@@ -80,6 +100,24 @@ class Seeker extends Controller
     {
         $receivedModel = $this->model('ReceivedSeeker');
         $receivedRequests = $receivedModel->getReceivedRequests();
+        foreach ($receivedRequests as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 1);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
 
         $data = [
             'receivedRequests' => $receivedRequests
@@ -226,6 +264,24 @@ class Seeker extends Controller
     {
         $send = $this->model('SendSeeker');
         $sendRequests = $send->getSendRequests();
+        foreach ($sendRequests as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 1);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
 
         $data = [
             'sendRequests' => $sendRequests
@@ -256,6 +312,42 @@ class Seeker extends Controller
         $tbcSeeker = $this->model('ToBeCompletedSeeker');
         $reqAvailableTBC = $tbcSeeker->getReqAvailableTBC();
         $applyJobTBC = $tbcSeeker->getApplyJobTBC();
+        foreach ($reqAvailableTBC as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 1);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
+        foreach ($applyJobTBC as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 1);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
         $data = [
             'reqAvailableTBC' => $reqAvailableTBC,
             'applyJobTBC' => $applyJobTBC
