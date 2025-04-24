@@ -134,7 +134,7 @@ class userReport {
                   FROM applyjob a
                   JOIN job j ON a.jobID = j.jobID
                   WHERE j.accountID = :accountID
-                  AND a.applicationStatus = 4";
+                  AND a.applicationStatus = 5";
 
         $params = ['accountID' => $accountID];
         

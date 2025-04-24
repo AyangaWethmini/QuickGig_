@@ -8,6 +8,8 @@ class JobProvider extends Controller
     private $managerModel;
     private $accountSubscriptionModel;
     private $userReportModel;
+    private $seekerDoneModel;
+    private $providerDoneModel;
 
     public function __construct()
     {
@@ -20,6 +22,8 @@ class JobProvider extends Controller
         $this->accountSubscriptionModel = $this->model('AccountSubscription');
         $this->userReportModel = $this->model('userReport');
         $this->reviewModel = $this->model('Review');
+        $this->seekerDoneModel = $this->model('SeekerDone');
+        $this->providerDoneModel = $this->model('ProviderDone');
     }
     protected $viewPath = "../app/views/jobProvider/";
 
@@ -369,7 +373,10 @@ class JobProvider extends Controller
 
         try {
             $profile = $this->userReportModel->getUserDetails($userID);
-            $appliedJobs = $this->userReportModel->getAppliedJobs($userID);
+            $appliedJobs = $this->providerDoneModel->getApplyJobCompleted();
+            $appliedJobs1 = $this->seekerDoneModel->getApplyJobCompleted();
+            $requestedJobs = $this->providerDoneModel->getReqAvailableCompleted();
+            $requestedJobs1 = $this->seekerDoneModel->getReqAvailableCompleted();
             $postedJobs = $this->userReportModel->getPostedJobs($userID);
             // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
             // $totalSpent = $this->userReportModel->getTotalSpent($userID);
@@ -381,24 +388,19 @@ class JobProvider extends Controller
             // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
             // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
 
-            $data = [];
-            $data = array_merge($data, [
-                // 'totalEarnings' => $totalEarnings,
-                // 'totalSpent' => $totalSpent,
-                
-                // 'completedTasks' => $completedTasks,
-                // 'ongoingTasks' => $ongoingTasks
-            ]);
 
             $data = [
                 'profile' => $profile,
                 'appliedJobs' => $appliedJobs,
+                'appliedJobs1' => $appliedJobs1,
                 'postedJobs' => $postedJobs,
                 'reviewsGivenCount' => $reviewsGivenCount,
                 'reviewsReceivedCount' => $reviewsReceivedCount,
                 'averageRating' => $averageRating,
                 'complaintsMadeCount' => $complaintsMadeCount,
                 'complaintsReceivedCount' => $complaintsReceivedCount,
+                'requestedJobs' => $requestedJobs,
+                'requestedJobs1' => $requestedJobs1
             ];
 
             ;

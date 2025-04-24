@@ -39,7 +39,7 @@ date_default_timezone_set('Asia/Colombo');
                 $findEmployees = $this->findEmpModel->getEmployees();
             }
 
-
+        }
     function org_findEmployees()
     {
         $findEmployees = $this->findEmpModel->getEmployees();

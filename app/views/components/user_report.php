@@ -223,43 +223,91 @@
                         <?php endif; ?>
                           
                     </div>
-                        <p>Tasks Completed:</p>
+                        <p>Tasks Completed(From Applications):</p>
                         <div class="applied-job-section">
-                            <p>Total Applications: <?= htmlspecialchars(count($appliedJobs['jobs'] ?? [])) ?></p>
+                            <!-- <p>Total Applications: <?= htmlspecialchars(count($appliedJobs['jobs'] ?? [])) ?></p> -->
 
-                            <?php if (!empty($appliedJobs['jobs'])): ?>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Job Name</th>
-                                            <th>Date Applied</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($appliedJobs['jobs'] as $job): ?>
-                                            <tr>
-                                                <td><?= htmlspecialchars($job->jobTitle ?? 'N/A') ?></td>
-                                                <td><?= !empty($job->dateApplied) ? date('M d, Y', strtotime($job->dateApplied)) : 'N/A' ?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                            <?php if (!empty($data['appliedJobs']) || !empty($data['appliedJobs1'])): ?>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Job Name</th>
+                                    <th>Date Applied</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php if (!empty($data['appliedJobs'])): ?>
+                                    <?php foreach ($data['appliedJobs'] as $job): ?>
+                                      <tr>
+                                        <td><?= htmlspecialchars($job->jobTitle ?? 'N/A') ?></td>
+                                        <td><?= !empty($job->dateApplied) ? date('M d, Y', strtotime($job->dateApplied)) : 'N/A' ?></td>
+                                      </tr>
+                                    <?php endforeach; ?>
+                                  <?php endif; ?>
+                                  <?php if (!empty($data['appliedJobs1'])): ?>
+                                    <?php foreach ($data['appliedJobs1'] as $job): ?>
+                                      <tr>
+                                        <td><?= htmlspecialchars($job->jobTitle ?? 'N/A') ?></td>
+                                        <td><?= !empty($job->dateApplied) ? date('M d, Y', strtotime($job->dateApplied)) : 'N/A' ?></td>
+                                      </tr>
+                                    <?php endforeach; ?>
+                                  <?php endif; ?>
+                                </tbody>
+                              </table>
                             <?php else: ?>
-                                <p>No applications found.</p>
+                              <p>No applications found.</p>
                             <?php endif; ?>
 
-                            <p>Rejected: <?= htmlspecialchars($rejectedCount ?? 0) ?></p>
+                            <!-- <p>Rejected: <?= htmlspecialchars($rejectedCount ?? 0) ?></p> -->
+                        </div>
+
+                        <p>Tasks Completed(From Requests):</p>
+                        <div class="applied-job-section">
+                            <!-- <p>Total Applications: <?= htmlspecialchars(count($appliedJobs['jobs'] ?? [])) ?></p> -->
+
+                            <?php if (!empty($data['requestedJobs']) || !empty($data['requestedJobs1'])): ?>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Job Name</th>
+                                    <th>Date Requested</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php if (!empty($data['requestedJobs'])): ?>
+                                    <?php foreach ($data['requestedJobs'] as $job): ?>
+                                      <tr>
+                                        <td><?= htmlspecialchars($job->description ?? 'N/A') ?></td>
+                                        <td><?= !empty($job->datePosted) ? date('M d, Y', strtotime($job->datePosted)) : 'N/A' ?></td>
+                                      </tr>
+                                    <?php endforeach; ?>
+                                  <?php endif; ?>
+                                  <?php if (!empty($data['requestedJobs1'])): ?>
+                                    <?php foreach ($data['requestedJobs1'] as $job): ?>
+                                      <tr>
+                                        <td><?= htmlspecialchars($job->description ?? 'N/A') ?></td>
+                                        <td><?= !empty($job->datePosted) ? date('M d, Y', strtotime($job->datePosted)) : 'N/A' ?></td>
+                                      </tr>
+                                    <?php endforeach; ?>
+                                  <?php endif; ?>
+                                </tbody>
+                              </table>
+                            <?php else: ?>
+                              <p>No applications found.</p>
+                            <?php endif; ?>
+
+                            <!-- <p>Rejected: <?= htmlspecialchars($rejectedCount ?? 0) ?></p> -->
                         </div>
                     </div>
                     <hr>
-                    <div class="report-section">
+                    <!-- <div class="report-section">
                         <h4>Payment Statistics</h4><br>
                         <p>Total Earnings:</p>
                         <p>Total Spent:</p>
-                        <!-- <p>Pending Payments:</p> -->
+                        <p>Pending Payments:</p> -->
                         <!-- <p>History:</p> -->
-                    </div>
-                    <hr>
+                    <!-- </div> -->
+                    <!-- <hr> -->
                     <div class="report-section">
                         <h4>Performance</h4><br>
                         <p>Rating: <?= htmlspecialchars($averageRating ?? 'N/A') ?></p>
