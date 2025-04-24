@@ -52,6 +52,11 @@ class Home extends Controller
 		$this->view('premium', ['plans' => $data]);
 	}
 
+	public function advertise()
+	{
+		$this->view('advertise');
+	}
+
 
 	// public function payments()
 	// {

@@ -142,6 +142,13 @@ if (is_array($subscriptionData)) {
         $this->view('advertisers', ['advertisers' => $data]);
     }
 
+
+    public function adsToBeReviewed()
+    {
+        $data = $this->advertisementModel->getAdsToBeReviewed();
+        $this->view('adsToReview', ['ads' => $data]);
+    }
+
     public function subscriptions(){
         $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
         $this->view('subscriptions', ['subs' => $subs]);
@@ -189,8 +196,7 @@ if (is_array($subscriptionData)) {
         'endDate' => $endDate
     ]);
 }
-
-    public function postAdvertisement()
+public function postAdvertisement()
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         $_SESSION['error'] = "Invalid request method.";
@@ -768,6 +774,19 @@ if (is_array($subscriptionData)) {
     
         // Return data as a JSON response
         echo json_encode($response);
+    }
+
+    public function approveAd($adId) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->advertisementModel->approveAd($adId);
+            $_SESSION['success'] = "Advertisement approved successfully.";
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        } else {
+            $_SESSION['error'] = "Failed to approve advertisement.";
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        }
     }
     
     
