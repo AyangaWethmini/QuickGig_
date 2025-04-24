@@ -8,4 +8,5 @@ protectRoute([2]);?>
 <?php require APPROOT . '/views/components/user_report.php'; ?>
 
 
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

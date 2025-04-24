@@ -15,6 +15,8 @@
 
             <hr><br>
 
+            <!-- <?php print_r($subscription); ?>     -->
+
             <div class=" flex-row user-plan-dashboard">
                 <div class="forum user-plan-forum">
                     <?php if (!empty($subscription) && is_array($subscription) && isset($subscription[0])): ?>
@@ -23,7 +25,13 @@
                             <h1 class="user-plan-title">Your Current Plan</h1>
                             <div class="plan-details user-plan-details">
                                 <p><strong>Plan Name:</strong> <?php echo htmlspecialchars($plan->planName); ?></p>
-                                <p><strong>Status:</strong> <span class="status-<?php echo strtolower($plan->status); ?>"><?php echo htmlspecialchars($plan->status); ?></span></p>
+                                <p id="status"><strong>Status:</strong> 
+                                    <span class="status-<?php echo strtolower($plan->status); ?>">
+                                        <?php 
+                                            echo $plan->toBeCancelled == 1 ? 'To Be Cancelled' : htmlspecialchars($plan->status); 
+                                        ?>
+                                    </span>
+                                </p>
                                 <p><strong>Start Date:</strong> <?php echo htmlspecialchars(date('F j, Y, g:i a', strtotime($plan->current_period_start))); ?></p>
                                 <p><strong>End Date:</strong> <?php echo htmlspecialchars(date('F j, Y, g:i a', strtotime($plan->current_period_end))); ?></p>
                             </div>
@@ -70,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelBtn = document.querySelector('.user-plan-cancel');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', function() {
-            if (confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your billing period.')) {
+            if (confirm('Are you sure you want to cancel your subscription?')) {
                 // Get subscription ID from the page or make an AJAX call to get it
                 fetch('<?=ROOT?>/subscription/cancel', {
                     method: 'POST',
@@ -94,7 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         showAlert(data.error || 'Failed to cancel subscription', 'error');
                     }
-                })
+                }).then(
+                    document.getElementById('status').innerHTML = '<strong>Status:</strong> <span class="status-cancelled">To Be Cancelled</span>'
+                )
                 .catch(error => {
                     console.error('Error:', error);
                     showAlert('An error occurred', 'error');

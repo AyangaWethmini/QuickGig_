@@ -165,6 +165,17 @@ protectRoute([1]); ?>
     margin-bottom: 10mm;
   }
 }
+
+.print-btn {
+  margin: 20px auto;
+  padding: 15px 30px;
+  display: block;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
 </style>
 
 
@@ -179,7 +190,7 @@ protectRoute([1]); ?>
 
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
         <div class="header flex-col">
-            <h2>System Report</h2>
+            <h2>System Report</h2> 
             <hr>
         </div>
 
@@ -196,6 +207,7 @@ protectRoute([1]); ?>
                 </div>
             </div>
 
+            <br><br>
 
             <!-- Report content -->
             <div id="report-content">
@@ -310,7 +322,7 @@ protectRoute([1]); ?>
         
 
         <!-- Print button -->
-        <button class="no-print btn btn-accent" onclick="printDiv()">Print Report</button>
+        <button class="no-print btn btn-accent print-btn" onclick="printDiv()">Print Report</button>
     </div>
  
 

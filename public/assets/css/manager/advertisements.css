@@ -2,7 +2,7 @@
 .wrapper {
     position: relative;
     width: 100%;
-    margin-top: 80px;
+    margin-top: 100px;
     min-height: calc(100vh - 80px);
 }
 
@@ -13,7 +13,6 @@
     min-height: 100vh;
 
 }
-
 
 .header{
     margin: 20px 20px;
@@ -260,9 +259,12 @@ textarea {
     background-color: #fefefe;
 }
 
-input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
 textarea:focus {
-    border-color: #4a90e2;
+    border-color: #4a90e2 !important;
 }
 
 /* File input */

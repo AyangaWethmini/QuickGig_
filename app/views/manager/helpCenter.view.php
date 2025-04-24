@@ -30,7 +30,7 @@ protectRoute([1]);?>
                             <p><?= htmlspecialchars($q->description) ?></p>
                             
                             <form method="POST" action ="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>">
-                                <textarea name="reply" placeholder="Send a reply"></textarea>
+                                <textarea name="reply" placeholder="Send a reply" required></textarea>
                                 <button class="btn btn-accent" type="submit">Reply</button>
                             </form>
                             
@@ -40,7 +40,7 @@ protectRoute([1]);?>
                                     $date = date('Y-m-d', strtotime($timestamp));
                                     $time = date('H:i:s', strtotime($timestamp)); 
                                 ?>                       
-                                <p style="font-size : 11px;">Asked on <?= $date ?> at <?= $time ?></p>
+                                <p style="font-size : 13px;">Asked on <?= $date ?> at <?= $time ?></p>
                             </div>
                         </div>
                         <br>
@@ -53,30 +53,34 @@ protectRoute([1]);?>
 
         <div id="answered" class="tab-content">
             <?php if (!empty($questions) && (is_array($questions) || is_object($questions))): ?>
-                <?php foreach ($questions as $q): ?>
-                    <?php if (!is_null($q->reply)): ?>
-                        <div class="question flex-col">
-                            <h3><?= htmlspecialchars($q->title) ?></h3>
-                            <p><?= htmlspecialchars($q->description) ?></p>
-                            
-                            <textarea readonly style="background-color: hsla(116, 76%, 87%, 1);"><?= htmlspecialchars($q->reply) ?></textarea>
-                            
-                            <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
-                                <?php 
-                                    $timestamp = $q->createdAt;
-                                    $date = date('Y-m-d', strtotime($timestamp));
-                                    $time = date('H:i:s', strtotime($timestamp)); 
-                                ?>                       
-                                <p style="font-size : 11px;">Asked on <?= $date ?> at <?= $time ?></p>
-                            </div>
-                        </div>
-                        <br>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-        <?php else: ?>
+            <?php foreach ($questions as $q): ?>
+            <?php if (!is_null($q->reply)): ?>
+            <div class="question flex-col">
+                <h3><?= htmlspecialchars($q->title) ?></h3>
+                <p><?= htmlspecialchars($q->description) ?></p>
+                
+                <form method="POST" action="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>" style="margin-top: 10px;">
+                <textarea name="reply" style="background-color: hsla(116, 76%, 87%, 1);" required><?= htmlspecialchars($q->reply) ?></textarea>
+                <button class="btn btn-accent" type="submit">Update Reply</button>
+                </form>
+                
+                <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
+                <?php 
+                $timestamp = $q->createdAt;
+                $date = date('Y-m-d', strtotime($timestamp));
+                $time = date('H:i:s', strtotime($timestamp)); 
+                ?>                       
+                <p style="font-size : 13px;">Asked on <?= $date ?> at <?= $time ?></p>
+                </div>
+            </div>
+            <br>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <?php else: ?>
             <p>No answered questions!</p>
-        <?php endif; ?>
-    </div>
+            <?php endif; ?>
+        </div>
+        </div>
 
     <?php
             include_once APPROOT . '/views/components/alertBox.php';

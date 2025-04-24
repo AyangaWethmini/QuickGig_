@@ -29,7 +29,8 @@
 
 .profile-info {
     display:flex;
-    flex-direction:row;
+    flex-direction:column;
+    justify-content: space-between;
     border: 1px solid #D6DDEB;
 
     padding: 10px;
@@ -37,6 +38,36 @@
     align-items: first baseline;
     height: 400px;
 }
+.sendmsg {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+}
+.sendmsg-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sendmsg-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 16px rgba(0, 86, 179, 0.3);
+    transform: translateY(-2px);
+}
+
+.sendmsg-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(0, 86, 179, 0.2);
+}
+
+
 
 .profile-info img {
     width: 150px;

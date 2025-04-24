@@ -50,6 +50,8 @@ protectRoute([2]); ?>
                         <p class="detail-items">www.jakegyll.com</p>
                     </div>
                 </div>
+
+                
             </div>
 
             <div class="profile-about">
@@ -133,6 +135,8 @@ protectRoute([2]); ?>
                         </div>
                     </div>
                 </div>
+
+                
             </div>
 
             <div class="list-header">
@@ -141,98 +145,109 @@ protectRoute([2]); ?>
                 <button class="filter-btn">Filter</button>
             </div> <br>
 
-            <div class="reviews-section">
-                <div class="review-card container">
-                    <div class="review-card-left flex-row">
-                        <div class="pfp">
-                            <img src="<?= ROOT ?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
-                        </div>
+            <div class="profile-ads flex-row">
+                <div class="reviews-section">
+                    <div class="review-card container">
+                        <div class="review-card-left flex-row">
+                            <div class="pfp">
+                                <img src="<?= ROOT ?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                            </div>
 
-                        <div class="review-details">
-                            <h2>Smith Greenwood</h2>
-                            <p>Bartender</p>
-                            <p>2024-11-27</p>
-                            <p>03:30 PM</p>
-                            <div style="display:flex;flex-direction:column; gap:20px">
-                                <div class="rating">
-                                    <span>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                    </span>
+                            <div class="review-details">
+                                <h2>Smith Greenwood</h2>
+                                <p>Bartender</p>
+                                <p>2024-11-27</p>
+                                <p>03:30 PM</p>
+                                <div style="display:flex;flex-direction:column; gap:20px">
+                                    <div class="rating">
+                                        <span>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                        </span>
+                                    </div>
+
+                                    <p class="review-text">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                                    </p>
                                 </div>
-
-                                <p class="review-text">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
-                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="review-card container">
-                    <div class="review-card-left flex-row">
-                        <div class="pfp">
-                            <img src="<?= ROOT ?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
-                        </div>
+                    <div class="review-card container">
+                        <div class="review-card-left flex-row">
+                            <div class="pfp">
+                                <img src="<?= ROOT ?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                            </div>
 
-                        <div class="review-details">
-                            <h2>Smith Greenwood</h2>
-                            <p>Bartender</p>
-                            <p>2024-11-27</p>
-                            <p>03:30 PM</p>
-                            <div style="display:flex;flex-direction:column; gap:20px">
-                                <div class="rating">
-                                    <span>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                    </span>
+                            <div class="review-details">
+                                <h2>Smith Greenwood</h2>
+                                <p>Bartender</p>
+                                <p>2024-11-27</p>
+                                <p>03:30 PM</p>
+                                <div style="display:flex;flex-direction:column; gap:20px">
+                                    <div class="rating">
+                                        <span>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                        </span>
+                                    </div>
+
+                                    <p class="review-text">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                                    </p>
                                 </div>
-
-                                <p class="review-text">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
-                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="review-card container">
-                    <div class="review-card-left flex-row">
-                        <div class="pfp">
-                            <img src="<?= ROOT ?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
-                        </div>
+                    <div class="review-card container">
+                        <div class="review-card-left flex-row">
+                            <div class="pfp">
+                                <img src="<?= ROOT ?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
+                            </div>
 
-                        <div class="review-details">
-                            <h2>Smith Greenwood</h2>
-                            <p>Bartender</p>
-                            <p>2024-11-27</p>
-                            <p>03:30 PM</p>
-                            <div style="display:flex;flex-direction:column; gap:20px">
-                                <div class="rating">
-                                    <span>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                    </span>
+                            <div class="review-details">
+                                <h2>Smith Greenwood</h2>
+                                <p>Bartender</p>
+                                <p>2024-11-27</p>
+                                <p>03:30 PM</p>
+                                <div style="display:flex;flex-direction:column; gap:20px">
+                                    <div class="rating">
+                                        <span>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                            <i class="fa fa-star star-active mx-1"></i>
+                                        </span>
+                                    </div>
+
+                                    <p class="review-text">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
+                                    </p>
                                 </div>
-
-                                <p class="review-text">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
-                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
+                <?php if ($_SESSION['plan_id'] == -1): ?>
+                    <div style="height: 500px; width: 100px; background-color: #E5E5E5; margin: 50px;">
+                        <p style="text-align: center; font-size: 12px; color: #555;">Third-party Advertisement</p>
+                        <img src="<?= ROOT ?>/assets/images/placeholders/ad.png" alt="Advertisement" class="ad-image">
+                    </div>
+                <?php endif; ?>
             </div>
+
+            <!-- <?php print_r($_SESSION); ?> -->
+
         </div>
     </div>
 </body>

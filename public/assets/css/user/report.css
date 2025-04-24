@@ -4,91 +4,155 @@
     width: 100%;
     min-height: 100vh;
     overflow: hidden;
+    background-color: #f9f9f9;
   }
   
   .main-content {
     margin-left: 300px;
     flex: 1;
-  }
-  
-  #report-content {
     padding: 20px;
-    margin-left: 20px;
-    flex: 1;
+    background-color: #ffffff;
   }
   
-  .print-header, .print-footer {
-    display: none;
+  /* Header */
+  .print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding: 10px 0;
+    margin-bottom: 20px;
   }
-  /* Print-specific styles */
-@media print {
-    /* Reset body visibility - don't hide everything by default */
+  
+  .print-header img {
+    height: 40px;
+  }
+  
+  .heading p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Footer */
+  .print-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  /* Table styling */
+  .report-table,
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .report-table th,
+  .report-table td,
+  table th,
+  table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .report-table thead {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  /* Section headings */
+  .report-section h4 {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Print Styles */
+  @media print {
     body {
-        visibility: visible;
-        background: white;
-        margin: 0;
-        padding: 0;
+      margin: 0;
+      padding: 0;
+      font-size: 12pt;
+      color: #000;
+      background: #fff;
     }
   
-    /* Main content area */
-    .print-area {
-        width: 100%;
-        position: relative;
-        margin-top: 100px; /* Space for header */
-        margin-bottom: 80px; /* Space for footer */
+    body * {
+      visibility: hidden;
     }
   
-    /* Header and footer positioning */
+    #print-area,
+    #print-area * {
+      visibility: visible;
+    }
+  
+    #print-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  
     .print-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 80px;
-        background: white;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #ccc;
-        z-index: 1000;
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10mm;
+      border-bottom: 1px solid #ccc;
+      background: white;
     }
   
     .print-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 60px;
-        background: white;
-        padding: 10px 0;
-        border-top: 1px solid #ccc;
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10mm;
+      border-top: 1px solid #ccc;
+      background: white;
+      font-size: 10pt;
     }
   
-    /* Table styling for print */
-    .report-table {
-        page-break-inside: auto;
+    #report-content {
+      margin-top: 30mm;
+      margin-bottom: 20mm;
     }
   
-    tr {
-        page-break-inside: avoid;
-        page-break-after: auto;
+    .report-table,
+    table {
+      font-size: 10pt;
+      page-break-inside: auto;
     }
   
-    /* Page margin settings */
-    @page {
-        size: auto;
-        margin: 100px 30px 80px 30px; /* top, right, bottom, left */
+    .report-table th,
+    .report-table td,
+    table th,
+    table td {
+      padding: 6pt;
+      border: 1px solid #999;
     }
   
-    /* Ensure content starts after header */
-    body:first-child {
-        margin-top: 100px;
+    h4, tr, td, th {
+      page-break-inside: avoid;
     }
   
-    /* Prevent elements from breaking across pages */
-    .no-break {
-        page-break-inside: avoid;
+    h4 {
+      page-break-after: avoid;
+    }
+  
+    .no-print {
+      display: none !important;
     }
   }
   

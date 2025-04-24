@@ -1,30 +1,55 @@
-/* Layout Tweaks */
+/* ===== Layout Structure ===== */
 .wrapper {
     margin-top: 100px;
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 100px);
 }
 
 .main-content {
-    margin-left: 240px; 
+    margin-left: 300px;
     padding: 20px;
     flex: 1;
+    width: calc(100% - 240px);
 }
 
+.ann-container {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: flex-start;
+    padding: 20px 0;
+}
 
-/* Form Section */
+/* ===== Form Section ===== */
 .create-announcement-form {
-    background-color: #ffffff;
-    padding: 24px;
+    /* background-color: #ffffff; */
+    padding: 30px;
     /* border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     border: 1px solid #e1e5ee; */
-    max-width: 480px;
-    width: 100%;
+    width: 450px;
+    position: sticky;
+    top: 120px;
 }
 
 .create-announcement-form h3 {
     font-size: 22px;
     color: #25324B;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form-field {
     margin-bottom: 16px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .create-announcement-form input,
@@ -34,15 +59,20 @@
     font-size: 15px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    margin-bottom: 14px;
     background-color: #f9fafb;
-    transition: border-color 0.3s;
+    transition: all 0.3s ease;
+}
+
+.create-announcement-form textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .create-announcement-form input:focus,
 .create-announcement-form textarea:focus {
     border-color: #4640DE;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(70, 64, 222, 0.1);
 }
 
 .create-announcement-form button {
@@ -56,66 +86,152 @@
     border-radius: 8px;
     transition: background-color 0.3s;
     cursor: pointer;
+    margin-top: 8px;
 }
 
 .create-announcement-form button:hover {
     background-color: #372ebf;
 }
 
-/* Announcements List */
+/* ===== Announcements List ===== */
 .announcements {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-left: 40px;
     flex: 1;
+    min-width: 0; /* Fixes flexbox overflow issues */
+}
+
+.announcements .filter {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.announcements .filter h3 {
+    font-size: 20px;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.announcements .filter p {
+    font-size: 14px;
+    color: #64748b;
 }
 
 .announcement-card {
     background-color: #fff;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid #dce3ee;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+}
+
+.announcement-card:last-child {
+    margin-bottom: 0;
 }
 
 .announcement-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    border-color: #c7d2fe;
 }
 
 .announcement-card h3 {
-    font-size: 20px;
+    font-size: 18px;
     color: #1e293b;
     margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .announcement-card p {
     font-size: 15px;
     color: #475569;
     margin-bottom: 12px;
+    line-height: 1.5;
 }
 
 .announcement-card .date-time {
     font-size: 13px;
     color: #94a3b8;
     font-style: italic;
-    margin-top: auto;
 }
 
-/* Responsive Tweak */
-@media screen and (max-width: 900px) {
+.no-announcements {
+    color: #64748b;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 16px;
+}
+
+/* ===== Responsive Design ===== */
+@media screen and (max-width: 1024px) {
+    .ann-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .create-announcement-form {
+        width: 100%;
+        position: static;
+    }
+
+    .announcement-card {
+        padding: 18px;
+    }
+}
+
+@media screen and (max-width: 768px) {
     .wrapper {
+        margin-top: 80px;
         flex-direction: column;
     }
-
+    
     .main-content {
         margin-left: 0;
-        padding: 10px;
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .ann-container {
+        padding: 0;
     }
 
-    .announcements {
-        margin-left: 0;
+    .create-announcement-form h3 {
+        font-size: 20px;
+    }
+
+    .announcement-card h3 {
+        font-size: 16px;
+    }
+
+    .announcement-card p {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .create-announcement-form {
+        padding: 20px;
+    }
+    
+    .announcement-card {
+        padding: 16px;
+    }
+
+    .ann-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .create-announcement-form h3 {
+        font-size: 18px;
+    }
+
+    .announcement-card h3 {
+        font-size: 14px;
+    }
+
+    .announcement-card p {
+        font-size: 13px;
     }
 }

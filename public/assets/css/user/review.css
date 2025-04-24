@@ -1,0 +1,157 @@
+/* Main layout */
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Review section */
+.review-section {
+    flex: 1;
+    background-color: #fdfdfd;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    max-width: 700px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.review-section h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+/* Review form styling */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.review-form label {
+    font-weight: 600;
+    color: #333;
+}
+
+.review-form select,
+.review-form textarea {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.review-form select:focus,
+.review-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Submit button */
+.btn-submit-review {
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-submit-review:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+}
+
+/* Existing reviews section (if you add later) */
+.existing-reviews {
+    margin-top: 40px;
+}
+
+.existing-reviews h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.review-card {
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    background-color: #fff;
+}
+
+.review-rating {
+    font-weight: bold;
+    color: #ffc107;
+    margin-bottom: 6px;
+}
+
+.review-text {
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.review-author {
+    font-size: 14px;
+    color: #888;
+}
+.star-rating {
+    display: flex;
+    gap: 8px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.star-rating .star.selected,
+.star-rating .star:hover,
+.star-rating .star.hover {
+    color: #ffc107;
+    transition: color 0.2s;
+}
+/* User info section above form */
+.review-user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.profile-photo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.receiver-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .review-section {
+        padding: 20px;
+    }
+}

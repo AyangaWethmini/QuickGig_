@@ -7,7 +7,8 @@ $current = $_SERVER['REQUEST_URI'];
 // Advertisement section logic
 $adsActive = strpos($current, '/manager/advertisements') !== false;
 $advrsActive = strpos($current, '/manager/advertisers') !== false;
-$isAdsParentActive = $adsActive || $advrsActive;
+$revActive = strpos($current, '/manager/adsToBeReviewed') !== false;
+$isAdsParentActive = $adsActive || $advrsActive || $revActive;
 
 // Plans section logic
 $plansActive = strpos($current, '/manager/plans') !== false;
@@ -16,10 +17,14 @@ $isPlansParentActive = $plansActive || $subsActive;
 ?>
 
 <body>
+
+<div class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</div>
     <div class="sidebar-container">
         <div class="sidebar-items-container">
 
-            <a href="<?=ROOT?>/manager/profile" class="sidebar-item <?= strpos($current, '/manager/profile') !== false ? 'active' : '' ?>">
+            <a href="<?=ROOT?>/manager/profile" class="sidebar-item <?= strpos($current, '/manager/profile') !== false ? 'active' : '' ?>" data-tooltip="Profile">
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">Profile</span>
             </a>
@@ -40,6 +45,9 @@ $isPlansParentActive = $plansActive || $subsActive;
                 </a>
                 <a href="<?=ROOT?>/manager/advertisers" class="sidebar-item sub-item <?= $advrsActive ? 'active' : '' ?>">
                     <span class="sidebar-label">Advertisers</span>
+                </a>
+                <a href="<?=ROOT?>/manager/adsToBeReviewed" class="sidebar-item sub-item <?= $revActive ? 'active' : '' ?>">
+                    <span class="sidebar-label">To Review</span>
                 </a>
             </div>
 
@@ -72,7 +80,7 @@ $isPlansParentActive = $plansActive || $subsActive;
                 <span class="sidebar-label">Help Center</span>
             </a>
 
-            <div class="sidebar-item" data-link="login-logout.php">
+            <div class="sidebar-item" data-link="login-logout.php" href="<?=ROOT?>/login/logout" onclick="window.location.href='<?=ROOT?>/login/logout'">
                 <span class="sidebar-icon"><i class="fa-solid fa-power-off"></i></span>
                 <span class="sidebar-label">Log Out</span>
             </div>
@@ -85,5 +93,30 @@ $isPlansParentActive = $plansActive || $subsActive;
             const submenu = element.nextElementSibling;
             submenu.style.display = submenu.style.display === "block" ? "none" : "block";
         }
+
+
+        function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar-container');
+        sidebar.classList.toggle('expanded');
+    }
+
+    function toggleSubMenu(element) {
+        // Only toggle if sidebar is expanded on mobile
+        if (window.innerWidth > 768 || document.querySelector('.sidebar-container').classList.contains('expanded')) {
+            const submenu = element.nextElementSibling;
+            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        }
+    }
+
+    // Add tooltip data attributes to all sidebar items
+    document.addEventListener('DOMContentLoaded', function() {
+        const items = document.querySelectorAll('.sidebar-item:not(.sub-item)');
+        items.forEach(item => {
+            const label = item.querySelector('.sidebar-label');
+            if (label) {
+                item.setAttribute('data-tooltip', label.textContent);
+            }
+        });
+    });
     </script>
 </body>

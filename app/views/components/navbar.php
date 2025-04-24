@@ -20,6 +20,7 @@ if (isset($_SESSION['pp']) && !empty($_SESSION['pp'])) {
       <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']): ?>
         <li><a href="<?php echo ROOT;?>/subscription/premium"><i class="fa-solid fa-crown" style="color:rgb(200, 179, 62);"></i> Premium</a></li>
       <?php endif; ?>
+      <li><a href="<?php echo ROOT;?>/advertise">Advertise</a></li>
     </ul>
   </div>
 

@@ -8,7 +8,7 @@ class Home extends Controller
 
 	public function __construct()
 	{
-		// $this->adminModel = $this->model('AdminModel');
+		$this->adminModel = $this->model('AdminModel');
 		$this->planModel = $this->model('Plans');
 		$this->adModel = $this->model("Advertisement");
 		$this->adminModel = $this->model("AdminModel");
@@ -19,6 +19,7 @@ class Home extends Controller
 		$plans = $this->planModel->getPlans();
 		$announcements = $this->adminModel->getAnnouncements();
 		$advertisements = $this->adModel->getActiveAds();
+		$announcements = $this->adminModel->getAnnouncements();
 
 
 		$data = [
@@ -53,6 +54,11 @@ class Home extends Controller
 	{
 		$data = $this->planModel->getPlansWithStripe();
 		$this->view('premium', ['plans' => $data]);
+	}
+
+	public function advertise()
+	{
+		$this->view('advertise');
 	}
 
 

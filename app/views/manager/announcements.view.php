@@ -17,13 +17,13 @@
             <hr>
         </div>
 
-        <div class="flex-row" style="gap: 20px;" class="ann-container flex-row">
+        <div class="flex-row"  class="ann-container">
             <!-- Create Form -->
             <div class="create-announcement-form container flex-col">
                 <h3>Create Announcement</h3>
                 <form action="<?=ROOT?>/manager/createAnnouncement" method="POST">
                     <div class="form-field">
-                        <label for="content">Content</label><br>
+                        <label for="content" class="text text-grey">Content</label><br>
                         <textarea name="content" id="content" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-accent">Create Announcement</button>
@@ -54,13 +54,23 @@
         </div>
 
         <!-- Alert Boxes -->
-        <?php include_once APPROOT . '/views/components/alertBox.php'; ?>
-        <?php if (isset($_SESSION['error'])): ?>
-            <script>showAlert("<?= htmlspecialchars($_SESSION['error']) ?>", "error");</script>
-        <?php endif; ?>
-        <?php if (isset($_SESSION['success'])): ?>
-            <script>showAlert("<?= htmlspecialchars($_SESSION['success']) ?>", "success");</script>
-        <?php endif; ?>
-        <?php unset($_SESSION['error'], $_SESSION['success']); ?>
+        <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
     </div>
 </div>
+
+
+
+
+
+
+

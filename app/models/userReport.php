@@ -81,6 +81,77 @@ class userReport {
         return $result[0]->totalSpent ?? 0;
     }
 
+
+    public function getReviewsGivenCount($accountID) {
+        $query = "SELECT COUNT(reviewID) AS givenCount FROM review WHERE reviewerID = :accountID";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return $result[0]->givenCount ?? 0;
+    }
+
+    
+    public function getReviewsReceivedCount($accountID) {
+        $query = "SELECT COUNT(reviewID) AS receivedCount FROM review WHERE revieweeID = :accountID";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return $result[0]->receivedCount ?? 0;
+    }
+
+
+    public function getAverageRating($accountID) {
+        $query = "SELECT AVG(rating) AS averageRating FROM review WHERE revieweeID = :accountID";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return round($result[0]->averageRating ?? 0, 2); // Rounded to 2 decimal places
+    }
+    
+    public function getComplaintsCount($accountID){
+        $query = "SELECT COUNT(complaintID) AS complaintCount FROM complaints WHERE accountID = :accountID";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return $result[0]->complaintCount ?? 0;
+    }
+
+
+    public function getComplaintsMadeCount($accountID) {
+        $query = "SELECT COUNT(complaintID) AS madeCount FROM complaint WHERE complainantID = :accountID";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return $result[0]->madeCount ?? 0;
+    }
+
+
+    public function getComplaintsReceivedCount($accountID) {
+        $query = "SELECT COUNT(complaintID) AS receivedCount FROM complaint WHERE complaineeID = :accountID";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return $result[0]->receivedCount ?? 0;
+    }
+
+
+    public function getCompletedJobsCountProvided($accountID) {
+        $query = "SELECT COUNT(*) AS completedCount
+                  FROM applyjob a
+                  JOIN job j ON a.jobID = j.jobID
+                  WHERE j.accountID = :accountID
+                  AND a.applicationStatus = 5";
+
+        $params = ['accountID' => $accountID];
+        
+        $result = $this->query($query, $params);
+        return $result[0]->completedCount ?? 0;
+    }
+
+
+    public function getOngoingTasks($accountID){
+        $query = "SELECT COUNT(applicationID) AS ongoingTasks FROM apply_job WHERE seekerID = :accountID AND applicationStatus = 3";
+        $params = ['accountID' => $accountID];
+        $result = $this->query($query, $params);
+        return $result[0]->completedTasks ?? 0;
+    }
+    
+    
+    
     
     
 

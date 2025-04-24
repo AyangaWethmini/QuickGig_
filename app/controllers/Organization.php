@@ -2,9 +2,10 @@
 date_default_timezone_set('Asia/Colombo');
 class Organization extends Controller
 {
-    private $helpModel;
 
+    private $helpModel;
     protected $viewPath = "../app/views/organization/";
+    protected $userReportModel;
 
     use Database;
     public function __construct()
@@ -12,10 +13,11 @@ class Organization extends Controller
         $this->complaintModel = $this->model('Complaint');
         $this->findEmpModel = $this->model('FindEmployees');
         $this->jobStatusUpdater = $this->model('JobStatusUpdater');
-        $this->accountModel = $this->model('Account');
+        $this->userReportModel = $this->model('userReport');
         $this->adminModel = $this->model('AdminModel');
-        $this->helpModel = $this->model('Help');
+        $this->accountModel = $this->model('Account');
         $this->userModel = $this->model('User');
+        $this->helpModel = $this->model('Help');
     }
 
 
@@ -32,6 +34,7 @@ class Organization extends Controller
         $this->view('organizationProfile', $data);
     }
 
+
     function org_findEmployees()
     {
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -46,6 +49,18 @@ class Organization extends Controller
         ];
 
         $this->view('org_findEmployees', $data);
+    }
+
+    public function requestJob()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $jobModel = new FindEmployees();
+            $providerID = $_SESSION['user_id'];
+            $availableID = $_POST['jobID'];
+            $reqID = uniqid('REQ_');
+
+            $success = $jobModel->applyForJob($reqID, $providerID, $availableID);
+        }
     }
 
 
@@ -67,6 +82,8 @@ class Organization extends Controller
         $data = ['receivedRequests' => $receivedRequests];
         $this->view('org_jobListing_received', $data);
     }
+
+
 
     public function rejectJobRequest()
     {
@@ -130,126 +147,110 @@ class Organization extends Controller
         $this->view('org_messages');
     }
 
-    function org_report()
+    function userReport()
     {
-        $this->view('report');
+        // Check if user is logged in
+        // if (!isset($_SESSION['user_id'])) {
+        //     // Redirect to login or handle unauthorized access
+        //     header('Location: /login');
+        //     exit();
+        // }
+
+        $userID = $_SESSION['user_id'];
+
+        try {
+            $profile = $this->userReportModel->getUserDetails($userID);
+            $appliedJobs = $this->userReportModel->getAppliedJobs($userID);
+            $postedJobs = $this->userReportModel->getPostedJobs($userID);
+            // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
+            // $totalSpent = $this->userReportModel->getTotalSpent($userID);
+            $reviewsGivenCount = $this->userReportModel->getReviewsGivenCount($userID);
+            $reviewsReceivedCount = $this->userReportModel->getReviewsReceivedCount($userID);
+            $averageRating = $this->userReportModel->getAverageRating($userID);
+            $complaintsMadeCount = $this->userReportModel->getComplaintsMadeCount($userID);
+            $complaintsReceivedCount = $this->userReportModel->getComplaintsReceivedCount($userID);
+            // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
+            // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
+
+            $data = [];
+            $data = array_merge($data, [
+                // 'totalEarnings' => $totalEarnings,
+                // 'totalSpent' => $totalSpent,
+
+                // 'completedTasks' => $completedTasks,
+                // 'ongoingTasks' => $ongoingTasks
+            ]);
+
+            $data = [
+                'profile' => $profile,
+                'appliedJobs' => $appliedJobs,
+                'postedJobs' => $postedJobs,
+                'reviewsGivenCount' => $reviewsGivenCount,
+                'reviewsReceivedCount' => $reviewsReceivedCount,
+                'averageRating' => $averageRating,
+                'complaintsMadeCount' => $complaintsMadeCount,
+                'complaintsReceivedCount' => $complaintsReceivedCount,
+            ];;
+            $this->view('report', $data);
+        } catch (Exception $e) {
+            // Log the error and show a user-friendly message
+            error_log("Error in userReport: " . $e->getMessage());
+            $this->view('error', ['message' => 'Failed to generate report']);
+        }
     }
 
-    function organizationEditProfile()
+    public function updateProfile()
     {
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
-        }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $userId = $_SESSION['user_id'];
 
-        // Get user data
-        $userId = $_SESSION['user_id'];
-
-        $data = [
-            'orgName' => trim($_POST['orgName']),
-            'email' => trim($_POST['email']),
-            'phone' => trim($_POST['phone']),
-            'district' => trim($_POST['district']),
-            'addressLine1' => trim($_POST['addressLine1']),
-            'addressLine2' => trim($_POST['addressLine2']),
-            'city' => trim($_POST['city']),
-            'linkedIn' => trim($_POST['linkedIn']),
-            'facebook' => trim($_POST['facebook']),
-            'bio' => trim($_POST['bio']),
-            'pp' => null
-        ];
+            $data = [
+                'orgName' => trim($_POST['orgName']),
+                'email' => trim($_POST['email']),
+                'phone' => trim($_POST['phone']),
+                'district' => trim($_POST['district']),
+                'addressLine1' => trim($_POST['addressLine1']),
+                'addressLine2' => trim($_POST['addressLine2']),
+                'city' => trim($_POST['city']),
+                'linkedIn' => trim($_POST['linkedIn']),
+                'facebook' => trim($_POST['facebook']),
+                'bio' => trim($_POST['bio']),
+                'pp' => null
+            ];
 
 
-        // Handle profile picture upload
-        if (!empty($_FILES['pp']['tmp_name'])) {
-            $imageData = file_get_contents($_FILES['pp']['tmp_name']);
-            $data['pp'] = $imageData;
-            $_SESSION['pp'] = $imageData;
-        }
-        if ($this->accountModel->updateOrgData($userId, $data)) {
-            redirect('organization/organizationProfile'); // Reload page with updated data
-        } else {
-            die("Something went wrong. Please try again.");
+            // Handle profile picture upload
+            if (!empty($_FILES['pp']['tmp_name'])) {
+                $imageData = file_get_contents($_FILES['pp']['tmp_name']);
+                $data['pp'] = $imageData;
+                $_SESSION['pp'] = $imageData;
+            }
+            if ($this->accountModel->updateOrgData($userId, $data)) {
+                redirect('organization/organizationProfile'); // Reload page with updated data
+            } else {
+                die("Something went wrong. Please try again.");
+            }
         }
     }
-
 
     //help center functionalities 
     function org_helpCenter()
     {
-        $data = $this->helpModel->getUserQuestions($_SESSION['user_id']);
-        $this->view('org_helpCenter', ['questions' => $data]);
-    }
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+        $receivedModel = $this->model('ReceivedProvider');
 
-    function submitQuestion()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $accountID = $_SESSION['user_id'];
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
-
-            // Ensure none of the fields are empty
-            if (empty($title) || empty($description)) {
-                $_SESSION['error'] = 'Title and description cannot be empty.';
-                header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
-                exit;
-            }
-
-            $helpID = uniqid("HLP", true);
-
-            $this->helpModel->createQuestion([
-                'helpID' => $helpID,
-                'accountID' => $accountID,
-                'title' => $title,
-                'description' => $description
-            ]);
-
-            header('Location: ' . ROOT . '/jobProvider/helpCenter');
-        }
-    }
-
-    function editQuestion($id = null)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
-
-            // Ensure none of the fields are empty
-            if (empty($title) || empty($description)) {
-                $_SESSION['error'] = 'Title and description cannot be empty.';
-                header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
-                exit;
-            }
-
-            $this->helpModel->update($id, [
-                'title' => $title,
-                'description' => $description
-            ]);
-
-            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        if (!empty($filterDate)) {
+            $receivedRequests = $receivedModel->filterReceivedRequestsByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $receivedRequests = $receivedModel->searchReceivedRequests($userID, $searchTerm);
         } else {
-            $question = $this->helpModel->getQuestionById($id);
-            $data = [
-                'question' => $question
-            ];
-            $this->view('editQuestion', $data);
+            $receivedRequests = $receivedModel->getReceivedRequests();
         }
-    }
 
-    function deleteQuestion($id = null)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->helpModel->delete($id);
-            header('Location: ' . ROOT . '/jobProvider/helpCenter');
-        }
-    }
-
-
-    //help center done
-
-    function org_reviews()
-    {
-        $this->view('org_reviews');
+        $data = ['receivedRequests' => $receivedRequests];
+        $this->view('org_helpCenter', $data);
     }
 
     function org_jobListing_myJobs()
@@ -496,51 +497,6 @@ class Organization extends Controller
         }
     }
 
-    function complaints()
-    {
-        $complaints = $this->complaintModel->getComplaints();
-        $data = [
-            'complaints' => $complaints
-        ];
-        $this->view('org_complaints', $data);
-    }
-    public function deleteComplaint($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->complaintModel->delete($id);
-            header('Location: ' . ROOT . '/organization/complaints');
-        }
-    }
-    public function updateComplaint($id = null)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $content = trim($_POST['complainInfo']);
-            $complaintDate = date('Y-m-d');
-            $complaintTime = date('h:i:s');
-
-            $this->complaintModel->update($id, [
-                'content' => $content,
-                'complaintDate' => $complaintDate,
-                'complaintTime' => $complaintTime
-            ]);
-
-            header('Location: ' . ROOT . '/organization/complaints');
-        } else {
-            $complaint = $this->complaintModel->getComplaintById($id);
-
-            $data = [
-                'complaint' => $complaint
-            ];
-
-            $this->view('updateComplaint', $data);
-        }
-    }
-
-    function settings()
-    {
-        $this->view('settings');
-    }
-
     public function job()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -590,6 +546,170 @@ class Organization extends Controller
         }
     }
 
+    function org_postJob()
+    {
+        $this->view('org_postJob');
+    }
+
+    function org_report()
+    {
+        $this->view('report');
+    }
+
+    function organizationEditProfile()
+    {
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login'); // Redirect to login if not authenticated
+        }
+
+        // Get user data
+        $userId = $_SESSION['user_id'];
+
+        $data = [
+            'orgName' => trim($_POST['orgName']),
+            'email' => trim($_POST['email']),
+            'phone' => trim($_POST['phone']),
+            'district' => trim($_POST['district']),
+            'addressLine1' => trim($_POST['addressLine1']),
+            'addressLine2' => trim($_POST['addressLine2']),
+            'city' => trim($_POST['city']),
+            'linkedIn' => trim($_POST['linkedIn']),
+            'facebook' => trim($_POST['facebook']),
+            'bio' => trim($_POST['bio']),
+            'pp' => null
+        ];
+
+
+        // Handle profile picture upload
+        if (!empty($_FILES['pp']['tmp_name'])) {
+            $imageData = file_get_contents($_FILES['pp']['tmp_name']);
+            $data['pp'] = $imageData;
+            $_SESSION['pp'] = $imageData;
+        }
+        if ($this->accountModel->updateOrgData($userId, $data)) {
+            redirect('organization/organizationProfile'); // Reload page with updated data
+        } else {
+            die("Something went wrong. Please try again.");
+        }
+    }
+
+    function submitQuestion()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $accountID = $_SESSION['user_id'];
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
+                exit;
+            }
+
+            $helpID = uniqid("HLP", true);
+
+            $this->helpModel->createQuestion([
+                'helpID' => $helpID,
+                'accountID' => $accountID,
+                'title' => $title,
+                'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+    function editQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+
+            // Ensure none of the fields are empty
+            if (empty($title) || empty($description)) {
+                $_SESSION['error'] = 'Title and description cannot be empty.';
+                header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
+                exit;
+            }
+
+            $this->helpModel->update($id, [
+                'title' => $title,
+                'description' => $description
+            ]);
+
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        } else {
+            $question = $this->helpModel->getQuestionById($id);
+            $data = [
+                'question' => $question
+            ];
+            $this->view('editQuestion', $data);
+        }
+    }
+
+    function deleteQuestion($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->helpModel->delete($id);
+            header('Location: ' . ROOT . '/jobProvider/helpCenter');
+        }
+    }
+
+
+    //help center done
+
+    function org_reviews()
+    {
+        $this->view('org_reviews');
+    }
+
+    function complaints()
+    {
+        $complaints = $this->complaintModel->getComplaints();
+        $data = [
+            'complaints' => $complaints
+        ];
+        $this->view('org_complaints', $data);
+    }
+    public function deleteComplaint($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->complaintModel->delete($id);
+            header('Location: ' . ROOT . '/organization/complaints');
+        }
+    }
+    public function updateComplaint($id = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $content = trim($_POST['complainInfo']);
+            $complaintDate = date('Y-m-d');
+            $complaintTime = date('h:i:s');
+
+            $this->complaintModel->update($id, [
+                'content' => $content,
+                'complaintDate' => $complaintDate,
+                'complaintTime' => $complaintTime
+            ]);
+
+            header('Location: ' . ROOT . '/organization/complaints');
+        } else {
+            $complaint = $this->complaintModel->getComplaintById($id);
+
+            $data = [
+                'complaint' => $complaint
+            ];
+
+            $this->view('updateComplaint', $data);
+        }
+    }
+
+    function settings()
+    {
+        $this->view('settings');
+    }
+
     public function updateJob($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -632,12 +752,6 @@ class Organization extends Controller
         } else {
             echo json_encode(["status" => "error", "message" => "You have already requested for this."]);
         }
-    }
-
-
-    function org_postJob()
-    {
-        $this->view('org_postJob');
     }
 
     function org_announcements()

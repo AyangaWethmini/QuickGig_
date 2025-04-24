@@ -62,10 +62,13 @@ class StripeService {
 
     public function cancelSubscription($subscriptionId) {
         try {
-            return $this->stripe->subscriptions->cancel($subscriptionId);
+            return \Stripe\Subscription::update(
+                $subscriptionId,
+                ['cancel_at_period_end' => true]
+            );
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            error_log('Stripe API Error: ' . $e->getMessage());
-            return null;
+            error_log("Stripe API Error: " . $e->getMessage());
+            return false;
         }
     }
 

@@ -19,11 +19,11 @@
         <div class="testamonial container">
             <img src="<?= ROOT ?>/assets/images/profile.png" alt="profile picture" class="profile">
             <div class="card">
-                <h5>Adam Slander</h5>
-                <h5>Lead Engineer at Canva</h5>
+                <h5>Jaith Herath</h5>
+                <h5>Cafe Owner</h5>
                 <div class=" flex-row">
                     <p class="quote">"</p>
-                    <p class="comment">“Great platform for the job seeker that searching for new career heights.”</p>
+                    <p class="comment">“Great platform for the job providers that searching for the perfect employee..”</p>
                 </div>
 
             </div>

@@ -2,26 +2,110 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<!-- Include the subscriptions component -->
-
-<?php
-if (
-    !isset($_SESSION['subscription_popup_shown']) &&
-    isset($_SESSION['role']) &&
-    $_SESSION['role'] !== 1 &&
-    $_SESSION['role'] > 1
-) {
-    include APPROOT . '/views/components/subscriptions.php';
-    $_SESSION['subscription_popup_shown'] = true;
-}
-?>
-
-<script>
-    // Function to hide the subscription popup
-    function hideSubscriptionPopup() {
-        document.querySelector('.sub-background').style.display = 'none';
+<style>
+    .blurred {
+        filter: blur(5px);
+        transition: filter 0.3s ease-in-out;
     }
-</script>
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(15px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .popup-content {
+        position: relative;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        width: 500px;
+        max-width: 90%;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: slideIn 0.4s ease-in-out;
+    }
+
+    .popup-content img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        margin: 20px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btns {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .cancel-button,
+    .learn-more {
+        margin-top: 20px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background 0.3s ease;
+    }
+
+    .cancel-button {
+        background: #ff4d4f;
+        color: #ffffff;
+    }
+
+    .cancel-button:hover {
+        background: #ff7875;
+    }
+
+    .learn-more {
+        background: #26a4ff;
+        color: #ffffff;
+    }
+
+    .learn-more:hover {
+        background: #4db8ff;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+</style>
+
 <div class="home-announcement">
     <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
         <div class="home-announcement-content">
@@ -109,7 +193,7 @@ if (
 
 </div>
 
-<?php include_once APPROOT . '/views/components/advertisemetsSlideshow.php'; ?>
+
 
 <div class="featured flex-row">
     <p class="typography" style="font-size: 48px;">
@@ -144,19 +228,74 @@ if (
     </footer>
 </div>
 
+<script>
+    console.log(<?php echo json_encode($data['advertisements'][0]); ?>);
+</script>
+
+<?php
+
+if (
+    isset($_SESSION['user_role']) &&
+    $_SESSION['user_role'] != 0 &&
+    $_SESSION['user_role'] != 1 &&
+    isset($_SESSION['plan_id']) &&
+    $_SESSION['plan_id'] == -1
+) {
+    $lastAdTime = $_SESSION['last_ad_time'] ?? 0;
+    $currentTime = time();
+    $timeDifference = $currentTime - $lastAdTime;
+
+    // Show the ad only if 20 minutes have passed since the last ad
+    if ($timeDifference >= 1200) {
+        $_SESSION['last_ad_time'] = $currentTime;
+        $ad = $data['advertisements'][0] ?? null;
+?>
+        <div id="ad-popup" class="popup-overlay">
+            <div class="popup-content">
+                <?php if ($ad && !empty($ad->img)): ?>
+                    <?php
+                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                    $mimeType = $finfo->buffer($ad->img);
+                    ?>
+                    <a href="<?= $ad->link ?>" target="_blank">
+                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad Image" style="width: 200px; height: 200px;">
+                        <p><?php htmlspecialchars($ad->adTitle); ?></p>
+                    </a>
+                    <script>
+                        // Record ad view on page load
+                        recordAdView(<?= $ad->advertisementId ?>);
+                    </script>
+                <?php else: ?>
+                    <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available">
+                    <!-- <p><?php htmlspecialchars($ad->adTitle); ?></p> -->
+                <?php endif; ?>
+                <div class="btns">
+                    <button class="cancel-button" onclick="closePopup()">Cancel</button>
+                    <button class="learn-more btn btn-accent" onclick="recordAdClick(event, <?= $ad->advertisementID ?>, '<?= $ad->link ?>')">Learn More</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Ensure ad view is recorded each time the ad is shown
+            recordAdView(<?= $ad->advertisementId ?>);
+        </script>
+<?php
+    }
+}
+?>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
-
 <script>
-    function hideSubscriptionPopup() {
-        document.querySelector('.sub-background').style.display = 'none';
-    }
+    // function hideSubscriptionPopup() {
+    //     document.querySelector('.sub-background').style.display = 'none';
+    // }
 
     function recordAdClick(event, adId, adLink) {
         event.preventDefault();
 
         // Send AJAX request to record click
-        fetch(`<?= ROOT ?>/manager/click/${adId}`, {
+        fetch(`<?php echo ROOT ?>/manager/click/${adId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -174,7 +313,7 @@ if (
 
     function recordAdView(adId) {
         if (adId && !isNaN(adId)) {
-            fetch(`<?= ROOT ?>/manager/adView/${adId}`, {
+            fetch(`<?php echo ROOT ?>/manager/adView/${adId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -195,4 +334,22 @@ if (
             console.error('Invalid ad ID');
         }
     }
+
+    const popup = document.getElementById('ad-popup');
+    const content = document.getElementById('main-content');
+
+    function closePopup() {
+        if (popup) popup.style.display = 'none';
+        if (content) content.classList.remove('blurred');
+    }
+
+    window.onload = function() {
+        if (popup) {
+            popup.style.display = 'flex';
+            if (content) content.classList.add('blurred');
+            setTimeout(() => {
+                closePopup();
+            }, 10000);
+        }
+    };
 </script>

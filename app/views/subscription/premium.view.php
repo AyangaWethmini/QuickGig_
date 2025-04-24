@@ -20,7 +20,7 @@
                         <h3 class="plan-name"><?= htmlspecialchars($plan->planName) ?></h3>
                         <p class="plan-price"><?= htmlspecialchars($plan->price) ?> LKR/Month</p>
                         <ul class="plan-features">
-                            <li><?= htmlspecialchars($plan->postLimit) ?> Posts/month</li>
+                            <li><?= $plan->postLimit == 10000 ? 'Unlimited' : htmlspecialchars($plan->postLimit) ?> Posts/month</li>
                             <li><?= htmlspecialchars($plan->description) ?></li>
                             
                             <?php if ($plan->planID != -1): ?>

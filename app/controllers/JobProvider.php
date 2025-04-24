@@ -8,6 +8,8 @@ class JobProvider extends Controller
     private $managerModel;
     private $accountSubscriptionModel;
     private $userReportModel;
+    private $seekerDoneModel;
+    private $providerDoneModel;
 
     public function __construct()
     {
@@ -21,6 +23,9 @@ class JobProvider extends Controller
         $this->accountSubscriptionModel = $this->model('AccountSubscription');
         $this->userReportModel = $this->model('userReport');
         $this->userModel = $this->model('User');
+        $this->reviewModel = $this->model('Review');
+        $this->seekerDoneModel = $this->model('SeekerDone');
+        $this->providerDoneModel = $this->model('ProviderDone');
     }
     protected $viewPath = "../app/views/jobProvider/";
 
@@ -34,7 +39,8 @@ class JobProvider extends Controller
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
-        $this->view('individualProfile', $data);
+        $rating = $this->reviewModel->readReview($userId, 1);
+        $this->view('individualProfile', ['data' => $data, 'rating' => $rating]);
     }
 
     public function changePassword()
@@ -228,7 +234,17 @@ class JobProvider extends Controller
 
     function viewEmployeeProfile()
     {
-        $this->view('viewEmployeeProfile');
+        $account = $this->model('account');
+        $role = $account->findrole($employeeID);
+        $employeeData = null;
+
+        if ($role['roleID'] == 2) {
+            $employeeData = $account->getUserData($employeeID);
+        } else if ($role['roleID']) {
+            $employeeData = $account->getOrgData($employeeID);
+        }
+        // Pass data as associative array to the view
+        $this->view('viewEmployeeProfile', $employeeData);
     }
 
     function subscription()
@@ -354,47 +370,72 @@ class JobProvider extends Controller
 
     function reviews()
     {
-        $this->view('reviews');
+        $accountID = $_SESSION['user_id'];
+        $review = $this->model('review');
+        $data = $review->readReview($accountID, 1);
+        $this->view('reviews', $data);
+    }
+    function review($jobId)
+    {
+        $job = $this->model('job');
+        $account = $this->model('Account');
+        $SeekerById = $job->getJobSeekerById($jobId);
+        $revieweeData = $account->getUserData($SeekerById->seekerID);
+        $revieweeData['jobID'] = $jobId;
+        $this->view('review', $revieweeData);
     }
 
     function userReport()
     {
         // Check if user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            // Redirect to login or handle unauthorized access
-            header('Location: /login');
-            exit();
-        }
+        // if (!isset($_SESSION['user_id'])) {
+        //     // Redirect to login or handle unauthorized access
+        //     header('Location: /login');
+        //     exit();
+        // }
 
         $userID = $_SESSION['user_id'];
 
         try {
             $profile = $this->userReportModel->getUserDetails($userID);
-            $appliedJobs = $this->userReportModel->getAppliedJobs($userID);
+            $appliedJobs = $this->providerDoneModel->getApplyJobCompleted();
+            $appliedJobs1 = $this->seekerDoneModel->getApplyJobCompleted();
+            $requestedJobs = $this->providerDoneModel->getReqAvailableCompleted();
+            $requestedJobs1 = $this->seekerDoneModel->getReqAvailableCompleted();
             $postedJobs = $this->userReportModel->getPostedJobs($userID);
-            // $appliedJobs = [];
-            // $postedJobs = [];
-
-            // $findEmpModel = $this->model('FindEmployees');
-            // $postedJobs = $findEmpModel->getPostedJobs($userID);
+            // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
+            // $totalSpent = $this->userReportModel->getTotalSpent($userID);
+            $reviewsGivenCount = $this->userReportModel->getReviewsGivenCount($userID);
+            $reviewsReceivedCount = $this->userReportModel->getReviewsReceivedCount($userID);
+            $averageRating = $this->userReportModel->getAverageRating($userID);
+            $complaintsMadeCount = $this->userReportModel->getComplaintsMadeCount($userID);
+            $complaintsReceivedCount = $this->userReportModel->getComplaintsReceivedCount($userID);
+            // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
+            // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
 
 
             $data = [
                 'profile' => $profile,
                 'appliedJobs' => $appliedJobs,
-                'postedJobs' => $postedJobs
-            ];
-
+                'appliedJobs1' => $appliedJobs1,
+                'postedJobs' => $postedJobs,
+                'reviewsGivenCount' => $reviewsGivenCount,
+                'reviewsReceivedCount' => $reviewsReceivedCount,
+                'averageRating' => $averageRating,
+                'complaintsMadeCount' => $complaintsMadeCount,
+                'complaintsReceivedCount' => $complaintsReceivedCount,
+                'requestedJobs' => $requestedJobs,
+                'requestedJobs1' => $requestedJobs1
+            ];;
             $this->view('report', $data);
         } catch (Exception $e) {
-            //     // Log the error and show a user-friendly message
+            // Log the error and show a user-friendly message
             error_log("Error in userReport: " . $e->getMessage());
-            //     $this->view('error', ['message' => 'Failed to generate report']);
+            $this->view('error', ['message' => 'Failed to generate report']);
         }
     }
 
-
-    public function jobListing_myJobs()
+    function jobListing_myJobs()
     {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -934,5 +975,21 @@ class JobProvider extends Controller
         // If not a POST request or confirmation not provided, redirect
         header('Location: ' . ROOT . '/jobProvider/settings');
         exit;
+    }
+
+    public function addReview($accountID)
+    {
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
+        $roleID     = 2;
+
+        $review = $this->model('review');
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
+        header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
     }
 }

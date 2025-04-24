@@ -29,95 +29,53 @@ protectRoute([2]);?>
         </div>
         <div class="reviews-container container">
             
-            <div class="review-card container">
-                <div class="review-card-left flex-row">
-                    <div class="pfp">
-                        <img src="<?=ROOT?>/assets/images/person3.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
-                    </div>
-                
-                    <div class="review-details">
-                        <h2>Smith Greenwood</h2>
-                        <p>Bartender</p>
-                        <p>2024-11-27</p>
-                        <p>03:30 PM</p>
-                        <div style="display:flex;flex-direction:column; gap:20px">
-                            <div class="rating">
-                                <span>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                </span>
+        <?php if (!empty($data)): ?>
+                <?php foreach ($data as $review): ?>
+                    <div class="review-card container">
+                        <div class="review-card-left flex-row">
+                            <div class="pfp">
+                            <?php if ($review->pp): ?>
+                                <?php
+                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                    $mimeType = $finfo->buffer($review->pp);
+                                ?>
+                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($review->pp) ?>" alt="reviewee Image" class="profile-pic-reviewed-employee">
+                            <?php else: ?>
+                                <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" class="profile-pic-reviewed-employee">
+                            <?php endif; ?>
                             </div>
-                        
-                            <p class="review-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="review-card container">
-                <div class="review-card-left flex-row">
-                    <div class="pfp">
-                        <img src="<?=ROOT?>/assets/images/person2.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
-                    </div>
-                
-                    <div class="review-details">
-                        <h2>Sarah Ken</h2>
-                        <p>Bartender</p>
-                        <p>2024-11-24</p>
-                        <p>03:30 PM</p>
-                        <div style="display:flex;flex-direction:column; gap:20px">
-                            <div class="rating">
-                                <span>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                </span>
-                            </div>
-                        
-                            <p class="review-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="review-details">
+                                <h2><?= htmlspecialchars($review->reviewerName) ?></h2>
+                                <p><?= htmlspecialchars($review->jobTitle) ?></p>
+                                <p><?= htmlspecialchars($review->reviewDate) ?></p>
+                                <p><?= htmlspecialchars($review->reviewTime) ?></p>
+                                <div style="display:flex; flex-direction:column; gap:20px">
+                                    <div class="rating">
+                                        <span>
+                                            <?php for ($i = 0; $i < 5; $i++): ?>
+                                                <?php if ($i < $review->rating): ?>
+                                                    <i class="fa fa-star star-active mx-1"></i>
+                                                <?php else: ?>
+                                                    <i class="fa fa-star star-inactive mx-1"></i>
+                                                <?php endif; ?>
+                                            <?php endfor; ?>
+                                        </span>
+                                    </div>
 
-            <div class="review-card container">
-                <div class="review-card-left flex-row">
-                    <div class="pfp">
-                        <img src="<?=ROOT?>/assets/images/person4.jpg" alt="Profile Picture" class="profile-pic-reviewed-employee">
-                    </div>
-                
-                    <div class="review-details">
-                        <h2>Samson Waltz</h2>
-                        <p>Bartender</p>
-                        <p>2024-11-19</p>
-                        <p>05:37 PM</p>
-                        <div style="display:flex;flex-direction:column; gap:20px">
-                            <div class="rating">
-                                <span>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                    <i class="fa fa-star star-active mx-1"></i>
-                                </span>
+                                    <p class="review-text">
+                                        <?= htmlspecialchars($review->content) ?>
+                                    </p>
+                                </div>
                             </div>
-                        
-                            <p class="review-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla distinctio id adipisci dicta facere tempora atque veniam! Rerum, minus expedita nobis magnam vel quibusdam natus!
-                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="margin:20px 0;">No reviews yet.</p>
+            <?php endif; ?>
+
+                
 
         </div>
     </div>

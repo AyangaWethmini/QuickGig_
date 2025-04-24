@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Colombo');
 require_once '../app/services/StripeService.php';
 
 class Subscription extends Controller {
@@ -49,16 +49,16 @@ class Subscription extends Controller {
         $userRole = $_SESSION['user_role'];
 
         // Role-based plan restriction
-        $rolePlanMap = [
-            2 => 'price_1RBC4LFq0GU0Vr5TFeEmkI37', // Role 2 -> Individual Plan
-            3 => 'price_1RBC5KFq0GU0Vr5TMvpc9eDH', // Role 3 -> Organization Plan
-        ];
+        // $rolePlan= [
+        //     2 => 'price_1RBC4LFq0GU0Vr5TFeEmkI37', // Role 2 -> Individual Plan
+        //     3 => 'price_1RBC5KFq0GU0Vr5TMvpc9eDH', // Role 3 -> Organization Plan
+        // ];
 
-        if (!isset($rolePlanMap[$userRole]) || $rolePlanMap[$userRole] !== $priceID) {
-            $_SESSION['error'] = 'Your account in not elligible to subscribe to this plan';
-            header('Location: ' . ROOT . '/subscription/premium');
-            exit;
-        }
+        // if (!isset($rolePlanMap[$userRole]) || $rolePlanMap[$userRole] !== $priceID) {
+        //     $_SESSION['error'] = 'Your account in not eligible to subscribe to this plan';
+        //     header('Location: ' . ROOT . '/subscription/premium');
+        //     exit;
+        // }
 
         $customerID = $this->accountSubscriptionModel->ensureStripeCustomer($accountID, $email);
         
@@ -144,6 +144,7 @@ class Subscription extends Controller {
             $planMap = $this->getStripePlanMap();
             if (isset($planMap[$priceID])) {
                 $this->accountModel->updatePlan($accountID, $planMap[$priceID]);
+                $_SESSION['plan_id'] = $planMap[$priceID]; // Update session with plan ID
             }
 
             $this->view('success', ['message' => 'Subscription activated successfully!']);
@@ -200,10 +201,6 @@ class Subscription extends Controller {
                 $this->handleSubscriptionCancelled($subscription);
                 break;
 
-            case 'customer.subscription.deleted':
-                $subscription = $event->data->object;
-                $this->handleSubscriptionCancelled($subscription);
-                break;
             
                 
             default:
@@ -273,19 +270,16 @@ class Subscription extends Controller {
             return;
         }
         
-        // Update subscription status
-        $this->accountSubscriptionModel->updateSubscriptionStatus($subscriptionID, 'canceled');
+        // Update only toBeCancelled flag (status remains active until period ends)
+        $this->accountSubscriptionModel->updateSubscriptionCancellationFlag($subscriptionID, 1);
         
-        // Update account plan
-        $query = "UPDATE account SET planID = NULL WHERE accountID = :accountID";
-        $params = ['accountID' => $accountID];
-        $this->query($query, $params);
+        error_log("Marked subscription $subscriptionID for cancellation via webhook");
     }
 
     private function getStripePlanMap() {
         return [
-            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1, // individual
-            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, // organization
+            'price_1RHKF1Fq0GU0Vr5TCiCsqBUP' => 1, // plus
+            'price_1RHKHWFq0GU0Vr5TmIl62PXC' => 2, // pro
         ];
     }
 
@@ -300,9 +294,8 @@ class Subscription extends Controller {
     
         $accountID = $_SESSION['user_id'];
         
-        // Get user's active subscription
         $subscription = $this->accountSubscriptionModel->getActiveSubscriptions($accountID);
-        
+    
         if (empty($subscription)) {
             $_SESSION['error'] = 'No active subscription found';
             header('Location: ' . ROOT . '/subscription');
@@ -310,20 +303,18 @@ class Subscription extends Controller {
         }
     
         $subscriptionID = $subscription[0]->stripe_subscription_id;
-        
-        $result = $this->accountSubscriptionModel->cancelSubscription($subscriptionID, $accountID);
-        
+        $result = $this->accountSubscriptionModel->markForCancellation($subscriptionID, $accountID);
+    
         if ($result) {
-            $_SESSION['success'] = 'Subscription cancelled successfully';
+            $_SESSION['success'] = 'Subscription will be cancelled at the end of your billing period';
         } else {
-            $_SESSION['error'] = 'Failed to cancel subscription';
+            $_SESSION['error'] = 'Failed to process cancellation';
         }
-        
+    
         header('Location: ' . ROOT . '/subscription/cancelConfirm');
         exit;
     }
+    
 
-    public function getSubIncome($startDate = null, $endDate=null){
-        
-    }
+
 }
