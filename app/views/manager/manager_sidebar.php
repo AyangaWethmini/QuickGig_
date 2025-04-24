@@ -8,7 +8,7 @@ $current = $_SERVER['REQUEST_URI'];
 $adsActive = strpos($current, '/manager/advertisements') !== false;
 $advrsActive = strpos($current, '/manager/advertisers') !== false;
 $revActive = strpos($current, '/manager/adsToBeReviewed') !== false;
-$isAdsParentActive = $adsActive || $advrsActive;
+$isAdsParentActive = $adsActive || $advrsActive || $revActive;
 
 // Plans section logic
 $plansActive = strpos($current, '/manager/plans') !== false;
