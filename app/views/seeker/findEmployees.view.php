@@ -137,31 +137,29 @@ protectRoute([2]); ?>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="job-card-right flex-row">
-                        <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findJob->jobID ?>')">Request</button>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Message</a></li>
-                                <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
-                                <li><a href="#" onclick="viewLocation('<?= htmlspecialchars($findJob->location) ?>')">View Location</a></li>
-                            </ul>
+                        <div class="job-card-right flex-row">
+                            <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findJob->jobID ?>')">Request</button>
+                            <div class="dropdown">
+                                <button class="dropdown-toggle">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Message</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="#" onclick="viewLocation('<?= htmlspecialchars($findJob->location) ?>')">View Location</a></li>
+                                </ul>
+                            </div>
                         </div>
-
                     </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="empty-container">
+                    <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
+                    <p class="empty-text">No Jobs Found</p>
+                </div>
+            <?php endif; ?>
         </div>
-    <?php endforeach; ?>
-<?php else: ?>
-    <div class="empty-container">
-        <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
-        <p class="empty-text">No Jobs Found</p>
     </div>
-<?php endif; ?>
-    </div>
-</div>
 </div>
 
 <!-- Confirmation Popup -->
