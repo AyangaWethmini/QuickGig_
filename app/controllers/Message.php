@@ -73,7 +73,9 @@ class Message extends Controller {
             $data = [
                 'receiver_id' => $receiverId,
                 'pp' => $userData['pp'],
-                'username' => ($userData['fname'] . ' ' . $userData['lname'])
+                'username' => ($userData['fname'] . ' ' . $userData['lname']),
+                'badge' => $userData['badge']
+
             ];
             
         }else if($role['roleID'] == 3){
@@ -81,7 +83,8 @@ class Message extends Controller {
             $data = [
                 'receiver_id' => $receiverId,   
                 'pp' => $userData['pp'],
-                'username' => ($userData['orgName'])
+                'username' => ($userData['orgName']),
+                'badge' => $userData['badge']
             ];
         }    
         $this->view('messages/userchat', $data);

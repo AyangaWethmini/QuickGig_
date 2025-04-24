@@ -9,17 +9,17 @@ protectRoute([2, 3]); ?>
 
     <div class="wrapper">
 
-    <?php
-            if($_SESSION['user_role'] == 2){
-                if ($_SESSION['current_role'] == 1) {
-                    require APPROOT . '/views/jobProvider/jobProvider_sidebar.php';
-                } else if ($_SESSION['current_role'] == 2) {
-                    require APPROOT . '/views/seeker/seeker_sidebar.php';
-                }
-            }else if($_SESSION['user_role'] == 3){
-                require APPROOT . '/views/jobProvider/organization_sidebar.php';
+        <?php
+        if ($_SESSION['user_role'] == 2) {
+            if ($_SESSION['current_role'] == 1) {
+                require APPROOT . '/views/jobProvider/jobProvider_sidebar.php';
+            } else if ($_SESSION['current_role'] == 2) {
+                require APPROOT . '/views/seeker/seeker_sidebar.php';
             }
-    ?>
+        } else if ($_SESSION['user_role'] == 3) {
+            require APPROOT . '/views/jobProvider/organization_sidebar.php';
+        }
+        ?>
         <div class="inner-wrapper">
             <div class="chat-header">
                 <button onclick="history.back()" class="back-btn">← Back</button>
@@ -36,6 +36,13 @@ protectRoute([2, 3]); ?>
                         <?php endif; ?>
                     </div>
                     <span class="username"><?= $data['username'] ?></span>
+                    <div class="flex-row">
+                        
+                        <?php if ($data['badge'] == 1): ?>
+                            <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                        <?php endif; ?>
+
+                    </div>
                 </div>
             </div>
 

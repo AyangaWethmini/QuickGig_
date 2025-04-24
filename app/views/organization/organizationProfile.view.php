@@ -20,7 +20,13 @@ protectRoute([3]); ?>
                         alt="Profile Photo">
                     <div class="profile-intro-cover">
                         <div class="profile-intro">
-                            <h2><?= htmlspecialchars(($data['orgName'] ?? '')) ?></h2>
+                        <div class="flex-row fit-content">
+                                <h2><?= htmlspecialchars(($data['orgName'] ?? '')) ?></h2>
+                                <?php if ($data['badge'] == 1): ?>
+                                    <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                                <?php endif; ?>
+
+                            </div>
 
                             <p>Farm Owner</p><br>
                             <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>

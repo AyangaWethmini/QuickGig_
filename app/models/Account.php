@@ -191,13 +191,16 @@ class Account
 
         try {
             $sql = "
-           SELECT 
-                a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
-                i.gender, i.nic, i.fname, i.lname, i.phone, i.bio
-            FROM account a
-            INNER JOIN individual i ON a.accountID = i.accountID
-            WHERE a.accountID = :user_id
-        ";
+    SELECT 
+        a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
+        i.gender, i.nic, i.fname, i.lname, i.phone, i.bio,
+        p.badge
+    FROM account a
+    INNER JOIN individual i ON a.accountID = i.accountID
+    LEFT JOIN plan p ON a.planID = p.planID
+    WHERE a.accountID = :user_id
+";
+
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':user_id', $userId);
@@ -268,13 +271,16 @@ class Account
 
         try {
             $sql = "
-           SELECT 
-                a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
-                o.orgName, o.phone, o.bio
-            FROM account a
-            INNER JOIN organization o ON a.accountID = o.accountID
-            WHERE a.accountID = :user_id
-        ";
+    SELECT 
+        a.accountID, a.email, a.district, a.addressLine1, a.addressLine2, a.city, a.linkedIn, a.facebook, a.pp, 
+        o.orgName, o.phone, o.bio,
+        p.badge
+    FROM account a
+    INNER JOIN organization o ON a.accountID = o.accountID
+    LEFT JOIN plan p ON a.planID = p.planID
+    WHERE a.accountID = :user_id
+";
+
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':user_id', $userId);

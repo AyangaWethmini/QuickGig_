@@ -1,25 +1,31 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/individualProfile.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/reviews.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/jobListing.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/individualProfile.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/reviews.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing.css">
 
 <body>
-<script src="<?=ROOT?>/assets/js/jobProvider/individualProfile.js"></script>
-<div class="wrapper flex-row">
-    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
-    <div class="profile-container">
-        <div class="profile-header">
-            <div class="profile-info">
-            <img id="profile-preview" class="edit-profile-photo"
+    <script src="<?= ROOT ?>/assets/js/jobProvider/individualProfile.js"></script>
+    <div class="wrapper flex-row">
+        <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-info">
+                    <img id="profile-preview" class="edit-profile-photo"
                         src="<?= !empty($data['pp']) ? 'data:image/jpeg;base64,' . base64_encode($data['pp']) : ROOT . '/assets/images/default.jpg' ?>"
                         alt="Profile Photo">
                     <div class="profile-intro-cover">
                         <div class="profile-intro">
-                            <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?></h2>
+                            <div class="flex-row fit-content">
+                                <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?></h2>
+                                <?php if ($data['badge'] == 1): ?>
+                                    <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                                <?php endif; ?>
+
+                            </div>
 
                             <p>Farm Owner</p><br>
                             <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
@@ -29,39 +35,39 @@ protectRoute([2]);?>
                         </button>
 
                     </div>
-            </div>
-            <div class="profile-contacts">
-                <div class="additional-details">
-                    <h2>Additional Details</h2> <br>
-                    <p class="title-items">Email</p> 
-                    <p class="detail-items"><?= htmlspecialchars(($data['email'] ?? '')) ?></p><br>
-                    <p class="title-items">Phone</p>
-                    <p class="detail-items"><?= htmlspecialchars(($data['phone'] ?? '')) ?></p><br>
-                
                 </div>
-                <div class="social-links">
-                    <h2>Social Links</h2> <br>
+                <div class="profile-contacts">
+                    <div class="additional-details">
+                        <h2>Additional Details</h2> <br>
+                        <p class="title-items">Email</p>
+                        <p class="detail-items"><?= htmlspecialchars(($data['email'] ?? '')) ?></p><br>
+                        <p class="title-items">Phone</p>
+                        <p class="detail-items"><?= htmlspecialchars(($data['phone'] ?? '')) ?></p><br>
+
+                    </div>
+                    <div class="social-links">
+                        <h2>Social Links</h2> <br>
                         <p class="title-items">LinkedIn</p>
                         <p class="detail-items"><?= htmlspecialchars(($data['linkedIn'] ?? 'No link here')) ?></p><br>
                         <p class="title-items">FaceBook</p>
                         <p class="detail-items"><?= htmlspecialchars(($data['facebook'] ?? 'No link here')) ?></p><br>
                         <p class="title-items">Website</p>
-                        <p class="detail-items">www.jakegyll.com</p>                  
+                        <p class="detail-items">www.jakegyll.com</p>
+                    </div>
                 </div>
-            </div>    
-        </div>
-        
-        <div class="profile-about">
-            <h3>About Me</h3>
-            <p><?= htmlspecialchars(($data['bio'] ?? '')) ?></p>
-        </div>
-        
-        <div class="role-switch">
-            <a href="<?php echo ROOT;?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
-            <a href="<?php echo ROOT;?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
-        </div>
+            </div>
 
-        <div class="rating-reviews">
+            <div class="profile-about">
+                <h3>About Me</h3>
+                <p><?= htmlspecialchars(($data['bio'] ?? '')) ?></p>
+            </div>
+
+            <div class="role-switch">
+                <a href="<?php echo ROOT; ?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
+                <a href="<?php echo ROOT; ?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
+            </div>
+
+            <div class="rating-reviews">
                 <h3>Rating and Reviews</h3>
                 <div class="rating">
                     <div class="container-fluid px-1 py-5 mx-auto flex">
@@ -71,7 +77,7 @@ protectRoute([2]);?>
                                     <div class="col-md-4 d-flex flex-row">
                                         <div class="col-md-4 d-flex flex-column">
                                             <div class="rating-box">
-                                            <p class="pt-4"><?= number_format($avgRate, 1) ?></p>
+                                                <p class="pt-4"><?= number_format($avgRate, 1) ?></p>
 
                                             </div>
                                             <div class="rating-stars">
@@ -107,7 +113,7 @@ protectRoute([2]);?>
                                             return $total > 0 ? ($count / $total) * 100 : 0;
                                         }
                                         ?>
-                                        <div class="bar-block"> 
+                                        <div class="bar-block">
                                             <div class="rating-bar0 justify-content-center">
                                                 <table class="text-left mx-auto">
                                                     <?php
@@ -138,13 +144,13 @@ protectRoute([2]);?>
                 </div>
             </div>
 
-        <div class="list-header">
-            <p class="list-header-title">Job History</p>
-            <input type="text" class="search-input" placeholder="Search..."> 
-            <button class="filter-btn">Filter</button>
-        </div> <br>
+            <div class="list-header">
+                <p class="list-header-title">Job History</p>
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="filter-btn">Filter</button>
+            </div> <br>
 
-        <div class="reviews-section">
+            <div class="reviews-section">
 
                 <?php if (!empty($reviews) && is_array($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
@@ -187,6 +193,6 @@ protectRoute([2]);?>
                     </div>
                 <?php endif; ?>
             </div>
+        </div>
     </div>
-</div>
 </body>

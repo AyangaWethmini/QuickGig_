@@ -55,8 +55,18 @@ protectRoute([3]); ?>
                                 </div>
                             </div>
                             <div class="job-details">
-                                <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
-                                <h4><?= htmlspecialchars($findEmp->description) ?></h4>
+
+                                <div class="flex-row fit-content">
+                                    <div>
+                                        <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
+                                        <h4><?= htmlspecialchars($findEmp->description) ?></h4>
+
+                                    </div>
+                                    <?php if ($findEmp->badge == 1): ?>
+                                        <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                                    <?php endif; ?>
+
+                                </div>
                                 <span class="jobPostedDate"><?= htmlspecialchars($findEmp->location) ?></span>
                                 <div style="display:flex;flex-direction:column; gap:20px">
                                     <div class="rating">

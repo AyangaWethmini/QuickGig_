@@ -54,6 +54,11 @@ class Organization extends Controller
 
             $rating = $this->reviewModel->readMyReview($employee->accountID, 2);
             $length = count($rating);
+            $userData = $this->accountModel->getUserData($employee->accountID);
+
+            if (empty($userData)) {
+                $userData = $this->accountModel->getOrgData($employee->accountID);
+            }
             foreach ($rating as $rate) {
                 $sumRate += $rate->rating;
             }
@@ -63,6 +68,7 @@ class Organization extends Controller
             }
 
             $employee->rating = $avgRate;
+            $employee->badge = $userData['badge'];
         }
         $data = [
             'findEmployees' => $findEmployees

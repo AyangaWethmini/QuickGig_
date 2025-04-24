@@ -15,14 +15,20 @@ protectRoute([2]); ?>
         <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
         <div class="profile-container">
             <div class="profile-header">
-                
+
                 <div class="profile-info">
                     <img id="profile-preview" class="edit-profile-photo verified-gold-border"
                         src="<?= !empty($data['pp']) ? 'data:image/jpeg;base64,' . base64_encode($data['pp']) : ROOT . '/assets/images/default.jpg' ?>"
                         alt="Profile Photo">
                     <div class="profile-intro-cover">
                         <div class="profile-intro">
-                            <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?>👑</h2>
+                            <div class="flex-row fit-content">
+                                <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?></h2>
+                                <?php if ($data['badge'] == 1): ?>
+                                    <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                                <?php endif; ?>
+
+                            </div>
 
                             <p>Farm Owner</p><br>
                             <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
@@ -82,7 +88,7 @@ protectRoute([2]); ?>
                                                 <?php
                                                 $stars = 5;
                                                 $remaining = $avgRate;
- 
+
                                                 for ($i = 0; $i < $stars; $i++) {
                                                     if ($remaining >= 1) {
                                                         echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
@@ -90,10 +96,10 @@ protectRoute([2]); ?>
                                                     } elseif ($remaining > 0.5) {
                                                         echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
                                                         $remaining = 0;
-                                                    } elseif ($remaining == 0.5){
+                                                    } elseif ($remaining == 0.5) {
                                                         echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
                                                         $remaining = 0;
-                                                    } elseif ($remaining < 0.5 && $remaining > 0 ){
+                                                    } elseif ($remaining < 0.5 && $remaining > 0) {
                                                         echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
                                                         $remaining = 0;
                                                     } else {
@@ -187,7 +193,7 @@ protectRoute([2]); ?>
                     <div class="empty-container">
                         <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
                         <p class="empty-text">No Reviews Found</p>
-                    </div> 
+                    </div>
                 <?php endif; ?>
             </div>
 

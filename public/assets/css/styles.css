@@ -455,6 +455,32 @@ Use this in the code. Add relevent placeholder
   transform: scale(1.1); /* Slight zoom-in effect on hover */
   transition: transform 0.3s ease; /* Smooth transition for hover effect */
 }
+.fit-content{
+  width:fit-content;
+}
 
   /* nav bar css */
-  
+  .verify-badge-profile {
+    width: 30px !important;
+    height: 3% !important;
+    margin-left: 8px !important;
+    margin-bottom: 8px !important;
+    margin-top: 6px !important;
+    border-radius: 50%;
+    background-color: #fff; /* White background */
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    vertical-align: middle; /* Center along Y-axis */
+    display: inline-block; /* Ensure it's inline with text */
+    line-height: 0;
+}
+
+.verify-badge-profile:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.9);
+}
+
+.verify-badge-profile:active {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5), 0 0 15px rgba(255, 215, 0, 0.6);
+}

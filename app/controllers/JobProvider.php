@@ -144,6 +144,11 @@ class JobProvider extends Controller
             $avgRate = 0;
 
             $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
+            $userData = $this->accountModel->getUserData($employee->accountID);
+
+            if (empty($userData)) {
+                $userData = $this->accountModel->getOrgData($employee->accountID);
+            }
 
             $length = count($rating);
             foreach ($rating as $rate) {
@@ -155,6 +160,7 @@ class JobProvider extends Controller
             }
 
             $employee->rating = $avgRate;
+            $employee->badge = $userData['badge'];
         }
 
         $data = [
@@ -456,7 +462,7 @@ class JobProvider extends Controller
             }
             $job->avgRate = $avgRate;
         }
-        
+
         $data = [
             'applyJobTBC' => $applyJobTBC,
             'reqAvailableTBC' => $reqAvailableTBC

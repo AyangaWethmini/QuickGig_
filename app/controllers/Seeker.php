@@ -17,12 +17,12 @@ class Seeker extends Controller
 
     function index()
     {
-        $_SESSION['current_role'] = 2;        
+        $_SESSION['current_role'] = 2;
         if (!isset($_SESSION['user_id'])) {
             redirect('login'); // Redirect to login if not authenticated
         }
         // Get user data
-        
+
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
         $rating = $this->reviewModel->readMyReview($userId, 2);
@@ -30,18 +30,18 @@ class Seeker extends Controller
         $length = 0;
         $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 2);
         $finalrate = 0;
-        foreach ($rating as $rate){
+        foreach ($rating as $rate) {
             $finalrate = $finalrate + $rate->rating;
             $length += 1;
         }
         $avgRate = 0;
-        if($finalrate != 0){
+        if ($finalrate != 0) {
             $avgRate = round((float)$finalrate / (float)$length, 1);
-        }else{
+        } else {
             $avgRate = 0;
         }
-        
-        $this->view('seekerProfile', ['data' => $data,'reviews' => $rating,'avgRate' => $avgRate]);
+
+        $this->view('seekerProfile', ['data' => $data, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
     function findEmployees()
     {
@@ -51,7 +51,12 @@ class Seeker extends Controller
             $sumRate = 0;
             $avgRate = 0;
             $provider = $this->jobModel->getJobProviderById($job->jobID);
-            $rating = $this->reviewModel->readMyReview($provider->accountID, 1); 
+            $rating = $this->reviewModel->readMyReview($provider->accountID, 1);
+            $userData = $this->accountModel->getUserData($provider->accountID);
+
+            if (empty($userData)) {
+                $userData = $this->accountModel->getOrgData($provider->accountID);
+            }
 
             $length = count($rating);
             foreach ($rating as $rate) {
@@ -63,6 +68,7 @@ class Seeker extends Controller
             }
 
             $job->rating = $avgRate;
+            $job->badge = $userData['badge'];
         }
 
         $data = [
@@ -168,7 +174,7 @@ class Seeker extends Controller
     }
 
     function viewEmployeeProfile($employeeID)
-    {   
+    {
         $account = $this->model('account');
         $role = $account->findrole($employeeID);
         $employeeData = null;
@@ -181,7 +187,7 @@ class Seeker extends Controller
             $employeeData = $account->getOrgData($employeeID);
             $employeeData['name'] = $employeeData['orgName'];
         }
-        
+
         $rating = $this->reviewModel->readMyReview($employeeData['accountID'], 2);
         $finalrate = 0;
         $length = 0;
@@ -241,10 +247,10 @@ class Seeker extends Controller
         $accountID = $_SESSION['user_id'];
         $providerById = $job->getJobProviderById($jobId);
         $revieweeData = $account->getUserData($providerById->accountID);
-        $review = $reviewModel->readReviewSpecific($accountID,$providerById->accountID,$jobId,1);
+        $review = $reviewModel->readReviewSpecific($accountID, $providerById->accountID, $jobId, 1);
         $revieweeData['jobID'] = $jobId;
-        
-        if(!empty($review)){
+
+        if (!empty($review)) {
             $revieweeData['rating'] = $review->rating ?? NULL;
             $revieweeData['content'] = $review->content ?? '';
         }
@@ -262,16 +268,16 @@ class Seeker extends Controller
         $roleID     = 1;
 
         $review = $this->model('review');
-        $delete = $review->deleteReview($reviewerID,$revieweeID,$jobID,$roleID);
-        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID,$jobID);
-        
+        $delete = $review->deleteReview($reviewerID, $revieweeID, $jobID, $roleID);
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
+
         header('Location: ' . ROOT . '/seeker/reviews');
     }
     public function deleteReview($reviewID)
     {
         $reviewModel = $this->model('Review');
         $review = $reviewModel->reviewById($reviewID);
-        $delete = $reviewModel->deleteReview($review->reviewerID,$review->revieweeID,$review->jobID,1);
+        $delete = $reviewModel->deleteReview($review->reviewerID, $review->revieweeID, $review->jobID, 1);
         header('Location: ' . ROOT . '/seeker/reviews');
     }
 
@@ -528,5 +534,4 @@ class Seeker extends Controller
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         }
     }
-    
 }
