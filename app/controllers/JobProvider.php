@@ -149,39 +149,39 @@ class JobProvider extends Controller
             $findEmployees = $this->findEmpModel->searchEmployees($searchTerm);
         } else {
             $findEmployees = $this->findEmpModel->getEmployees();
-        $findEmployees = $this->findEmpModel->getEmployees();
+            $findEmployees = $this->findEmpModel->getEmployees();
 
-        foreach ($findEmployees as &$employee) {
-            $sumRate = 0;
-            $avgRate = 0;
+            foreach ($findEmployees as &$employee) {
+                $sumRate = 0;
+                $avgRate = 0;
 
-            $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
-            $userData = $this->accountModel->getUserData($employee->accountID);
+                $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
+                $userData = $this->accountModel->getUserData($employee->accountID);
 
-            if (empty($userData)) {
-                $userData = $this->accountModel->getOrgData($employee->accountID);
+                if (empty($userData)) {
+                    $userData = $this->accountModel->getOrgData($employee->accountID);
+                }
+
+                $length = count($rating);
+                foreach ($rating as $rate) {
+                    $sumRate += $rate->rating;
+                }
+
+                if ($length > 0) {
+                    $avgRate = $sumRate / $length;
+                }
+
+                $employee->rating = $avgRate;
+                $employee->badge = $userData['badge'];
             }
 
-            $length = count($rating);
-            foreach ($rating as $rate) {
-                $sumRate += $rate->rating;
-            }
+            $data = [
+                'findEmployees' => $findEmployees
+            ];
 
-            if ($length > 0) {
-                $avgRate = $sumRate / $length;
-            }
-
-            $employee->rating = $avgRate;
-            $employee->badge = $userData['badge'];
+            $this->view('findEmployees', $data);
         }
-
-        $data = [
-            'findEmployees' => $findEmployees
-        ];
-
-        $this->view('findEmployees', $data);
     }
-}
 
     public function requestJob()
     {
@@ -201,7 +201,8 @@ class JobProvider extends Controller
         }
     }
 
-    public function postJob(){
+    public function postJob()
+    {
         $accountID = $_SESSION['user_id'];
 
         // Fetch the counter and postLimit from the database
@@ -654,102 +655,102 @@ class JobProvider extends Controller
         } else {
             $applyJobTBC = $tbcProvider->getApplyJobTBC();
             $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
-        foreach ($applyJobTBC as $job) {
-            $userId = $job->accountID;
-            $rating = $this->reviewModel->readMyReview($userId, 2);
-            $finalrate = 0;
-            $length = 0;
-            $finalrate = 0;
-            foreach ($rating as $rate) {
-                $finalrate = $finalrate + $rate->rating;
-                $length += 1;
-            }
-            $avgRate = 0;
-            if ($finalrate != 0) {
-                $avgRate = round((float)$finalrate / (float)$length, 1);
-            } else {
+            foreach ($applyJobTBC as $job) {
+                $userId = $job->accountID;
+                $rating = $this->reviewModel->readMyReview($userId, 2);
+                $finalrate = 0;
+                $length = 0;
+                $finalrate = 0;
+                foreach ($rating as $rate) {
+                    $finalrate = $finalrate + $rate->rating;
+                    $length += 1;
+                }
                 $avgRate = 0;
+                if ($finalrate != 0) {
+                    $avgRate = round((float)$finalrate / (float)$length, 1);
+                } else {
+                    $avgRate = 0;
+                }
+                $job->avgRate = $avgRate;
             }
-            $job->avgRate = $avgRate;
-        }
-        foreach ($reqAvailableTBC as $job) {
-            $userId = $job->accountID;
-            $rating = $this->reviewModel->readMyReview($userId, 2);
-            $finalrate = 0;
-            $length = 0;
-            $finalrate = 0;
-            foreach ($rating as $rate) {
-                $finalrate = $finalrate + $rate->rating;
-                $length += 1;
-            }
-            $avgRate = 0;
-            if ($finalrate != 0) {
-                $avgRate = round((float)$finalrate / (float)$length, 1);
-            } else {
+            foreach ($reqAvailableTBC as $job) {
+                $userId = $job->accountID;
+                $rating = $this->reviewModel->readMyReview($userId, 2);
+                $finalrate = 0;
+                $length = 0;
+                $finalrate = 0;
+                foreach ($rating as $rate) {
+                    $finalrate = $finalrate + $rate->rating;
+                    $length += 1;
+                }
                 $avgRate = 0;
+                if ($finalrate != 0) {
+                    $avgRate = round((float)$finalrate / (float)$length, 1);
+                } else {
+                    $avgRate = 0;
+                }
+                $job->avgRate = $avgRate;
             }
-            $job->avgRate = $avgRate;
+
+            $data = [
+                'applyJobTBC' => $applyJobTBC,
+                'reqAvailableTBC' => $reqAvailableTBC
+            ];
+            $this->view('jobListing_toBeCompleted', $data);
         }
 
-        $data = [
-            'applyJobTBC' => $applyJobTBC,
-            'reqAvailableTBC' => $reqAvailableTBC
-        ];
-        $this->view('jobListing_toBeCompleted', $data);
-    }
+        function jobListing_ongoing()
+        {
+            $this->jobStatusUpdater->updateJobStatuses();
+            $ongoingProvider = $this->model('OngoingProvider');
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
 
-    function jobListing_ongoing()
-    {
-        $this->jobStatusUpdater->updateJobStatuses();
-        $ongoingProvider = $this->model('OngoingProvider');
-        $userID = $_SESSION['user_id'];
-        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+            if (!empty($filterDate)) {
+                $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
+                $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
+                $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
+            } else {
+                $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+                $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            }
 
-        if (!empty($filterDate)) {
-            $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
-            $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
-        } elseif (!empty($searchTerm)) {
-            $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
-            $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
-        } else {
-            $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
-            $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+            $data = [
+                'applyJobOngoing' => $applyJobOngoing,
+                'reqAvailableOngoing' => $reqAvailableOngoing
+            ];
+            $this->view('jobListing_ongoing', $data);
         }
 
-        $data = [
-            'applyJobOngoing' => $applyJobOngoing,
-            'reqAvailableOngoing' => $reqAvailableOngoing
-        ];
-        $this->view('jobListing_ongoing', $data);
-    }
+        function jobListing_completed()
+        {
+            $this->jobStatusUpdater->updateJobStatuses();
+            $completedProvider = $this->model('CompletedProvider');
+            $userID = $_SESSION['user_id'];
+            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
 
-    function jobListing_completed()
-    {
-        $this->jobStatusUpdater->updateJobStatuses();
-        $completedProvider = $this->model('CompletedProvider');
-        $userID = $_SESSION['user_id'];
-        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+            if (!empty($filterDate)) {
+                $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+                $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+            } elseif (!empty($searchTerm)) {
+                $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+                $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+            } else {
+                $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+                $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            }
 
-        if (!empty($filterDate)) {
-            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
-            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
-        } elseif (!empty($searchTerm)) {
-            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
-            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
-        } else {
-            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
-            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+            $data = [
+                'applyJobCompleted' => $applyJobCompleted,
+                'reqAvailableCompleted' => $reqAvailableCompleted
+            ];
+            $this->view('jobListing_completed', $data);
         }
-
-        $data = [
-            'applyJobCompleted' => $applyJobCompleted,
-            'reqAvailableCompleted' => $reqAvailableCompleted
-        ];
-        $this->view('jobListing_completed', $data);
     }
-
     public function updateCompletionStatus()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -1160,21 +1161,5 @@ class JobProvider extends Controller
         // If not a POST request or confirmation not provided, redirect
         header('Location: ' . ROOT . '/jobProvider/settings');
         exit;
-    }
-
-    public function addReview($accountID)
-    {
-        $reviewerID = $_SESSION['user_id'];
-        $revieweeID = $accountID;
-        $reviewDate = $_POST['reviewDate'];
-        $reviewTime = $_POST['reviewTime'];
-        $content    = $_POST['review'];
-        $rating     = $_POST['rating'];
-        $jobID      = $_POST['jobID'];
-        $roleID     = 2;
-
-        $review = $this->model('review');
-        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
-        header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
     }
 }

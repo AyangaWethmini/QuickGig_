@@ -207,8 +207,6 @@ protectRoute([2]); ?>
         document.getElementById('popup').classList.add('hidden');
     });
 
-    <<
-    << << < HEAD
     document.getElementById('popup-no').addEventListener('click', () => {
         document.getElementById('popup').classList.add('hidden');
     });
@@ -239,12 +237,10 @@ protectRoute([2]); ?>
                 document.querySelector('.employee-list').innerHTML = newContent;
             })
             .catch(error => console.error('Error:', error));
-    } ===
-    === =
+    }
     document.getElementById('popup-no').addEventListener('click', () => {
         document.getElementById('popup').classList.add('hidden');
-    }); >>>
-    >>> > ThuminduSena
+    });
 </script>
 
 </html>
