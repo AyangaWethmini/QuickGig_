@@ -19,7 +19,7 @@ class JobProvider extends Controller
         if (!isset($_SESSION['user_id'])) {
             redirect('login'); // Redirect to login if not authenticated
         }
-
+        $_SESSION['current_role'] = 1;
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
@@ -266,8 +266,10 @@ class JobProvider extends Controller
 
         if ($role['roleID'] == 2) {
             $employeeData = $account->getUserData($employeeID);
-        } else if ($role['roleID']) {
+            $employeeData['name'] = $employeeData['fname'] . ' ' . $employeeData['lname'];
+        } else if ($role['roleID'] == 3) {
             $employeeData = $account->getOrgData($employeeID);
+            $employeeData['name'] = $employeeData['orgName'];
         }
         $rating = $this->reviewModel->readMyReview($employeeData['accountID'], 2);
         $finalrate = 0;

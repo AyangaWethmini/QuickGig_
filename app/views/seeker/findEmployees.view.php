@@ -1,23 +1,23 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
- 
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/findEmployees.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUp.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/empty.css">
+
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
-    
+
     <div class="main-content-jobs">
         <div class="header">
             <div class="heading">Find Jobs</div>
         </div>
         <hr>
         <div class="search-container">
-            <input type="text" 
-                class="search-bar" 
+            <input type="text"
+                class="search-bar"
                 placeholder="Find jobs (e.g. waiter, bartender, skill etc.)"
                 aria-label="Search">
             <br><br>
@@ -34,28 +34,33 @@ protectRoute([2]);?>
 
         <div class="job-cards-container">
             <?php if (!empty($data['findJobs'])): ?>
-                <?php foreach($data['findJobs'] as $findJob): ?>
-                <div class="job-card container">
-                    <div class="job-card-left flex-row">
-                      <div class="pfp">
-                        <div class="img" >
-                            <?php if ($findJob->pp): ?>
-                                <?php 
-                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
-                                    $mimeType = $finfo->buffer($findJob->pp);
-                                ?>
-                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findJob->pp) ?>" alt="Employer Image">
-                            <?php else: ?>
-                                <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
-                            <?php endif; ?>
-                        </div>
-                      </div>           
-                        <div class="job-details">
-                            <h2><?= htmlspecialchars($findJob->name)?></h2>
-                            <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
-                            <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
-                            <div style="display:flex;flex-direction:column; gap:20px">
-                            <div class="rating">
+                <?php foreach ($data['findJobs'] as $findJob): ?>
+                    <div class="job-card container">
+                        <div class="job-card-left flex-row">
+                            <div class="pfp">
+                                <div class="img">
+                                    <?php if ($findJob->pp): ?>
+                                        <?php
+                                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                        $mimeType = $finfo->buffer($findJob->pp);
+                                        ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $findJob->accountID ?>">
+
+                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findJob->pp) ?>" alt="Employer Image">
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $findJob->accountID ?>">
+                                            <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="job-details">
+                                <h2><?= htmlspecialchars($findJob->name) ?></h2>
+                                <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
+                                <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
+                                <div style="display:flex;flex-direction:column; gap:20px">
+                                    <div class="rating">
                                         <?php
                                         $stars = 5;
                                         $remaining = $findJob->rating;
@@ -80,59 +85,61 @@ protectRoute([2]);?>
 
                                         ?>
                                     </div>
-                                <div class="availability">
-                                    <div class="availability-time">
-                                        <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>
+                                    <div class="availability">
+                                        <div class="availability-time">
+                                            <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>
+                                        </div>
+                                        <div class="availability-date">
+                                            <span><?= htmlspecialchars($findJob->availableDate) ?></span>
+                                        </div>
+                                        <div class="availability-shift">
+                                            <span><?= htmlspecialchars($findJob->shift) ?></span>
+                                        </div>
+                                        <div class="availability-salary">
+                                            <span><?= htmlspecialchars($findJob->salary) ?> <?= htmlspecialchars($findJob->currency) ?>/Hr</span>
+                                        </div>
                                     </div>
-                                    <div class="availability-date">
-                                        <span><?= htmlspecialchars($findJob->availableDate) ?></span>
-                                    </div>
-                                    <div class="availability-shift">
-                                    <span><?= htmlspecialchars($findJob->shift) ?></span>
-                                    </div>
-                                    <div class="availability-salary">
-                                    <span><?= htmlspecialchars($findJob->salary) ?> <?= htmlspecialchars($findJob->currency) ?>/Hr</span>
-                                    </div>
-                                </div>
-                                <div class="tags">
-                                    <?php 
+                                    <div class="tags">
+                                        <?php
                                         $categories = json_decode($findJob->categories, true);
                                         if (is_array($categories)) {
                                             foreach ($categories as $category) {
                                                 echo '<span class="tag">' . htmlspecialchars($category) . '</span>';
                                             }
                                         }
-                                    ?>
-                                </div>
-                                <hr>
-                                <div class="jobDescription"><p><?= $findJob->description ?></p></div>
-                                <hr>
-                                <div class="job-identities">
-                                    <p>Posted on: <?= htmlspecialchars($findJob->datePosted) ?></p>
-                                    <p>Posted at: <?= htmlspecialchars($findJob->timePosted) ?></P>
-                                    <p>Job id: #<?= htmlspecialchars($findJob->jobID) ?></p>
+                                        ?>
+                                    </div>
+                                    <hr>
+                                    <div class="jobDescription">
+                                        <p><?= $findJob->description ?></p>
+                                    </div>
+                                    <hr>
+                                    <div class="job-identities">
+                                        <p>Posted on: <?= htmlspecialchars($findJob->datePosted) ?></p>
+                                        <p>Posted at: <?= htmlspecialchars($findJob->timePosted) ?></P>
+                                        <p>Job id: #<?= htmlspecialchars($findJob->jobID) ?></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="job-card-right flex-row">
-                        <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findJob->jobID ?>')">Request</button>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Message</a></li>
-                                <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
-                            </ul>
-                        </div>
+                        <div class="job-card-right flex-row">
+                            <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findJob->jobID ?>')">Request</button>
+                            <div class="dropdown">
+                                <button class="dropdown-toggle">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Message</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
+                                </ul>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="empty-container">
-                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
+                    <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
                     <p class="empty-text">No Jobs Found</p>
                 </div>
             <?php endif; ?>
@@ -181,22 +188,22 @@ protectRoute([2]);?>
 
     function applyForJob(jobID) {
         fetch("<?= ROOT ?>/seeker/requestJob", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: `jobID=${jobID}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "success") {
-                showPopup("successPopup");
-                setTimeout(() => closePopup("successPopup"), 3000);
-            } else if (data.status === "error") {
-                showPopup("alreadyAppliedPopup");
-            }
-        })
-        .catch(error => console.error("Error:", error));
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `jobID=${jobID}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    showPopup("successPopup");
+                    setTimeout(() => closePopup("successPopup"), 3000);
+                } else if (data.status === "error") {
+                    showPopup("alreadyAppliedPopup");
+                }
+            })
+            .catch(error => console.error("Error:", error));
     }
 
     function showPopup(popupID) {

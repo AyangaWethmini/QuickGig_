@@ -20,11 +20,10 @@ protectRoute([2]); ?>
                     
                         <div class="profile-intro">
 
-                            <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?></h2><br>
+                            <h2><?= htmlspecialchars($data['name'] ?? '') ?></h2><br>
                             <p>Bartender</p><br>
                             <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
                         </div>
-                        <div class="profile-rating">★★★★★</div>
                         
                     </div>
                     <div  class="sendmsg">
@@ -129,7 +128,7 @@ protectRoute([2]); ?>
                                                             </td>
                                                             <td class="text-right"><?= $count ?></td>
                                                         </tr>
-                                                    <?php endforeach; ?>
+                                                    <?php endforeach; ?> 
                                                 </table>
                                             </div>
                                         </div>

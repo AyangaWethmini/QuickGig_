@@ -17,12 +17,12 @@ class Seeker extends Controller
 
     function index()
     {
-        // Ensure user is logged in
+        $_SESSION['current_role'] = 2;        
         if (!isset($_SESSION['user_id'])) {
             redirect('login'); // Redirect to login if not authenticated
         }
-
         // Get user data
+        
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
         $rating = $this->reviewModel->readMyReview($userId, 2);
@@ -167,9 +167,37 @@ class Seeker extends Controller
         }
     }
 
-    function viewEmployeeProfile()
-    {
-        $this->view('viewEmployeeProfile');
+    function viewEmployeeProfile($employeeID)
+    {   
+        $account = $this->model('account');
+        $role = $account->findrole($employeeID);
+        $employeeData = null;
+
+
+        if ($role['roleID'] == 2) {
+            $employeeData = $account->getUserData($employeeID);
+            $employeeData['name'] = $employeeData['fname'] . ' ' . $employeeData['lname'];
+        } else if ($role['roleID'] == 3) {
+            $employeeData = $account->getOrgData($employeeID);
+            $employeeData['name'] = $employeeData['orgName'];
+        }
+        
+        $rating = $this->reviewModel->readMyReview($employeeData['accountID'], 2);
+        $finalrate = 0;
+        $length = 0;
+        $employeeData['ratings'] = $this->reviewModel->getRatingDistribution($employeeData['accountID'], 2);
+        $finalrate = 0;
+        foreach ($rating as $rate) {
+            $finalrate = $finalrate + $rate->rating;
+            $length += 1;
+        }
+        $avgRate = 0;
+        if ($finalrate != 0) {
+            $avgRate = round((float)$finalrate / (float)$length, 1);
+        } else {
+            $avgRate = 0;
+        }
+        $this->view('viewEmployeeProfile', ['data' => $employeeData, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
 
     function subscription()

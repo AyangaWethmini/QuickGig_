@@ -62,6 +62,7 @@ protectRoute([3]);?>
                         <li><a href="#">Message</a></li>
                         <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
                         <li><a href="#">Complain</a></li>
+                        <li><a href="<?php echo ROOT; ?>/organization/review/<?=$completed->jobID?>">review</a></li>
                     </ul>
                 </div>
             </div>

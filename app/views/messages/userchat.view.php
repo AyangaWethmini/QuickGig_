@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
-protectRoute([2]); ?>
+protectRoute([2, 3]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/messages/userchat.css">
@@ -9,7 +9,17 @@ protectRoute([2]); ?>
 
     <div class="wrapper">
 
-        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php
+            if($_SESSION['user_role'] == 2){
+                if ($_SESSION['current_role'] == 1) {
+                    require APPROOT . '/views/jobProvider/jobProvider_sidebar.php';
+                } else if ($_SESSION['current_role'] == 2) {
+                    require APPROOT . '/views/seeker/seeker_sidebar.php';
+                }
+            }else if($_SESSION['user_role'] == 3){
+                require APPROOT . '/views/jobProvider/organization_sidebar.php';
+            }
+    ?>
         <div class="inner-wrapper">
             <div class="chat-header">
                 <button onclick="history.back()" class="back-btn">← Back</button>
@@ -32,11 +42,11 @@ protectRoute([2]); ?>
 
             <div id="chat-box"></div>
             <form id="send-message-form">
-    <input type="hidden" id="receiver_id" value="<?= $data['receiver_id'] ?>">
-    
-    <textarea id="message" placeholder="Type your message..."></textarea>
-    <button type="submit" id="send-btn" disabled>Send</button>
-</form>
+                <input type="hidden" id="receiver_id" value="<?= $data['receiver_id'] ?>">
+
+                <textarea id="message" placeholder="Type your message..."></textarea>
+                <button type="submit" id="send-btn" disabled>Send</button>
+            </form>
 
         </div>
 
@@ -83,12 +93,12 @@ protectRoute([2]); ?>
             xhr.send("receiver_id=" + receiver_id + "&message=" + encodeURIComponent(message));
         }
         const messageInput = document.getElementById('message');
-    const sendBtn = document.getElementById('send-btn');
+        const sendBtn = document.getElementById('send-btn');
 
-    messageInput.addEventListener('input', () => {
-        const hasText = messageInput.value.trim().length > 0;
-        sendBtn.disabled = !hasText;
-    });
+        messageInput.addEventListener('input', () => {
+            const hasText = messageInput.value.trim().length > 0;
+            sendBtn.disabled = !hasText;
+        });
     </script>
 
 

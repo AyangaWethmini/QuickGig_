@@ -15,13 +15,14 @@ protectRoute([2]); ?>
         <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
         <div class="profile-container">
             <div class="profile-header">
+                
                 <div class="profile-info">
-                    <img id="profile-preview" class="edit-profile-photo"
+                    <img id="profile-preview" class="edit-profile-photo verified-gold-border"
                         src="<?= !empty($data['pp']) ? 'data:image/jpeg;base64,' . base64_encode($data['pp']) : ROOT . '/assets/images/default.jpg' ?>"
                         alt="Profile Photo">
                     <div class="profile-intro-cover">
                         <div class="profile-intro">
-                            <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?></h2>
+                            <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?>👑</h2>
 
                             <p>Farm Owner</p><br>
                             <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
@@ -61,7 +62,7 @@ protectRoute([2]); ?>
 
             <span class="role-switch">
                 <a href="<?php echo ROOT; ?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
-                <a href="<?php echo ROOT; ?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
+                <a href="<?php echo ROOT; ?>/seeker/seekerProfile1" class="role-btn">Job Seeker Role</a>
             </span>
 
             <div class="rating-reviews">
@@ -186,7 +187,7 @@ protectRoute([2]); ?>
                     <div class="empty-container">
                         <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
                         <p class="empty-text">No Reviews Found</p>
-                    </div>
+                    </div> 
                 <?php endif; ?>
             </div>
 
