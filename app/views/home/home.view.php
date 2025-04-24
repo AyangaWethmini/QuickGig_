@@ -18,56 +18,102 @@ if (
 
 <style>
     .blurred {
-      filter: blur(5px);
-      transition: filter 0.3s ease;
+        filter: blur(5px);
+        transition: filter 0.3s ease-in-out;
     }
 
     .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(15px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-in-out;
     }
 
     .popup-content {
-      position: relative;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 600px;
-      height: 500px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+        position: relative;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        width: 500px;
+        max-width: 90%;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: slideIn 0.4s ease-in-out;
     }
+
     .popup-content img {
-      width: calc(100% - 20px); /* Fit the width with a small margin */
-      margin: 10px; /* Small margin around the image */
-      max-height: 90vh;
-      border-radius: 10px;
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        margin: 20px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btns{
+        display : flex;
+        flex-direction : row;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .cancel-button, .learn-more {
+        margin-top: 20px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background 0.3s ease;
     }
 
     .cancel-button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #ff4d4f;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
+        background: #ff4d4f;
+        color: #ffffff;
     }
 
     .cancel-button:hover {
-      background: #ff7875;
+        background: #ff7875;
+    }
+
+    .learn-more {
+        background: #26a4ff;
+        color: #ffffff;
+    }
+
+    .learn-more:hover {
+        background: #4db8ff;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 </style>
 
@@ -193,7 +239,12 @@ if (
     </footer>
 </div>
 
+<script>
+    console.log(<?php echo json_encode($data['advertisements'][0]); ?>);
+</script>
+
 <?php
+
 if (
     isset($_SESSION['user_role']) &&
     $_SESSION['user_role'] != 0 &&
@@ -217,19 +268,28 @@ if (
                     $finfo = new finfo(FILEINFO_MIME_TYPE);
                     $mimeType = $finfo->buffer($ad->img);
                 ?>
-                <a href="<?= $ad->link ?>" target="_blank" onclick="recordAdClick(event, <?= $ad->id ?>, '<?= $ad->link ?>')">
+                <a href="<?= $ad->link ?>" target="_blank">
                     <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad Image" style="width: 200px; height: 200px;">
+                    <p><?php htmlspecialchars($ad->adTitle); ?></p>
                 </a>
                 <script>
                     // Record ad view on page load
-                    recordAdView(<?= $ad->id ?>);
+                    recordAdView(<?= $ad->advertisementId ?>);
                 </script>
                 <?php else: ?>
                 <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available">
+                <!-- <p><?php htmlspecialchars($ad->adTitle); ?></p> -->
                 <?php endif; ?>
+                <div class="btns">
                 <button class="cancel-button" onclick="closePopup()">Cancel</button>
+                <button class="learn-more btn btn-accent" onclick="recordAdClick(event, <?= $ad->advertisementID ?>, '<?= $ad->link ?>')">Learn More</button>
+                </div>
             </div>
         </div>
+        <script>
+            // Ensure ad view is recorded each time the ad is shown
+            recordAdView(<?= $ad->advertisementId ?>);
+        </script>
         <?php
     }
 }
@@ -246,7 +306,7 @@ if (
         event.preventDefault();
 
         // Send AJAX request to record click
-        fetch(`<?= ROOT ?>/manager/click/${adId}`, {
+        fetch(`<?php echo ROOT ?>/manager/click/${adId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -264,7 +324,7 @@ if (
 
     function recordAdView(adId) {
         if (adId && !isNaN(adId)) {
-            fetch(`<?= ROOT ?>/manager/adView/${adId}`, {
+            fetch(`<?php echo ROOT ?>/manager/adView/${adId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
