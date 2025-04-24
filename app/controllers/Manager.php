@@ -253,7 +253,6 @@ if (is_array($subscriptionData)) {
         header('Location: ' . ROOT . '/manager/createAd');
         exit;
     }
-
     // Clean input data
     $advertiserName = trim($_POST['advertiserName']);
     $contact = trim($_POST['contact']);
@@ -261,20 +260,6 @@ if (is_array($subscriptionData)) {
 
     $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
-    // If advertiser does not exist, create a new advertiser
-    if (!$advertiserId) {
-        // Validate contact number format (e.g., 07XXXXXXXX)
-        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
-        header('Location: ' . ROOT . '/manager/createAd');
-        exit;
-    }
-
-    // Clean input data
-    $advertiserName = trim($_POST['advertiserName']);
-    $contact = trim($_POST['contact']);
-    $email = trim($_POST['email']);
-
-    $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
     // If advertiser does not exist, create a new advertiser
     if (!$advertiserId) {
