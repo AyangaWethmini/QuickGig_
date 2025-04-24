@@ -199,6 +199,21 @@ class Organization extends Controller
         }
     }
 
+    function organizationEditProfile()
+    {
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login'); // Redirect to login if not authenticated
+        }
+
+        // Get user data
+        $userId = $_SESSION['user_id'];
+        $data = $this->accountModel->getOrgData($userId);
+
+        // Load the view and pass user data
+        $this->view('organizationEditProfile', $data);
+    }
+
     public function updateProfile()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -493,7 +508,7 @@ class Organization extends Controller
                 'applicationOrReq' => $applicationOrReq
             ]);
 
-            header('Location: ' . ROOT . '/organization/org_jobListing_completed');
+            header('Location: ' . ROOT . '/organization/org_complaints');
         }
     }
 
@@ -537,6 +552,7 @@ class Organization extends Controller
 
             // Redirect or handle based on success or failure
             if ($isPosted) {
+                $this->accountModel->incrementCounter($accountID);
                 header('Location: ' . ROOT . '/organization/org_jobListing_myJobs'); // Replace with the appropriate success page
                 exit();
             } else {
@@ -747,11 +763,45 @@ class Organization extends Controller
                 'categories' => json_encode($categories)
             ]);
 
-            // Redirect to the availability page or another appropriate page
             header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
         } else {
-            echo json_encode(["status" => "error", "message" => "You have already requested for this."]);
+            // Get the current availability details for the given ID
+            $this->jobModel = $this->model('Job');
+            $job = $this->jobModel->getJobById($id);
+
+            // Pass the current availability data to the view
+            $data = [
+                'job' => $job
+            ];
+
+            // Load the update form view
+            $this->view('updateJob', $data);
         }
+    }
+
+
+
+    public function org_postJob()
+    {
+        $accountID = $_SESSION['user_id'];
+
+        // Fetch the counter and postLimit from the database
+        $accountData = $this->accountModel->getAccountData($accountID); // Add this method in the Account model
+        $counter = $accountData->counter;
+        $postLimit = $accountData->postLimit;
+
+        // Check if the counter exceeds the postLimit
+        if ($counter >= $postLimit) {
+            // Set a session variable to show the popup message
+            $_SESSION['postLimitExceeded'] = true;
+
+            // Redirect back to the job listing page
+            header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
+            exit();
+        }
+
+        // Load the post job view if the limit is not exceeded
+        $this->view('org_postJob');
     }
 
     function org_announcements()

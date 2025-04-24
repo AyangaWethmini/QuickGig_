@@ -161,8 +161,25 @@ class JobProvider extends Controller
         }
     }
 
-    function postJob()
-    {
+    public function postJob(){
+        $accountID = $_SESSION['user_id'];
+
+        // Fetch the counter and postLimit from the database
+        $accountData = $this->accountModel->getAccountData($accountID); // Add this method in the Account model
+        $counter = $accountData->counter;
+        $postLimit = $accountData->postLimit;
+
+        // Check if the counter exceeds the postLimit
+        if ($counter >= $postLimit) {
+            // Set a session variable to show the popup message
+            $_SESSION['postLimitExceeded'] = true;
+
+            // Redirect back to the job listing page
+            header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
+            exit();
+        }
+
+        // Load the post job view if the limit is not exceeded
         $this->view('postJob');
     }
 
@@ -675,7 +692,7 @@ class JobProvider extends Controller
                 'applicationOrReq' => $applicationOrReq
             ]);
 
-            header('Location: ' . ROOT . '/jobProvider/jobListing_completed');
+            header('Location: ' . ROOT . '/jobProvider/complaints');
         }
     }
 
@@ -758,6 +775,7 @@ class JobProvider extends Controller
             ]);
             // Redirect or handle based on success or failure
             if ($isPosted) {
+                $this->accountModel->incrementCounter($accountID);
                 header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs'); // Replace with the appropriate success page
                 exit();
             } else {

@@ -6,6 +6,7 @@ protectRoute([3]);?>
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/errorPopUp.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
@@ -16,7 +17,7 @@ protectRoute([3]);?>
         </p>
         <hr>
 
-        <form class="form-section container" action="<?php echo ROOT ?>/organization/updateJob/<?= htmlspecialchars($job->jobID) ?>" method="POST">
+        <form id="updateJobForm" class="form-section container" action="<?php echo ROOT ?>/organization/updateJob/<?= htmlspecialchars($job->jobID) ?>" method="POST">
             <div class="form-section flex-row container">
                 <div class="container right-container">
                     <p class="title">
@@ -34,7 +35,7 @@ protectRoute([3]);?>
                     <p class="text-grey  desc">Explain the kind of job you are offering</p>
                 </div>
                 <div class="user-input">
-                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required value="<?= $job->jobTitle ?>">
+                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required value="<?= htmlspecialchars($job->jobTitle) ?>">
                 </div>
             </div>
             <hr>
@@ -45,7 +46,7 @@ protectRoute([3]);?>
                     </p>
                 </div>
                 <div class="user-input" style="align-items: center; margin-top: 10px;">
-                    <textarea placeholder="Simple description about the job." name="description" rows="10" cols="60" required><?= $job->description?></textarea>
+                    <textarea placeholder="Simple description about the job." name="description" rows="10" cols="60" required><?= htmlspecialchars($job->description)?></textarea>
                 </div>
             </div>
             <hr>
@@ -77,10 +78,10 @@ protectRoute([3]);?>
                     <div class="salary-ph flex-row">
                         <input type="text" name="salary" id="salary-per-hr" required value="<?= $job->salary ?>">
                         <select id="currency-select" class="currency-select" name="currency">
+                            <option value="LKR" <?= $job->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>    
                             <option value="USD" <?= $job->currency === 'USD' ? 'selected' : '' ?>>USD</option>
                             <option value="EUR" <?= $job->currency === 'EUR' ? 'selected' : '' ?>>EUR</option>
                             <option value="GBP" <?= $job->currency === 'GBP' ? 'selected' : '' ?>>GBP</option>
-                            <option value="LKR" <?= $job->currency === 'LKR' ? 'selected' : '' ?>>LKR</option>
                             <option value="AUD" <?= $job->currency === 'AUD' ? 'selected' : '' ?>>AUD</option>
                             <option value="CAD" <?= $job->currency === 'CAD' ? 'selected' : '' ?>>CAD</option>
                             <option value="CNY" <?= $job->currency === 'CNY' ? 'selected' : '' ?>>CNY</option>
@@ -212,7 +213,7 @@ protectRoute([3]);?>
             <div class="user-input">
                 <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
                 <p>Or</p>
-                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required value="<?= $job->location ?>">
+                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required value="<?= htmlspecialchars($job->location) ?>">
             </div></div>
                 <hr>
                 <div class="post-job-buttons flex-row">
@@ -227,6 +228,8 @@ protectRoute([3]);?>
                         <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
                     </div>
                 </div>
+
+                <div id="error-popup"></div>
             </div>
         </form>
     </div>
@@ -253,7 +256,7 @@ protectRoute([3]);?>
 
     let map;
     let marker;
-    let selectedLocation = '';
+    //let selectedLocation = '';
     let mapInitialized = false; 
 
     function showAddTagPopup(type) {
@@ -365,7 +368,7 @@ protectRoute([3]);?>
         */
     // Set today's date as the minimum date
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById('availableDate').setAttribute('min', today);
+    document.getElementById('dateInput').setAttribute('min', today);
 
     function submitDate() {
         const selectedDate = document.getElementById('availableDate').value;
@@ -474,5 +477,49 @@ protectRoute([3]);?>
     closeMapModal(); // Close the modal after selecting a location
     mapInitialized = true; // Set mapInitialized to true after the first initialization
     document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
+
+    const form = document.getElementById("updateJobForm");
+    const popup = document.getElementById("error-popup");
+
+    form.addEventListener("submit", function(e) {
+        const jobTitle = document.getElementById("job-title").value.trim();
+        const description = document.querySelector("textarea[name='description']").value.trim();
+        const salary = document.getElementById("salary-per-hr").value.trim();
+
+        let errors = [];
+
+        // Validate job title
+        if (!jobTitle) {
+            errors.push("Job Title is required and cannot be just spaces.");
+        }
+
+        // Validate description
+        if (!description) {
+            errors.push("Description is required and cannot be just spaces.");
+        }
+
+        // Validate salary
+        if (!salary) {
+            errors.push("Salary is required.");
+        } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
+            errors.push("Salary must be a valid number (e.g., 500, 500.75).");
+        } else if (salary.length > 8) {
+            errors.push("Salary must not exceed 8 characters in total.");
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault(); // Stop form submission
+            showPopup(errors.join("<br>"));
+        }
+    });
+
+    function showPopup(message) {
+        popup.innerHTML = message;
+        popup.style.display = "block";
+
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 3000); // Hide after 3 seconds
+    }
 
 </script>

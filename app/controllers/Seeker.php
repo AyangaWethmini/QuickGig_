@@ -250,8 +250,25 @@ class Seeker extends Controller
         }
     }
 
-    function postJob()
-    {
+    public function postJob(){
+        $accountID = $_SESSION['user_id'];
+
+        // Fetch the counter and postLimit from the database
+        $accountData = $this->accountModel->getAccountData($accountID); // Add this method in the Account model
+        $counter = $accountData->counter;
+        $postLimit = $accountData->postLimit;
+
+        // Check if the counter exceeds the postLimit
+        if ($counter >= $postLimit) {
+            // Set a session variable to show the popup message
+            $_SESSION['postLimitExceeded'] = true;
+
+            // Redirect back to the job listing page
+            header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
+            exit();
+        }
+
+        // Load the post job view if the limit is not exceeded
         $this->view('postJob');
     }
 
@@ -672,7 +689,7 @@ class Seeker extends Controller
                 'applicationOrReq' => $applicationOrReq
             ]);
 
-            header('Location: ' . ROOT . '/seeker/jobListing_completed');
+            header('Location: ' . ROOT . '/seeker/complaints');
         }
     }
 
@@ -769,6 +786,7 @@ class Seeker extends Controller
 
             // Redirect or handle based on success or failure
             if ($isPosted) {
+                $this->accountModel->incrementCounter($accountID);
                 header('Location: ' . ROOT . '/seeker/jobListing_myJobs'); // Replace with the appropriate success page
                 exit();
             } else {
