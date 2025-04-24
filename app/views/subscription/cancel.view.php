@@ -42,7 +42,23 @@
 
 <div class="status-container">
     <h2>Sorry to See You Go <i class="fa-solid fa-heart-broken" style="color: red"></i></h2>
-    <p>We're sad to see you cancel your subscription. If there's anything we can do to improve, please let us know.</p>
+    <p>We're sad to see you cancel your subscription. You will lose access to premium features at the end of your billing period.</p>
     <!-- <a href="<?php echo ROOT; ?>/feedback" class="btn btn-del">Give Feedback</a> -->
     <a href="<?php echo ROOT; ?>/home" class="btn btn-del" style="background: #007bff; margin-top: 10px;">Return to Home</a>
 </div>
+
+
+<?php
+                include_once APPROOT . '/views/components/alertBox.php';
+                if (isset($_SESSION['error'])) {
+                    echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+                    
+                }
+
+                if (isset($_SESSION['success'])) {
+                    echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+                    
+                }
+                unset($_SESSION['error']);
+                unset($_SESSION['success']);
+            ?>

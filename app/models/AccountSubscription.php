@@ -282,7 +282,7 @@ class AccountSubscription extends Account {
     }
 
     public function getUserSubscriptionDetails($accountID) {
-        $query = "SELECT s.stripe_price_id, s.current_period_start, s.current_period_end, s.status, p.planName FROM subscriptions s 
+        $query = "SELECT s.stripe_price_id, s.current_period_start, s.current_period_end, s.status, s.toBeCancelled, p.planName FROM subscriptions s 
         JOIN plan p ON s.stripe_price_id = p.stripe_price_id WHERE s.accountID = :accountID AND status = 'active' LIMIT 1";
         $params = ['accountID' => $accountID];
         return $this->query($query, $params); 

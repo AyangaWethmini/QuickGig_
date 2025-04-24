@@ -311,12 +311,10 @@ class Subscription extends Controller {
             $_SESSION['error'] = 'Failed to process cancellation';
         }
     
-        header('Location: ' . ROOT . '/subscription/cancel');
+        header('Location: ' . ROOT . '/subscription/cancelConfirm');
         exit;
     }
     
 
-    public function getSubIncome($startDate = null, $endDate=null){
-        
-    }
+
 }
