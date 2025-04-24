@@ -247,25 +247,21 @@ class AccountSubscription extends Account {
                 error_log("Stripe API failed to cancel subscription: $subscriptionID");
                 return false;
             }
-
-            // Update local database
-            $updateStatus = $this->updateSubscriptionStatus($subscriptionID, 'canceled');
+    
+            // Update local database - set toBeCancelled to 1 and status to active (Stripe will cancel at period end)
+            $updateQuery = "UPDATE subscriptions 
+                            SET status = 'active', 
+                                toBeCancelled = 1,
+                                updated_at = NOW() 
+                            WHERE stripe_subscription_id = :subscription_id";
+            $updateParams = ['subscription_id' => $subscriptionID];
+            $updateStatus = $this->query($updateQuery, $updateParams);
             
             if (!$updateStatus) {
                 error_log("Failed to update subscription status in database: $subscriptionID");
                 return false;
             }
-
-            // Back to free plan
-            $query = "UPDATE account SET planID = -1 WHERE accountID = :accountID";
-            $params = ['accountID' => $accountID];
-            $freePlanUpdate = $this->query($query, $params);
-
-            if (!$freePlanUpdate) {
-                error_log("Failed to update account to free plan: $accountID");
-                return false;
-            }
-
+    
             return true;
         } catch (Exception $e) {
             error_log("Error canceling subscription: " . $e->getMessage());
@@ -276,12 +272,12 @@ class AccountSubscription extends Account {
     public function getActiveSubscriptions($accountID = null) {
         $query = "SELECT * FROM subscriptions WHERE status = 'active'";
         $params = [];
-
+    
         if ($accountID) {
             $query .= " AND accountID = :accountID";
             $params['accountID'] = $accountID;
         }
-
+    
         return $this->query($query, $params);
     }
 
@@ -290,6 +286,59 @@ class AccountSubscription extends Account {
         JOIN plan p ON s.stripe_price_id = p.stripe_price_id WHERE s.accountID = :accountID AND status = 'active' LIMIT 1";
         $params = ['accountID' => $accountID];
         return $this->query($query, $params); 
+    }
+
+
+    public function markForCancellation($subscriptionID, $accountID) {
+        try {
+            // Verify subscription belongs to account
+            $query = "SELECT * FROM subscriptions 
+                      WHERE stripe_subscription_id = :subscription_id 
+                      AND accountID = :accountID LIMIT 1";
+            $params = [
+                'subscription_id' => $subscriptionID,
+                'accountID' => $accountID
+            ];
+            $subscription = $this->query($query, $params);
+            
+            if (!$subscription || count($subscription) === 0) {
+                error_log("Subscription not found or doesn't belong to account: $subscriptionID");
+                return false;
+            }
+    
+            // Cancel with Stripe (sets cancel_at_period_end=true)
+            $stripeResult = $this->stripeService->cancelSubscription($subscriptionID);
+            
+            if (!$stripeResult) {
+                error_log("Stripe API failed to cancel subscription: $subscriptionID");
+                return false;
+            }
+    
+            // Update local database (set toBeCancelled=1)
+            $query = "UPDATE subscriptions 
+                      SET toBeCancelled = 1,
+                          updated_at = NOW() 
+                      WHERE stripe_subscription_id = :subscription_id";
+            $params = ['subscription_id' => $subscriptionID];
+            
+            return $this->query($query, $params);
+        } catch (Exception $e) {
+            error_log("Error marking subscription for cancellation: " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+    public function updateSubscriptionCancellationFlag($subscriptionID, $flagValue) {
+        $query = "UPDATE subscriptions 
+                  SET toBeCancelled = :flagValue,
+                      updated_at = NOW() 
+                  WHERE stripe_subscription_id = :subscription_id";
+        $params = [
+            'subscription_id' => $subscriptionID,
+            'flagValue' => $flagValue
+        ];
+        return $this->query($query, $params);
     }
 
 }

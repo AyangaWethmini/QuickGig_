@@ -78,7 +78,7 @@ protectRoute([1]); ?>
             </div>
 
             <div class="chart-overview container flex-row">
-                <h3>Subscriptions metrics</h3>
+                <h3>Subscriptions metrics - Active Currently</h3>
                 <canvas id="subscriptions-chart"></canvas>
             </div>
         </div>
