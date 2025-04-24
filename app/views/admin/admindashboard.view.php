@@ -71,11 +71,11 @@ protectRoute([0]); ?>
         <!-- Charts Section -->
         <div class="charts-section">
             <div class="chart-container">
-                <h3>User Distribution</h3>
+                <h3 style="font-size: 30px;">User Distribution</h3>
                 <canvas id="userChart"></canvas>
             </div>
             <div class="chart-container">
-                <h3>Platform Activity</h3>
+                <h3 style="font-size: 30px;">Platform Activity</h3>
                 <canvas id="activityChart"></canvas>
             </div>
         </div>
@@ -93,7 +93,7 @@ protectRoute([0]); ?>
     new Chart(userCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Job Seekers', 'Organizations'],
+            labels: ['Individuals', 'Organizations'],
             datasets: [{
                 data: [<?php echo $data['totalIndividuals']; ?>, <?php echo $data['totalOrganizations']; ?>],
                 backgroundColor: ['#ad73f5', '#7389f5'],
@@ -105,7 +105,18 @@ protectRoute([0]); ?>
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'bottom'
+                    position: 'bottom',
+                    labels: {
+                        padding: 50,
+                        font: {
+                            size: 24
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    bottom: 30
                 }
             }
         }
@@ -138,7 +149,24 @@ protectRoute([0]); ?>
             },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        font: {
+                            size: 20
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 20
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    bottom: 30
                 }
             }
         }

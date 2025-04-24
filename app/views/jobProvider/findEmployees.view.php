@@ -49,20 +49,16 @@ protectRoute([2]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($findEmp->pp);
                                         ?>
-                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $findEmp->accountID ?>">
-                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findEmp->pp) ?>" alt="Employee Image">
-                                        </a>
+                                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findEmp->pp) ?>" alt="Employee Image">
                                     <?php else: ?>
-                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $findEmp->accountID ?>">
-                                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
-                                        </a>
+                                        <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
                                     <?php endif; ?>
                                 </div>
                             </div>
                             <div class="job-details">
                                 <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
                                 <h4><?= htmlspecialchars($findEmp->description) ?></h4>
-                                <span class="jobPostedDate"><?= htmlspecialchars($findEmp->location) ?></span>
+                                <span class="jobPostedDate" id="employeeLocation"><?= htmlspecialchars($findEmp->location) ?></span>
                                 <div style="display:flex;flex-direction:column; gap:20px">
                                     <div class="rating">
                                         <span>
@@ -111,35 +107,22 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="<?= ROOT ?>/message/startConversation/<?= $findEmp->accountID ?>">Message</a></li>
-
+                                    <li><a href="#">Message</a></li>
                                     <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="#" onclick="viewLocation('<?= htmlspecialchars($findEmp->location) ?>')">View Location</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-        </div>
-        <div class="job-card-right flex-row">
-            <button class="request-button btn btn-accent" onclick="confirmRequest('<?= $findEmp->availableID ?>')">Request</button>
-            <div class="dropdown">
-                <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Message</a></li>
-                    <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
-                    <li><a href="#" onclick="viewLocation('<?= htmlspecialchars($findEmp->location) ?>')">View Location</a></li>
-                </ul>
-            </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="empty-container">
+                    <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
+                    <p class="empty-text">No Employees Found</p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
-<?php endforeach; ?>
-<?php else: ?>
-    <div class="empty-container">
-        <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
-        <p class="empty-text">No Employees Found</p>
-    </div>
-<?php endif; ?>
-</div>
-</div>
 </div>
 
 <!-- Confirmation Popup -->

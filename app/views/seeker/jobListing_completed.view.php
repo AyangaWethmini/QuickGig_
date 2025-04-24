@@ -66,7 +66,7 @@ protectRoute([2]); ?>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Message</a></li>
                                     <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/seeker/makeComplaint">Complain</a></li>
+                                    <li><a href="<?= ROOT ?>/seeker/makeComplaint/<?= $completed->reqID ?>">Complain</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -110,8 +110,8 @@ protectRoute([2]); ?>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Message</a></li>
                                     <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/seeker/makeComplaint">Complain</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/seeker/review/<?= $completed->jobID ?>   ">review</a></li>
+                                    <li><a href="<?= ROOT ?>/seeker/makeComplaint/<?= $completed->applicationID ?>">Complain</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/seeker/review/<?= $completed->jobID ?> ">review</a></li>
                                 </ul>
                             </div>
                         </div>

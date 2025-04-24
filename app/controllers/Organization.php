@@ -199,21 +199,6 @@ class Organization extends Controller
         }
     }
 
-    function organizationEditProfile()
-    {
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
-        }
-
-        // Get user data
-        $userId = $_SESSION['user_id'];
-        $data = $this->accountModel->getOrgData($userId);
-
-        // Load the view and pass user data
-        $this->view('organizationEditProfile', $data);
-    }
-
     public function updateProfile()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -562,10 +547,6 @@ class Organization extends Controller
         }
     }
 
-    function org_postJob()
-    {
-        $this->view('org_postJob');
-    }
 
     function org_report()
     {
