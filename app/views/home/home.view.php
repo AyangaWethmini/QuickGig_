@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/empty.css">
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -24,25 +24,6 @@ if (
     }
 </script>
 
-<!-- <nav class="navbar flex-row">
-    <div class="flex-row  nav-left">
-        <div class="logo">QuickGig</div>
-        <ul class="nav-links  flex-row">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">Categories</a></li>
-        </ul>
-    </div>
-
-    <div class="sign-btns">
-        <button class="btn btn-trans">Login</button>
-        <button class="btn" style="background-color: var(--brand-pri-dark);">Sign Up</button>
-    </div>
-    <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</nav> -->
 <div class="home-announcement">
     <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
         <div class="home-announcement-content">
@@ -151,11 +132,63 @@ if (!isset($_SESSION['subscription_popup_shown'])) {
     </div>
 </div>
 
-<div class="featured flex-row">
-    <p class="typography" style="font-size: 48px;">
-        Featured <span>Jobs</span>
-    </p>
-    <a href="#" class="flex-row" style="gap: 10px; padding-top:5px; ">Show all jobs<img style="height: 15px; width: auto; padding-top: 5px;" src="<?= ROOT ?>/assets/images/ArrowRight.svg" /></a>
+<div class="featured flex-col" id="more-jobs">
+    <div  style="display: flex; justify-content:space-between;">
+        <p class="typography" style="font-size: 48px;">
+            Featured <span>jobs</span>
+        </p>
+    </div>
+    <section class="job-marquee-container">
+        <h2 class="job-marquee-title">🔥 Latest Job Opportunities</h2>
+        <div class="job-marquee-track">
+            <?php for ($i = 0; $i < 2; $i++): // Repeat for infinite loop 
+            ?>
+                <?php foreach ($jobs as $job): ?>
+                    <div class="job-card">
+                        <img class="job-photo"
+                            src="<?= !empty($job->pp) ? 'data:image/jpeg;base64,' . base64_encode($job->pp) : ROOT . '/assets/images/default.jpg' ?>"
+                            alt="Profile Photo">
+                        <div class="job-info">
+                            <h3><?= htmlspecialchars($job->name); ?></h3>
+                            <p class="job-title"><?= htmlspecialchars($job->jobTitle); ?></p>
+                            <p class="job-meta">Job ID: <?= htmlspecialchars($job->jobID); ?></p>
+                            <p class="job-date"><?= htmlspecialchars($job->datePosted); ?> | <?= htmlspecialchars($job->timePosted); ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endfor; ?>
+        </div>
+    </section>
+
+
+</div>
+<div class="featured flex-col">
+    <div style="display: flex; justify-content:space-between;">
+        <p class="typography" style="font-size: 48px;">
+            Featured <span>Availabilities</span>
+        </p>
+    </div>
+    <section class="job-marquee-container2">
+        <h2 class="job-marquee-title">🔥 Latest Employee Opportunities</h2>
+        <div class="job-marquee-track2">
+            <?php for ($i = 0; $i < 2; $i++): // Repeat for infinite loop 
+            ?>
+                <?php foreach ($employees as $job): ?>
+                    <div class="job-card">
+                        <img class="job-photo"
+                            src="<?= !empty($job->pp) ? 'data:image/jpeg;base64,' . base64_encode($job->pp) : ROOT . '/assets/images/default.jpg' ?>"
+                            alt="Profile Photo">
+                        <div class="job-info">
+                            <h3><?= htmlspecialchars($job->fname . ' ' . $job->lname); ?></h3>
+                            <p class="job-title"><?= htmlspecialchars($job->description); ?></p>
+                            <p class="job-meta">Job ID: <?= htmlspecialchars($job->availableID); ?></p>
+                            <p class="job-date"><?= htmlspecialchars($job->datePosted); ?> | <?= htmlspecialchars($job->timePosted); ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endfor; ?>
+        </div>
+    </section>
 </div>
 
 <div class="footer" style="color : white">

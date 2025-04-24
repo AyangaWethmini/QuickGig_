@@ -18,11 +18,14 @@ class Home extends Controller
 	{
 		$plans = $this->planModel->getPlans();
 		$ad = $this->adModel->getRandomActiveAd();
-
+		$jobsForHome = $this->jobForHomeModel->getJobs();
+		$employeesForHome = $this->jobForHomeModel->getEmployees();
 
 		$data = [
 			'plans' => $plans,
-			'ad' => $ad
+			'ad' => $ad,
+			'jobs' => $jobsForHome,
+			'employees' => $employeesForHome
 		];
 
 		$this->view('home', $data);
