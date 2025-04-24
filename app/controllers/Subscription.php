@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Colombo');
 require_once '../app/services/StripeService.php';
 
 class Subscription extends Controller {
@@ -49,16 +49,16 @@ class Subscription extends Controller {
         $userRole = $_SESSION['user_role'];
 
         // Role-based plan restriction
-        $rolePlanMap = [
-            2 => 'price_1RBC4LFq0GU0Vr5TFeEmkI37', // Role 2 -> Individual Plan
-            3 => 'price_1RBC5KFq0GU0Vr5TMvpc9eDH', // Role 3 -> Organization Plan
-        ];
+        // $rolePlan= [
+        //     2 => 'price_1RBC4LFq0GU0Vr5TFeEmkI37', // Role 2 -> Individual Plan
+        //     3 => 'price_1RBC5KFq0GU0Vr5TMvpc9eDH', // Role 3 -> Organization Plan
+        // ];
 
-        if (!isset($rolePlanMap[$userRole]) || $rolePlanMap[$userRole] !== $priceID) {
-            $_SESSION['error'] = 'Your account in not eligible to subscribe to this plan';
-            header('Location: ' . ROOT . '/subscription/premium');
-            exit;
-        }
+        // if (!isset($rolePlanMap[$userRole]) || $rolePlanMap[$userRole] !== $priceID) {
+        //     $_SESSION['error'] = 'Your account in not eligible to subscribe to this plan';
+        //     header('Location: ' . ROOT . '/subscription/premium');
+        //     exit;
+        // }
 
         $customerID = $this->accountSubscriptionModel->ensureStripeCustomer($accountID, $email);
         
@@ -278,8 +278,8 @@ class Subscription extends Controller {
 
     private function getStripePlanMap() {
         return [
-            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1, // individual
-            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2, // organization
+            'price_1RHKF1Fq0GU0Vr5TCiCsqBUP' => 1, // plus
+            'price_1RHKHWFq0GU0Vr5TmIl62PXC' => 2, // pro
         ];
     }
 

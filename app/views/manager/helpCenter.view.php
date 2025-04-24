@@ -30,7 +30,7 @@ protectRoute([1]);?>
                             <p><?= htmlspecialchars($q->description) ?></p>
                             
                             <form method="POST" action ="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>">
-                                <textarea name="reply" placeholder="Send a reply"></textarea>
+                                <textarea name="reply" placeholder="Send a reply" required></textarea>
                                 <button class="btn btn-accent" type="submit">Reply</button>
                             </form>
                             
@@ -60,7 +60,7 @@ protectRoute([1]);?>
                 <p><?= htmlspecialchars($q->description) ?></p>
                 
                 <form method="POST" action="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>" style="margin-top: 10px;">
-                <textarea name="reply" style="background-color: hsla(116, 76%, 87%, 1);"><?= htmlspecialchars($q->reply) ?></textarea>
+                <textarea name="reply" style="background-color: hsla(116, 76%, 87%, 1);" required><?= htmlspecialchars($q->reply) ?></textarea>
                 <button class="btn btn-accent" type="submit">Update Reply</button>
                 </form>
                 

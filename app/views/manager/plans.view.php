@@ -144,4 +144,58 @@ protectRoute([1]); ?>
             });
         }
     }
+
+
+
+    //frontend validation 
+    document.getElementById('createPlanForm').addEventListener('submit', function (e) {
+        const planName = document.getElementById('planName').value.trim();
+        const price = document.getElementById('price').value.trim();
+        const posts = document.getElementById('posts').value.trim();
+        const duration = document.getElementById('duration').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const stripePriceId = document.getElementById('stripe_price_id').value.trim();
+
+        // Validate Plan Name
+        if (planName === '' || planName.length > 20) {
+            alert('Plan Name is required and must not exceed 20 characters.');
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Price
+        if (price === '' || isNaN(price) || parseFloat(price) <= 0) {
+            alert('Price is required and must be a positive number.');
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Number of Posts
+        if (posts === '' || isNaN(posts) || parseInt(posts) <= 0) {
+            alert('Number of posts is required and must be a positive integer.');
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Duration
+        if (duration === '' || isNaN(duration) || parseInt(duration) <= 0) {
+            alert('Duration is required and must be a positive integer.');
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Description
+        if (description === '' || description.length > 1000) {
+            alert('Description is required and must not exceed 1000 characters.');
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Stripe Price ID (optional)
+        if (stripePriceId !== '' && (stripePriceId.length > 50 || !/^price_[a-zA-Z0-9]+$/.test(stripePriceId))) {
+            alert('Stripe Price ID must not exceed 50 characters and must match the format "price_xxxxxxxx".');
+            e.preventDefault();
+            return;
+        }
+    });
 </script>

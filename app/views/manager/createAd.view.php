@@ -30,7 +30,7 @@ protectRoute([1]);
                         <h4>Advertiser Details</h4>
                         <div class="field">
                             <label class="lbl">Email</label><br>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Enter a valid email" required>
                         </div>
                         <div class="field">
                             <label class="lbl">Advertiser Name</label><br>
@@ -39,7 +39,7 @@ protectRoute([1]);
 
                         <div class="field">
                             <label class="lbl">Contact Number</label><br>
-                            <input type="text" id="contact" name="contact" required>
+                            <input type="text" id="contact" name="contact" pattern="07\d{8}" title="Enter a valid phone number starting with 07 and 10 digits total" required>
                         </div>
 
                         
@@ -61,7 +61,7 @@ protectRoute([1]);
 
                         <div class="field">
                             <label class="lbl">Link</label><br>
-                            <input type="url" id="link" name="link" required>
+                            <input type="url" id="link" name="link"  pattern="https?://.+" title="Enter a valid URL starting with http:// or https://" required>
                         </div>
 
                         <div class="field">
@@ -161,4 +161,78 @@ document.getElementById('email').addEventListener('blur', function() {
         console.error('Error:', err);    
     });
 });
+
+
+
+
+
+//frontend validation 
+document.querySelector('form').addEventListener('submit', function(event) {
+    let isValid = true;
+    const email = document.getElementById('email').value.trim();
+    const advertiserName = document.getElementById('advertiserName').value.trim();
+    const contact = document.getElementById('contact').value.trim();
+    const adTitle = document.getElementById('adTitle').value.trim();
+    const adDescription = document.getElementById('adDescription').value.trim();
+    const link = document.getElementById('link').value.trim();
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const adImage = document.querySelector('input[name="adImage"]').files[0];
+
+    // Email validation
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        alert('Please enter a valid email address.');
+        isValid = false;
+    }
+
+    // Advertiser Name validation
+    if (advertiserName === '') {
+        alert('Advertiser Name is required.');
+        isValid = false;
+    }
+
+    // Contact Number validation
+    if (!/^07\d{8}$/.test(contact)) {
+        alert('Please enter a valid contact number starting with 07 and 10 digits total.');
+        isValid = false;
+    }
+
+    // Advertisement Title validation
+    if (adTitle === '') {
+        alert('Advertisement Title is required.');
+        isValid = false;
+    }
+
+    // Advertisement Description validation
+    if (adDescription === '') {
+        alert('Advertisement Description is required.');
+        isValid = false;
+    }
+
+    // Link validation
+    if (!/^https?:\/\/.+/.test(link)) {
+        alert('Please enter a valid URL starting with http:// or https://.');
+        isValid = false;
+    }
+
+    // Date validation
+    if (startDate === '' || endDate === '') {
+        alert('Start Date and End Date are required.');
+        isValid = false;
+    } else if (new Date(startDate) > new Date(endDate)) {
+        alert('Start Date cannot be later than End Date.');
+        isValid = false;
+    }
+
+    // Image validation
+    if (!adImage) {
+        alert('Advertisement Image is required.');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        event.preventDefault(); // Prevent form submission if validation fails
+    }
+});
+
 </script>

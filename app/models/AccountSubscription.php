@@ -141,8 +141,8 @@ class AccountSubscription extends Account {
 
     private function getPlanIDFromPriceID($priceID) {
         $planMap = [
-            'price_1RBC4LFq0GU0Vr5TFeEmkI37' => 1,
-            'price_1RBC5KFq0GU0Vr5TMvpc9eDH' => 2,
+            'price_1RHKF1Fq0GU0Vr5TCiCsqBUP' => 1,
+            'price_1RHKHWFq0GU0Vr5TmIl62PXC' => 2,
         ];
         return $planMap[$priceID] ?? null;
     }
