@@ -11,7 +11,7 @@ class Home extends Controller
 		$this->adminModel = $this->model('AdminModel');
 		$this->planModel = $this->model('Plans');
 		$this->adModel = $this->model("Advertisement");
-		$this->adminModel = $this->model("AdminModel");
+		$this->jobForHomeModel = $this->model("JobsForHome");
 	}
 
 	public function index()
@@ -20,12 +20,18 @@ class Home extends Controller
 		$announcements = $this->adminModel->getAnnouncements();
 		$advertisements = $this->adModel->getActiveAds();
 		$announcements = $this->adminModel->getAnnouncements();
+		$employeesForHome = $this->jobForHomeModel->getEmployees();
+		$jobsForHome = $this->jobForHomeModel->getJobs();
+
+
 
 
 		$data = [
 			'plans' => $plans,
 			'announcements' => $announcements,
-			'advertisements' => $advertisements
+			'jobs' => $jobsForHome,
+			'advertisements' => $advertisements,
+			'employees' => $employeesForHome
 
 		];
 

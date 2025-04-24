@@ -27,7 +27,12 @@ class ReceivedSeeker{
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
                              ELSE o.orgName 
-                         END AS name, 
+                         END AS name,
+                          CASE 
+                             WHEN i.accountID IS NOT NULL  
+                             THEN i.accountID
+                             ELSE o.accountID 
+                         END AS accountID, 
                          m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
                   FROM req_available r 
                   JOIN makeavailable m ON r.availableID = m.availableID

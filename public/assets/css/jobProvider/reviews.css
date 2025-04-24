@@ -57,12 +57,41 @@
     margin-left: 20px;
 }
 
-.rating .fa-star {
+
+ .star-active {
+    margin-top: 5PX;
     color: gold;
+}
+ .star-inactive{
+    margin-top: 5PX;
+    color: rgb(187, 187, 187);
 }
 
 .review-text {
-    margin-top: 10px;
-    font-size: 16px;
+    margin-top: 5px;
+    font-size: 18px;
     color: #25324B;
+}
+.btn-update{
+    background-color: #4640DE;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete{
+    background-color: #c11b1b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-update:hover{
+    background-color: #3430bd;
+}
+
+.btn-delete:hover{
+    background-color: #a00f0f;
 }

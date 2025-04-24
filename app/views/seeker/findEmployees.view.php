@@ -1,16 +1,16 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/JobProvider/findEmployees.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/popUp.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/findEmployees.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUp.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/empty.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
-    
+
     <div class="main-content-jobs">
         <div class="header">
             <div class="heading">Find Jobs</div>
@@ -18,9 +18,9 @@ protectRoute([2]);?>
         <hr>
         <div class="search-container">
             <form method="GET" action="<?= ROOT ?>/seeker/findEmployees">
-                <input type="text" 
-                    name="search" 
-                    class="search-bar" 
+                <input type="text"
+                    name="search"
+                    class="search-bar"
                     placeholder="Find jobs (e.g. waiter, bartender, skill etc.)"
                     aria-label="Search"
                     value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
@@ -39,67 +39,101 @@ protectRoute([2]);?>
 
         <div class="job-cards-container">
             <?php if (!empty($data['findJobs'])): ?>
-                <?php foreach($data['findJobs'] as $findJob): ?>
-                <div class="job-card container">
-                    <div class="job-card-left flex-row">
-                      <div class="pfp">
-                        <div class="img" >
-                            <?php if ($findJob->pp): ?>
-                                <?php 
-                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
-                                    $mimeType = $finfo->buffer($findJob->pp);
-                                ?>
-                                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findJob->pp) ?>" alt="Employer Image">
-                            <?php else: ?>
-                                <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
-                            <?php endif; ?>
-                        </div>
-                      </div>           
-                        <div class="job-details">
-                            <h2><?= htmlspecialchars($findJob->name)?></h2>
-                            <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
-                            <span class="jobPostedDate" id="employeeLocation"><?= htmlspecialchars($findJob->location) ?></span>
-                            <div style="display:flex;flex-direction:column; gap:20px">
-                                <div class="rating">
-                                    <span>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                        <i class="fa fa-star star-active mx-1"></i>
-                                    </span>
+                <?php foreach ($data['findJobs'] as $findJob): ?>
+                    <div class="job-card container">
+                        <div class="job-card-left flex-row">
+                            <div class="pfp">
+                                <div class="img">
+                                    <?php if ($findJob->pp): ?>
+                                        <?php
+                                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                        $mimeType = $finfo->buffer($findJob->pp);
+                                        ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $findJob->accountID ?>">
+
+                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($findJob->pp) ?>" alt="Employer Image">
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $findJob->accountID ?>">
+                                            <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="availability">
-                                    <div class="availability-time">
-                                        <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>
+                            </div>
+                            <div class="job-details">
+
+                                <div class="flex-row fit-content">
+                                    <div>
+
+                                        <h2><?= htmlspecialchars($findJob->name) ?></h2>
+                                        <h4>Job: <?= htmlspecialchars($findJob->jobTitle) ?></h4>
                                     </div>
-                                    <div class="availability-date">
-                                        <span><?= htmlspecialchars($findJob->availableDate) ?></span>
-                                    </div>
-                                    <div class="availability-shift">
-                                    <span><?= htmlspecialchars($findJob->shift) ?></span>
-                                    </div>
-                                    <div class="availability-salary">
-                                    <span><?= htmlspecialchars($findJob->salary) ?> <?= htmlspecialchars($findJob->currency) ?>/Hr</span>
-                                    </div>
+                                    <?php if ($findJob->badge == 1): ?>
+                                        <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                                    <?php endif; ?>
+
                                 </div>
-                                <div class="tags">
-                                    <?php 
+                                <span class="jobPostedDate"><?= htmlspecialchars($findJob->location) ?></span>
+                                <div style="display:flex;flex-direction:column; gap:20px">
+                                    <div class="rating">
+                                        <?php
+                                        $stars = 5;
+                                        $remaining = $findJob->rating;
+
+                                        for ($i = 0; $i < $stars; $i++) {
+                                            if ($remaining >= 1) {
+                                                echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
+                                                $remaining -= 1;
+                                            } elseif ($remaining > 0.5) {
+                                                echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } elseif ($remaining == 0.5) {
+                                                echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } elseif ($remaining < 0.5 && $remaining > 0) {
+                                                echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } else {
+                                                echo '<img src="' . ROOT . '/assets/images/emptystar.png" class="star-img">';
+                                            }
+                                        }
+
+                                        ?>
+                                    </div>
+                                    <div class="availability">
+                                        <div class="availability-time">
+                                            <span>Available: <?= htmlspecialchars($findJob->timeFrom) ?> - <?= htmlspecialchars($findJob->timeTo) ?></span>
+                                        </div>
+                                        <div class="availability-date">
+                                            <span><?= htmlspecialchars($findJob->availableDate) ?></span>
+                                        </div>
+                                        <div class="availability-shift">
+                                            <span><?= htmlspecialchars($findJob->shift) ?></span>
+                                        </div>
+                                        <div class="availability-salary">
+                                            <span><?= htmlspecialchars($findJob->salary) ?> <?= htmlspecialchars($findJob->currency) ?>/Hr</span>
+                                        </div>
+                                    </div>
+                                    <div class="tags">
+                                        <?php
                                         $categories = json_decode($findJob->categories, true);
                                         if (is_array($categories)) {
                                             foreach ($categories as $category) {
                                                 echo '<span class="tag">' . htmlspecialchars($category) . '</span>';
                                             }
                                         }
-                                    ?>
-                                </div>
-                                <hr>
-                                <div class="jobDescription"><p><?= $findJob->description ?></p></div>
-                                <hr>
-                                <div class="job-identities">
-                                    <p>Posted on: <?= htmlspecialchars($findJob->datePosted) ?></p>
-                                    <p>Posted at: <?= htmlspecialchars($findJob->timePosted) ?></P>
-                                    <p>Job id: #<?= htmlspecialchars($findJob->jobID) ?></p>
+                                        ?>
+                                    </div>
+                                    <hr>
+                                    <div class="jobDescription">
+                                        <p><?= $findJob->description ?></p>
+                                    </div>
+                                    <hr>
+                                    <div class="job-identities">
+                                        <p>Posted on: <?= htmlspecialchars($findJob->datePosted) ?></p>
+                                        <p>Posted at: <?= htmlspecialchars($findJob->timePosted) ?></P>
+                                        <p>Job id: #<?= htmlspecialchars($findJob->jobID) ?></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -118,16 +152,16 @@ protectRoute([2]);?>
                         </div>
 
                     </div>
-                </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="empty-container">
-                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
-                    <p class="empty-text">No Jobs Found</p>
-                </div>
-            <?php endif; ?>
         </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    <div class="empty-container">
+        <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Jobs" class="empty-icon">
+        <p class="empty-text">No Jobs Found</p>
     </div>
+<?php endif; ?>
+    </div>
+</div>
 </div>
 
 <!-- Confirmation Popup -->
@@ -179,22 +213,22 @@ protectRoute([2]);?>
 
     function applyForJob(jobID) {
         fetch("<?= ROOT ?>/seeker/requestJob", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: `jobID=${jobID}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "success") {
-                showPopup("successPopup");
-                setTimeout(() => closePopup("successPopup"), 3000);
-            } else if (data.status === "error") {
-                showPopup("alreadyAppliedPopup");
-            }
-        })
-        .catch(error => console.error("Error:", error));
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `jobID=${jobID}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    showPopup("successPopup");
+                    setTimeout(() => closePopup("successPopup"), 3000);
+                } else if (data.status === "error") {
+                    showPopup("alreadyAppliedPopup");
+                }
+            })
+            .catch(error => console.error("Error:", error));
     }
 
     function showPopup(popupID) {
@@ -230,12 +264,17 @@ protectRoute([2]);?>
             if (!map) {
                 map = new google.maps.Map(document.getElementById("map"), {
                     zoom: 15,
-                    center: { lat: 6.9271, lng: 79.8612 }, // Default to Colombo
+                    center: {
+                        lat: 6.9271,
+                        lng: 79.8612
+                    }, // Default to Colombo
                 });
             }
 
             const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ address: location }, function(results, status) {
+            geocoder.geocode({
+                address: location
+            }, function(results, status) {
                 if (status === "OK") {
                     map.setCenter(results[0].geometry.location);
                     if (marker) {

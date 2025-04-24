@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
-protectRoute([2]); ?>
+protectRoute([2,3]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/messages/chat.css">
@@ -9,8 +9,18 @@ protectRoute([2]); ?>
 
     <div class="wrapper">
 
-        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
-
+        <?php
+            if($_SESSION['user_role'] == 2){
+                if ($_SESSION['current_role'] == 1) {
+                    require APPROOT . '/views/jobProvider/jobProvider_sidebar.php';
+                }else if ($_SESSION['current_role'] == 2) {
+                    require APPROOT . '/views/seeker/seeker_sidebar.php';
+                }
+            }else if($_SESSION['user_role'] == 3){
+                require APPROOT . '/views/jobProvider/organization_sidebar.php';
+            }
+        ?>
+       
         <?php if (empty($data['conversations'])): ?>
             <div class="no-messages-container">
                 <img src="<?= ROOT ?>/assets/images/no-messages.png" alt="No Messages" class="no-messages-icon">

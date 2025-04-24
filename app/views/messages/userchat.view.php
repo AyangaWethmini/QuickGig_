@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
-protectRoute([2]); ?>
+protectRoute([2, 3]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/messages/userchat.css">
@@ -9,17 +9,50 @@ protectRoute([2]); ?>
 
     <div class="wrapper">
 
-        <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+        <?php
+        if ($_SESSION['user_role'] == 2) {
+            if ($_SESSION['current_role'] == 1) {
+                require APPROOT . '/views/jobProvider/jobProvider_sidebar.php';
+            } else if ($_SESSION['current_role'] == 2) {
+                require APPROOT . '/views/seeker/seeker_sidebar.php';
+            }
+        } else if ($_SESSION['user_role'] == 3) {
+            require APPROOT . '/views/jobProvider/organization_sidebar.php';
+        }
+        ?>
         <div class="inner-wrapper">
-            <div class="chat-start">
-                <h3>Start of the chat</h3>
+            <div class="chat-header">
+                <button onclick="history.back()" class="back-btn">← Back</button>
+                <div class="chat-header-content">
+                    <div class="image">
+                        <?php if ($data['pp']): ?>
+                            <?php
+                            $finfo = new finfo(FILEINFO_MIME_TYPE);
+                            $mimeType = $finfo->buffer($data['pp']);
+                            ?>
+                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($data['pp']) ?>" alt="Profile Picture">
+                        <?php else: ?>
+                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available">
+                        <?php endif; ?>
+                    </div>
+                    <span class="username"><?= $data['username'] ?></span>
+                    <div class="flex-row">
+                        
+                        <?php if ($data['badge'] == 1): ?>
+                            <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                        <?php endif; ?>
+
+                    </div>
+                </div>
             </div>
+
+
             <div id="chat-box"></div>
             <form id="send-message-form">
                 <input type="hidden" id="receiver_id" value="<?= $data['receiver_id'] ?>">
 
-                <textarea id="message"></textarea>
-                <button type="submit">Send</button>
+                <textarea id="message" placeholder="Type your message..."></textarea>
+                <button type="submit" id="send-btn" disabled>Send</button>
             </form>
 
         </div>
@@ -66,7 +99,14 @@ protectRoute([2]); ?>
             }
             xhr.send("receiver_id=" + receiver_id + "&message=" + encodeURIComponent(message));
         }
+        const messageInput = document.getElementById('message');
+        const sendBtn = document.getElementById('send-btn');
+
+        messageInput.addEventListener('input', () => {
+            const hasText = messageInput.value.trim().length > 0;
+            sendBtn.disabled = !hasText;
+        });
     </script>
-    
+
 
 </body>

@@ -68,7 +68,7 @@ body{
   
   /* Your messages */
   .message.you {
-    background-color: #d4f7d4;
+    background-color: #50e050;
     color: #333;
     align-self: flex-end;
   }
@@ -115,6 +115,55 @@ body{
   button:hover {
     background-color: #45a049;
   }
+  .chat-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #fdfdfd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+    gap: 16px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.back-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.chat-header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-header .image img {
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+.chat-header .username {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+    text-transform: capitalize;
+}
+
   
   
   /* Responsive */

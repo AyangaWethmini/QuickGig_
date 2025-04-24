@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
-protectRoute([2]); ?>
+protectRoute([3]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/review.css">
@@ -9,7 +9,7 @@ protectRoute([2]); ?>
 
     <div class="wrapper flex-row">
 
-        <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
         <div class="review-section">
 
@@ -27,9 +27,12 @@ protectRoute([2]); ?>
                     <?php endif; ?>
                 </div>
                 <h3 class="receiver-name"><?= $data['fname'] . ' ' . $data['lname'] ?></h3>
+                <div class="job-id-display">
+                    Job ID: <span><?= htmlspecialchars($data['jobID']) ?></span>
+                </div>
             </div>
             <!-- Review submission form -->
-            <form action="<?= ROOT ?>/seeker/addReview/<?= $data['accountID'] ?>" method="POST" class="review-form">
+            <form action="<?= ROOT ?>/Organization/addReview/<?= $data['accountID'] ?>" method="POST" class="review-form">
                 <input type="hidden" name="receiver_id" value="<?= $receiverId ?>">
                 <input type="hidden" name="jobID" value="<?= $data['jobID'] ?>">
                 <input type="hidden" name="rating" id="rating-value" value="<?= !empty($data['rating']) ? htmlspecialchars($data['rating']) : '' ?>">
@@ -88,16 +91,16 @@ protectRoute([2]); ?>
             star.addEventListener('mouseout', () => {
                 stars.forEach(s => s.classList.remove('hover'));
             });
-            window.addEventListener('DOMContentLoaded', () => {
-                const currentRating = ratingValue.value;
-                if (currentRating) {
-                    stars.forEach(s => {
-                        if (s.getAttribute('data-value') <= currentRating) {
-                            s.classList.add('selected');
-                        }
-                    });
-                }
-            });
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentRating = ratingValue.value;
+            if (currentRating) {
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= currentRating) {
+                        s.classList.add('selected');
+                    }
+                });
+            }
         });
     </script>
 

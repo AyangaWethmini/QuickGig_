@@ -56,13 +56,31 @@ protectRoute([3]);?>
                     <span class="date-applied">Date Applied: <?= htmlspecialchars($received->dateApplied) ?></span>
                     <span class="time-applied">Time Applied: <?= htmlspecialchars($received->timeApplied)?></span>
                     
-                    <div class="ratings">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    </div>
+                    <div class="rating">
+                                    <?php
+                                    $stars = 5;
+                                    $remaining = $received->avgRate;
+
+                                    for ($i = 0; $i < $stars; $i++) {
+                                        if ($remaining >= 1) {
+                                            echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
+                                            $remaining -= 1;
+                                        } elseif ($remaining > 0.5) {
+                                            echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
+                                            $remaining = 0;
+                                        } elseif ($remaining == 0.5) {
+                                            echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
+                                            $remaining = 0;
+                                        } elseif ($remaining < 0.5 && $remaining > 0) {
+                                            echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
+                                            $remaining = 0;
+                                        } else {
+                                            echo '<img src="' . ROOT . '/assets/images/emptystar.png" class="star-img">';
+                                        }
+                                    }
+
+                                    ?>
+                                </div>
                     <hr>
                     <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($received->jobID)?></span>
                     <span class="jobId-applied">Application ID: #<?= htmlspecialchars($received->applicationID)?></span>

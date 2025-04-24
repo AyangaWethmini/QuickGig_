@@ -262,6 +262,11 @@ a:hover {
 td {
     padding-bottom: 10px
 }
+.star-img {
+    width: 30px;
+    height: 30px;
+    margin: 0 2px;
+}
 
 .star-active {
     color: #FBC02D;
@@ -296,6 +301,8 @@ td {
     overflow-y: auto;
     max-width: 900px;
     align-content: center;
+    background-color: #f4f4f4;
+    border-radius: 5%;
 }
 .review {
     border-bottom: 1px solid #ddd;

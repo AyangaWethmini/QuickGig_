@@ -294,6 +294,11 @@ a {
   margin-right: 10px;
   animation: blink 1s infinite;
 }
+.star-img {
+  width: 30px;
+  height: 30px;
+  margin: 0 2px;
+}
 
 @keyframes blink {
   0% { opacity: 1; }

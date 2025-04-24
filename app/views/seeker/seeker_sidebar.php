@@ -10,7 +10,7 @@
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">My Profile</span>
             </a>
-            <a href="<?php echo ROOT;?>/seeker/messages" class="sidebar-item">
+            <a href="<?php echo ROOT;?>/message/chat" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-message"></i></span>
                 <span class="sidebar-label">Messages</span>
             </a>

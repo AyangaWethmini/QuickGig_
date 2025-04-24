@@ -18,6 +18,8 @@ class Organization extends Controller
         $this->accountModel = $this->model('Account');
         $this->userModel = $this->model('User');
         $this->helpModel = $this->model('Help');
+        $this->reviewModel = $this->model('Review');
+
     }
 
 
@@ -31,9 +33,24 @@ class Organization extends Controller
         // Get user data
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getOrgData($userId);
-        $this->view('organizationProfile', $data);
-    }
+        $rating = $this->reviewModel->readMyReview($userId, 1);
+        $finalrate = 0;
+        $length = 0;
+        $data['ratings'] = $this->reviewModel->getRatingDistribution($userId, 1);
+        $finalrate = 0;
+        foreach ($rating as $rate) {
+            $finalrate = $finalrate + $rate->rating;
+            $length += 1;
+        }
+        $avgRate = 0;
+        if ($finalrate != 0) {
+            $avgRate = round((float)$finalrate / (float)$length, 1);
+        } else {
+            $avgRate = 0;
+        }
 
+        $this->view('organizationProfile', ['data' => $data, 'reviews' => $rating, 'avgRate' => $avgRate]);
+    }
 
     function org_findEmployees()
     {
@@ -43,7 +60,29 @@ class Organization extends Controller
         } else {
             $findEmployees = $this->findEmpModel->getEmployees();
         }
+            
+        foreach ($findEmployees as &$employee) {
+            $sumRate = 0;
+            $avgRate = 0;
 
+            $rating = $this->reviewModel->readMyReview($employee->accountID, 2);
+            $length = count($rating);
+            $userData = $this->accountModel->getUserData($employee->accountID);
+
+            if (empty($userData)) {
+                $userData = $this->accountModel->getOrgData($employee->accountID);
+            }
+            foreach ($rating as $rate) {
+                $sumRate += $rate->rating;
+            }
+
+            if ($length > 0) {
+                $avgRate = $sumRate / $length;
+            }
+
+            $employee->rating = $avgRate;
+            $employee->badge = $userData['badge'];
+        }
         $data = [
             'findEmployees' => $findEmployees
         ];
@@ -60,13 +99,18 @@ class Organization extends Controller
             $reqID = uniqid('REQ_');
 
             $success = $jobModel->applyForJob($reqID, $providerID, $availableID);
+
+            if ($success) {
+                echo json_encode(["status" => "success", "message" => "Your request has been submitted successfully!"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "You have already requested for this."]);
+            }
         }
     }
 
-
-    function org_jobListing_received()
+    public function org_jobListing_received()
     {
-        $userID = $_SESSION['user_id'];
+    $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $receivedModel = $this->model('ReceivedProvider');
@@ -79,11 +123,30 @@ class Organization extends Controller
             $receivedRequests = $receivedModel->getReceivedRequests();
         }
 
-        $data = ['receivedRequests' => $receivedRequests];
+        foreach ($receivedRequests as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
+        $data = [
+            'receivedRequests' => $receivedRequests
+        ];
+
         $this->view('org_jobListing_received', $data);
     }
-
-
 
     public function rejectJobRequest()
     {
@@ -132,12 +195,37 @@ class Organization extends Controller
         }
     }
 
-    function org_viewEmployeeProfile()
+    function org_viewEmployeeProfile($employeeID)
     {
-        $this->view('org_viewEmployeeProfile');
+        $account = $this->model('account');
+        $role = $account->findrole($employeeID);
+        $employeeData = null;
+        if ($role['roleID'] == 2) {
+            $employeeData = $account->getUserData($employeeID);
+            $employeeData['name'] = $employeeData['fname'] . ' ' . $employeeData['lname'];
+        } else if ($role['roleID'] == 3) {
+            $employeeData = $account->getOrgData($employeeID);
+            $employeeData['name'] = $employeeData['orgName'];
+        }
+        $rating = $this->reviewModel->readMyReview($employeeData['accountID'], 2);
+        $finalrate = 0;
+        $length = 0;
+        $employeeData['ratings'] = $this->reviewModel->getRatingDistribution($employeeData['accountID'], 2);
+        $finalrate = 0;
+        foreach ($rating as $rate) {
+            $finalrate = $finalrate + $rate->rating;
+            $length += 1;
+        }
+        $avgRate = 0;
+        if ($finalrate != 0) {
+            $avgRate = round((float)$finalrate / (float)$length, 1);
+        } else {
+            $avgRate = 0;
+        }
+        $this->view('org_viewEmployeeProfile',['data' => $employeeData, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
 
-    public function org_subscription()
+    function org_subscription()
     {
         $this->view('org_subscription');
     }
@@ -199,6 +287,20 @@ class Organization extends Controller
         }
     }
 
+    function organizationEditProfile()
+    {
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login'); // Redirect to login if not authenticated
+        }
+
+        // Get user data
+        $userId = $_SESSION['user_id'];
+        $data = $this->accountModel->getOrgData($userId);
+
+        // Load the view and pass user data
+        $this->view('organizationEditProfile', $data);
+    }
     public function updateProfile()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -269,8 +371,58 @@ class Organization extends Controller
         }
 
         $data = ['jobs' => $jobs];
-        $this->view('org_jobListing_myJobs', $data);
     }
+    function review($jobId)
+    {
+        $job = $this->model('job');
+        $account = $this->model('Account');
+        $reviewModel = $this->model('review');
+
+        $accountID = $_SESSION['user_id'];
+        $SeekerById = $job->getJobSeekerById($jobId);
+        $revieweeData = $account->getUserData($SeekerById->seekerID);
+        $review = $reviewModel->readReviewSpecific($accountID, $SeekerById->seekerID, $jobId, 2);
+        $revieweeData['jobID'] = $jobId;
+
+        if (!empty($review)) {
+            $revieweeData['rating'] = $review->rating ?? NULL;
+            $revieweeData['content'] = $review->content ?? '';
+        }
+        $this->view('review', $revieweeData);
+    }
+
+    function org_reviews()
+    {
+        $accountID = $_SESSION['user_id'];
+        $review = $this->model('review');
+        $data = $review->readReview($accountID, 2);
+        $this->view('org_reviews',$data);
+    }
+    public function addReview($accountID)
+    {
+
+        $reviewerID = $_SESSION['user_id'];
+        $revieweeID = $accountID;
+        $reviewDate = $_POST['reviewDate'];
+        $reviewTime = $_POST['reviewTime'];
+        $content    = $_POST['review'];
+        $rating     = $_POST['rating'];
+        $jobID      = $_POST['jobID'];
+        $roleID     = 2;
+
+        $review = $this->model('review');
+        $delete = $review->deleteReview($reviewerID, $revieweeID, $jobID, $roleID);
+        $result = $review->submitReview($reviewerID, $revieweeID, $reviewDate, $reviewTime, $content, $rating, $roleID, $jobID);
+        header('Location: ' . ROOT . '/organization/org_reviews');
+    }
+    public function deleteReview($reviewID)
+    {
+        $reviewModel = $this->model('Review');
+        $review = $reviewModel->reviewById($reviewID);
+        $delete = $reviewModel->deleteReview($review->reviewerID, $review->revieweeID, $review->jobID, 2);
+        header('Location: ' . ROOT . '/organization/org_reviews');
+    }
+
 
     function org_jobListing_send()
     {
@@ -287,7 +439,28 @@ class Organization extends Controller
             $sendRequests = $sendModel->getSendRequests();
         }
 
-        $data = ['sendRequests' => $sendRequests];
+        foreach ($sendRequests as $request) {
+            $userId = $request->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $request->avgRate = $avgRate;
+        }
+        $data = [
+            'sendRequests' => $sendRequests
+        ];
+
         $this->view('org_jobListing_send', $data);
     }
 
@@ -324,7 +497,43 @@ class Organization extends Controller
             $applyJobTBC = $tbcProvider->getApplyJobTBC();
             $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
         }
-
+        
+        foreach ($applyJobTBC as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
+        foreach ($reqAvailableTBC as $job) {
+            $userId = $job->accountID;
+            $rating = $this->reviewModel->readMyReview($userId, 2);
+            $finalrate = 0;
+            $length = 0;
+            $finalrate = 0;
+            foreach ($rating as $rate) {
+                $finalrate = $finalrate + $rate->rating;
+                $length += 1;
+            }
+            $avgRate = 0;
+            if ($finalrate != 0) {
+                $avgRate = round((float)$finalrate / (float)$length, 1);
+            } else {
+                $avgRate = 0;
+            }
+            $job->avgRate = $avgRate;
+        }
         $data = [
             'applyJobTBC' => $applyJobTBC,
             'reqAvailableTBC' => $reqAvailableTBC
@@ -547,7 +756,6 @@ class Organization extends Controller
         }
     }
 
-
     function org_report()
     {
         $this->view('report');
@@ -744,6 +952,7 @@ class Organization extends Controller
                 'categories' => json_encode($categories)
             ]);
 
+            // Redirect to the availability page or another appropriate page
             header('Location: ' . ROOT . '/organization/org_jobListing_myJobs');
         } else {
             // Get the current availability details for the given ID
@@ -759,8 +968,6 @@ class Organization extends Controller
             $this->view('updateJob', $data);
         }
     }
-
-
 
     public function org_postJob()
     {

@@ -56,18 +56,44 @@ protectRoute([2]); ?>
                                 </div>
                             </div>
                             <div class="job-details">
-                                <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
-                                <h4><?= htmlspecialchars($findEmp->description) ?></h4>
-                                <span class="jobPostedDate" id="employeeLocation"><?= htmlspecialchars($findEmp->location) ?></span>
+
+                                <div class="flex-row fit-content">
+                                    <div>
+                                        <h2><?= htmlspecialchars($findEmp->fname . ' ' . $findEmp->lname) ?></h2>
+                                        <h4><?= htmlspecialchars($findEmp->description) ?></h4>
+                                    </div>
+
+                                    <?php if ($findEmp->badge == 1): ?>
+                                        <img src="<?= ROOT ?>/assets/images/crown.png" class="verify-badge-profile" alt="Verified Badge">
+                                    <?php endif; ?>
+
+                                </div>
+                                <span class="jobPostedDate"><?= htmlspecialchars($findEmp->location) ?></span>
                                 <div style="display:flex;flex-direction:column; gap:20px">
                                     <div class="rating">
-                                        <span>
-                                            <i class="fa fa-star star-active mx-1"></i>
-                                            <i class="fa fa-star star-active mx-1"></i>
-                                            <i class="fa fa-star star-active mx-1"></i>
-                                            <i class="fa fa-star star-active mx-1"></i>
-                                            <i class="fa fa-star star-active mx-1"></i>
-                                        </span>
+                                        <?php
+                                        $stars = 5;
+                                        $remaining = $findEmp->rating;
+
+                                        for ($i = 0; $i < $stars; $i++) {
+                                            if ($remaining >= 1) {
+                                                echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
+                                                $remaining -= 1;
+                                            } elseif ($remaining > 0.5) {
+                                                echo '<img src="' . ROOT . '/assets/images/threequarterstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } elseif ($remaining == 0.5) {
+                                                echo '<img src="' . ROOT . '/assets/images/halfstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } elseif ($remaining < 0.5 && $remaining > 0) {
+                                                echo '<img src="' . ROOT . '/assets/images/quarterstar.png" class="star-img">';
+                                                $remaining = 0;
+                                            } else {
+                                                echo '<img src="' . ROOT . '/assets/images/emptystar.png" class="star-img">';
+                                            }
+                                        }
+
+                                        ?>
                                     </div>
                                     <div class="availability">
                                         <div class="availability-time">

@@ -27,7 +27,12 @@ class SendSeeker{
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 
                             ELSE o.orgName 
-                        END AS name, 
+                        END AS name,
+                        CASE 
+                             WHEN i.accountID IS NOT NULL  
+                             THEN i.accountID
+                             ELSE o.accountID 
+                         END AS accountID, 
                         j.jobTitle, j.jobID, j.salary, j.currency, j.location, j.availableDate, j.timeFrom, j.timeTo, acc.pp
                 FROM apply_job a 
                 JOIN job j ON a.jobID = j.jobID

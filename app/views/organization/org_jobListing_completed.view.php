@@ -77,7 +77,34 @@ protectRoute([3]);?>
                         </ul>
                     </div>
                 </div>
+<<<<<<< HEAD
             <?php endforeach; ?>
+=======
+                <div class="employee-details">
+                    <span class="employee-name"><?= htmlspecialchars($completed->fname . ' ' . $completed->lname) ?></span>
+                    <span class="job-title"><?= htmlspecialchars($completed->jobTitle) ?></span>
+                    <span class="date-applied">Date Applied: <?= htmlspecialchars($completed->dateApplied) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Applied: <?= htmlspecialchars($completed->timeApplied)?></span>
+                    <span class="date-applied">Date Accepted: <?= htmlspecialchars($completed->dateActioned) ?>&nbsp;&nbsp;&nbsp;Time Accepted: <?= htmlspecialchars($completed->timeActioned)?></span>
+                    <span class="time-applied">Available Date: <?= htmlspecialchars($completed->availableDate)?></span>
+                    <span class="time-applied">Available Time: <?= htmlspecialchars($completed->timeFrom)?> - <?= htmlspecialchars($completed->timeTo)?></span>
+                    <span class="time-applied">Salary: <?= htmlspecialchars($completed->salary)?> <?= htmlspecialchars($completed->currency)?>/Hr</span>
+                    <span class="time-applied">Location: <?= htmlspecialchars($completed->location)?></span>
+                    <hr>
+                    <span class="jobId-applied">My Job ID: #<?= htmlspecialchars($completed->jobID)?></span>
+                    <span class="jobId-applied">Application ID: #<?= htmlspecialchars($completed->applicationID)?></span>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Message</a></li>
+                        <li><a href="<?php echo ROOT;?>/organization/org_viewEmployeeProfile">View Profile</a></li>
+                        <li><a href="#">Complain</a></li>
+                        <li><a href="<?php echo ROOT; ?>/organization/review/<?=$completed->jobID?>">review</a></li>
+                    </ul>
+                </div>
+            </div>
+            <?php endforeach;?>
+>>>>>>> ThuminduSena
         <?php endif; ?> 
 
         <?php if (!empty($data['reqAvailableCompleted'])): ?>
