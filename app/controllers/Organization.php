@@ -19,7 +19,10 @@ class Organization extends Controller
         $this->userModel = $this->model('User');
         $this->helpModel = $this->model('Help');
         $this->reviewModel = $this->model('Review');
-
+        $this->seekerDoneModel = $this->model('SeekerDone');
+        $this->providerDoneModel = $this->model('ProviderDone');
+        $this->accountSubscriptionModel = $this->model('AccountSubscription');
+        $this->managerModel = $this->model('ManagerModel');
     }
 
 
@@ -60,7 +63,7 @@ class Organization extends Controller
         } else {
             $findEmployees = $this->findEmpModel->getEmployees();
         }
-            
+
         foreach ($findEmployees as &$employee) {
             $sumRate = 0;
             $avgRate = 0;
@@ -110,7 +113,7 @@ class Organization extends Controller
 
     public function org_jobListing_received()
     {
-    $userID = $_SESSION['user_id'];
+        $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
         $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
         $receivedModel = $this->model('ReceivedProvider');
@@ -222,7 +225,7 @@ class Organization extends Controller
         } else {
             $avgRate = 0;
         }
-        $this->view('org_viewEmployeeProfile',['data' => $employeeData, 'reviews' => $rating, 'avgRate' => $avgRate]);
+        $this->view('org_viewEmployeeProfile', ['data' => $employeeData, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
 
     function org_subscription()
@@ -247,8 +250,11 @@ class Organization extends Controller
         $userID = $_SESSION['user_id'];
 
         try {
-            $profile = $this->userReportModel->getUserDetails($userID);
-            $appliedJobs = $this->userReportModel->getAppliedJobs($userID);
+            $profile = $this->userReportModel->getUserDetailsOrg($userID);
+            $appliedJobs = $this->providerDoneModel->getApplyJobCompleted();
+            $appliedJobs1 = $this->seekerDoneModel->getApplyJobCompleted();
+            $requestedJobs = $this->providerDoneModel->getReqAvailableCompleted();
+            $requestedJobs1 = $this->seekerDoneModel->getReqAvailableCompleted();
             $postedJobs = $this->userReportModel->getPostedJobs($userID);
             // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
             // $totalSpent = $this->userReportModel->getTotalSpent($userID);
@@ -260,24 +266,19 @@ class Organization extends Controller
             // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
             // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
 
-            $data = [];
-            $data = array_merge($data, [
-                // 'totalEarnings' => $totalEarnings,
-                // 'totalSpent' => $totalSpent,
-
-                // 'completedTasks' => $completedTasks,
-                // 'ongoingTasks' => $ongoingTasks
-            ]);
 
             $data = [
                 'profile' => $profile,
                 'appliedJobs' => $appliedJobs,
+                'appliedJobs1' => $appliedJobs1,
                 'postedJobs' => $postedJobs,
                 'reviewsGivenCount' => $reviewsGivenCount,
                 'reviewsReceivedCount' => $reviewsReceivedCount,
                 'averageRating' => $averageRating,
                 'complaintsMadeCount' => $complaintsMadeCount,
                 'complaintsReceivedCount' => $complaintsReceivedCount,
+                'requestedJobs' => $requestedJobs,
+                'requestedJobs1' => $requestedJobs1
             ];;
             $this->view('report', $data);
         } catch (Exception $e) {
@@ -287,20 +288,6 @@ class Organization extends Controller
         }
     }
 
-    function organizationEditProfile()
-    {
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
-        }
-
-        // Get user data
-        $userId = $_SESSION['user_id'];
-        $data = $this->accountModel->getOrgData($userId);
-
-        // Load the view and pass user data
-        $this->view('organizationEditProfile', $data);
-    }
     public function updateProfile()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -396,7 +383,7 @@ class Organization extends Controller
         $accountID = $_SESSION['user_id'];
         $review = $this->model('review');
         $data = $review->readReview($accountID, 2);
-        $this->view('org_reviews',$data);
+        $this->view('org_reviews', $data);
     }
     public function addReview($accountID)
     {
@@ -497,7 +484,7 @@ class Organization extends Controller
             $applyJobTBC = $tbcProvider->getApplyJobTBC();
             $reqAvailableTBC = $tbcProvider->getReqAvailableTBC();
         }
-        
+
         foreach ($applyJobTBC as $job) {
             $userId = $job->accountID;
             $rating = $this->reviewModel->readMyReview($userId, 2);
@@ -865,10 +852,7 @@ class Organization extends Controller
 
     //help center done
 
-    function org_reviews()
-    {
-        $this->view('org_reviews');
-    }
+
 
     function complaints()
     {
