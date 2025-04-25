@@ -13,7 +13,7 @@ class Manager extends Controller
     protected $accountModel;
     protected $accountSubscriptionModel;
     protected $managerModel;
-    protected $systemReportModel; 
+    protected $systemReportModel;
     protected $managerDashboardModel;
     protected $adminModel;
 
@@ -25,7 +25,7 @@ class Manager extends Controller
         $this->announcementModel = $this->model('AdminModel');
         $this->advertiserModel = $this->model('Advertiser');
         $this->accountModel = $this->model('Account');
-        $this->accountSubscriptionModel = $this->model('AccountSubscription'); 
+        $this->accountSubscriptionModel = $this->model('AccountSubscription');
         $this->managerModel = $this->model('ManagerModel');
         $this->systemReportModel = $this->model('SystemReport');
         $this->managerDashboardModel = $this->model('ManagerDashboard');
@@ -39,18 +39,18 @@ class Manager extends Controller
 
         $subscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
 
-$extractedData = [];
+        $extractedData = [];
 
-if (is_array($subscriptionData)) {
-    $extractedData = array_map(function($item) {
-        return [
-            'planName' => $item->planName,
-            'subscriptionCount' => $item->subscription_count
-        ];
-    }, $subscriptionData);
-} else {
-    error_log("getSubscriptionRevenue() did not return an array. Check your DB query or model.");
-}
+        if (is_array($subscriptionData)) {
+            $extractedData = array_map(function ($item) {
+                return [
+                    'planName' => $item->planName,
+                    'subscriptionCount' => $item->subscription_count
+                ];
+            }, $subscriptionData);
+        } else {
+            error_log("getSubscriptionRevenue() did not return an array. Check your DB query or model.");
+        }
 
 
         // print_r($extractedData); // Debugging line
@@ -69,13 +69,13 @@ if (is_array($subscriptionData)) {
             'subscriptionData' => $extractedData,
             'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
 
-            
+
         ];
 
-       
+
         // print_r($response); // Debugging line
 
-        
+
 
         $this->view('dashboard', $response);
     }
@@ -83,82 +83,82 @@ if (is_array($subscriptionData)) {
 
 
 
-//backup code for the dashboard function
-// public function index()
-// {
-//     // Current period (default or from POST)
-//     $startDate = isset($_POST['startDate']) ? $_POST['startDate'] . ' 00:00:00' : date('Y-m-01 00:00:00');
-//     $endDate = isset($_POST['endDate']) ? $_POST['endDate'] . ' 23:59:59' : date('Y-m-d 23:59:59');
-    
-//     // Calculate last month's period
-//     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
-//     $lastMonthEnd = date('Y-m-t 23:59:59', strtotime('-1 month'));
+    //backup code for the dashboard function
+    // public function index()
+    // {
+    //     // Current period (default or from POST)
+    //     $startDate = isset($_POST['startDate']) ? $_POST['startDate'] . ' 00:00:00' : date('Y-m-01 00:00:00');
+    //     $endDate = isset($_POST['endDate']) ? $_POST['endDate'] . ' 23:59:59' : date('Y-m-d 23:59:59');
 
-//     // Get current period data
-//     $currentSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
-//     $currentExtractedData = [];
-    
-//     if (is_array($currentSubscriptionData)) {
-//         $currentExtractedData = array_map(function($item) {
-//             return [
-//                 'planName' => $item->planName,
-//                 'subscriptionCount' => $item->subscription_count
-//             ];
-//         }, $currentSubscriptionData);
-//     }
+    //     // Calculate last month's period
+    //     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
+    //     $lastMonthEnd = date('Y-m-t 23:59:59', strtotime('-1 month'));
 
-//     // Get last month's data
-//     $lastMonthSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($lastMonthStart, $lastMonthEnd);
-//     $lastMonthExtractedData = [];
-    
-//     if (is_array($lastMonthSubscriptionData)) {
-//         $lastMonthExtractedData = array_map(function($item) {
-//             return [
-//                 'planName' => $item->planName,
-//                 'subscriptionCount' => $item->subscription_count
-//             ];
-//         }, $lastMonthSubscriptionData);
-//     }
+    //     // Get current period data
+    //     $currentSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
+    //     $currentExtractedData = [];
 
-//     // Prepare response
-//     $response = [
-//         // Current period data
-//         'current' => [
-//             'adCount' => $this->managerDashboardModel->adsPosted($startDate, $endDate),
-//             'subCount' => $this->managerDashboardModel->getSubscribersCount($startDate, $endDate),
-//             'planCount' => $this->managerDashboardModel->getPlanCount(),
-//             'revenue' => [
-//                 'totalEarnings' => isset($currentSubscriptionData[0]->total_earning) ? $currentSubscriptionData[0]->total_earning : 0,
-//                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($startDate, $endDate)['totalRevenue']
-//             ],
-//             'adViews' => $this->managerDashboardModel->getTotalAdViews($startDate, $endDate),
-//             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($startDate, $endDate),
-//             'subscriptionData' => $currentExtractedData,
-//         ],
-        
-//         // Last month's data
-//         'lastMonth' => [
-//             'adCount' => $this->managerDashboardModel->adsPosted($lastMonthStart, $lastMonthEnd),
-//             'subCount' => $this->managerDashboardModel->getSubscribersCount($lastMonthStart, $lastMonthEnd),
-//             'revenue' => [
-//                 'totalEarnings' => isset($lastMonthSubscriptionData[0]->total_earning) ? $lastMonthSubscriptionData[0]->total_earning : 0,
-//                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($lastMonthStart, $lastMonthEnd)['totalRevenue']
-//             ],
-//             'adViews' => $this->managerDashboardModel->getTotalAdViews($lastMonthStart, $lastMonthEnd),
-//             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($lastMonthStart, $lastMonthEnd),
-//             'subscriptionData' => $lastMonthExtractedData,
-//         ],
-        
-//         // Common data
-//         'startDate' => $startDate,
-//         'endDate' => $endDate,
-//         'lastMonthStart' => $lastMonthStart,
-//         'lastMonthEnd' => $lastMonthEnd,
-//         'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
-//     ];
+    //     if (is_array($currentSubscriptionData)) {
+    //         $currentExtractedData = array_map(function($item) {
+    //             return [
+    //                 'planName' => $item->planName,
+    //                 'subscriptionCount' => $item->subscription_count
+    //             ];
+    //         }, $currentSubscriptionData);
+    //     }
 
-//     $this->view('dashboard', $response);
-// }
+    //     // Get last month's data
+    //     $lastMonthSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($lastMonthStart, $lastMonthEnd);
+    //     $lastMonthExtractedData = [];
+
+    //     if (is_array($lastMonthSubscriptionData)) {
+    //         $lastMonthExtractedData = array_map(function($item) {
+    //             return [
+    //                 'planName' => $item->planName,
+    //                 'subscriptionCount' => $item->subscription_count
+    //             ];
+    //         }, $lastMonthSubscriptionData);
+    //     }
+
+    //     // Prepare response
+    //     $response = [
+    //         // Current period data
+    //         'current' => [
+    //             'adCount' => $this->managerDashboardModel->adsPosted($startDate, $endDate),
+    //             'subCount' => $this->managerDashboardModel->getSubscribersCount($startDate, $endDate),
+    //             'planCount' => $this->managerDashboardModel->getPlanCount(),
+    //             'revenue' => [
+    //                 'totalEarnings' => isset($currentSubscriptionData[0]->total_earning) ? $currentSubscriptionData[0]->total_earning : 0,
+    //                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($startDate, $endDate)['totalRevenue']
+    //             ],
+    //             'adViews' => $this->managerDashboardModel->getTotalAdViews($startDate, $endDate),
+    //             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($startDate, $endDate),
+    //             'subscriptionData' => $currentExtractedData,
+    //         ],
+
+    //         // Last month's data
+    //         'lastMonth' => [
+    //             'adCount' => $this->managerDashboardModel->adsPosted($lastMonthStart, $lastMonthEnd),
+    //             'subCount' => $this->managerDashboardModel->getSubscribersCount($lastMonthStart, $lastMonthEnd),
+    //             'revenue' => [
+    //                 'totalEarnings' => isset($lastMonthSubscriptionData[0]->total_earning) ? $lastMonthSubscriptionData[0]->total_earning : 0,
+    //                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($lastMonthStart, $lastMonthEnd)['totalRevenue']
+    //             ],
+    //             'adViews' => $this->managerDashboardModel->getTotalAdViews($lastMonthStart, $lastMonthEnd),
+    //             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($lastMonthStart, $lastMonthEnd),
+    //             'subscriptionData' => $lastMonthExtractedData,
+    //         ],
+
+    //         // Common data
+    //         'startDate' => $startDate,
+    //         'endDate' => $endDate,
+    //         'lastMonthStart' => $lastMonthStart,
+    //         'lastMonthEnd' => $lastMonthEnd,
+    //         'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
+    //     ];
+
+    //     $this->view('dashboard', $response);
+    // }
 
     public function profile()
     {
@@ -171,7 +171,7 @@ if (is_array($subscriptionData)) {
     {
         $announcements = $this->announcementModel->getAnnouncements();
         $annCount = $this->announcementModel->getCount();
-        $this->view('announcements', ['announcements' => $announcements, 'annCount' => $annCount]);   
+        $this->view('announcements', ['announcements' => $announcements, 'annCount' => $annCount]);
     }
 
     public function createAnnouncement()
@@ -224,7 +224,8 @@ if (is_array($subscriptionData)) {
         $this->view('advertisers', ['advertisers' => $data]);
     }
 
-    public function subscriptions(){
+    public function subscriptions()
+    {
         $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
         $this->view('subscriptions', ['subs' => $subs]);
     }
@@ -244,207 +245,208 @@ if (is_array($subscriptionData)) {
 
 
     public function report()
-{
-    $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) . ' 00:00:00' : date('Y-m-01 00:00:00');
-    $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) . ' 23:59:59' : date('Y-m-d 23:59:59');
+    {
+        $startDate = isset($_POST['startDate']) ? trim($_POST['startDate']) . ' 00:00:00' : date('Y-m-01 00:00:00');
+        $endDate = isset($_POST['endDate']) ? trim($_POST['endDate']) . ' 23:59:59' : date('Y-m-d 23:59:59');
 
 
-    $adRevenue = $this->systemReportModel->getAdsRevenue($startDate, $endDate);
-    $subEarnings = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
-    $userCount = $this->systemReportModel->getUsers($startDate, $endDate);
+        $adRevenue = $this->systemReportModel->getAdsRevenue($startDate, $endDate);
+        $subEarnings = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
+        $userCount = $this->systemReportModel->getUsers($startDate, $endDate);
 
-    if($subEarnings === false) {
-        $_SESSION['error'] = "No subscription new subscribers during this period.";
-    } elseif(empty($subEarnings)) {
-        $_SESSION['warning'] = "No subscription revenue data found for the selected date range.";
+        if ($subEarnings === false) {
+            $_SESSION['error'] = "No subscription new subscribers during this period.";
+        } elseif (empty($subEarnings)) {
+            $_SESSION['warning'] = "No subscription revenue data found for the selected date range.";
+        }
+
+        if ($adRevenue === false) {
+            $_SESSION['error'] = "Error fetching advertisement revenue data.";
+        }
+
+        $this->view('report', [
+            'adRevenue' => is_array($adRevenue) ? $adRevenue : [],
+            'subEarnings' => is_array($subEarnings) ? $subEarnings : [],
+            'userCount' => $userCount,
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ]);
     }
-    
-    if($adRevenue === false) {
-        $_SESSION['error'] = "Error fetching advertisement revenue data.";
-    }
-    
-    $this->view('report', [
-        'adRevenue' => is_array($adRevenue) ? $adRevenue : [],
-        'subEarnings' => is_array($subEarnings) ? $subEarnings : [],
-        'userCount' => $userCount,
-        'startDate' => $startDate,
-        'endDate' => $endDate
-    ]);
-}
 
     public function postAdvertisement()
-{
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        $_SESSION['error'] = "Invalid request method.";
-        header('Location: ' . ROOT . '/manager/createAd');
-        exit;
-    }
-
-    // Generate a unique advertisement ID
-    $advertisementID = uniqid("AD", true);
-
-    // Form validation
-    $requiredFields = [
-        'advertiserName',
-        'contact',
-        'email',
-        'adTitle',
-        'adDescription',
-        'link',
-        'adStatus',
-        'startDate',
-        'endDate',
-    ];
-
-    if (!isset($_POST) || empty($_POST)) {
-        $_SESSION['error'] = "Form data is missing.";
-        header('Location: ' . ROOT . '/manager/createAd');
-        exit;
-    }
-
-    // Validate that start date is earlier than end date
-    if (isset($_POST['startDate'], $_POST['endDate'])) {
-        $startDate = strtotime($_POST['startDate']);
-        $endDate = strtotime($_POST['endDate']);
-
-        if ($startDate === false || $endDate === false || $startDate >= $endDate) {
-            $_SESSION['error'] = "Start date must be earlier than end date.";
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $_SESSION['error'] = "Invalid request method.";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
-    }
 
-    foreach ($requiredFields as $field) {
-        if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
-            $_SESSION['error'] = "All fields are required.";
-            header('Location: ' . ROOT . '/manager/createAd');
-            exit;
-        }
-    }
+        // Generate a unique advertisement ID
+        $advertisementID = uniqid("AD", true);
 
-    if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
-        $_SESSION['error'] = "Advertisement image is required.";
-        header('Location: ' . ROOT . '/manager/createAd');
-        exit;
-    }
-// 
-    $contact = trim($_POST['contact']);
-    if (!preg_match('/^07\d{8}$/', $contact)) {
-        // Validate contact number format (e.g., 07XXXXXXXX)
-        $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
-        header('Location: ' . ROOT . '/manager/createAd');
-        exit;
-    }
-    // Clean input data
-    $advertiserName = trim($_POST['advertiserName']);
-    $contact = trim($_POST['contact']);
-    $email = trim($_POST['email']);
-
-    $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
-
-
-    // If advertiser does not exist, create a new advertiser
-    if (!$advertiserId) {
-        $newAdvertiserData = [
-            'advertiserID' => $advertiserId,
-            'advertiserName' => $advertiserName,
-            'contact' => $contact,
-            'email' => $email
+        // Form validation
+        $requiredFields = [
+            'advertiserName',
+            'contact',
+            'email',
+            'adTitle',
+            'adDescription',
+            'link',
+            'adStatus',
+            'startDate',
+            'endDate',
         ];
 
-        $this->advertiserModel->createAdvertiser($newAdvertiserData);
+        if (!isset($_POST) || empty($_POST)) {
+            $_SESSION['error'] = "Form data is missing.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+
+        // Validate that start date is earlier than end date
+        if (isset($_POST['startDate'], $_POST['endDate'])) {
+            $startDate = strtotime($_POST['startDate']);
+            $endDate = strtotime($_POST['endDate']);
+
+            if ($startDate === false || $endDate === false || $startDate >= $endDate) {
+                $_SESSION['error'] = "Start date must be earlier than end date.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+
+        foreach ($requiredFields as $field) {
+            if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
+                $_SESSION['error'] = "All fields are required.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+
+        if (!isset($_FILES['adImage']) || $_FILES['adImage']['error'] === UPLOAD_ERR_NO_FILE) {
+            $_SESSION['error'] = "Advertisement image is required.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+        // 
+        $contact = trim($_POST['contact']);
+        if (!preg_match('/^07\d{8}$/', $contact)) {
+            // Validate contact number format (e.g., 07XXXXXXXX)
+            $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
+            header('Location: ' . ROOT . '/manager/createAd');
+            exit;
+        }
+        // Clean input data
+        $advertiserName = trim($_POST['advertiserName']);
+        $contact = trim($_POST['contact']);
+        $email = trim($_POST['email']);
 
         $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
-        // Verify if the advertiser was successfully created
+
+        // If advertiser does not exist, create a new advertiser
         if (!$advertiserId) {
-            error_log("Failed to create new advertiser. Email: " . $email);
-            $_SESSION['error'] = "Failed to create new advertiser.";
+            $newAdvertiserData = [
+                'advertiserID' => $advertiserId,
+                'advertiserName' => $advertiserName,
+                'contact' => $contact,
+                'email' => $email
+            ];
+
+            $this->advertiserModel->createAdvertiser($newAdvertiserData);
+
+            $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
+
+            // Verify if the advertiser was successfully created
+            if (!$advertiserId) {
+                error_log("Failed to create new advertiser. Email: " . $email);
+                $_SESSION['error'] = "Failed to create new advertiser.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+
+        // Image handling - add more detailed error checking
+        $imageData = null;
+        if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
+
+            if (!in_array($fileType, $allowedTypes)) {
+                $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+
+            $maxSize = 5 * 1024 * 1024; // 5MB
+            if ($_FILES['adImage']['size'] > $maxSize) {
+                $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+
+            $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
+            if ($imageData === false) {
+                error_log("Failed to read image file: " . $_FILES['adImage']['tmp_name']);
+                $_SESSION['error'] = "Failed to process image file.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+        }
+
+        // Prepare advertisement data
+        $advertisementData = [
+            'advertisementID' => $advertisementID,
+            'advertiserID' => $advertiserId,
+            'adTitle' => trim($_POST['adTitle']),
+            'adDescription' => trim($_POST['adDescription']),
+            'adImage' => $imageData,
+            'link' => trim($_POST['link']),
+            'startDate' => trim($_POST['startDate']),
+            'endDate' => trim($_POST['endDate']),
+            'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
+        ];
+
+        // Create advertisement with error handling
+        try {
+            $result = $this->advertisementModel->createAdvertisement($advertisementData);
+
+            if (!$result) {
+                error_log("Advertisement creation failed. Data: " . print_r($advertisementData, true));
+                $_SESSION['error'] = "Failed to create advertisement in database.";
+                header('Location: ' . ROOT . '/manager/createAd');
+                exit;
+            }
+
+            $_SESSION['success'] = "Advertisement created successfully.";
+            header('Location: ' . ROOT . '/manager/advertisements');
+            exit;
+        } catch (Exception $e) {
+            error_log("Exception in advertisement creation: " . $e->getMessage());
+            $_SESSION['error'] = "System error occurred while creating advertisement.";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
     }
 
-    // Image handling - add more detailed error checking
-    $imageData = null;
-    if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
-
-        if (!in_array($fileType, $allowedTypes)) {
-            $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF";
-            header('Location: ' . ROOT . '/manager/createAd');
-            exit;
-        }
-
-        $maxSize = 5 * 1024 * 1024; // 5MB
-        if ($_FILES['adImage']['size'] > $maxSize) {
-            $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
-            header('Location: ' . ROOT . '/manager/createAd');
-            exit;
-        }
-
-        $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
-        if ($imageData === false) {
-            error_log("Failed to read image file: " . $_FILES['adImage']['tmp_name']);
-            $_SESSION['error'] = "Failed to process image file.";
-            header('Location: ' . ROOT . '/manager/createAd');
-            exit;
-        }
-    }
-
-    // Prepare advertisement data
-    $advertisementData = [
-        'advertisementID' => $advertisementID,
-        'advertiserID' => $advertiserId,
-        'adTitle' => trim($_POST['adTitle']),
-        'adDescription' => trim($_POST['adDescription']),
-        'adImage' => $imageData,
-        'link' => trim($_POST['link']),
-        'startDate' => trim($_POST['startDate']),
-        'endDate' => trim($_POST['endDate']),
-        'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
-    ];
-
-    // Create advertisement with error handling
-    try {
-        $result = $this->advertisementModel->createAdvertisement($advertisementData);
-
-        if (!$result) {
-            error_log("Advertisement creation failed. Data: " . print_r($advertisementData, true));
-            $_SESSION['error'] = "Failed to create advertisement in database.";
-            header('Location: ' . ROOT . '/manager/createAd');
-            exit;
-        }
-
-        $_SESSION['success'] = "Advertisement created successfully.";
-        header('Location: ' . ROOT . '/manager/advertisements');
-        exit;
-    } catch (Exception $e) {
-        error_log("Exception in advertisement creation: " . $e->getMessage());
-        $_SESSION['error'] = "System error occurred while creating advertisement.";
-        header('Location: ' . ROOT . '/manager/createAd');
-        exit;
-    }
-}
-
-    public function getAdvertiserByEmail(){
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    public function getAdvertiserByEmail()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = trim($_POST['email']);
 
-            if(empty($email)){
+            if (empty($email)) {
                 echo json_encode(['error' => 'Email is required.']);
                 exit;
             }
 
             $advertiser = $this->advertiserModel->getAdvertiserByEmail($email);
 
-            if($advertiser){
+            if ($advertiser) {
                 echo json_encode(['advertiser' => $advertiser]);
-            }else{
+            } else {
                 echo json_encode(['error' => 'No advertiser found with this email.']);
             }
-        }else{
+        } else {
             http_response_code(405); // Method Not Allowed
             echo json_encode(['error' => 'Invalid request method.']);
             exit;
@@ -454,93 +456,94 @@ if (is_array($subscriptionData)) {
 
     // update advertisement
     public function updateAdvertisement($id)
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Validate required fields
-        $requiredFields = ['adTitle', 'adDescription', 'link', 'startDate', 'endDate'];
-        foreach ($requiredFields as $field) {
-            if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
-                $_SESSION['error'] = "The field '{$field}' is required.";
-                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
-                exit;
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validate required fields
+            $requiredFields = ['adTitle', 'adDescription', 'link', 'startDate', 'endDate'];
+            foreach ($requiredFields as $field) {
+                if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+                    $_SESSION['error'] = "The field '{$field}' is required.";
+                    header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                    exit;
+                }
             }
+
+            // Validate dates
+
+
+            $adTitle = trim($_POST['adTitle']);
+            $adDescription = trim($_POST['adDescription']);
+            $link = trim($_POST['link']);
+            $startDate = trim($_POST['startDate']);
+            $endDate = trim($_POST['endDate']);
+            $adStatus = isset($_POST['adStatus']) && $_POST['adStatus'] === 'active' ? 1 : 0;
+
+            // Prepare update data
+            $updateData = [
+                'adTitle' => $adTitle,
+                'adDescription' => $adDescription,
+                'link' => $link,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'adStatus' => $adStatus
+            ];
+
+            // Handle image upload if provided
+            if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
+
+                if (!in_array($fileType, $allowedTypes)) {
+                    $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF.";
+                    header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                    exit;
+                }
+
+                $maxSize = 5 * 1024 * 1024; // 5MB
+                if ($_FILES['adImage']['size'] > $maxSize) {
+                    $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
+                    header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                    exit;
+                }
+
+                $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
+                if ($imageData === false) {
+                    $_SESSION['error'] = "Failed to process the uploaded image.";
+                    header('Location: ' . ROOT . '/manager/updateAd/' . $id);
+                    exit;
+                }
+
+                $updateData['img'] = $imageData;
+            } else {
+                // Retain existing image if no new image is uploaded
+                $existingAd = $this->advertisementModel->getAdById($id);
+                if ($existingAd && isset($existingAd->img)) {
+                    $updateData['img'] = $existingAd->img;
+                }
+            }
+
+            // Update advertisement in the database
+            try {
+                $this->advertisementModel->update($id, $updateData);
+                $_SESSION['success'] = "Advertisement updated successfully.";
+            } catch (Exception $e) {
+                error_log("Error updating advertisement: " . $e->getMessage());
+                $_SESSION['error'] = "Failed to update advertisement. Please try again.";
+            }
+
+            header('Location: ' . ROOT . '/manager/advertisements');
+            exit;
         }
 
-        // Validate dates
-       
-
-        $adTitle = trim($_POST['adTitle']);
-        $adDescription = trim($_POST['adDescription']);
-        $link = trim($_POST['link']);
-        $startDate = trim($_POST['startDate']);
-        $endDate = trim($_POST['endDate']);
-        $adStatus = isset($_POST['adStatus']) && $_POST['adStatus'] === 'active' ? 1 : 0;
-
-        // Prepare update data
-        $updateData = [
-            'adTitle' => $adTitle,
-            'adDescription' => $adDescription,
-            'link' => $link,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'adStatus' => $adStatus
-        ];
-
-        // Handle image upload if provided
-        if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
-
-            if (!in_array($fileType, $allowedTypes)) {
-                $_SESSION['error'] = "Invalid image type. Allowed types: JPEG, PNG, GIF.";
-                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
-                exit;
-            }
-
-            $maxSize = 5 * 1024 * 1024; // 5MB
-            if ($_FILES['adImage']['size'] > $maxSize) {
-                $_SESSION['error'] = "Image file is too large. Maximum size is 5MB.";
-                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
-                exit;
-            }
-
-            $imageData = file_get_contents($_FILES['adImage']['tmp_name']);
-            if ($imageData === false) {
-                $_SESSION['error'] = "Failed to process the uploaded image.";
-                header('Location: ' . ROOT . '/manager/updateAd/' . $id);
-                exit;
-            }
-
-            $updateData['img'] = $imageData;
-        } else {
-            // Retain existing image if no new image is uploaded
-            $existingAd = $this->advertisementModel->getAdById($id);
-            if ($existingAd && isset($existingAd->img)) {
-                $updateData['img'] = $existingAd->img;
-            }
-        }
-
-        // Update advertisement in the database
-        try {
-            $this->advertisementModel->update($id, $updateData);
-            $_SESSION['success'] = "Advertisement updated successfully.";
-        } catch (Exception $e) {
-            error_log("Error updating advertisement: " . $e->getMessage());
-            $_SESSION['error'] = "Failed to update advertisement. Please try again.";
-        }
-
+        $_SESSION['error'] = "Invalid request method.";
         header('Location: ' . ROOT . '/manager/advertisements');
         exit;
     }
 
-    $_SESSION['error'] = "Invalid request method.";
-    header('Location: ' . ROOT . '/manager/advertisements');
-    exit;
-}
 
-    
 
-    public function incrementAdView($adId) {
+    public function incrementAdView($adId)
+    {
         if (!is_numeric($adId)) {
             http_response_code(204);
             exit;
@@ -549,8 +552,9 @@ if (is_array($subscriptionData)) {
         http_response_code(204);
         exit;
     }
-    
-    public function incrementAdClick($adId) {
+
+    public function incrementAdClick($adId)
+    {
         if (!is_numeric($adId)) {
             http_response_code(204);
             exit;
@@ -574,12 +578,13 @@ if (is_array($subscriptionData)) {
     }
 
 
-    public function deleteAdvertiser($id){
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    public function deleteAdvertiser($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->advertiserModel->delete($id);
             header('Location:'  . ROOT . '/manager/advertisements');
             $_SESSION['success'] = "Advertiser Deleted Successfully";
-        }else{
+        } else {
             header('Location: ' . ROOT . '/manager/advertisements');
             $_SESSION['error'] = "Failed to delete advertiser.";
         }
@@ -587,7 +592,8 @@ if (is_array($subscriptionData)) {
 
     //-------------------Plans----------------------
 
-    public function createPlan() {
+    public function createPlan()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Clear any existing session errors
@@ -595,7 +601,7 @@ if (is_array($subscriptionData)) {
             unset($_SESSION['success']);
 
             $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit', 'currency', 'recInterval'];
-    
+
             // Validate required fields
             foreach ($requiredFields as $field) {
                 if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
@@ -617,27 +623,27 @@ if (is_array($subscriptionData)) {
                 header('Location: ' . ROOT . '/manager/plans');
                 exit;
             }
-    
+
             // Validate currency
             if (strlen(trim($_POST['currency'])) !== 3) {
                 $_SESSION['error'] = "Currency must be a 3-letter code.";
                 header('Location: ' . ROOT . '/manager/plans');
                 exit;
             }
-    
+
             // Additional string length checks
             if (strlen(trim($_POST['planName'])) > 20) {
                 $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
                 header('Location: ' . ROOT . '/manager/plans');
                 exit;
             }
-    
+
             if (strlen(trim($_POST['description'])) > 1000) {
                 $_SESSION['error'] = "Description must be 1000 characters or fewer.";
                 header('Location: ' . ROOT . '/manager/plans');
                 exit;
             }
-    
+
             // Prepare sanitized data
             $data = [
                 'planName' => trim($_POST['planName']),
@@ -651,10 +657,10 @@ if (is_array($subscriptionData)) {
                 'recInterval' => trim($_POST['recInterval']),
                 'active' => isset($_POST['active']) ? 1 : 0
             ];
-    
+
             try {
                 $result = $this->planModel->createPlan($data);
-    
+
                 if ($result) {
                     $_SESSION['success'] = "Plan created successfully.";
                 } else {
@@ -664,11 +670,11 @@ if (is_array($subscriptionData)) {
                 $_SESSION['error'] = "Error creating plan: " . $e->getMessage();
                 error_log($e->getMessage());
             }
-    
+
             header('Location: ' . ROOT . '/manager/plans');
             exit;
         }
-    
+
         header('Location: ' . ROOT . '/manager/plans');
         exit;
     }
@@ -730,13 +736,13 @@ if (is_array($subscriptionData)) {
             // Validate string length for plan name and description
             if (strlen(trim($_POST['planName'])) > 20) {
                 $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
-                header('Location: ' . ROOT . '/manager/updatePlanForm'. $id);
+                header('Location: ' . ROOT . '/manager/updatePlanForm' . $id);
                 exit;
             }
 
             if (strlen(trim($_POST['description'])) > 1000) {
                 $_SESSION['error'] = "Description must be 1000 characters or fewer.";
-                header('Location: ' . ROOT . '/manager/updatePlanForm'. $id);
+                header('Location: ' . ROOT . '/manager/updatePlanForm' . $id);
                 exit;
             }
 
@@ -804,7 +810,8 @@ if (is_array($subscriptionData)) {
     }
 
     //announcements
-    public function createAnnouncements($data){
+    public function createAnnouncements($data)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $content = trim($_POST['content']);
             $adminId = $_SESSION['user_id'];
@@ -824,19 +831,20 @@ if (is_array($subscriptionData)) {
 
 
 
-    public function getDashboardData() {
+    public function getDashboardData()
+    {
         // Get the start and end date from the POST request
         $data = json_decode(file_get_contents('php://input'), true);
         $startDate = $data['startDate'];
         $endDate = $data['endDate'];
-    
+
         // Fetch data from your database using the functions
         $adCount = $this->advertisementModel->getAdsCountDateRange($startDate, $endDate);
         $adRev = $this->advertisementModel->getAdRev($startDate, $endDate);
         $subRevData = $this->accountSubscriptionModel->getSubRev($startDate, $endDate);
         $planCount = $this->planModel->getPlansCount();
         $manager = $this->managerModel->getManagerName($_SESSION['accountID']);
-    
+
         // Prepare the response data
         $response = [
             'success' => true,
@@ -847,7 +855,7 @@ if (is_array($subscriptionData)) {
             'planCount' => $planCount,
             'managerName' => $manager ? $manager->fname : 'Manager'
         ];
-    
+
         // Return data as a JSON response
         echo json_encode($response);
     }
@@ -858,20 +866,9 @@ if (is_array($subscriptionData)) {
         $data = $this->advertisementModel->getAdsToBeReviewed();
         $this->view('adsToReview', ['ads' => $data]);
     }
-public function approveAd($adId) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->advertisementModel->approveAd($adId);
-            $_SESSION['success'] = "Advertisement approved successfully.";
-            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
-            exit;
-        } else {
-            $_SESSION['error'] = "Failed to approve advertisement.";
-            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
-            exit;
-        }
-    }
 
-    public function deleteAnnouncement($id) {
+    public function deleteAnnouncement($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->adminModel->delete($id);
             $_SESSION['success'] = "Announcement deleted successfully.";
@@ -883,6 +880,68 @@ public function approveAd($adId) {
             exit;
         }
     }
-    
-    
+
+    public function approveAd($adId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $isApproved = $this->advertisementModel->approveAd($adId);
+            if ($isApproved) {
+                $advId = $_POST['advertiserID'];
+                $advertiserEmail = $this->advertiserModel->getAdvertiserEmailById($advId);
+                if ($advertiserEmail) {
+                    $subject = "Your Advertisement Has Been Approved";
+                    $message = "Dear Advertiser,\n\nYour advertisement has been successfully approved and is now live on our platform.\n\nThank you for choosing our service.\n\nBest regards,\nQuickGig Team";
+                    $headers = "From: no-reply@quickgig.com";
+
+                    if (!mail($advertiserEmail['email'], $subject, $message, $headers)) {
+                        error_log("Failed to send email to advertiser: $advertiserEmail");
+                    }
+                }
+                $_SESSION['success'] = "Advertisement approved successfully.";
+            } else {
+                $_SESSION['error'] = "Failed to approve advertisement.";
+            }
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        } else {
+            $_SESSION['error'] = "Failed to approve advertisement.";
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        }
+    }
+
+
+    public function rejectAd($adId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['advertiserID'])) {
+                $isRejected = $this->advertisementModel->rejectAd($adId);
+
+                if ($isRejected) {
+                    $advId = $_POST['advertiserID'];
+                    $advertiserEmail = $this->advertiserModel->getAdvertiserEmailById($advId);
+                    if ($advertiserEmail) {
+                        $subject = "Your Advertisement Has Been Rejected";
+                        $message = "Dear Advertiser,\n\nWe regret to inform you that your advertisement has been rejected. Please note that the payment made for this advertisement is non-refundable.\n\nIf you have any questions or need further clarification, feel free to contact our support team.\n\nBest regards,\nQuickGig Team";
+                        $headers = "From: no-reply@quickgig.com";
+
+                        if (!mail($advertiserEmail['email'], $subject, $message, $headers)) {
+                            error_log("Failed to send email to advertiser: " . $advertiserEmail['email']);
+                        }
+                    }
+                    $_SESSION['success'] = "Advertisement rejected and email sent to the advertiser.";
+                } else {
+                    $_SESSION['error'] = "Failed to reject advertisement.";
+                }
+            } else {
+                $_SESSION['error'] = "Advertiser ID is missing.";
+            }
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        } else {
+            $_SESSION['error'] = "Invalid request method.";
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        }
+    }
 }
