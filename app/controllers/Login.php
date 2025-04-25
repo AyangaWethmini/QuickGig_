@@ -61,7 +61,13 @@ class Login extends Controller
                 $_SESSION['user_logged_in'] = true; 
                 $_SESSION['current_role'] = 1;
                 $_SESSION['plan_id'] = $user['planID'];
-                header("Location: " . ROOT . "/home");
+                if($_SESSION['user_role'] == 0){
+                    header("Location: " . ROOT . "/admin/admindashboard");
+                }else if($_SESSION['user_role'] == 1){
+                    header("Location: " . ROOT . "/manager/dashboard");
+                }else if($_SESSION['user_role'] > 1){
+                    header("Location: " . ROOT . "/home");
+                }
                 exit;
             } else {
                 // Login failed
