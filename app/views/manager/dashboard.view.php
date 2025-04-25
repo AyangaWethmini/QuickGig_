@@ -17,7 +17,7 @@ protectRoute([1]); ?>
         <div class="header flex-row">
             <span class="greeting container">
                 <h3>Hello <?= htmlspecialchars($mgrName->fname); ?>! </h3>
-                <p class="text-grey">Here is the statistics from <?= date('jS F', strtotime('first day of this month')); ?> - <?= date('jS F'); ?></p>
+                <p class="text-grey">Here is the statistics for the month of <?= date('F'); ?></p>
             </span>
 
             <form id="dateRangeForm" action="<?=ROOT?>/manager/index" method="POST" class="date-range-form flex-row">
@@ -32,7 +32,7 @@ protectRoute([1]); ?>
                         <div class="modal-content">
                             <h3>Select Date Range</h3>
                             <input type="date" id="startDate" name="startDate" placeholder="Start Date" value="<?= date('Y-m-01'); ?>" />
-                            <input type="date" id="endDate" name="endDate" placeholder="End Date" value="<?= date('Y-m-d'); ?>" />
+                            <input type="date" id="endDate" name="endDate" placeholder="End Date" value="<?= isset($_POST['endDate']) ? $_POST['endDate'] : date('Y-m-d'); ?>" />
                             
                             <div class="modal-buttons">
                                 <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>

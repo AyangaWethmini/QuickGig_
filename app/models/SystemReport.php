@@ -63,10 +63,12 @@ class SystemReport {
                 'endDate' => $endDate
             ];
     
-            $ads = $this->query($query, $params);
+            $result = $this->query($query, $params);
     
+            $ads = $result ?: []; // Default to an empty array if no results
             $totalRevenue = 0;
             $results = [];
+            $weeklyRate = 1000; // Initialize with a default value
     
             foreach ($ads as $ad) {
                 // Calculate the number of days the ad was active

@@ -94,6 +94,7 @@ class Advertise extends Controller {
             ];
 
             if (!$this->advertisementModel->createAdvertisementRecievedOnline($adData)) {
+                error_log("Ad creation failed with data: " . json_encode($adData));
                 return $this->respondWithError("Failed to store advertisement.");
             }
 

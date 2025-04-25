@@ -56,6 +56,12 @@ class Home extends Controller
 		$this->view('aboutUs');
 	}
 
+
+	public function contact()
+	{
+		$this->view('contact');
+	}
+
 	public function premium()
 	{
 		$data = $this->planModel->getPlansWithStripe();
@@ -78,4 +84,49 @@ class Home extends Controller
 		$data = $this->planModel->getPlans();
 		$this->view('subscriptions', ['plans' => $data]);
 	}
+
+
+
+public function sendEmail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize input data
+        $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
+        $message = trim(filter_input(INPUT_POST, 'message', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+
+        // Validate inputs
+        if (empty($name) || empty($email) || empty($message)) {
+            echo "Please fill in all fields";
+            return;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Please enter a valid email address";
+            return;
+        }
+
+        // Email configuration
+        $to = 'ayangawethmini@gmail.com';
+        $subject = 'Contact Form Submission from ' . $name;
+        $headers = "From: $email\r\n";
+        $headers .= "Reply-To: $email\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+        // Email body
+        $body = "You have received a new message from your website contact form.\n\n";
+        $body .= "Name: $name\n";
+        $body .= "Email: $email\n\n";
+        $body .= "Message:\n$message\n";
+
+        // Send email
+        if (mail($to, $subject, $body, $headers)) {
+            echo "Thank you! Your message has been sent successfully.";
+        } else {
+            echo "Oops! Something went wrong and we couldn't send your message.";
+        }
+    } else {
+        echo "Invalid request method";
+    }
+}
 }

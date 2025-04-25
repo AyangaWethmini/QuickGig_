@@ -257,7 +257,7 @@ class Admin extends Controller
         }
     }
 
-    public function deleteAnnouncement($announcementID)
+    public function ouncementdeleteAnn($announcementID)
     {
         if ($this->adminModel->delete($announcementID)) {
             // Redirect to the announcements page with success message
