@@ -121,6 +121,13 @@ class Job
         $result = $this->query($query, $params);
         return isset($result[0]) ? $result[0] : null;
     }
+    public function getJobProviderByAvailableId($id)
+    {
+        $query = "SELECT providerID FROM req_available WHERE availableID = :id";
+        $params = ['id' => $id];
+        $result = $this->query($query, $params);
+        return isset($result[0]) ? $result[0] : null;
+    }
 
     public function delete($id)
     {

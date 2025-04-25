@@ -584,7 +584,13 @@ class Seeker extends Controller
 
         $accountID = $_SESSION['user_id'];
         $providerById = $job->getJobProviderById($jobId);
+        if ($providerById == null) {
+            $providerById = $job->getJobProviderByAvailableId($jobId);
+        }
         $revieweeData = $account->getUserData($providerById->accountID);
+        if ($revieweeData == null) {
+            $revieweeData = $account->getOrgData($providerById->accountID);
+        }
         $review = $reviewModel->readReviewSpecific($accountID, $providerById->accountID, $jobId, 1);
         $revieweeData['jobID'] = $jobId;
 

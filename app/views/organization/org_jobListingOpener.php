@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/jobListingOpener.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/errorPopUp.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/jobListingOpener.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/errorPopUp.css">
 
 <?php if (isset($_SESSION['postLimitExceeded']) && $_SESSION['postLimitExceeded']): ?>
     <div id="post-limit-popup" class="popup-message">
@@ -13,13 +13,8 @@
     <?php unset($_SESSION['postLimitExceeded']); ?>
 <?php endif; ?>
 <div class="opener bar">
-            <p class="title-name-opener">My Jobs</p>
-            <a href="<?php echo ROOT;?>/organization/org_postJob" class="post-job-btn">
-                + Post a job
-            </a>
-        </div> <br> <hr>
-
-        <div class="expressionNselect-dates">
-            <p class="expression">Here We Go!!!</p>
-            <button class="select-dates-btn">Nov 18 - Nov 24</button>
-        </div>
+    <p class="title-name-opener">My Jobs</p>
+    <a href="<?php echo ROOT; ?>/organization/org_postJob" class="post-job-btn">
+        + Post a job
+    </a>
+</div> <br>
