@@ -12,7 +12,7 @@ body {
 
 /* to style active sidebar */
 .sidebar-item.active {
-    background-color: #c5c5f6;
+    background-color: #6c79f4;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -48,7 +48,7 @@ body {
 }
 
 .sidebar-item:hover {
-    background-color: #E9EBFD;
+    background-color: #b3bbff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -66,7 +66,7 @@ body {
 .sidebar-label {
     font-size: 18px;
     font-weight: 600;
-    color: #7C8493;
+    color: #867c93;
 }
 
 @media (max-width: 768px) {

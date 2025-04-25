@@ -367,7 +367,13 @@ class Organization extends Controller
 
         $accountID = $_SESSION['user_id'];
         $SeekerById = $job->getJobSeekerById($jobId);
+        if ($SeekerById == null) {
+            $SeekerById = $job->getJobSeekerByAvailableId($jobId);
+        }
         $revieweeData = $account->getUserData($SeekerById->seekerID);
+        if ($revieweeData == null) {
+            $revieweeData = $account->getOrgData($SeekerById->seekerID);
+        }
         $review = $reviewModel->readReviewSpecific($accountID, $SeekerById->seekerID, $jobId, 2);
         $revieweeData['jobID'] = $jobId;
 
@@ -689,7 +695,7 @@ class Organization extends Controller
                 'applicationOrReq' => $applicationOrReq
             ]);
 
-            header('Location: ' . ROOT . '/organization/org_complaints');
+            header('Location: ' . ROOT . '/organization/complaints');
         }
     }
 
@@ -747,43 +753,15 @@ class Organization extends Controller
     {
         $this->view('report');
     }
-
-    function organizationEditProfile()
+    public function organizationEditProfile()
     {
-        // Ensure user is logged in
         if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
+            redirect('login');
         }
+        $userID = $_SESSION['user_id'];
+        $data = $this->accountModel->getOrgData($userID);
 
-        // Get user data
-        $userId = $_SESSION['user_id'];
-
-        $data = [
-            'orgName' => trim($_POST['orgName']),
-            'email' => trim($_POST['email']),
-            'phone' => trim($_POST['phone']),
-            'district' => trim($_POST['district']),
-            'addressLine1' => trim($_POST['addressLine1']),
-            'addressLine2' => trim($_POST['addressLine2']),
-            'city' => trim($_POST['city']),
-            'linkedIn' => trim($_POST['linkedIn']),
-            'facebook' => trim($_POST['facebook']),
-            'bio' => trim($_POST['bio']),
-            'pp' => null
-        ];
-
-
-        // Handle profile picture upload
-        if (!empty($_FILES['pp']['tmp_name'])) {
-            $imageData = file_get_contents($_FILES['pp']['tmp_name']);
-            $data['pp'] = $imageData;
-            $_SESSION['pp'] = $imageData;
-        }
-        if ($this->accountModel->updateOrgData($userId, $data)) {
-            redirect('organization/organizationProfile'); // Reload page with updated data
-        } else {
-            die("Something went wrong. Please try again.");
-        }
+        $this->view('organizationEditProfile', $data);
     }
 
     function submitQuestion()

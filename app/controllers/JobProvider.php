@@ -479,7 +479,17 @@ class JobProvider extends Controller
 
         $accountID = $_SESSION['user_id'];
         $SeekerById = $job->getJobSeekerById($jobId);
+
+        if ($SeekerById == null) {
+            $SeekerById = $job->getJobSeekerByAvailableId($jobId);
+        }
+
+
         $revieweeData = $account->getUserData($SeekerById->seekerID);
+        if ($revieweeData == null) {
+            $revieweeData = $account->getOrgData($SeekerById->seekerID);
+        }
+
         $review = $reviewModel->readReviewSpecific($accountID, $SeekerById->seekerID, $jobId, 2);
         $revieweeData['jobID'] = $jobId;
 
@@ -698,59 +708,59 @@ class JobProvider extends Controller
             ];
             $this->view('jobListing_toBeCompleted', $data);
         }
-
-        function jobListing_ongoing()
-        {
-            $this->jobStatusUpdater->updateJobStatuses();
-            $ongoingProvider = $this->model('OngoingProvider');
-            $userID = $_SESSION['user_id'];
-            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-
-            if (!empty($filterDate)) {
-                $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
-                $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
-            } elseif (!empty($searchTerm)) {
-                $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
-                $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
-            } else {
-                $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
-                $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
-            }
-
-            $data = [
-                'applyJobOngoing' => $applyJobOngoing,
-                'reqAvailableOngoing' => $reqAvailableOngoing
-            ];
-            $this->view('jobListing_ongoing', $data);
-        }
-
-        function jobListing_completed()
-        {
-            $this->jobStatusUpdater->updateJobStatuses();
-            $completedProvider = $this->model('CompletedProvider');
-            $userID = $_SESSION['user_id'];
-            $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-            $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
-
-            if (!empty($filterDate)) {
-                $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
-                $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
-            } elseif (!empty($searchTerm)) {
-                $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
-                $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
-            } else {
-                $applyJobCompleted = $completedProvider->getApplyJobCompleted();
-                $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
-            }
-
-            $data = [
-                'applyJobCompleted' => $applyJobCompleted,
-                'reqAvailableCompleted' => $reqAvailableCompleted
-            ];
-            $this->view('jobListing_completed', $data);
-        }
     }
+    public function jobListing_ongoing()
+    {
+        $this->jobStatusUpdater->updateJobStatuses();
+        $ongoingProvider = $this->model('OngoingProvider');
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+
+        if (!empty($filterDate)) {
+            $applyJobOngoing = $ongoingProvider->filterOngoingByDate($userID, $filterDate);
+            $reqAvailableOngoing = $ongoingProvider->filterReqAvailableOngoingByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobOngoing = $ongoingProvider->searchOngoing($userID, $searchTerm);
+            $reqAvailableOngoing = $ongoingProvider->searchReqAvailableOngoing($userID, $searchTerm);
+        } else {
+            $applyJobOngoing = $ongoingProvider->getApplyJobOngoing();
+            $reqAvailableOngoing = $ongoingProvider->getReqAvailableOngoing();
+        }
+
+        $data = [
+            'applyJobOngoing' => $applyJobOngoing,
+            'reqAvailableOngoing' => $reqAvailableOngoing
+        ];
+        $this->view('jobListing_ongoing', $data);
+    }
+
+    function jobListing_completed()
+    {
+        $this->jobStatusUpdater->updateJobStatuses();
+        $completedProvider = $this->model('CompletedProvider');
+        $userID = $_SESSION['user_id'];
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $filterDate = isset($_GET['filterDate']) ? trim($_GET['filterDate']) : '';
+
+        if (!empty($filterDate)) {
+            $applyJobCompleted = $completedProvider->filterCompletedByDate($userID, $filterDate);
+            $reqAvailableCompleted = $completedProvider->filterReqAvailableCompletedByDate($userID, $filterDate);
+        } elseif (!empty($searchTerm)) {
+            $applyJobCompleted = $completedProvider->searchCompleted($userID, $searchTerm);
+            $reqAvailableCompleted = $completedProvider->searchReqAvailableCompleted($userID, $searchTerm);
+        } else {
+            $applyJobCompleted = $completedProvider->getApplyJobCompleted();
+            $reqAvailableCompleted = $completedProvider->getReqAvailableCompleted();
+        }
+
+        $data = [
+            'applyJobCompleted' => $applyJobCompleted,
+            'reqAvailableCompleted' => $reqAvailableCompleted
+        ];
+        $this->view('jobListing_completed', $data);
+    }
+
     public function updateCompletionStatus()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

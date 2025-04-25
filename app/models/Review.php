@@ -30,24 +30,24 @@ class Review
     public function readReview($reviewerID, $roleID)
     {
         $query = "SELECT 
-                        r.*, 
-                        j.jobTitle,
-                        a.pp,
-                        CASE
-                            WHEN i.accountID IS NOT NULL THEN CONCAT(i.fname, ' ', i.lname)
-                            WHEN o.accountID IS NOT NULL THEN o.orgName
-                            ELSE 'Unknown'
-                        END AS revieweeName
-                    FROM review r
-                    LEFT JOIN job j ON r.jobID = j.jobID
-                    LEFT JOIN account a ON r.revieweeID = a.accountID
-                    LEFT JOIN individual i ON a.accountID = i.accountID
-                    LEFT JOIN organization o ON a.accountID = o.accountID
-                    WHERE r.reviewerID = :accountID 
-                    AND r.roleID = :roleID
-                    ORDER BY r.reviewDate DESC, r.reviewTime DESC;
-
-                                    ";
+    r.*, 
+    COALESCE(j.jobTitle, m.description) AS jobTitle,
+    a.pp,
+    CASE
+        WHEN i.accountID IS NOT NULL THEN CONCAT(i.fname, ' ', i.lname)
+        WHEN o.accountID IS NOT NULL THEN o.orgName
+        ELSE 'Unknown'
+    END AS revieweeName
+FROM review r
+LEFT JOIN job j ON r.jobID = j.jobID
+LEFT JOIN makeavailable m ON r.jobID = m.availableID
+LEFT JOIN account a ON r.revieweeID = a.accountID
+LEFT JOIN individual i ON a.accountID = i.accountID
+LEFT JOIN organization o ON a.accountID = o.accountID
+WHERE r.reviewerID = :accountID 
+  AND r.roleID = :roleID
+ORDER BY r.reviewDate DESC, r.reviewTime DESC;
+";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':accountID', $reviewerID);
         $stmt->bindParam(':roleID', $roleID);
@@ -73,8 +73,7 @@ LEFT JOIN individual ind ON acc.accountID = ind.accountID
 LEFT JOIN organization org ON acc.accountID = org.accountID
 WHERE r.revieweeID = :accountID 
 AND r.roleID = :roleID
-ORDER BY r.reviewDate DESC, r.reviewTime DESC;"
-;
+ORDER BY r.reviewDate DESC, r.reviewTime DESC;";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':accountID', $revieweeID);
         $stmt->bindParam(':roleID', $roleID);
@@ -82,27 +81,29 @@ ORDER BY r.reviewDate DESC, r.reviewTime DESC;"
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-    public function readReviewSpecific($reviewerID,$revieweeID, $jobID,$roleID)
+    public function readReviewSpecific($reviewerID, $revieweeID, $jobID, $roleID)
     {
         $query = "SELECT 
-                        r.*, 
-                        j.jobTitle,
-                        a.pp,
-                        CASE
-                            WHEN i.accountID IS NOT NULL THEN CONCAT(i.fname, ' ', i.lname)
-                            WHEN o.accountID IS NOT NULL THEN o.orgName
-                            ELSE 'Unknown'
-                        END AS revieweeName
-                    FROM review r
-                    LEFT JOIN job j ON r.jobID = j.jobID
-                    LEFT JOIN account a ON r.revieweeID = a.accountID
-                    LEFT JOIN individual i ON a.accountID = i.accountID
-                    LEFT JOIN organization o ON a.accountID = o.accountID
-                    WHERE r.reviewerID = :accountID 
-                    AND r.roleID = :roleID 
-                    AND r.revieweeID = :revieweeID
-                    AND r.jobID = :jobID
-                    ORDER BY r.reviewDate DESC, r.reviewTime DESC;
+        r.*, 
+        COALESCE(j.jobTitle, m.description) AS jobTitle,
+        a.pp,
+        CASE
+        WHEN i.accountID IS NOT NULL THEN CONCAT(i.fname, ' ', i.lname)
+        WHEN o.accountID IS NOT NULL THEN o.orgName
+        ELSE 'Unknown'
+         END AS revieweeName
+        FROM review r
+        LEFT JOIN job j ON r.jobID = j.jobID
+            LEFT JOIN makeavailable m ON r.jobID = m.availableID
+            LEFT JOIN account a ON r.revieweeID = a.accountID
+        LEFT JOIN individual i ON a.accountID = i.accountID
+        LEFT JOIN organization o ON a.accountID = o.accountID
+        WHERE r.reviewerID = :accountID 
+        AND r.roleID = :roleID 
+        AND r.revieweeID = :revieweeID
+        AND r.jobID = :jobID
+        ORDER BY r.reviewDate DESC, r.reviewTime DESC;
+        ;
 
                                     ";
         $stmt = $this->db->prepare($query);
@@ -137,10 +138,10 @@ ORDER BY r.reviewDate DESC, r.reviewTime DESC;"
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':Id', $Id);
         $stmt->execute();
-       
+
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
-    public function deleteReview($reviewerID, $revieweeID,$jobID, $roleID)
+    public function deleteReview($reviewerID, $revieweeID, $jobID, $roleID)
     {
         $query = ("DELETE FROM review WHERE revieweeID = :revieweeID AND roleID = :roleID AND reviewerID = :reviewerID AND jobID = :jobID");
         $stmt = $this->db->prepare($query);

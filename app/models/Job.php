@@ -1,6 +1,7 @@
 <?php
 
-class Job{
+class Job
+{
     use Database;
 
     public $jobID;
@@ -57,7 +58,8 @@ class Job{
         return $this->query($query, $params);
     }
 
-    public function update($id, $data) {
+    public function update($id, $data)
+    {
         $query = "UPDATE job 
                     SET description = :description, 
                         location = :location, 
@@ -72,9 +74,9 @@ class Job{
                         jobStatus = :jobStatus,
                         categories = :categories
                     WHERE jobID = :id";
-    
+
         $params = [
-            'id' => $id, 
+            'id' => $id,
             'description' => $data['description'],
             'location' => $data['location'],
             'timeFrom' => $data['timeFrom'],
@@ -91,32 +93,44 @@ class Job{
         return $this->query($query, $params);
     }
 
-    public function getJobById($id) {
+    public function getJobById($id)
+    {
         $query = "SELECT * FROM job WHERE jobID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
         return isset($result[0]) ? $result[0] : null;
     }
-    public function getJobSeekerById($id) {
+    public function getJobSeekerById($id)
+    {
         $query = "SELECT seekerID FROM apply_job WHERE jobID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
         return isset($result[0]) ? $result[0] : null;
     }
-    public function getJobProviderById($id) {
+    public function getJobSeekerByAvailableId($id)
+    {
+        $query = "SELECT accountID as seekerID FROM makeavailable WHERE availableID = :id";
+        $params = ['id' => $id];
+        $result = $this->query($query, $params);
+        return isset($result[0]) ? $result[0] : null;
+    }
+    public function getJobProviderById($id)
+    {
         $query = "SELECT accountID FROM job WHERE jobID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
         return isset($result[0]) ? $result[0] : null;
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $query = "DELETE FROM job WHERE jobID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
 
-    public function searchJobsByUser($userID, $searchTerm) {
+    public function searchJobsByUser($userID, $searchTerm)
+    {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
         $query = "SELECT * FROM job 
                   WHERE accountID = ? 
@@ -130,7 +144,8 @@ class Job{
         return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
 
-    public function filterJobsByDate($userID, $filterDate) {
+    public function filterJobsByDate($userID, $filterDate)
+    {
         $query = "SELECT * FROM job 
                   WHERE accountID = :accountID 
                   AND availableDate = :filterDate
