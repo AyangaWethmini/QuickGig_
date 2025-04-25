@@ -1,238 +1,251 @@
-.login-login{
-    background-color:#25324B;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-}   
+.login-login {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+* {
+  box-sizing: border-box;
+}
 
-  
-  /* Right side - Form Section */
-  .form-section {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #011636;
-    padding: 40px;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
-  }
-  
-  .login-form {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  .back-button {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #ffffff;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 8px;
-    transition: color 0.3s ease;
-    background-color: #00bfff;
-    border-radius: 5px;
-  }
-  
-  .back-button:hover {
-    background-color: #009acd;
-  }
-  
-  .flex-col {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .heading {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1f1f1f;
-    text-align: center;
-  }
-  
-  .form-body {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .form-field label {
-    font-weight: 500;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 4px;
-  }
-  
-  .form-field input[type="text"],
-  .form-field input[type="password"] {
-    width: 93%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    transition: border 0.3s;
-  }
-  .password-wrapper {
+
+/* Right side - Form Section */
+.form-section {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  background-color: #011636;
+  padding: 40px;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+}
+
+.login-form {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px;
+  padding-left: 14px;
+  padding-right: 14px;
+  transition: color 0.3s ease;
+  background-color: #00bfff;
+  border-radius: 5px;
+}
+
+.back-button:hover {
+  background-color: #009acd;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heading {
+  font-size: 28px;
+  font-weight: 700;
+  color: #00bfff;
+  text-align: center;
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #cccc;
+  margin-bottom: 4px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.password-wrapper button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+}
+
+
+.form-field input:focus {
+  border-color: #00bfff;
+}
+
+#togglePassword {
+  font-size: 16px;
+  color: #555;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #00bfff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #009fdc;
+}
+
+.error-messages {
+  background-color: #ffe6e6;
+  color: #d10000;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.styled.login {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #444;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.styled.login a {
+  text-decoration: none;
+  color: #00bfff;
+}
+
+/* Carousel Section */
+.carousel {
+  width: 50%;
+    height: 100%;
     position: relative;
-    width: 100%;
-  }
-  
-  .password-wrapper input {
-    width: 100%;
-    padding: 12px;
-    padding-right: 40px; 
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    transition: border 0.3s;
-  }
-  
-  .password-wrapper button {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: #666;
-  }
-  
-  
-  .form-field input:focus {
-    border-color: #00bfff;
-  }
-  
-  #togglePassword {
-    font-size: 16px;
-    color: #555;
-  }
-  
-  .login-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    background-color: #00bfff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  
-  .login-btn:hover {
-    background-color: #009fdc;
-  }
-  
-  .error-messages {
-    background-color: #ffe6e6;
-    color: #d10000;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  
-  .styled.login {
-    margin-top: 10px;
-    font-size: 13px;
-    color: #444;
-    line-height: 1.5;
-    text-align: center;
-  }
-  
-  .styled.login a {
-    text-decoration: none;
-    color: #00bfff;
-  }
-  /* Carousel Section */
+  background: linear-gradient(to bottom right, #1f1f1f, #3c3c3c);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  overflow: hidden;
+}
+
+.slides {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  display: none;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.slide.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  /* darken image */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+}
+
+.overlay h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.overlay p {
+  font-size: 1rem;
+}
+
+/* Dot indicators */
+.dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 5px;
+  background-color: #999;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: #fff;
+}
+
+@media (max-width: 768px) {
   .carousel {
-    flex: 1;
-    background: linear-gradient(to bottom right, #1f1f1f, #3c3c3c);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 40px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .slides {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-  }
-  
-  .slide {
     display: none;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    height: 100%;
+  }
+
+  .form-section {
     width: 100%;
   }
-  
-  .slide.active {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .overlay {
-    background-color: rgba(0, 0, 0, 0.5); /* darken image */
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    color: white;
-  }
-  
-  .overlay h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
-  
-  .overlay p {
-    font-size: 1rem;
-  }  
-  
-  /* Dot indicators */
-  .dots {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .dot {
-    height: 10px;
-    width: 10px;
-    margin: 0 5px;
-    background-color: #999;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-  }
-  
-  .dot.active {
-    background-color: #fff;
-  }
-  @media (max-width: 768px) {
-    .carousel {
-      display: none;
-    }
-  
-    .form-section {
-      width: 100%;
-    }
-  }
+}

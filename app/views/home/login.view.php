@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
 
-
+ 
 <div class="login-login flex-row">
 
     <div class="carousel">
@@ -37,7 +37,7 @@
     <div class="form-section">
         <div class="login-form">
             <a href="<?php echo ROOT; ?>/home" class="back-button">
-                ← Back to Home
+                <
             </a>
             <div class="flex-col">
                 <h3 class="heading">WELLCOME BACK!</h3>

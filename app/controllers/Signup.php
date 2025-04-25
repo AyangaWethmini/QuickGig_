@@ -22,6 +22,7 @@ class Signup extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
+            $confirmPassword = trim($_POST['confirm-password']);
 
             $_SESSION['signup_errors'] = [];
 
@@ -35,7 +36,8 @@ class Signup extends Controller
 
             // Check if the domain has valid DNS records
             if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
-                echo "Invalid email domain.";
+                $_SESSION['signup_errors'][] = "Invalid Email Format.";
+                header("Location: " . ROOT . "/home/signup");
                 exit;
             }
 
@@ -52,12 +54,17 @@ class Signup extends Controller
             if ($this->model->findByEmail($email)) {
                 $_SESSION['signup_errors'][] = "User Exists";
                 header("Location: " . ROOT . "/home/signup");
-                return false;
+                exit;
             }
 
             // Validate password length
             if (strlen($password) < 6) {
                 $_SESSION['signup_errors'][] = "Password length must be exceeding 6";
+                header("Location: " . ROOT . "/home/signup");
+                exit;
+            }
+            if($password != $confirmPassword){
+                $_SESSION['signup_errors'][] = "Confirm Password doesnt match";
                 header("Location: " . ROOT . "/home/signup");
                 exit;
             }
