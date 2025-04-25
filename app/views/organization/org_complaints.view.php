@@ -11,20 +11,14 @@ protectRoute([3]); ?>
         <div class="header">
             <div class="heading">My Complaints</div>
         </div>
-        <hr>
+        
         <div class="search-container">
             <input type="text"
                 class="search-bar"
                 placeholder="Search complaints"
                 aria-label="Search">
             <br><br>
-            <div class="filter-container">
-                <span>Sort by:</span>
-                <select id="sortSelect" onchange="sortContent()">
-                    <option value="recent">Latest</option>
-                    <option value="views">Oldest</option>
-                </select>
-            </div>
+            
         </div>
         <div class="complaints-container container">
             <?php if (empty($data['complaints'])): ?>
@@ -51,7 +45,7 @@ protectRoute([3]); ?>
                                     if ($complaint->complaintStatus == 1) {
                                         echo htmlspecialchars('Pending', ENT_QUOTES);
                                     } elseif ($complaint->complaintStatus == 2) {
-                                        echo htmlspecialchars('Under Reviewed', ENT_QUOTES);
+                                        echo htmlspecialchars('Dismissed', ENT_QUOTES);
                                     } elseif ($complaint->complaintStatus == 3) {
                                         echo htmlspecialchars('Reviewed', ENT_QUOTES);
                                     } else {
