@@ -1,486 +1,486 @@
 
-/* VARIABLES */
-@import url("variables.css");
+  /* VARIABLES */
+  @import url("variables.css");
 
-/* COMPONENTS */
-@import url('components/form_styles.css');
-@import url('components/buttons_styles.css');
+  /* COMPONENTS */
+  @import url('components/form_styles.css');
+  @import url('components/buttons_styles.css');
 
-/* PAGES */
-@import url('admin/admin_announcement.css');
-@import url('admin/admin_settings.css');
-@import url('admin/admin_sidebar.css');
-
-
-
-/* FONTS */
-@font-face {
-    font-family: "Monteserrat-Regular";
-    src: url("fonts/Montserrat-Regular.ttf");
-}
-
-*{
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-family: "Monteserrat-Regular";
-}
-
-/* BUTTON STYLES */
-.btn {
-    border: none;
-    padding: 12px 18px;
-    color: var(--color-white);
-}
-
-.btn:hover{
-    background-color: var(--btn-hover);
-    cursor: pointer;
-}
-
-.btn-accent {
-    background-color: var(--brand-primary);
-}
-
-.btn-disabled {
-    background-color: var(--neutral-80);
-}
-
-.btn-del {
-    background-color: var(--color-red);
-}
-
-.btn-trans {
-    background-color: var(--color-white);
-    color: var(--brand-primary);
-    font-weight: bold;
-    border: 2px solid var(--brand-primary);
-}
-
-/* INPUT STYLES */
-
-input[type="text"], input[type="password"], input[type="number"], input[type="url"],input[type="email"] textarea{
-    border: 1px solid var(--neutral-40);
-    padding: 12px 16px;
-    transition: all 0.3s ease;
-}
+  /* PAGES */
+  @import url('admin/admin_announcement.css');
+  @import url('admin/admin_settings.css');
+  @import url('admin/admin_sidebar.css');
 
 
-input[type="radio"] {
-    accent-color: var(--brand-primary);
-    transform: scale(1.5);
-}
 
-input[type="checkbox"] {
-    accent-color: var(--brand-primary);
-    transform: scale(1.5);
-}
+  /* FONTS */
+  @font-face {
+      font-family: "Monteserrat-Regular";
+      src: url("fonts/Montserrat-Regular.ttf");
+  }
 
-/* CONTAINER STYLES */
-.container {
-    padding: 20px;
-}
+  *{
+      margin: 0;
+      padding: 0;
+  }
 
-.flex-col {
+  html {
+      scroll-behavior: smooth;
+  }
+
+  body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: "Monteserrat-Regular";
+  }
+
+  /* BUTTON STYLES */
+  .btn {
+      border: none;
+      padding: 12px 18px;
+      color: var(--color-white);
+  }
+
+  .btn:hover{
+      background-color: var(--btn-hover);
+      cursor: pointer;
+  }
+
+  .btn-accent {
+      background-color: var(--brand-primary);
+  }
+
+  .btn-disabled {
+      background-color: var(--neutral-80);
+  }
+
+  .btn-del {
+      background-color: var(--color-red);
+  }
+
+  .btn-trans {
+      background-color: var(--color-white);
+      color: var(--brand-primary);
+      font-weight: bold;
+      border: 2px solid var(--brand-primary);
+  }
+
+  /* INPUT STYLES */
+
+  input[type="text"], input[type="password"], input[type="number"], input[type="url"],input[type="email"] textarea{
+      border: 1px solid var(--neutral-40);
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+  }
+
+
+  input[type="radio"] {
+      accent-color: var(--brand-primary);
+      transform: scale(1.5);
+  }
+
+  input[type="checkbox"] {
+      accent-color: var(--brand-primary);
+      transform: scale(1.5);
+  }
+
+  /* CONTAINER STYLES */
+  .container {
+      padding: 20px;
+  }
+
+  .flex-col {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .flex-row {
+      display: flex;
+  }
+
+  /* DIV STYLES */
+  .div-shadow {
+      border: none;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+      height: 200px;
+      width: 200px;
+      align-items: center;
+  }
+
+  .border-box {
+      display: flex;
+      padding: 24px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      border: 1px solid #b3b7be;
+  }
+
+  /*TEXT STYLES*/
+
+  .text-white{
+      color: var(--color-white);
+  }
+
+  .text-grey{
+      color: var(--neutral-80);
+  }
+
+  p.styled{
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      opacity: 0.5;
+  }
+
+
+  /*FOR THE LOGO*/
+  p.logo{
+      font-weight: 600;
+      font-size: 36px;
+      margin : 25px 144px;
+      color: var(--color-text);
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+      letter-spacing: -0.24px;
+  }
+
+
+
+  /*CSS for the serch bar*/
+
+
+  /*        
+  Use this in the code. Add relevent placeholder
+      <div class="search-container">
+              <input type="text" 
+                  class="search-bar" 
+                  placeholder="Search advertisements"
+                  aria-label="Search">
+      </div>
+
+  */
+
+  .search-container {
+      max-width: 90%;
+      margin: 20px auto;
+      padding: 0px 15px;
+    }
+    
+    .search-bar {
+      height: 30px;
+      width: 100%;
+      padding: 12px 45px 12px 15px;
+      font-size: 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      outline: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center right 15px;
+      background-size: 20px;
+      transition: border-color 0.2s ease;
+    }
+    
+    .search-bar:focus {
+      border-color: #999;
+    }
+    
+    .search-bar::placeholder {
+      color: #999;
+    }
+    
+    /*sort menu*/
+    .filter-container {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+    
+    .filter-container span {
+      margin-right: 5px;
+    }
+    
+    #sortSelect {
+      border: none;
+      background: none;
+      color: blue;
+      cursor: pointer;
+    }
+    
+    #gridButton {
+      margin-left: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+
+  /*FORM STYLES*/
+
+
+  .form{
+      background-color: var(--color-white);
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      margin: auto 100px;
+      padding: 20px;
+
+  }
+
+  .lbl{
+      color: var(--Neutrals-80, #515B6F);
+      font-family: Epilogue;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 160%; 
+  }
+
+  /* nav bar css */
+  /* General Navbar Styling */
+  .navbar {
     display: flex;
-    flex-direction: column;
-}
-
-.flex-row {
-    display: flex;
-}
-
-/* DIV STYLES */
-.div-shadow {
-    border: none;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-    height: 200px;
-    width: 200px;
+    justify-content: space-between;
     align-items: center;
-}
-
-.border-box {
-    display: flex;
-    padding: 24px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    border: 1px solid #b3b7be;
-}
-
-/*TEXT STYLES*/
-
-.text-white{
-    color: var(--color-white);
-}
-
-.text-grey{
-    color: var(--neutral-80);
-}
-
-p.styled{
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    opacity: 0.5;
-}
-
-
-/*FOR THE LOGO*/
-p.logo{
-    font-weight: 600;
-    font-size: 36px;
-    margin : 25px 144px;
-    color: var(--color-text);
-    font-style: normal;
-    font-weight: 700;
-    line-height: 150%; 
-    letter-spacing: -0.24px;
-}
-
-
-
-/*CSS for the serch bar*/
-
-
-/*        
-Use this in the code. Add relevent placeholder
-    <div class="search-container">
-            <input type="text" 
-                class="search-bar" 
-                placeholder="Search advertisements"
-                aria-label="Search">
-    </div>
-
-*/
-
-.search-container {
-    max-width: 90%;
-    margin: 20px auto;
-    padding: 0px 15px;
+    padding: 10px 20px;
+    position: fixed; /* Fix the navbar to the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Make the navbar span the full width */
+    z-index: 1000; /* Ensure navbar stays on top */
+    background-color: rgba(150, 150, 150, 0.325);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    height: 80px;
   }
-  
-  .search-bar {
-    height: 30px;
-    width: 100%;
-    padding: 12px 45px 12px 15px;
-    font-size: 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    outline: none;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>');
-    background-repeat: no-repeat;
-    background-position: center right 15px;
-    background-size: 20px;
-    transition: border-color 0.2s ease;
+
+  .logo {
+    height: 40px; /* Set the height of the logo */
+    width: auto; /* Keep the aspect ratio intact */
+    object-fit: contain; /* Ensure the logo image fits within the container */
   }
-  
-  .search-bar:focus {
-    border-color: #999;
-  }
-  
-  .search-bar::placeholder {
-    color: #999;
-  }
-  
-  /*sort menu*/
-  .filter-container {
+
+  .nav-left {
     display: flex;
     align-items: center;
-    font-size: 14px;
-  }
-  
-  .filter-container span {
-    margin-right: 5px;
-  }
-  
-  #sortSelect {
-    border: none;
-    background: none;
-    color: blue;
-    cursor: pointer;
-  }
-  
-  #gridButton {
-    margin-left: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
+    gap: 20px;
   }
 
-
-/*FORM STYLES*/
-
-
-.form{
-    background-color: var(--color-white);
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    margin: auto 100px;
-    padding: 20px;
-
-}
-
-.lbl{
-    color: var(--Neutrals-80, #515B6F);
-    font-family: Epilogue;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 160%; 
-}
-
-/* nav bar css */
-/* General Navbar Styling */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  position: fixed; /* Fix the navbar to the top */
-  top: 0;
-  left: 0;
-  width: 100%; /* Make the navbar span the full width */
-  z-index: 1000; /* Ensure navbar stays on top */
-  background-color: rgb(255, 255, 255, 0.8);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px); /* Apply blur effect */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-  height: 80px;
-}
-
-.logo {
-  height: 40px; /* Set the height of the logo */
-  width: auto; /* Keep the aspect ratio intact */
-  object-fit: contain; /* Ensure the logo image fits within the container */
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-left-links {
-  display: flex;
-  list-style: none;
-  gap: 20px;
-  margin-left: 10px;
-}
-
-.nav-left-links li {
-  list-style: none;
-}
-
-.nav-left-links li a {
-  text-decoration: none;
-  color: #002366; /* Navy blue for the text */
-  font-size: 18px;
-  font-family: 'Arial', sans-serif;
-  font-weight: 600;
-  transition: color 0.3s ease-in-out;
-}
-
-.nav-left-links li a:hover {
-  color: #4640DE; /* Change color on hover to match branding */
-}
-
-/* Right-side Links (Login, Sign Up) */
-.nav-links {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  margin-right: 30px;
-}
-
-.nav-links .login-btn,
-.nav-links .sign-up-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px; /* Consistent width */
-  height: 40px; /* Consistent height */
-  font-family: 'Arial', sans-serif;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* Divider Between Buttons */
-.nav-links .divider {
-  height: 20px; /* Height of the divider */
-  width: 1px;
-  background-color: #ccc; /* Light gray color */
-  margin: 0 8px; /* Space on either side of the divider */
-}
-
-/* Login Button */
-.nav-links .login-btn {
-  background-color: rgb(255, 255, 255);
-  color: #002366;
-  border: none;
-}
-
-.nav-links .login-btn:hover {
-  background-color: #4640DE;
-  color: white;
-}
-
-/* Sign Up Button */
-.nav-links .sign-up-btn {
-  background-color: #010165;
-  color: white;
-  border: none; /* No border for Sign Up button */
-}
-
-.nav-links .sign-up-btn:hover {
-  background-color: #4640DE; /* Slightly lighter blue for hover */
-}
-
-/* Hamburger Menu Styling */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background-color: #002366;
-  border-radius: 3px;
-}
-.nav-links-home{
-  display: none;
-}
-
-/* Mobile View */
-@media (max-width: 768px) {
-  /* Hide Home and Categories for small screens */
   .nav-left-links {
-    display: none;
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin-left: 10px;
   }
 
-  /* Right-side menu items (Login) stays visible */
+  .nav-left-links li {
+    list-style: none;
+  }
+
+  .nav-left-links li a {
+    text-decoration: none;
+    color: #002366; /* Navy blue for the text */
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 600;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .nav-left-links li a:hover {
+    color: #4640DE; /* Change color on hover to match branding */
+  }
+
+  /* Right-side Links (Login, Sign Up) */
   .nav-links {
     display: flex;
     align-items: center;
+    list-style: none;
     margin-right: 30px;
   }
-  .nav-links-home{
-    display: block;
-  }
 
-  .nav-links .login-btn {
-    display: block; /* Keep Login visible */
-  }
-
-  /* Hide the Sign Up button on small screens */
+  .nav-links .login-btn,
   .nav-links .sign-up-btn {
-    display: none;
-  }
-
-  .nav-links .divider {
-    display: none; /* Hide divider */
-  }
-
-  /* Show Hamburger menu on small screens */
-  .hamburger {
     display: flex;
-  }
-  .hamburger img {
-    width: 40px; /* Adjust the size as needed */
-    height: auto; /* Maintain the aspect ratio */
+    align-items: center;
+    justify-content: center;
+    width: 100px; /* Consistent width */
+    height: 40px; /* Consistent height */
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
   }
 
-  /* Mobile Menu Dropdown */
-  .nav-left-links.mobile-menu {
+  /* Divider Between Buttons */
+  .nav-links .divider {
+    height: 20px; /* Height of the divider */
+    width: 1px;
+    background-color: #ccc; /* Light gray color */
+    margin: 0 8px; /* Space on either side of the divider */
+  }
+
+  /* Login Button */
+  .nav-links .login-btn {
+    background-color: rgb(255, 255, 255);
+    color: #002366;
+    border: none;
+  }
+
+  .nav-links .login-btn:hover {
+    background-color: #4640DE;
+    color: white;
+  }
+
+  /* Sign Up Button */
+  .nav-links .sign-up-btn {
+    background-color: #010165;
+    color: white;
+    border: none; /* No border for Sign Up button */
+  }
+
+  .nav-links .sign-up-btn:hover {
+    background-color: #4640DE; /* Slightly lighter blue for hover */
+  }
+
+  /* Hamburger Menu Styling */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: #002366;
+    border-radius: 3px;
+  }
+  .nav-links-home{
     display: none;
   }
 
-  .nav-left-links.mobile-menu.active {
-    display: block;
-    position: absolute;
-    top: 80px; /* Below the navbar */
-    left: 0;
-    background-color: white;
-    width: 100%;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+  /* Mobile View */
+  @media (max-width: 768px) {
+    /* Hide Home and Categories for small screens */
+    .nav-left-links {
+      display: none;
+    }
+
+    /* Right-side menu items (Login) stays visible */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      margin-right: 30px;
+    }
+    .nav-links-home{
+      display: block;
+    }
+
+    .nav-links .login-btn {
+      display: block; /* Keep Login visible */
+    }
+
+    /* Hide the Sign Up button on small screens */
+    .nav-links .sign-up-btn {
+      display: none;
+    }
+
+    .nav-links .divider {
+      display: none; /* Hide divider */
+    }
+
+    /* Show Hamburger menu on small screens */
+    .hamburger {
+      display: flex;
+    }
+    .hamburger img {
+      width: 40px; /* Adjust the size as needed */
+      height: auto; /* Maintain the aspect ratio */
+    }
+
+    /* Mobile Menu Dropdown */
+    .nav-left-links.mobile-menu {
+      display: none;
+    }
+
+    .nav-left-links.mobile-menu.active {
+      display: block;
+      position: absolute;
+      top: 80px; /* Below the navbar */
+      left: 0;
+      background-color: white;
+      width: 100%;
+      padding: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .nav-left-links.mobile-menu.active li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .nav-left-links.mobile-menu.active li a {
+      color: #002366;
+      font-weight: 600;
+    }
   }
 
-  .nav-left-links.mobile-menu.active li {
-    padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+  /* Profile Button Styling */
+  .profile-btn {
+    width: 60px; /* Adjust the size as needed */
+    height: 60px; /* Adjust the size as needed */
+    background-size: cover; /* Ensures the image covers the entire button */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents image repetition */
+    border-radius: 50%; /* Makes the button circular */
+    cursor: pointer; /* Changes the cursor to pointer on hover */
+    overflow: hidden; /* Ensures no overflow if image is larger than the button */
+    display: inline-block; /* Keeps the button inline with text or other elements */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
   }
 
-  .nav-left-links.mobile-menu.active li a {
-    color: #002366;
-    font-weight: 600;
+  .profile-btn:hover {
+    transform: scale(1.1); /* Slight zoom-in effect on hover */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
   }
-}
+  .fit-content{
+    width:fit-content;
+  }
 
-/* Profile Button Styling */
-.profile-btn {
-  width: 60px; /* Adjust the size as needed */
-  height: 60px; /* Adjust the size as needed */
-  background-size: cover; /* Ensures the image covers the entire button */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents image repetition */
-  border-radius: 50%; /* Makes the button circular */
-  cursor: pointer; /* Changes the cursor to pointer on hover */
-  overflow: hidden; /* Ensures no overflow if image is larger than the button */
-  display: inline-block; /* Keeps the button inline with text or other elements */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
-}
+    /* nav bar css */
+    .verify-badge-profile {
+      width: 30px !important;
+      height: 3% !important;
+      margin-left: 8px !important;
+      margin-bottom: 8px !important;
+      margin-top: 6px !important;
+      border-radius: 50%;
+      background-color: #fff; /* White background */
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.8);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      vertical-align: middle; /* Center along Y-axis */
+      display: inline-block; /* Ensure it's inline with text */
+      line-height: 0;
+  }
 
-.profile-btn:hover {
-  transform: scale(1.1); /* Slight zoom-in effect on hover */
-  transition: transform 0.3s ease; /* Smooth transition for hover effect */
-}
-.fit-content{
-  width:fit-content;
-}
+  .verify-badge-profile:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.9);
+  }
 
-  /* nav bar css */
-  .verify-badge-profile {
-    width: 30px !important;
-    height: 3% !important;
-    margin-left: 8px !important;
-    margin-bottom: 8px !important;
-    margin-top: 6px !important;
-    border-radius: 50%;
-    background-color: #fff; /* White background */
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.8);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    vertical-align: middle; /* Center along Y-axis */
-    display: inline-block; /* Ensure it's inline with text */
-    line-height: 0;
-}
-
-.verify-badge-profile:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.9);
-}
-
-.verify-badge-profile:active {
-    transform: scale(1);
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5), 0 0 15px rgba(255, 215, 0, 0.6);
-}
+  .verify-badge-profile:active {
+      transform: scale(1);
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.5), 0 0 15px rgba(255, 215, 0, 0.6);
+  }
