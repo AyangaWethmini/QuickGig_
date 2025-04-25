@@ -78,11 +78,11 @@ protectRoute([1]);
 
                         <div class="field radio-btns flex-row" style="gap: 30px; margin-top: 20px;">
                             <div class="flex-row" style="gap : 5px;">
-                                <input type="radio" id="status-active" name="adStatus" value="1" <?= isset($data['ad']->adStatus) && $data['ad']->adStatus == 1 ? 'checked' : '' ?> required>
+                                <input type="radio" id="status-active" name="adStatus" value="1" <?= (isset($data['ad']->adStatus) && (int)$data['ad']->adStatus === 1) ? 'checked' : '' ?> required>
                                 <label for="status-active" class="lbl">Active</label>
                             </div>
                             <div class="flex-row" style="gap : 5px;">
-                                <input type="radio" id="status-inactive" name="adStatus" value="0" <?= isset($data['ad']->adStatus) && $data['ad']->adStatus == 0 ? 'checked' : '' ?> required>
+                                <input type="radio" id="status-inactive" name="adStatus" value="0" <?= (isset($data['ad']->adStatus) && (int)$data['ad']->adStatus === 0) ? 'checked' : '' ?> required>
                                 <label for="status-inactive" class="lbl">Inactive</label>
                             </div>
                         </div>
