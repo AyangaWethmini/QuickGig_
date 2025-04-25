@@ -9,14 +9,14 @@ protectRoute([0]);
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
         <div class="admin-announcement-header">
-            <h1>Current Announcements</h1>
+            <h1 style="font-size: 2.5rem;"><strong>Current Announcements</strong></h1>
 
             <a href="<?php echo ROOT; ?>/admin/createannouncement">
                 <button class="btn btn-accent srch-btn">+ Post Announcement</button>
             </a>
         </div>
         <br>
-        <hr><br>
+        <hr>
 
         <div class="complaints-container container">
             <?php if (empty($data['announcements'])): ?>
@@ -29,8 +29,8 @@ protectRoute([0]);
                         <div class="complaint-content flex-col">
                             <div class="complaint-details flex-row">
                                 <div class="complaint-text flex-col">
-                                    <div class="the-complaint"><?php echo $announcement->content; ?></div>
-                                    <div class="text-grey">
+                                    <div class="the-complaint" style="font-size: 1.8rem;"><?php echo $announcement->content; ?></div>
+                                    <div class="text-grey" style="font-size: 1.2rem;">
                                         <?php
                                         $formattedTime = date('h:i A', strtotime($announcement->announcementTime));
                                         echo $announcement->announcementDate . ' | ' . $formattedTime;
@@ -123,6 +123,20 @@ protectRoute([0]);
         width: 90%;
     }
 
+    .btn-accent.srch-btn {
+        width: 300px;
+        height: 50px;
+        font-size: 1.2rem;
+        padding: 10px 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-accent.srch-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
     .pagination-container {
         position: absolute;
         bottom: 110px;
@@ -178,6 +192,26 @@ protectRoute([0]);
     .complaint.container {
         margin: 0;
         width: 100%;
+    }
+
+    .complaint-content {
+        position: relative;
+        min-height: 120px;
+        padding-bottom: 30px;
+    }
+
+    .complaint-text {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .text-grey {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        margin-top: auto;
+        text-align: left;
     }
 
     .no-results {

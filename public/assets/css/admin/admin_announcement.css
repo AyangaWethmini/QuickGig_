@@ -251,6 +251,7 @@ hr {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+    font-size: 1.6rem;
 }
 
 .btn-delete {
@@ -259,6 +260,8 @@ hr {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+    font-size: 1.6rem;
+
 }
 
 .btn-update:hover {

@@ -142,7 +142,8 @@ class AdminModel
         return $this->query($query, $params);
     }
 
-    public function getCount(){
+    public function getCount()
+    {
         $query = "SELECT COUNT(*) AS count FROM announcement";
         $result = $this->query($query);
 
@@ -152,5 +153,21 @@ class AdminModel
         }
 
         return 0; // Return 0 if no rows match or query fails
+    }
+
+    public function searchUsersByEmail($searchTerm)
+    {
+        $query = "SELECT a.*, ar.roleID, a.activationCode 
+                  FROM account a
+                  JOIN account_role ar ON a.accountID = ar.accountID
+                  WHERE a.email LIKE :email
+                  ORDER BY a.email ASC";
+
+        $params = [
+            ':email' => '%' . $searchTerm . '%'
+        ];
+
+        $result = $this->query($query, $params);
+        return $result ?: [];
     }
 }

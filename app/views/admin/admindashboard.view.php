@@ -8,7 +8,7 @@ protectRoute([0]); ?>
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
         <div class="admin-announcement-header">
-            <h1>Dashboard Overview</h1>
+            <h1 style="font-size: 2rem;"><strong>Dashboard Overview</strong></h1>
         </div>
         <hr>
         <div class="admin-dashboard">

@@ -56,7 +56,7 @@ class Admin extends Controller
     function adminmanageusers()
     {
         // Set items per page
-        $limit = 4;
+        $limit = 3;
 
         // Get current page from URL, default to 1
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -502,5 +502,24 @@ class Admin extends Controller
             echo json_encode(['error' => $e->getMessage()]);
             exit;
         }
+    }
+
+    // Add this new method to the Admin controller class
+    public function searchUsers()
+    {
+        // Check if the request is AJAX
+        if (!isset($_GET['term'])) {
+            echo json_encode([]);
+            return;
+        }
+
+        $searchTerm = trim($_GET['term']);
+
+        // Call the model to search for users
+        $users = $this->adminModel->searchUsersByEmail($searchTerm);
+
+        // Return JSON response
+        header('Content-Type: application/json');
+        echo json_encode($users);
     }
 }

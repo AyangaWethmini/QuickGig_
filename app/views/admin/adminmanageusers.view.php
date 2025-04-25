@@ -9,10 +9,14 @@
         <div class="admin-announcement-filterheader">
             <div class="search-container">
                 <input type="text" id="userSearchInput" placeholder="Search by email..." class="search-input">
+                <button onclick="searchUsers()" class="search-btn">Search</button>
                 <button onclick="clearSearch()" class="clear-search-btn">Clear</button>
             </div>
         </div>
-        <div class="complaints-container container">
+        <div id="search-results" class="complaints-container container" style="display: none;">
+            <!-- Search results will be displayed here -->
+        </div>
+        <div id="normal-results" class="complaints-container container">
             <?php if (empty($data['users'])): ?>
                 <div class="no-results">
                     No users found.
@@ -20,7 +24,7 @@
             <?php else: ?>
                 <?php foreach ($data['users'] as $user): ?>
                     <?php if ($user->roleID != 0 && $user->roleID != 1): ?>
-                        <div class="complaint container user-item" data-email="<?php echo strtolower($user->email); ?>" style="border: 2px solid <?php echo $user->activationCode ? 'green' : 'red'; ?>;">
+                        <div class="complaint container user-item" data-email="<?php echo strtolower($user->email); ?>" data-id="<?php echo $user->accountID; ?>" style="border: 2px solid <?php echo $user->activationCode ? 'green' : 'red'; ?>;">
                             <div class="complaint-details flex-col">
                                 <div class="complaint-details flex-row">
                                     <div class="the-complaint">
@@ -55,7 +59,7 @@
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-        <div class="pagination-container">
+        <div id="pagination-container" class="pagination-container">
             <div class="pagination">
                 <!-- Always show Previous button -->
                 <a href="<?= ROOT ?>/admin/adminmanageusers?page=<?= max(1, $data['currentPage'] - 1) ?>"
@@ -99,55 +103,97 @@
 <script>
     // User search functionality
     const searchInput = document.getElementById('userSearchInput');
-    const userItems = document.querySelectorAll('.user-item');
+    const normalResults = document.getElementById('normal-results');
+    const searchResults = document.getElementById('search-results');
+    const paginationContainer = document.getElementById('pagination-container');
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase().trim();
-        let resultsFound = false;
-
-        userItems.forEach(item => {
-            const email = item.getAttribute('data-email');
-
-            if (email.includes(searchTerm)) {
-                item.style.display = 'block';
-                resultsFound = true;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        // Hide pagination when searching
-        const paginationContainer = document.querySelector('.pagination-container');
-        paginationContainer.style.display = searchTerm ? 'none' : 'flex';
-
-        // Show no results message if needed
-        let noResultsMsg = document.querySelector('.no-results');
-        if (!resultsFound && searchTerm !== '') {
-            if (!noResultsMsg) {
-                noResultsMsg = document.createElement('div');
-                noResultsMsg.className = 'no-results';
-                noResultsMsg.textContent = 'No users found matching your search.';
-                document.querySelector('.complaints-container').appendChild(noResultsMsg);
-            }
-        } else if (noResultsMsg) {
-            noResultsMsg.remove();
+    // Add event listener for Enter key on search input
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchUsers();
         }
     });
 
+    function searchUsers() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+
+        if (searchTerm === '') {
+            clearSearch();
+            return;
+        }
+
+        // Show the loading state
+        searchResults.innerHTML = '<div class="loading">Searching...</div>';
+        searchResults.style.display = 'block';
+        normalResults.style.display = 'none';
+        paginationContainer.style.display = 'none';
+
+        // Make an AJAX call to search across all users
+        fetch(`<?= ROOT ?>/admin/searchUsers?term=${encodeURIComponent(searchTerm)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                searchResults.innerHTML = '';
+
+                if (data.length === 0) {
+                    searchResults.innerHTML = '<div class="no-results">No users found matching your search.</div>';
+                    return;
+                }
+
+                // Create and append user elements
+                data.forEach(user => {
+                    if (user.roleID != 0 && user.roleID != 1) { // Exclude admin users
+                        const userDiv = document.createElement('div');
+                        userDiv.className = 'complaint container user-item';
+                        userDiv.style.border = `2px solid ${user.activationCode ? 'green' : 'red'}`;
+
+                        let roleName = 'Unknown';
+                        if (user.roleID == 2) {
+                            roleName = 'Individual';
+                        } else if (user.roleID == 3) {
+                            roleName = 'Organization';
+                        }
+
+                        userDiv.innerHTML = `
+                            <div class="complaint-details flex-col">
+                                <div class="complaint-details flex-row">
+                                    <div class="the-complaint">
+                                        <strong>Account ID:</strong> ${user.accountID}<br>
+                                        <strong>Email:</strong> ${user.email}<br>
+                                        <strong>Role:</strong> ${roleName}<br>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-delete" onclick="confirmDelete('${user.accountID}')">Delete</button>
+                                        <a href="<?php echo ROOT; ?>/admin/deactivateUser/${user.accountID}">
+                                            <button style="background-color:brown;" class="btn btn-update">Deactivate</button>
+                                        </a>
+                                        <a href="<?php echo ROOT; ?>/admin/activateUser/${user.accountID}">
+                                            <button style="background-color:green;" class="btn btn-update">Activate</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        searchResults.appendChild(userDiv);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error searching users:', error);
+                searchResults.innerHTML = '<div class="no-results">An error occurred while searching. Please try again.</div>';
+            });
+    }
+
     function clearSearch() {
         searchInput.value = '';
-        userItems.forEach(item => {
-            item.style.display = 'block';
-        });
-
-        // Show pagination again
-        const paginationContainer = document.querySelector('.pagination-container');
+        searchResults.style.display = 'none';
+        normalResults.style.display = 'block';
         paginationContainer.style.display = 'flex';
-
-        const noResultsMsg = document.querySelector('.no-results');
-        if (noResultsMsg) {
-            noResultsMsg.remove();
-        }
     }
 
     function confirmDelete(accountID) {

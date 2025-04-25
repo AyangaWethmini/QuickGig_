@@ -145,7 +145,7 @@
 
   .srch-btn{
     display: flex;
-    width: 185px;
+    width: 300px;
     padding: 14px 27px;
     margin-left: 24px;
     justify-content: center;
@@ -154,7 +154,7 @@
     flex-shrink: 0;
     background: var(--Brands-Primary, #4640DE);
     font-family: Epilogue;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-style: normal;
     font-weight: 700;
     line-height: 160%;

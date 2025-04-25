@@ -11,10 +11,10 @@ protectRoute([0]); ?>
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
         <div class="admin-announcement-filterheader">
-            <h1>All Advertisements</h1>
+            <h1 style="font-size: 2.5rem;"><strong>All Advertisements</strong></h1>
             <hr>
         </div>
-        <div class="complaints-container container" style="margin-top: 5px;">
+        <div class="complaints-container container" style="margin-bottom: 5px;">
             <?php if (empty($data['ads'])): ?>
                 <div class="no-results">
                     No advertisements found.
@@ -128,7 +128,7 @@ protectRoute([0]); ?>
 
 <style>
     .complaint {
-        padding: 35px;
+        padding: 30px;
     }
 
     .complaint-details {

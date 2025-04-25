@@ -7,7 +7,6 @@ protectRoute([0]); ?>
 <div class="admin-layout">
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
-        <h1>Complaints Management</h1>
         <div class="complaints-grid">
             <!-- Pending Complaints Section -->
             <div class="complaints-section">
@@ -19,7 +18,7 @@ protectRoute([0]); ?>
                         if ((int)$complaint->complaintStatus === 1):
                             $hasPendingComplaints = true;
                     ?>
-                            <div class="complaint" style="width: 90%;" onclick="showComplaintPopup('<?php echo htmlspecialchars($complaint->complaintID) ?>')">
+                            <div class="complaint enhanced-complaint" onclick="showComplaintPopup('<?php echo htmlspecialchars($complaint->complaintID) ?>')">
                                 <div class="complaint-content">
                                     <div class="complaint-text"><?php echo $complaint->content ?></div>
                                     <div class="complaint-time">
@@ -51,7 +50,7 @@ protectRoute([0]); ?>
                         if ((int)$complaint->complaintStatus === 3):
                             $hasReviewedComplaints = true;
                     ?>
-                            <div class="complaint" style="width: 90%;">
+                            <div class="complaint enhanced-complaint">
                                 <div class="complaint-content">
                                     <div class="complaint-text"><?php echo $complaint->content ?></div>
                                     <div class="complaint-time">
@@ -102,6 +101,8 @@ protectRoute([0]); ?>
         </div>
     </div>
 </div>
+
+
 
 <script>
     function showTab(tabName) {
@@ -272,5 +273,126 @@ protectRoute([0]); ?>
         }
     }
 </script>
+
+<style>
+    /* Main title styling */
+    .complaints-title {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #25324B;
+        margin-bottom: 25px;
+    }
+
+    /* Enhanced complaint section */
+    .complaints-section {
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .complaints-section h2 {
+        font-size: 1.8rem;
+        color: #4640DE;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    /* Scroll area styling */
+    .complaints-scroll {
+        padding-right: 15px;
+    }
+
+    .complaints-scroll::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .complaints-scroll::-webkit-scrollbar-track {
+        background: #f5f6fa;
+        border-radius: 6px;
+    }
+
+    .complaints-scroll::-webkit-scrollbar-thumb {
+        background: #4640DE;
+        border-radius: 6px;
+    }
+
+    .complaints-scroll::-webkit-scrollbar-thumb:hover {
+        background: #372ebf;
+    }
+
+    /* Enhanced complaint box styling */
+    .enhanced-complaint {
+        width: 95% !important;
+        margin: 0 auto 20px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        min-height: 120px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #4640DE;
+        transition: all 0.3s ease;
+    }
+
+    .enhanced-complaint:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .complaint-text {
+        font-size: 1.4rem;
+        line-height: 1.6;
+        color: #333;
+        max-height: none;
+        margin-bottom: 30px;
+    }
+
+    .complaint-time {
+        font-size: 1.1rem;
+        color: #666;
+        font-style: italic;
+    }
+
+    /* Button styling */
+    .dismiss-btn {
+        font-size: 1rem;
+        padding: 8px 15px;
+        height: auto;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dismiss-btn:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    }
+
+    /* No complaints message */
+    .no-complaints {
+        font-size: 1.2rem;
+        padding: 30px;
+        border-radius: 12px;
+        background-color: #f8f9fa;
+        text-align: center;
+        color: #6c757d;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .complaints-grid {
+            gap: 30px;
+        }
+
+        .complaints-section {
+            height: auto;
+            min-height: 500px;
+        }
+    }
+</style>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
