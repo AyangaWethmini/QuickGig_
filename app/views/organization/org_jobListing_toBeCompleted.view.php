@@ -18,28 +18,19 @@ protectRoute([3]); ?>
             </div>
             <hr> <br>
 
-<<<<<<< HEAD
-        <div class="list-header">
-            <p class="list-header-title">To Be Completed</p>
-            <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_toBeCompleted">
-                <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-            </form>
-            <input 
-                type="date" 
-                id="filter-date" 
-                class="filter-btn" 
-                onchange="filterByDate(this.value)" 
-                style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;"
-            />
-        </div> 
-        <br>
-=======
             <div class="list-header">
                 <p class="list-header-title">To Be Completed</p>
-                <input type="text" class="search-input" placeholder="Search...">
-                <button class="filter-btn">Filter</button>
-            </div> <br>
->>>>>>> ThuminduSena
+                <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_toBeCompleted">
+                    <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                </form>
+                <input
+                    type="date"
+                    id="filter-date"
+                    class="filter-btn"
+                    onchange="filterByDate(this.value)"
+                    style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;" />
+            </div>
+            <br>
 
             <div class="employee-list">
 
@@ -216,12 +207,11 @@ protectRoute([3]); ?>
         document.getElementById('popup').classList.add('hidden');
     });
 
-<<<<<<< HEAD
-document.getElementById('popup-no').addEventListener('click', () => {
-    document.getElementById('popup').classList.add('hidden');
-});
+    document.getElementById('popup-no').addEventListener('click', () => {
+        document.getElementById('popup').classList.add('hidden');
+    });
 
-document.querySelector('.search-input').addEventListener('input', function () {
+    document.querySelector('.search-input').addEventListener('input', function() {
         const searchTerm = this.value;
 
         fetch(`<?= ROOT ?>/organization/org_jobListing_toBeCompleted?search=${encodeURIComponent(searchTerm)}`)
@@ -248,11 +238,6 @@ document.querySelector('.search-input').addEventListener('input', function () {
             })
             .catch(error => console.error('Error:', error));
     }
-=======
-    document.getElementById('popup-no').addEventListener('click', () => {
-        document.getElementById('popup').classList.add('hidden');
-    });
->>>>>>> ThuminduSena
 </script>
 
 </html>

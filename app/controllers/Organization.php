@@ -358,6 +358,8 @@ class Organization extends Controller
         }
 
         $data = ['jobs' => $jobs];
+
+        $this->view('org_jobListing_myJobs', $data);
     }
     function review($jobId)
     {
