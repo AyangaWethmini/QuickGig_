@@ -60,7 +60,7 @@
                     <div class="form-field">
                         <label for="password" class="lbl">Password :</label><br>
                         <div class="password-wrapper">
-                            <input type="password" name="password" id="password" placeholder="Enter password">
+                            <input type="password" name="password" id="password" placeholder="Enter password" onpaste="return false" oncopy="return false" oncut="return false">
                             <button type="button" id="togglePassword">
                                 👁️
                             </button>

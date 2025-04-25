@@ -68,7 +68,7 @@
 .lbl {
     color: #cccccc;
 }
-
+.form-field input[type="text"],
 .form-field input[type="email"],
 .form-field input[type="password"] {
     width: 100%;
@@ -161,10 +161,57 @@ a.link {
 }
 
 
+/* Styling for the dropdown */
 .userType {
-    width: 250px;
-
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: #333;
+    appearance: none; /* Removes default arrow */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 8px;
 }
+
+/* Focus and hover state */
+.userType:focus {
+    border-color: #0099cc;
+    box-shadow: 0 0 5px rgba(0, 153, 204, 0.5);
+}
+
+/* Custom dropdown arrow */
+.userType::-ms-expand {
+    display: none;
+}
+
+.userType::after {
+    content: ' ▼';
+    font-size: 12px;
+    color: #888;
+    margin-left: 5px;
+}
+
+.userType:hover {
+    cursor: pointer;
+}
+
+/* Option Styling */
+.userType option {
+    padding: 8px 12px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* On hover, the option background should be slightly highlighted */
+.userType option:hover {
+    background-color: #f1f1f1;
+}
+
 
 /* Carousel Section */
 .carousel {
@@ -253,4 +300,38 @@ a.link {
     .form-section {
         width: 100%;
     }
+}
+/* Container for the country code dropdown and phone input */
+.phone-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.country-code {
+    padding: 10px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    border: 2px solid #00bfff;
+    border-radius: 8px;
+    color: #333;
+    width: 120px; /* Adjust width as needed */
+}
+
+#Phone {
+    padding: 10px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    border: 2px solid #00bfff;
+    border-radius: 8px;
+    color: #333;
+    flex-grow: 1; 
+}
+
+#Phone:focus, .country-code:focus {
+    border-color: #0099cc;
+    box-shadow: 0 0 5px rgba(0, 153, 204, 0.5);
 }

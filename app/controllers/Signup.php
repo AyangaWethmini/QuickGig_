@@ -63,7 +63,7 @@ class Signup extends Controller
                 header("Location: " . ROOT . "/home/signup");
                 exit;
             }
-            if($password != $confirmPassword){
+            if ($password != $confirmPassword) {
                 $_SESSION['signup_errors'][] = "Confirm Password doesnt match";
                 header("Location: " . ROOT . "/home/signup");
                 exit;
@@ -93,9 +93,9 @@ class Signup extends Controller
                 header("Location: " . ROOT . "/home/nextSign");
                 exit; // Prevent further script execution after redirect
             } else {
+                $_SESSION['signup_errors'][] = "Something went Wrong!";
                 header("Location: " . ROOT . "/home/signup");
-                echo "Failed to create account.";
-                return false;
+                exit;
             }
         }
     }
@@ -118,12 +118,30 @@ class Signup extends Controller
                 $lastName = trim($_POST['lname']);
                 $nic = trim($_POST['nic']);
                 $gender = trim($_POST['gender']);
-                $phone = trim($_POST['Phone']);
+                $phoneDig = trim($_POST['Phone']);
+                $code = trim($_POST['countryCode']);
 
-                if (empty($firstName) || empty($lastName) || empty($nic) || empty($gender) || empty($phone)) {
-                    echo "All individual user fields are required.";
-                    return false;
+                if (empty($firstName) || empty($lastName) || empty($nic) || empty($gender) || empty($phoneDig) || empty($code)) {
+                    $_SESSION['signup_errors'][] = "Please fill all the fields";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
                 }
+                if ($this->model->findByNIC($nic)) {
+                    $_SESSION['signup_errors'][] = "NIC Already in Used";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
+                }
+                $firstName = ucwords(strtolower($firstName));
+                $lastName = ucwords(strtolower($lastName));
+                $phone = $code . ' ' . $phoneDig;
+                $pattern = '/^\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{3,4}[\s\-]?\d{3,4}$/';
+
+                if (!preg_match($pattern, $phone)) {
+                    $_SESSION['signup_errors'][] = "Invalid phone number format.";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
+                }
+
 
                 $individualData = [
                     'accountID' => $accountID,
@@ -138,8 +156,8 @@ class Signup extends Controller
                     header("Location: " . ROOT . "/home/login");
                     exit;
                 } else {
-                    echo "Failed to register individual.";
-                    return false;
+                    $_SESSION['signup_errors'][] = "Something went Wrong!";
+                    header("Location: " . ROOT . "/home/signup");
                 }
             } elseif ($userType === 'organization') {
                 // Process organization user data
@@ -147,9 +165,16 @@ class Signup extends Controller
                 $BRN = trim($_POST['brn']);
 
                 if (empty($orgName) || empty($BRN)) {
-                    echo "All organization fields are required.";
-                    return false;
+                    $_SESSION['signup_errors'][] = "Please fill all the fields";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
                 }
+                if ($this->model->findByBRN($BRN)) {
+                    $_SESSION['signup_errors'][] = "BRN already in used";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
+                }
+                $orgName = ucwords($orgName);
 
                 $organizationData = [
                     'accountID' => $accountID,
@@ -161,12 +186,12 @@ class Signup extends Controller
                     header("Location: " . ROOT . "/home/login");
                     exit;
                 } else {
-                    echo "Failed to register organization.";
-                    return false;
+                    $_SESSION['signup_errors'][] = "Something went Wrong!";
+                    header("Location: " . ROOT . "/home/signup");
                 }
             } else {
-                echo "Invalid user type.";
-                return false;
+                $_SESSION['signup_errors'][] = "Something went Wrong!";
+                header("Location: " . ROOT . "/home/signup");
             }
         }
     }

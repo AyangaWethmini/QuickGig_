@@ -93,6 +93,24 @@ class Account
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function findByNIC($nic)
+    {
+        $query = "SELECT * FROM individual WHERE nic = :nic LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':nic', $nic);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function findByBRN($brn)
+    {
+        $query = "SELECT * FROM organization WHERE brn = :brn LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':brn', $brn);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function findById($accountID)
     {

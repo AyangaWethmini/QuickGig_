@@ -35,7 +35,6 @@
 
     <div class="form-section">
         <div class="signup-form-wrapper">
-            <div></div>
             <a href="<?php echo ROOT; ?>/home" class="back-button">
                 <
             </a>
@@ -60,7 +59,7 @@
                 <div class="form-field">
                     <label for="password" class="lbl">Password :</label><br>
                     <div class="password-wrapper">
-                        <input type="password" name="password" id="password" placeholder="Enter password">
+                        <input type="password" name="password" id="password" placeholder="Enter password" onpaste="return false" oncopy="return false" oncut="return false">
                         <button type="button" id="togglePassword1">
                             👁️
                         </button>
@@ -70,14 +69,14 @@
                 <div class="form-field">
                     <label for="confirm-password" class="lbl">Confirm Password :</label><br>
                     <div class="password-wrapper">
-                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Enter password">
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Enter password" onpaste="return false" oncopy="return false" oncut="return false">
                         <button type="button" id="togglePassword2">
                             👁️
                         </button>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-accent signup-btn">Sign Up</button>
+                <button type="submit" class="btn btn-accent signup-btn">Next</button>
             </form>
 
             <div class="bottom-text">
