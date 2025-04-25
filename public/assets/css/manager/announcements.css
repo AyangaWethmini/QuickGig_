@@ -151,8 +151,8 @@
 }
 
 .announcement-card .date-time {
-    font-size: 13px;
-    color: #94a3b8;
+    font-size: 15px;
+    color: #7f8a99;
     font-style: italic;
 }
 
@@ -161,6 +161,15 @@
     text-align: center;
     padding: 40px 0;
     font-size: 16px;
+}
+
+
+.del-ann-btn{
+    height: 35px;
+    width: 100px;
+    margin: 5px 0;
+    padding: 5px;
+
 }
 
 /* ===== Responsive Design ===== */

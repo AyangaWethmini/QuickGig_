@@ -192,12 +192,12 @@ document.getElementById('advertisementForm').addEventListener('submit', async fu
 
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
-    const spinner = document.getElementById('spinner');
+
 
     // Show loading state
     submitBtn.disabled = true;
     btnText.textContent = 'Processing...';
-    spinner.classList.remove('d-none');
+  
 
     try {
         const formData = new FormData(this);
@@ -233,7 +233,7 @@ document.getElementById('advertisementForm').addEventListener('submit', async fu
     } finally {
         submitBtn.disabled = false;
         btnText.textContent = 'Submit Ad';
-        spinner.classList.add('d-none');
+
     }
 });
 

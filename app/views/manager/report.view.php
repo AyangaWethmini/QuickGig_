@@ -49,6 +49,7 @@ protectRoute([1]); ?>
 .header {
   margin: 20px;
   padding: 10px;
+  justify-content: space-between;
 }
 
 .header h2 {
@@ -176,12 +177,79 @@ protectRoute([1]); ?>
   font-size: 18px;
   font-weight: bold;
 }
+
+
+.date-selector {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .date-text {
+    margin-right: 8px;
+    font-size: 16px;
+    color: #333;
+  }
+  .calendar-icon {
+    color: #5b5ce6;
+    font-size: 20px;
+  }
+
+  /* Modal styling */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  }
+  .modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  .modal-buttons button {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .cancel-btn {
+    background-color: #ddd;
+  }
+  .apply-btn {
+    background-color: var(--brand-primary);
+    color: #fff;
+  }
+
+  .filter{
+    justify-content: space-between;
+  }
+
 </style>
 
 
 
 <!-- Include custom CSS -->
-<!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/mgr_report.css"> -->
+<!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/mgr_commons.css"> -->
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
@@ -189,10 +257,31 @@ protectRoute([1]); ?>
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
-        <div class="header flex-col">
+        <div class="header flex-row">
             <h2>System Report</h2> 
-            <hr>
-        </div>
+             <form id="dateRangeForm" action="<?=ROOT?>/manager/report" method="POST" class="date-range-form flex-row">
+                <span class="date">
+                    <div class="date-selector" onclick="openModal()">
+                        <span id="dateRange" class="date-text"><?= date('jS M', strtotime('first day of this month')) . ' – ' . date('jS M'); ?></span>
+                        <i class="fas fa-calendar-alt calendar-icon"></i>
+                    </div>
+
+                    <!-- Date range modal -->
+                    <div id="dateModal" class="modal">
+                        <div class="modal-content">
+                            <h3>Select Date Range</h3>
+                            <input type="date" id="startDate" name="startDate" placeholder="Start Date" value="<?= date('Y-m-01'); ?>" />
+                            <input type="date" id="endDate" name="endDate" placeholder="End Date" value="<?= isset($_POST['endDate']) ? $_POST['endDate'] : date('Y-m-d'); ?>" />
+                            
+                            <div class="modal-buttons">
+                                <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                                <button type="submit" class="apply-btn">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </span> 
+           
+        </div> <hr> 
 
         <div id="print-area">
             <!-- Print header -->
@@ -227,16 +316,22 @@ protectRoute([1]); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($subEarnings as $plan): ?>
+                                <?php if (!empty($subEarnings)): ?>
+                                  <?php foreach ($subEarnings as $plan): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($plan->planID) ?></td>
-                                        <td><?= htmlspecialchars($plan->planName) ?></td>
-                                        <td><?= htmlspecialchars($plan->price) ?></td>
-                                        <td><?= htmlspecialchars($plan->duration) ?></td>
-                                        <td><?= htmlspecialchars($plan->subscription_count) ?></td>
-                                        <td><?= htmlspecialchars($plan->total_revenue) ?><?= htmlspecialchars($plan->currency);?></td>
+                                      <td><?= htmlspecialchars($plan->planID) ?></td>
+                                      <td><?= htmlspecialchars($plan->planName) ?></td>
+                                      <td><?= htmlspecialchars($plan->price) ?></td>
+                                      <td><?= htmlspecialchars($plan->duration) ?></td>
+                                      <td><?= htmlspecialchars($plan->subscription_count) ?></td>
+                                      <td><?= htmlspecialchars($plan->total_revenue) ?><?= htmlspecialchars($plan->currency); ?></td>
                                     </tr>
-                                <?php endforeach; ?>
+                                  <?php endforeach; ?>
+                                <?php else: ?>
+                                  <tr>
+                                    <td colspan="6" style="text-align: center;">No subscription data found for this period</td>
+                                  </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div><br>
@@ -256,17 +351,23 @@ protectRoute([1]); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($adRevenue['ads'] as $ad): ?>
+                                <?php if (!empty($adRevenue['ads'])): ?>
+                                  <?php foreach ($adRevenue['ads'] as $ad): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($ad['adId']) ?></td>
-                                        <td><?= htmlspecialchars($ad['title']) ?></td>
-                                        <td><?= htmlspecialchars($ad['daysActive']) ?></td>
-                                        <td><?= htmlspecialchars($ad['weeksActive']) ?></td>
-                                        <td><?= htmlspecialchars($ad['revenue']) ?></td>
-                                        <td><?= htmlspecialchars($ad['paidAmount']) ?></td>
-                                        <td><?= htmlspecialchars($ad['toBeCharged']) ?></td>
+                                      <td><?= htmlspecialchars($ad['adId']) ?></td>
+                                      <td><?= htmlspecialchars($ad['title']) ?></td>
+                                      <td><?= htmlspecialchars($ad['daysActive']) ?></td>
+                                      <td><?= htmlspecialchars($ad['weeksActive']) ?></td>
+                                      <td><?= htmlspecialchars($ad['revenue']) ?></td>
+                                      <td><?= htmlspecialchars($ad['paidAmount']) ?></td>
+                                      <td><?= htmlspecialchars($ad['toBeCharged']) ?></td>
                                     </tr>
-                                <?php endforeach; ?>
+                                  <?php endforeach; ?>
+                                <?php else: ?>
+                                  <tr>
+                                    <td colspan="7" style="text-align: center;">No Ad data found for this period</td>
+                                  </tr>
+                                <?php endif; ?>
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -289,17 +390,23 @@ protectRoute([1]); ?>
                             <tbody>
                                 <?php 
                                 $roles = [
-                                    0 => 'Admin',
-                                    1 => 'Manager',
-                                    2 => 'Individual',
-                                    3 => 'Organization'
+                                  0 => 'Admin',
+                                  1 => 'Manager',
+                                  2 => 'Individual',
+                                  3 => 'Organization'
                                 ];
-                                foreach ($userCount as $user): ?>
+                                if (!empty($userCount)): 
+                                  foreach ($userCount as $user): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($roles[$user->roleID]) ?></td>
-                                        <td><?= htmlspecialchars($user->role_count) ?></td>
+                                      <td><?= htmlspecialchars($roles[$user->roleID]) ?></td>
+                                      <td><?= htmlspecialchars($user->role_count) ?></td>
                                     </tr>
-                                <?php endforeach; ?>
+                                  <?php endforeach; 
+                                else: ?>
+                                  <tr>
+                                    <td colspan="2" style="text-align: center;">No new users during this period</td>
+                                  </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -351,6 +458,19 @@ protectRoute([1]); ?>
         setTimeout(function() {
             document.body.classList.remove('printing');
         }, 500);
+    }
+
+
+    // Modal functionality
+    const dateModal = document.getElementById('dateModal');
+    const dateRangeDisplay = document.getElementById('dateRange');
+
+    function openModal() {
+        dateModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        dateModal.style.display = 'none';
     }
 </script>
 

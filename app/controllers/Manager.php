@@ -68,6 +68,8 @@ if (is_array($subscriptionData)) {
             'endDate' => $endDate,
             'subscriptionData' => $extractedData,
             'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
+
+            
         ];
 
        
@@ -77,6 +79,86 @@ if (is_array($subscriptionData)) {
 
         $this->view('dashboard', $response);
     }
+
+
+
+
+//backup code for the dashboard function
+// public function index()
+// {
+//     // Current period (default or from POST)
+//     $startDate = isset($_POST['startDate']) ? $_POST['startDate'] . ' 00:00:00' : date('Y-m-01 00:00:00');
+//     $endDate = isset($_POST['endDate']) ? $_POST['endDate'] . ' 23:59:59' : date('Y-m-d 23:59:59');
+    
+//     // Calculate last month's period
+//     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
+//     $lastMonthEnd = date('Y-m-t 23:59:59', strtotime('-1 month'));
+
+//     // Get current period data
+//     $currentSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
+//     $currentExtractedData = [];
+    
+//     if (is_array($currentSubscriptionData)) {
+//         $currentExtractedData = array_map(function($item) {
+//             return [
+//                 'planName' => $item->planName,
+//                 'subscriptionCount' => $item->subscription_count
+//             ];
+//         }, $currentSubscriptionData);
+//     }
+
+//     // Get last month's data
+//     $lastMonthSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($lastMonthStart, $lastMonthEnd);
+//     $lastMonthExtractedData = [];
+    
+//     if (is_array($lastMonthSubscriptionData)) {
+//         $lastMonthExtractedData = array_map(function($item) {
+//             return [
+//                 'planName' => $item->planName,
+//                 'subscriptionCount' => $item->subscription_count
+//             ];
+//         }, $lastMonthSubscriptionData);
+//     }
+
+//     // Prepare response
+//     $response = [
+//         // Current period data
+//         'current' => [
+//             'adCount' => $this->managerDashboardModel->adsPosted($startDate, $endDate),
+//             'subCount' => $this->managerDashboardModel->getSubscribersCount($startDate, $endDate),
+//             'planCount' => $this->managerDashboardModel->getPlanCount(),
+//             'revenue' => [
+//                 'totalEarnings' => isset($currentSubscriptionData[0]->total_earning) ? $currentSubscriptionData[0]->total_earning : 0,
+//                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($startDate, $endDate)['totalRevenue']
+//             ],
+//             'adViews' => $this->managerDashboardModel->getTotalAdViews($startDate, $endDate),
+//             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($startDate, $endDate),
+//             'subscriptionData' => $currentExtractedData,
+//         ],
+        
+//         // Last month's data
+//         'lastMonth' => [
+//             'adCount' => $this->managerDashboardModel->adsPosted($lastMonthStart, $lastMonthEnd),
+//             'subCount' => $this->managerDashboardModel->getSubscribersCount($lastMonthStart, $lastMonthEnd),
+//             'revenue' => [
+//                 'totalEarnings' => isset($lastMonthSubscriptionData[0]->total_earning) ? $lastMonthSubscriptionData[0]->total_earning : 0,
+//                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($lastMonthStart, $lastMonthEnd)['totalRevenue']
+//             ],
+//             'adViews' => $this->managerDashboardModel->getTotalAdViews($lastMonthStart, $lastMonthEnd),
+//             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($lastMonthStart, $lastMonthEnd),
+//             'subscriptionData' => $lastMonthExtractedData,
+//         ],
+        
+//         // Common data
+//         'startDate' => $startDate,
+//         'endDate' => $endDate,
+//         'lastMonthStart' => $lastMonthStart,
+//         'lastMonthEnd' => $lastMonthEnd,
+//         'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
+//     ];
+
+//     $this->view('dashboard', $response);
+// }
 
     public function profile()
     {
@@ -172,7 +254,7 @@ if (is_array($subscriptionData)) {
     $userCount = $this->systemReportModel->getUsers($startDate, $endDate);
 
     if($subEarnings === false) {
-        $_SESSION['error'] = "Error fetching subscription revenue data.";
+        $_SESSION['error'] = "No subscription new subscribers during this period.";
     } elseif(empty($subEarnings)) {
         $_SESSION['warning'] = "No subscription revenue data found for the selected date range.";
     }
@@ -785,6 +867,19 @@ public function approveAd($adId) {
         } else {
             $_SESSION['error'] = "Failed to approve advertisement.";
             header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        }
+    }
+
+    public function deleteAnnouncement($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->adminModel->delete($id);
+            $_SESSION['success'] = "Announcement deleted successfully.";
+            header('Location: ' . ROOT . '/manager/announcements');
+            exit;
+        } else {
+            $_SESSION['error'] = "Failed to delete announcement.";
+            header('Location: ' . ROOT . '/manager/announcements');
             exit;
         }
     }
