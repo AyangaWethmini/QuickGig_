@@ -8,6 +8,8 @@ body {
 .wrapper {
     margin-top: 100px;
     display: flex;
+    background-color: #f4f6f9;
+
 }
 
 .content-container {

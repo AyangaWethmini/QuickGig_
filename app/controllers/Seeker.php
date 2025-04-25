@@ -15,6 +15,7 @@ class Seeker extends Controller
         $this->userModel = $this->model('User');
         $this->userReportModel = $this->model('userReport');
         $this->reviewModel = $this->model('Review');
+        $this->adminModel = $this->model('AdminModel');
     }
 
     protected $viewPath = "../app/views/seeker/";
@@ -47,6 +48,44 @@ class Seeker extends Controller
         }
 
         $this->view('seekerProfile', ['data' => $data, 'reviews' => $rating, 'avgRate' => $avgRate]);
+    }
+
+    function announcements()
+    {
+        // Set items per page
+        $limit = 3;
+
+        // Get current page from URL, default to 1
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Calculate offset (start from 0 for first page)
+        $start = ($page - 1) * $limit;
+
+        // Get total announcements and paginated announcements
+        $totalAnnouncements = $this->adminModel->getTotalAnnouncements();
+        $announcements = $this->adminModel->getAnnouncementsPaginated($start, $limit);
+
+        // Calculate total pages
+        $totalPages = ceil($totalAnnouncements / $limit);
+
+        // Ensure current page is within valid range
+        if ($page > $totalPages && $totalPages > 0) {
+            header('Location: ' . ROOT . '/admin/adminannouncement?page=1');
+            exit;
+        }
+
+        // Debug information (temporarily uncomment to check values)
+        // echo "Page: $page, Start: $start, Limit: $limit, Total: $totalAnnouncements<br>";
+        // print_r($announcements);
+
+        $data = [
+            'announcements' => $announcements,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalAnnouncements' => $totalAnnouncements
+        ];
+
+        $this->view('announcements', $data);
     }
 
     public function changePassword()
@@ -432,11 +471,6 @@ class Seeker extends Controller
     function messages()
     {
         $this->view('messages');
-    }
-
-    function announcements()
-    {
-        $this->view('announcements');
     }
 
     function individualEditProfile()

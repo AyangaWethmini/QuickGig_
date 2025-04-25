@@ -21,7 +21,8 @@ protectRoute([3]); ?>
             <div class="complaints-container container">
                 <?php if (empty($data['announcements'])): ?>
                     <div class="no-results">
-                        No announcements found.
+                        <img src="<?= ROOT ?>/assets/images/no-announcement.png" alt="No Announcements" class="no-data-img">
+                        <p style="font-size: 32px; color: #3599FF;"><strong>No announcements Yet.</strong></p>
                     </div>
                 <?php else: ?>
                     <?php foreach ($data['announcements'] as $announcement): ?>
@@ -44,32 +45,35 @@ protectRoute([3]); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-            <div class="pagination-container">
-                <div class="pagination">
-                    <!-- Always show Previous button -->
-                    <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= max(1, $data['currentPage'] - 1) ?>"
-                        class="page-link <?= $data['currentPage'] <= 1 ? 'disabled' : '' ?>">
-                        &laquo;
-                    </a>
 
-                    <!-- Always show page numbers -->
-                    <?php for ($i = 1; $i <= max(1, $data['totalPages']); $i++): ?>
-                        <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= $i ?>"
-                            class="page-link <?= $i == $data['currentPage'] ? 'active' : '' ?>">
-                            <?= $i ?>
+            <?php if (!empty($data['announcements'])): ?>
+                <div class="pagination-container">
+                    <div class="pagination">
+                        <!-- Always show Previous button -->
+                        <a href="<?= ROOT ?>/organization/org_announcements?page=<?= max(1, ($data['currentPage'] ?? 1) - 1) ?>"
+                            class="page-link <?= ($data['currentPage'] ?? 1) <= 1 ? 'disabled' : '' ?>">
+                            &laquo;
                         </a>
-                    <?php endfor; ?>
 
-                    <!-- Always show Next button -->
-                    <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= min($data['totalPages'], $data['currentPage'] + 1) ?>"
-                        class="page-link <?= $data['currentPage'] >= $data['totalPages'] ? 'disabled' : '' ?>">
-                        &raquo;
-                    </a>
+                        <!-- Always show page numbers -->
+                        <?php for ($i = 1; $i <= max(1, $data['totalPages'] ?? 1); $i++): ?>
+                            <a href="<?= ROOT ?>/organization/org_announcements?page=<?= $i ?>"
+                                class="page-link <?= $i == ($data['currentPage'] ?? 1) ? 'active' : '' ?>">
+                                <?= $i ?>
+                            </a>
+                        <?php endfor; ?>
+
+                        <!-- Always show Next button -->
+                        <a href="<?= ROOT ?>/organization/org_announcements?page=<?= min($data['totalPages'] ?? 1, ($data['currentPage'] ?? 1) + 1) ?>"
+                            class="page-link <?= ($data['currentPage'] ?? 1) >= ($data['totalPages'] ?? 1) ? 'disabled' : '' ?>">
+                            &raquo;
+                        </a>
+                    </div>
+                    <div class="pagination-info">
+                        (Total announcements: <?= $data['totalAnnouncements'] ?? 0 ?>)
+                    </div>
                 </div>
-                <div class="pagination-info">
-                    (Total announcements: <?= $data['totalAnnouncements'] ?>)
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
 
     </div>
@@ -83,12 +87,57 @@ protectRoute([3]); ?>
 
         .complaints-container {
             flex: 1;
-            min-height: 400px;
+            min-height: 300px;
             display: flex;
             flex-direction: column;
             gap: 20px;
             margin-bottom: 60px;
             width: 90%;
+        }
+
+        .complaint.container {
+            margin: 0;
+            width: 100%;
+            border-radius: 6px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid rgb(198, 198, 249);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .complaint.container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .complaint-content {
+            position: relative;
+            min-height: 100px;
+            padding: 10px 15px 30px;
+        }
+
+        .complaint-details {
+            display: flex;
+            width: 100%;
+        }
+
+        .the-complaint {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #3a3b45;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .text-grey {
+            position: absolute;
+            bottom: 15px;
+            left: 25px;
+            font-size: 14px;
+            margin-top: auto;
+            text-align: left;
+            color: #858796;
+            font-style: italic;
         }
 
         .pagination-container {
@@ -144,19 +193,24 @@ protectRoute([3]); ?>
             font-size: 0.9em;
         }
 
-        .complaint.container {
-            margin: 0;
-            width: 100%;
-        }
-
         .no-results {
             text-align: center;
             padding: 30px;
             color: #666;
-            font-size: 16px;
+            font-size: 24px;
             background-color: #f9f9f9;
             border-radius: 8px;
             margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .no-data-img {
+            width: 50%;
+            height: auto;
+            margin-bottom: 15px;
+            opacity: 0.7;
         }
     </style>
 
