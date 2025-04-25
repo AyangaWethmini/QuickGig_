@@ -15,7 +15,7 @@ protectRoute([3]); ?>
         <div class="header">
             <div class="heading">Find Employees</div>
         </div>
-        <hr>
+        
         <div class="search-container">
             <form method="GET" action="<?= ROOT ?>/organization/org_findEmployees">
                 <input type="text"

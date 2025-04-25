@@ -23,6 +23,7 @@ protectRoute([2]); ?>
                 <form method="GET" action="<?= ROOT ?>/seeker/jobListing_received">
                     <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                 </form>
+                <button class="filter-btn">Filter</button>
             </div>
             <br>
 

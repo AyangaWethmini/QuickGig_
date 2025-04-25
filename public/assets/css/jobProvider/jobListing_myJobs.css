@@ -126,73 +126,82 @@ hr{
     display: flex;
     align-items: center;
     padding: 20px;
-    
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
+    box-shadow: 0 6px 14px rgba(87, 71, 255, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
 }
 
 .myjob-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(87, 71, 255, 0.25);
 }
 
 .job-details {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 .job-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
+    font-size: 22px;
+    font-weight: 700;
+    color: #3b2d7d;
 }
 
-.employment-type, .duration, .myjobs-category, .skills, .location, .salary {
-    color: #25324B;
-    font-size: 16px;
+.employment-type,
+.duration,
+.myjobs-category,
+.skills,
+.location,
+.salary {
+    color: #4d3ca6;
+    font-size: 17px;
+    font-weight: 500;
 }
 
 .jobDescription p {
     max-width: 500px;
-    /* Remove white-space: nowrap; overflow: hidden; and text-overflow: ellipsis; */
-    word-wrap: break-word; /* Optional: Allows breaking long words if needed */
+    word-wrap: break-word;
+    color: #262424;
+    line-height: 1.5;
+}
+
+.update-jobReq-button,
+.delete-jobReq-button {
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .update-jobReq-button {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 20px;
+    background: linear-gradient(135deg, #6a5acd, #7b68ee);
+    color: #ffffff;
+    margin-right: 16px;
 }
 
 .update-jobReq-button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #5b4acb, #6f52e3);
+    transform: translateY(-2px);
 }
 
 .delete-jobReq-button {
-    background-color: #dc3545;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 20px;
+    background: linear-gradient(135deg, #ff6b6b, #ff4d4d);
+    color: #ffffff;
+    margin-right: 16px;
 }
 
 .delete-jobReq-button:hover {
-    background-color: #c82333;
+    background: linear-gradient(135deg, #e84747, #ff2e2e);
+    transform: translateY(-2px);
 }
+
 
 .popup {
     position: fixed;
@@ -273,11 +282,10 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(128, 128, 128, 0.5); /* Transparent gray layer */
+    background-color: rgba(128, 128, 128, 0.5);
     z-index: 1;
 }
 
-/* Ensure buttons are not clickable */
 .inactive-job .update-jobReq-button,
 .inactive-job .delete-jobReq-button {
     pointer-events: none;

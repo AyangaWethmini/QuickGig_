@@ -8,10 +8,12 @@
 }
 
 .heading{
-    color: #000000;
-    font-size: 36px;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
+  width: fit-content;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #3b2d7d;
+  white-space: nowrap;
 }
 
 .header {
@@ -40,7 +42,7 @@
     max-width: 1200px;
     width: 100%;
     padding: 20px;
-    background-color: #fff;
+    background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -174,6 +176,7 @@
     height: 50px;
     width: 100px;
     border-radius: 10px;
+    font-weight: 600;
   }
   
   
@@ -243,8 +246,7 @@
 
 .jobDescription p {
   max-width: 500px;
-  /* Remove white-space: nowrap; overflow: hidden; and text-overflow: ellipsis; */
-  word-wrap: break-word; /* Optional: Allows breaking long words if needed */
+  word-wrap: break-word;
   color: #25324B;
   font-size: 15px;
 }
@@ -254,3 +256,12 @@
   margin: 0 2px;
 }
 
+.jobPostedDate{
+    color: #25324B;
+    font-size: 16px;
+}
+
+.job-identities p {
+    color: #25324B;
+    font-size: 16px;
+}
