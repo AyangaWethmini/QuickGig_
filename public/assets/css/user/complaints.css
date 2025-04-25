@@ -8,10 +8,12 @@
 }
 
 .heading {
-    color: #000000;
+    width: fit-content;
     font-size: 36px;
     font-weight: bold;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #3b2d7d;
+    white-space: nowrap;
 }
 
 .header {
