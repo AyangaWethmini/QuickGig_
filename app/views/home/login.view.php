@@ -2,36 +2,43 @@
 <?php require_once APPROOT . '/views/inc/protectedRoute.php'; ?>
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
-<?php include APPROOT . '/views/components/navbar.php'; ?>
 
 
 <div class="login-login flex-row">
 
-    <div class="image">
-        <img src="<?= ROOT ?>/assets/images/home.png" alt="man holding files" class="img">
-
-        <div class="stat container flex-col">
-            <img src="<?= ROOT ?>/assets/icons/chart.svg" alt="stats image" width="56px" height="40px">
-            <h4>100k+</h4>
-            <p>People got hired</p>
-        </div>
-
-        <div class="testamonial container">
-            <img src="<?= ROOT ?>/assets/images/profile.png" alt="profile picture" class="profile">
-            <div class="card">
-                <h5>Jaith Herath</h5>
-                <h5>Cafe Owner</h5>
-                <div class=" flex-row">
-                    <p class="quote">"</p>
-                    <p class="comment">“Great platform for the job providers that searching for the perfect employee..”</p>
+    <div class="carousel">
+        <div class="slides">
+            <div class="slide active" style="background-image: url('<?= ROOT ?>/assets/images/logincarousel1.jpg');">
+                <div class="overlay">
+                    <h2>Welcome Back!</h2>
+                    <p>Explore job opportunities that match your skills.</p>
                 </div>
-
             </div>
+            <div class="slide" style="background-image: url('<?= ROOT ?>/assets/images/logincarousel2.jpg');">
+                <div class="overlay">
+                    <h2>Flexible Hours</h2>
+                    <p>Choose when and where you want to work.</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('<?= ROOT ?>/assets/images/logincarousel3.jpg');">
+                <div class="overlay">
+                    <h2>Build Your Career</h2>
+                    <p>Gain experience while you study. Get ahead.</p>
+                </div>
+            </div>
+        </div>
+        <div class="dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </div>
 
     <div class="form-section">
         <div class="login-form">
+            <a href="<?php echo ROOT; ?>/home" class="back-button">
+                ← Back to Home
+            </a>
             <div class="flex-col">
                 <h3 class="heading">WELLCOME BACK!</h3>
                 <form action="<?php echo ROOT; ?>/login/verify" method="POST" class="form-body">
@@ -52,18 +59,13 @@
 
                     <div class="form-field">
                         <label for="password" class="lbl">Password :</label><br>
-                        <div style="position: relative;">
-                            <input type="password" name="password" id="password" placeholder="Enter password" style="padding-right: 30px;">
-                            <button type="button" id="togglePassword" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer;">
+                        <div class="password-wrapper">
+                            <input type="password" name="password" id="password" placeholder="Enter password">
+                            <button type="button" id="togglePassword">
                                 👁️
                             </button>
                         </div>
                     </div>
-                    <div class="rem">
-                        <input type="checkbox">
-                        <p class="lbl">Remember me</p>
-                    </div>
-
                     <button class="btn btn-accent login-btn" type="submit">Log In</button>
             </div>
             <div style="margin-left: 10px;">
@@ -72,8 +74,6 @@
                     Don't have an account?
                     <a href="<?php echo ROOT; ?>/home/signup" style="color: #00bfff; font-weight: bold;">Sign Up</a>
                 </p>
-
-                <p class="text-white styled login" style="font-size: 13px;">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
             </div>
             </form>
         </div>
@@ -89,6 +89,32 @@
         // Change the button text/icon
         this.textContent = isPassword ? '🙈' : '👁️';
     });
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+            dots[i].classList.toggle('active', i === index);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+
+    setInterval(nextSlide, 5000); // change slide every 5 seconds
+
+    showSlide(currentSlide); // initialize
 </script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
