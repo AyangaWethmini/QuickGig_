@@ -1,9 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/jobProvider/post_job.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/post_job.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/popUpJobForm.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/mapModal.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/errorPopUp.css">
@@ -35,7 +35,7 @@ protectRoute([2]);?>
                     <p class="text-grey  desc">Explain the kind of job you are offering</p>
                 </div>
                 <div class="user-input">
-                    <input type="text" placeholder="E.g. : Cashier"  id="job-title" name="jobTitle" required>
+                    <input type="text" placeholder="E.g. : Cashier" id="job-title" name="jobTitle" required>
                 </div>
             </div>
             <hr>
@@ -60,8 +60,8 @@ protectRoute([2]);?>
                     </p>
                 </div>
                 <div class="user-input">
-                <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Day<input type="radio" name="shift" value="Day"> </p><br>
-                <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night<input type="radio" name="shift" value="Night"> </p> <br>
+                    <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Day<input type="radio" name="shift" value="Day"> </p><br>
+                    <p class="lbl flex-row" style="gap:10px;justify-content: space-between;">Night<input type="radio" name="shift" value="Night"> </p> <br>
                 </div>
             </div>
             <hr>
@@ -78,7 +78,7 @@ protectRoute([2]);?>
                     <div class="salary-ph flex-row">
                         <input type="text" name="salary" id="salary-per-hr" required>
                         <select id="currency-select" class="currency-select" name="currency">
-                            <option value="LKR">LKR</option>    
+                            <option value="LKR">LKR</option>
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
                             <option value="GBP">GBP</option>
@@ -105,10 +105,12 @@ protectRoute([2]);?>
                 <div class="user-input duration flex-row">
                     <div class="start-time flex-col">
                         <div class="label">
-                            <label for="start-time-select"><p class="lbl">Start Time</p></label>
+                            <label for="start-time-select">
+                                <p class="lbl">Start Time</p>
+                            </label>
                         </div>
                         <div class="input-boxes">
-                                <input type="time" id="timeInput" name="timeFrom" required>
+                            <input type="time" id="timeInput" name="timeFrom" required>
                         </div>
                     </div>
                     <div class="end-time flex-col">
@@ -198,56 +200,57 @@ protectRoute([2]);?>
             </div>
             <hr>
             <div class="form-section flex-row container">
-            <div class="container right-container">
-                <p class="title">Add Location</p>
-                <p class="text-grey desc">Add the location where the employee should attend</p>
+                <div class="container right-container">
+                    <p class="title">Add Location</p>
+                    <p class="text-grey desc">Add the location where the employee should attend</p>
+                </div>
+
+                <div class="user-input">
+                    <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
+                    <p>Or</p>
+                    <input type="text" name="location" id="locationInput" placeholder="Type your location here" required>
+                </div>
+            </div>
+            <hr>
+            <div class="post-job-buttons flex-row">
+                <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/jobProvider/jobListing_myJobs'">Discard</button>
+                <button class="btn btn-accent" type="submit">Finish</button>
+            </div>
+            <div id="tag-limit-popup" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>You can only add up to five categories.</p>
+                    <button id="popup-ok" class="popup-btn-ok" type="button">Ok</button>
+                </div>
             </div>
 
-            <div class="user-input">
-                <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
-                <p>Or</p>
-                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required>
-            </div></div>
-                <hr>
-                <div class="post-job-buttons flex-row">
-                    <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/jobProvider/jobListing_myJobs'">Discard</button>
-                    <button class="btn btn-accent" type="submit">Finish</button>
+            <div id="add-tag-popup" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>Enter job category:</p>
+                    <input type="text" id="tag-input" class="popup-input">
+                    <button id="add-tag-btn" class="popup-btn-add" type="button">Add</button>
+                    <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>
                 </div>
-                <div id="tag-limit-popup" class="modal" style="display: none;">
-                    <div class="modal-content">
-                        <p>You can only add up to five categories.</p>
-                        <button id="popup-ok" class="popup-btn-ok" type="button">Ok</button>
-                    </div>
-                </div>
-
-                <div id="add-tag-popup" class="modal" style="display: none;">
-                    <div class="modal-content">
-                        <p>Enter job category:</p>
-                        <input type="text" id="tag-input" class="popup-input">
-                        <button id="add-tag-btn" class="popup-btn-add" type="button">Add</button>
-                        <button id="cancel-tag-btn" class="popup-btn-cancel" type="button">Cancel</button>
-                    </div>
-                </div>
-
-                <div id="mapModal" class="map-modal" style="display:none;">
-                    <div id="map"></div>
-                    <div class="mapBtns">
-                        <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
-                        <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
-                    </div>
-                </div>
-
-                <div id="error-popup"></div>
-
             </div>
-        </form>
+
+            <div id="mapModal" class="map-modal" style="display:none;">
+                <div id="map"></div>
+                <div class="mapBtns">
+                    <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
+                    <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="error-popup"></div>
+
     </div>
+    </form>
+</div>
 </div>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByhOqNUkNdVh5JDlawmbh-fxmgbVvE2Cg&libraries=places&callback=initMap"></script>
 
 <script>
-/*
+    /*
   // Function to populate time dropdowns
   function populateTimeDropdown(selectElement) {
     for (let hour = 1; hour <= 12; hour++) {
@@ -298,7 +301,7 @@ protectRoute([2]);?>
     let map;
     let marker;
     let selectedLocation = '';
-    let mapInitialized = false; 
+    let mapInitialized = false;
 
     function showAddTagPopup(type) {
         const tagContainer = document.getElementById('tags-container');
@@ -381,7 +384,9 @@ protectRoute([2]);?>
         // Initialize Google Places Autocomplete
         autocomplete = new google.maps.places.Autocomplete(locationInput, {
             //types: ['geocode'], // Restrict to geographical locations
-            componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+            componentRestrictions: {
+                country: "lk"
+            } // Restrict to Sri Lanka
         });
 
         // Listen for the place_changed event
@@ -395,7 +400,10 @@ protectRoute([2]);?>
     }
 
     function initMap() {
-        const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; // Default to Colombo
+        const defaultLatLng = {
+            lat: 6.9271,
+            lng: 79.8612
+        }; // Default to Colombo
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: defaultLatLng,
@@ -421,7 +429,10 @@ protectRoute([2]);?>
                 mapInitialized = true;
             } else {
                 google.maps.event.trigger(map, "resize");
-                map.setCenter(marker ? marker.getPosition() : { lat: 6.9271, lng: 79.8612 });
+                map.setCenter(marker ? marker.getPosition() : {
+                    lat: 6.9271,
+                    lng: 79.8612
+                });
             }
         }, 200); // 200ms delay is usually enough
     }
@@ -437,7 +448,9 @@ protectRoute([2]);?>
             lng: parseFloat(selectedLocation.split(',')[1])
         };
 
-        geocoder.geocode({ location: latlng }, function(results, status) {
+        geocoder.geocode({
+            location: latlng
+        }, function(results, status) {
             if (status === 'OK') {
                 if (results[0]) {
                     document.getElementById('locationInput').value = results[0].formatted_address;
@@ -516,5 +529,4 @@ protectRoute([2]);?>
             popup.style.display = "none";
         }, 3000); // Hide after 3 seconds
     }
-
 </script>

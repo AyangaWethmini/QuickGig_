@@ -79,6 +79,30 @@ protectRoute([2]); ?>
             position: relative;
             min-height: 600px;
             padding-bottom: 100px;
+            width: calc(100% - 320px);
+            margin-left: 310px;
+        }
+
+        .wrapper {
+            display: flex;
+            position: relative;
+        }
+
+        .wrapper .sidebar {
+            position: fixed;
+            width: 300px;
+        }
+
+        .admin-announcement-header {
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .admin-announcement-header h1 {
+            font-size: 28px;
+            margin: 0;
+            color: #333;
+            font-weight: 600;
         }
 
         .complaints-container {
@@ -89,6 +113,7 @@ protectRoute([2]); ?>
             gap: 20px;
             margin-bottom: 60px;
             width: 90%;
+            margin: 0 auto;
         }
 
         .complaint.container {
@@ -108,8 +133,8 @@ protectRoute([2]); ?>
 
         .complaint-content {
             position: relative;
-            min-height: 100px;
-            padding: 10px 15px 30px;
+            min-height: 120px;
+            padding: 20px 25px 40px;
         }
 
         .complaint-details {
@@ -117,8 +142,14 @@ protectRoute([2]); ?>
             width: 100%;
         }
 
+        .complaint-text {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
         .the-complaint {
-            font-size: 24px;
+            font-size: 28px;
             line-height: 1.6;
             color: #3a3b45;
             margin-bottom: 10px;
@@ -129,7 +160,7 @@ protectRoute([2]); ?>
             position: absolute;
             bottom: 15px;
             left: 25px;
-            font-size: 14px;
+            font-size: 18px;
             margin-top: auto;
             text-align: left;
             color: #858796;
@@ -196,10 +227,11 @@ protectRoute([2]); ?>
             font-size: 24px;
             background-color: #f9f9f9;
             border-radius: 8px;
-            margin: 20px 0;
+            margin: 20px auto;
             display: flex;
             flex-direction: column;
             align-items: center;
+            max-width: 80%;
         }
 
         .no-data-img {
@@ -207,6 +239,14 @@ protectRoute([2]); ?>
             height: auto;
             margin-bottom: 15px;
             opacity: 0.7;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .admin-container {
+                width: 100%;
+                margin-left: 10px;
+            }
         }
     </style>
 </body>

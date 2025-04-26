@@ -94,8 +94,25 @@
     width : 260px;
 }
 
+.user-input {
+    margin-top: 23px;
+}
+
+
 .user-input input[type="checkbox"]{
     margin-left: 10px;
+}
+
+.user-input input[type="date"]{
+    width: 200px;
+    font-size: 15px;
+    height: 40px;
+}
+
+.user-input input[type="time"]{
+    width: 100px;
+    font-size: 15px;
+    height: 40px;
 }
 
 .time-select{
