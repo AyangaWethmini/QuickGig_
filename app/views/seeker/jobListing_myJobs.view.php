@@ -22,7 +22,7 @@ $jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
             <hr> <br>
 
             <div class="list-header">
-                <p class="list-header-title">My Jobs</p>
+                <p class="list-header-title">My Availabilities</p>
                 <form method="GET" action="<?= ROOT ?>/seeker/jobListing_myJobs">
                     <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                 </form>

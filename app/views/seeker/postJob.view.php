@@ -373,36 +373,30 @@ protectRoute([2]);?>
     const popup = document.getElementById("error-popup");
 
     form.addEventListener("submit", function(e) {
-        const jobTitle = document.getElementById("job-title").value.trim();
-        const description = document.querySelector("textarea[name='description']").value.trim();
-        const salary = document.getElementById("salary-per-hr").value.trim();
+    const description = document.querySelector("textarea[name='description']").value.trim();
+    const salary = document.getElementById("salary-per-hr").value.trim();
 
-        let errors = [];
+    let errors = [];
 
-        // Validate job title
-        if (!jobTitle) {
-            errors.push("Job Title is required and cannot be just spaces.");
-        }
+    // Validate description
+    if (description === "") {
+        errors.push("Description is required and cannot be just spaces.");
+    }
 
-        // Validate description
-        if (!description) {
-            errors.push("Description is required and cannot be just spaces.");
-        }
+    // Validate salary
+    if (salary === "") {
+        errors.push("Salary is required.");
+    } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
+        errors.push("Salary must be a valid number (e.g., 500, 500.75).");
+    } else if (salary.length > 8) {
+        errors.push("Salary must not exceed 8 characters in total.");
+    }
 
-        // Validate salary
-        if (!salary) {
-            errors.push("Salary is required.");
-        } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
-            errors.push("Salary must be a valid number (e.g., 500, 500.75).");
-        } else if (salary.length > 8) {
-            errors.push("Salary must not exceed 8 characters in total.");
-        }
-
-        if (errors.length > 0) {
-            e.preventDefault(); // Stop form submission
-            showPopup(errors.join("<br>"));
-        }
-    });
+    if (errors.length > 0) {
+        e.preventDefault(); // Stop form submission
+        showPopup(errors.join("<br>"));
+    }
+});
 
     function showPopup(message) {
         popup.innerHTML = message;
