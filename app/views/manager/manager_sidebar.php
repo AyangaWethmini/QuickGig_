@@ -24,10 +24,10 @@ $isPlansParentActive = $plansActive || $subsActive;
     <div class="sidebar-container">
         <div class="sidebar-items-container">
 
-            <a href="<?=ROOT?>/manager/profile" class="sidebar-item <?= strpos($current, '/manager/profile') !== false ? 'active' : '' ?>" data-tooltip="Profile">
+            <!-- <a href="<?=ROOT?>/manager/profile" class="sidebar-item <?= strpos($current, '/manager/profile') !== false ? 'active' : '' ?>" data-tooltip="Profile">
                 <span class="sidebar-icon"><i class="fa-solid fa-user"></i></span>
                 <span class="sidebar-label">Profile</span>
-            </a>
+            </a> -->
 
             <a href="<?=ROOT?>/manager/dashboard" class="sidebar-item <?= strpos($current, '/manager/dashboard') !== false ? 'active' : '' ?>">
                 <span class="sidebar-icon"><i class="fa-solid fa-chart-area"></i></span>

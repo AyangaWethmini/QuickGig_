@@ -261,13 +261,19 @@ public function updateAdvertisementStatus($advertisementId, $data)
     // }
 
     public function getAdsToBeReviewed() {
-        $query = "SELECT * FROM advertisement WHERE adStatus = 'inactive' AND onlineAd = 1 ORDER BY createdAt DESC";
+        $query = "SELECT * FROM advertisement WHERE adStatus = 'inactive' AND onlineAd = 1 AND rejected = 0 ORDER BY createdAt DESC";
         $result = $this->query($query);
         return $result ?: [];
     }
 
     public function approveAd($adId) {
         $query = "UPDATE advertisement SET adStatus = 'active' WHERE advertisementID = :adId";
+        $params = ['adId' => $adId];
+        return $this->query($query, $params);
+    }
+
+    public function rejectAd($adId) {
+        $query = "UPDATE advertisement SET rejected = 1 WHERE advertisementID = :adId";
         $params = ['adId' => $adId];
         return $this->query($query, $params);
     }

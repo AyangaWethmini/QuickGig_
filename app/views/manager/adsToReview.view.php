@@ -69,9 +69,16 @@ protectRoute([1]);
                         </div>
                     </div>
                     <div class="ad-actionbtns flex-col">
-                        <form method="POST" action="<?=ROOT?>/manager/approveAd/<?= htmlspecialchars($ad->advertisementID) ?>">
-                            <button class="btn" style="background-color: green;" type="submit">Approve</button>
-                        </form>
+                    <form method="POST" action="<?=ROOT?>/manager/approveAd/<?= htmlspecialchars($ad->advertisementID) ?>">
+    <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
+    <button class="btn" style="background-color: green; width : 150px;" type="submit">Approve</button>
+</form>
+
+<!-- Separate form for reject -->
+<form method="POST" action="<?=ROOT?>/manager/rejectAd/<?= htmlspecialchars($ad->advertisementID) ?>">
+    <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
+    <button class="btn btn-del" type="submit" style="width : 150px;">Reject </button>
+</form>
                         
                     </div>
                 </div>
