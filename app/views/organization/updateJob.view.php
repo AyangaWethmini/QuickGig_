@@ -217,8 +217,8 @@ protectRoute([3]);?>
             </div></div>
                 <hr>
                 <div class="post-job-buttons flex-row">
-                    <button class="btn btn-accent">Discard</button>
-                    <button class="btn btn-accent" type="submit">Update</button>
+                <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/organization/org_jobListing_myJobs';">Discard</button>
+                <button class="btn btn-accent" type="submit">Update</button>
                 </div>
 
                 <div id="mapModal" class="map-modal" style="display:none;">
