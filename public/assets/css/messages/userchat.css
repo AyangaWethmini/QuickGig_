@@ -1,5 +1,7 @@
 /* Main Wrapper */
-
+* {
+  box-sizing: border-box;
+}
 body{
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
@@ -11,7 +13,7 @@ body{
 
 .wrapper {
     display: flex;
-    margin-top: 100px;
+    margin-top: 80px;
     width: 100%;
     background-color: #f9f9f9;
     min-height: calc(100vh - 100px);;

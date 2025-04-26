@@ -10,21 +10,21 @@ protectRoute([2]); ?>
 
 
 <body>
-    <div class="background-image"  style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
+    <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
         <script src="<?= ROOT ?>/assets/js/jobProvider/individualProfile.js"></script>
         <?php require APPROOT . '/views/components/navbar.php'; ?>
-        
+
         <div class="wrapper flex-row">
             <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
             <div class="profile-container">
                 <div class="profile-header">
-    
+
                     <div class="profile-info" style="background-image: url('<?= ROOT ?>/assets/images/profileBack.jpg');">
                         <div class="profile-overlay">
                             <img id="profile-preview" class="edit-profile-photo"
                                 src="<?= !empty($data['pp']) ? 'data:image/jpeg;base64,' . base64_encode($data['pp']) : ROOT . '/assets/images/default.jpg' ?>"
                                 alt="Profile Photo">
-    
+
                             <div class="profile-intro-cover">
                                 <div class="profile-intro">
                                     <div class="flex-row fit-content">
@@ -35,14 +35,14 @@ protectRoute([2]); ?>
                                     </div>
                                     <p class="location-text"><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
                                 </div>
-    
+
                                 <button class="edit-profile-btn" onclick="window.location.href='<?= ROOT; ?>/jobProvider/individualEditProfile'">
                                     ✏️ Edit Profile
                                 </button>
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="profile-contacts">
                         <div class="additional-details">
                             <h2>Additional Details</h2> <br>
@@ -61,20 +61,20 @@ protectRoute([2]); ?>
                             <p class="detail-items">www.jakegyll.com</p>
                         </div>
                     </div>
-    
-    
+
+
                 </div>
-    
+
                 <div class="profile-about">
                     <h3>About Me</h3>
                     <p><?= htmlspecialchars(($data['bio'] ?? '')) ?></p>
                 </div>
-    
+
                 <span class="role-switch">
                     <a href="<?php echo ROOT; ?>/jobProvider/individualProfile" class="role-btn">Job Provider Role</a>
-                    <a href="<?php echo ROOT; ?>/seeker/seekerProfile1" class="role-btn">Job Seeker Role</a>
+                    <a href="<?php echo ROOT; ?>/seeker/seekerProfile" class="role-btn">Job Seeker Role</a>
                 </span>
-    
+
                 <div class="rating-reviews">
                     <h3>Rating and Reviews</h3>
                     <div class="rating">
@@ -86,13 +86,13 @@ protectRoute([2]); ?>
                                             <div class="col-md-4 d-flex flex-column">
                                                 <div class="rating-box">
                                                     <p class="pt-4 rate"><?= number_format($avgRate, 1) ?></p>
-    
+
                                                 </div>
                                                 <div class="rating-stars">
                                                     <?php
                                                     $stars = 5;
                                                     $remaining = $avgRate;
-    
+
                                                     for ($i = 0; $i < $stars; $i++) {
                                                         if ($remaining >= 1) {
                                                             echo '<img src="' . ROOT . '/assets/images/fullstar.png" class="star-img">';
@@ -112,7 +112,7 @@ protectRoute([2]); ?>
                                                     }
                                                     ?>
                                                 </div>
-    
+
                                             </div>
                                             <?php
                                             $totalRatings = array_sum($data['ratings']);
@@ -143,7 +143,7 @@ protectRoute([2]); ?>
                                                     </table>
                                                 </div>
                                             </div>
-    
+
                                         </div>
                                     </div>
                                 </div>
@@ -151,18 +151,20 @@ protectRoute([2]); ?>
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="reviews-section">
-    
+
                     <?php if (!empty($reviews) && is_array($reviews)): ?>
                         <?php foreach ($reviews as $review): ?>
                             <?php if (!is_object($review)) continue; ?>
                             <div class="review-card container">
                                 <div class="review-card-left flex-row">
                                     <div class="pfp">
-                                        <img src="<?= !empty($review->pp) ? 'data:image/jpeg;base64,' . base64_encode($review->pp) : ROOT . '/assets/images/default.jpg' ?>">
+                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $review->reviewerID ?>">
+                                            <img src="<?= !empty($review->pp) ? 'data:image/jpeg;base64,' . base64_encode($review->pp) : ROOT . '/assets/images/default.jpg' ?>">
+                                        </a>
                                     </div>
-    
+
                                     <div class="review-details">
                                         <h2><?= htmlspecialchars($review->reviewerName) ?></h2>
                                         <p>Title: <?= htmlspecialchars($review->jobTitle) ?></p>
@@ -175,11 +177,11 @@ protectRoute([2]); ?>
                                                     <?php endfor; ?>
                                                 </span>
                                             </div>
-    
+
                                             <p class="review-text">
                                                 <?= htmlspecialchars($review->content) ?>
                                             </p>
-    
+
                                         </div>
                                         <hr>
                                         <p>Date Reviewed: <?= htmlspecialchars($review->reviewDate) ?></p>
@@ -201,8 +203,8 @@ protectRoute([2]); ?>
                         <img src="<?= ROOT ?>/assets/images/placeholders/ad.png" alt="Advertisement" class="ad-image">
                     </div>
                 <?php endif; ?>
-    
-    
+
+
             </div>
         </div>
     </div>

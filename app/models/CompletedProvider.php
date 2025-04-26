@@ -1,6 +1,7 @@
 <?php
 
-class CompletedProvider{
+class CompletedProvider
+{
     use Database;
 
     public $availableID;
@@ -19,34 +20,65 @@ class CompletedProvider{
     }
 
     public function getApplyJobCompleted()
-    {   
+    {
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
-        FROM apply_job a 
-        JOIN job j ON a.jobID = j.jobID
-        JOIN individual i ON a.seekerID = i.accountID
-        JOIN account acc ON a.seekerID = acc.accountID
-        WHERE j.accountID = ? 
-        AND a.applicationStatus = 4
-        ORDER BY datePosted DESC, timePosted DESC";
+        $query = "SELECT 
+    a.*, 
+    i.fname, 
+    i.lname, 
+    j.jobTitle, 
+    j.jobID, 
+    acc.pp, 
+    j.availableDate, 
+    j.timeFrom, 
+    j.timeTo, 
+    j.salary, 
+    j.currency, 
+    j.location,
+    p.badge  -- added badge
+FROM apply_job a 
+JOIN job j ON a.jobID = j.jobID
+JOIN individual i ON a.seekerID = i.accountID
+JOIN account acc ON a.seekerID = acc.accountID
+JOIN plan p ON acc.planID = p.planID -- new join here
+WHERE j.accountID = ? 
+AND a.applicationStatus = 4
+ORDER BY datePosted DESC, timePosted DESC
+";
         $result = $this->query($query, [$id]);
-        
+
         return $result ? $result : [];
     }
 
     public function getReqAvailableCompleted()
-    {   
+    {
         $id = $_SESSION['user_id'];
-        $query = "SELECT r.*, i.fname, i.lname, m.description, m.availableID, acc.pp, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location
-        FROM req_available r
-        JOIN makeavailable m ON r.availableID = m.availableID
-        JOIN individual i ON m.accountID = i.accountID
-        JOIN account acc ON i.accountID = acc.accountID
-        WHERE r.providerID = ?
-        AND r.reqStatus = 4
-        ORDER BY datePosted DESC, timePosted DESC";
+        $query = "SELECT 
+    r.*, 
+    i.accountID,
+    i.fname, 
+    i.lname, 
+    m.description, 
+    m.availableID, 
+    acc.pp, 
+    m.availableDate, 
+    m.timeFrom, 
+    m.timeTo, 
+    m.salary, 
+    m.currency, 
+    m.location,
+    p.badge  -- getting badge from plan
+FROM req_available r
+JOIN makeavailable m ON r.availableID = m.availableID
+JOIN individual i ON m.accountID = i.accountID
+JOIN account acc ON i.accountID = acc.accountID
+JOIN plan p ON acc.planID = p.planID  -- this new join
+WHERE r.providerID = ?
+AND r.reqStatus = 4
+ORDER BY datePosted DESC, timePosted DESC
+";
         $result = $this->query($query, [$id]);
-        
+
         return $result ? $result : [];
     }
 
@@ -77,7 +109,8 @@ class CompletedProvider{
         return $result ? $result[0] : null;
     }
 
-    public function searchCompleted($userID, $searchTerm) {
+    public function searchCompleted($userID, $searchTerm)
+    {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
         $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
                   FROM apply_job a 
@@ -96,7 +129,8 @@ class CompletedProvider{
         return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
 
-    public function searchReqAvailableCompleted($userID, $searchTerm) {
+    public function searchReqAvailableCompleted($userID, $searchTerm)
+    {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
         $query = "SELECT r.*, i.fname, i.lname, m.description, m.availableID, acc.pp, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location
                   FROM req_available r
@@ -115,7 +149,8 @@ class CompletedProvider{
         return $this->query($query, [$userID, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
 
-    public function filterCompletedByDate($userID, $filterDate) {
+    public function filterCompletedByDate($userID, $filterDate)
+    {
         $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
@@ -128,7 +163,8 @@ class CompletedProvider{
         return $this->query($query, [$userID, $filterDate]);
     }
 
-    public function filterReqAvailableCompletedByDate($userID, $filterDate) {
+    public function filterReqAvailableCompletedByDate($userID, $filterDate)
+    {
         $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp, m.description, m.availableID
                   FROM req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
@@ -141,12 +177,14 @@ class CompletedProvider{
         return $this->query($query, [$userID, $filterDate]);
     }
 
-    public function updateApplicationStatus($applicationID, $status) {
+    public function updateApplicationStatus($applicationID, $status)
+    {
         $query = "UPDATE apply_job SET applicationStatus = ? WHERE applicationID = ?";
         return $this->query($query, [$status, $applicationID]);
     }
-    
-    public function updateRequestStatus($reqID, $status) {
+
+    public function updateRequestStatus($reqID, $status)
+    {
         $query = "UPDATE req_available SET reqStatus = ? WHERE reqID = ?";
         return $this->query($query, [$status, $reqID]);
     }

@@ -310,7 +310,7 @@ class JobProvider extends Controller
         }
     }
 
-    function viewEmployeeProfile()
+    function viewEmployeeProfile($employeeID)
     {
         $account = $this->model('account');
         $role = $account->findrole($employeeID);
@@ -781,7 +781,7 @@ class JobProvider extends Controller
     }
 
     function jobListing_done()
-    {
+    { 
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('ProviderDone');
         $userID = $_SESSION['user_id'];

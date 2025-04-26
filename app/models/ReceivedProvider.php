@@ -70,7 +70,7 @@ class ReceivedProvider{
 
     public function searchReceivedRequests($userID, $searchTerm) {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
+        $query = "SELECT a.*,i.accountID, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
                   JOIN individual i ON a.seekerID = i.accountID
@@ -88,7 +88,7 @@ class ReceivedProvider{
     }
 
     public function filterReceivedRequestsByDate($userID, $filterDate) {
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
+        $query = "SELECT a.*,i.accountID, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
                   JOIN individual i ON a.seekerID = i.accountID

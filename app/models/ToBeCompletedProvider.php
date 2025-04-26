@@ -52,7 +52,7 @@ class ToBeCompletedProvider{
 
     public function searchToBeCompleted($userID, $searchTerm) {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
+        $query = "SELECT a.*, i.accountID,i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
                   JOIN individual i ON a.seekerID = i.accountID
@@ -84,7 +84,7 @@ class ToBeCompletedProvider{
     }
 
     public function filterToBeCompletedByDate($userID, $filterDate) {
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
+        $query = "SELECT a.*, i.accountID,i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.location, j.salary, j.currency
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
                   JOIN individual i ON a.seekerID = i.accountID
@@ -97,7 +97,7 @@ class ToBeCompletedProvider{
     }
 
     public function filterReqAvailableTBCByDate($userID, $filterDate) {
-        $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp
+        $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp
                   FROM req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
                   JOIN individual i ON m.accountID = i.accountID

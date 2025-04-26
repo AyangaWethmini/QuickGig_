@@ -42,14 +42,19 @@ protectRoute([2]); ?>
                         <div class="employee-item">
                             <div class="employee-photo">
                                 <div class="img">
+
                                     <?php if ($completed->pp): ?>
                                         <?php
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($completed->pp);
                                         ?>
-                                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $completed->seekerID ?>">
+                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        </a>
                                     <?php else: ?>
-                                        <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $completed->seekerID ?>">
+                                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -71,8 +76,7 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile/<?php echo $completed->seekerID ?>"">View Profile</a></li>
                                     <li><a href="<?php echo ROOT; ?>/jobProvider/makeComplaint/<?php echo $completed->applicationID ?>">Complain</a></li>
                                     <li><a href="<?php echo ROOT; ?>/jobProvider/review/<?= $completed->jobID ?>">review</a></li>
                                 </ul>
@@ -94,9 +98,13 @@ protectRoute([2]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($completed->pp);
                                         ?>
-                                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $completed->accountID ?>">
+                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        </a>
                                     <?php else: ?>
-                                        <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        <a href="<?= ROOT ?>/jobProvider/viewEmployeeProfile/<?= $completed->accountID ?>">
+                                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -118,10 +126,9 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile/<?=$completed->accountID?>">View Profile</a></li>
                                     <li><a href="<?php echo ROOT; ?>/jobProvider/makeComplaint/<?php echo $completed->reqID ?>">Complain</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/jobProvider/review/<?= $completed->availableID ?>">review</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/jobProvider/review/<?= $completed->availableID ?>">Review</a></li>
                                 </ul>
                             </div>
                         </div>

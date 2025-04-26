@@ -44,7 +44,7 @@ class SendProvider{
 
     public function searchSendRequests($userID, $searchTerm) {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
+        $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
                   FROM req_available r 
                   JOIN makeavailable m ON r.availableID = m.availableID
                   JOIN individual i ON m.accountID = i.accountID
@@ -62,7 +62,7 @@ class SendProvider{
     }
 
     public function filterSendRequestsByDate($userID, $filterDate) {
-        $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
+        $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.description, m.salary, m.location, m.currency, acc.pp
                   FROM req_available r 
                   JOIN makeavailable m ON r.availableID = m.availableID
                   JOIN individual i ON m.accountID = i.accountID

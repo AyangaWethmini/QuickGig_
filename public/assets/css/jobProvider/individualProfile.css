@@ -170,32 +170,28 @@
 
 
 .sendmsg {
-    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: auto;
+    margin: 30px 0;
 }
+
 .sendmsg-btn {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #4A90E2;
+    color: white;
+    padding: 12px 30px;
     border: none;
-    padding: 12px 28px;
     border-radius: 8px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .sendmsg-btn:hover {
-    background-color: #0056b3;
-    box-shadow: 0 6px 16px rgba(0, 86, 179, 0.3);
+    background-color: #357ABD;
     transform: translateY(-2px);
-}
-
-.sendmsg-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(0, 86, 179, 0.2);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 
