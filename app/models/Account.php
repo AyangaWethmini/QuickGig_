@@ -185,13 +185,14 @@ class Account
             $this->db->beginTransaction();
 
             // Insert into organization table
-            $sqlOrganization = "INSERT INTO organization (accountID, orgName, BRN) 
-                            VALUES (:accountID, :orgName, :brn)";
+            $sqlOrganization = "INSERT INTO organization (accountID, orgName, BRN,phone) 
+                            VALUES (:accountID, :orgName, :brn,:Phone)";
             $stmtOrganization = $this->db->prepare($sqlOrganization);
 
             $stmtOrganization->bindParam(':accountID', $data['accountID']);
             $stmtOrganization->bindParam(':orgName', $data['orgName']);
             $stmtOrganization->bindParam(':brn', $data['brn']);
+            $stmtOrganization->bindParam(':Phone', $data['Phone']);
 
             $stmtOrganization->execute();
 

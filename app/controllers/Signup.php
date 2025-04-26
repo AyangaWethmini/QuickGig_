@@ -163,6 +163,8 @@ class Signup extends Controller
                 // Process organization user data
                 $orgName = trim($_POST['orgName']);
                 $BRN = trim($_POST['brn']);
+                $phoneDig = trim($_POST['Phone']);
+                $code = trim($_POST['countryCode']);
 
                 if (empty($orgName) || empty($BRN)) {
                     $_SESSION['signup_errors'][] = "Please fill all the fields";
@@ -175,11 +177,20 @@ class Signup extends Controller
                     exit;
                 }
                 $orgName = ucwords($orgName);
+                $phone = $code . ' ' . $phoneDig;
+                $pattern = '/^\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{3,4}[\s\-]?\d{3,4}$/';
+
+                if (!preg_match($pattern, $phone)) {
+                    $_SESSION['signup_errors'][] = "Invalid phone number format.";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
+                }
 
                 $organizationData = [
                     'accountID' => $accountID,
                     'orgName' => $orgName,
                     'brn' => $BRN,
+                    'Phone' => $phone
                 ];
 
                 if ($this->model->createOrganization($organizationData)) {

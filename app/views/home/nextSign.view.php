@@ -80,9 +80,9 @@
                     <div class="form-field flex-col">
                         <label for="Phone" class="lbl">Contact Number:</label>
                         <div class="phone-container">
-                            <select name="countryCode" id="countryCode" class="country-code" >
+                            <select name="countryCode" id="countryCode" class="country-code">
                             </select>
-                            <input type="text" name="Phone" id="Phone" placeholder="7700000000" >
+                            <input type="text" name="Phone" id="Phone" placeholder="7700000000">
                         </div>
                     </div>
 
@@ -96,6 +96,14 @@
                     <div class="form-field flex-col">
                         <label for="brn" class="lbl">Business Registration Number:</label>
                         <input type="text" name="brn" id="brn">
+                    </div>
+                    <div class="form-field flex-col">
+                        <label for="Phone" class="lbl">Contact Number:</label>
+                        <div class="phone-container">
+                            <select name="countryCode" id="countryCode" class="country-code">
+                            </select>
+                            <input type="text" name="Phone" id="Phone" placeholder="7700000000">
+                        </div>
                     </div>
                 </div>
 
@@ -133,53 +141,49 @@
         document.addEventListener('DOMContentLoaded', handleFieldDisplay);
     </script>
     <script>
-    fetch('https://restcountries.com/v3.1/all')
-    .then(response => response.json())
-    .then(data => {
+        fetch('https://restcountries.com/v3.1/all')
+            .then(response => response.json())
+            .then(data => {
 
-        const countryCodeSelect = document.getElementById('countryCode');
-        
-        // Check if there's data
-        if (!data || data.length === 0) {
-            console.error('No data fetched from API');
-            return;
-        }
+                const countryCodeSelect = document.getElementById('countryCode');
 
-        // Sort countries by name (alphabetically)
-        data.sort((a, b) => {
-            const nameA = a.name.common.toUpperCase(); // Make the comparison case-insensitive
-            const nameB = b.name.common.toUpperCase(); // Make the comparison case-insensitive
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-            return 0;
-        });
+                // Check if there's data
+                if (!data || data.length === 0) {
+                    console.error('No data fetched from API');
+                    return;
+                }
 
-        // Loop through the sorted country data and populate the dropdown with country codes
-        data.forEach(country => {
-            const countryName = country.name.common;  // Get the country name
-            let countryCode = '';
+                // Sort countries by name (alphabetically)
+                data.sort((a, b) => {
+                    const nameA = a.name.common.toUpperCase(); // Make the comparison case-insensitive
+                    const nameB = b.name.common.toUpperCase(); // Make the comparison case-insensitive
+                    if (nameA < nameB) return -1;
+                    if (nameA > nameB) return 1;
+                    return 0;
+                });
 
-            // Check if the country has a valid 'idd' field and 'suffixes' array
-            if (country.idd && Array.isArray(country.idd.suffixes) && country.idd.suffixes.length > 0) {
-                countryCode = country.idd.root + country.idd.suffixes[0];  // Get the full country code
-            }
+                // Loop through the sorted country data and populate the dropdown with country codes
+                data.forEach(country => {
+                    const countryName = country.name.common; // Get the country name
+                    let countryCode = '';
 
-            // If country code exists, create an option element
-            if (countryCode) {
-                const option = document.createElement('option');
-                option.value = countryCode;  // Set the country code (without the + sign)
-                option.textContent = `${countryCode} (${countryName})`;  // Show the country code and name
-                countryCodeSelect.appendChild(option);
-            }
-        });
+                    // Check if the country has a valid 'idd' field and 'suffixes' array
+                    if (country.idd && Array.isArray(country.idd.suffixes) && country.idd.suffixes.length > 0) {
+                        countryCode = country.idd.root + country.idd.suffixes[0]; // Get the full country code
+                    }
 
-        // Log the updated dropdown options
-    })
-    .catch(error => {
-        console.error('Error fetching country data:', error);
-    });
+                    // If country code exists, create an option element
+                    if (countryCode) {
+                        const option = document.createElement('option');
+                        option.value = countryCode; // Set the country code (without the + sign)
+                        option.textContent = `${countryCode} (${countryName})`; // Show the country code and name
+                        countryCodeSelect.appendChild(option);
+                    }
+                });
 
-
-
-</script>
-
+                // Log the updated dropdown options
+            })
+            .catch(error => {
+                console.error('Error fetching country data:', error);
+            });
+    </script>

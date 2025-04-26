@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 .background-image {
   background-size: cover;
   background-position: center center;
@@ -15,6 +18,7 @@
   z-index: 1;
   isolation: isolate; /* Ensures pseudo-element layering works */
 }
+
 
 .background-image::before {
   content: "";
@@ -49,7 +53,7 @@
     padding: 0px 40px 20px 126px;
     /* min-height: fit-content; */
     width: 100%; /* Makes it responsive */
-    max-width: 73vw; /* Restricts the maximum width */
+    max-width: 80vw; /* Restricts the maximum width */
 
 }
 .hero-text{
@@ -124,7 +128,7 @@
 .featured {
     margin: 80px auto;
     padding: 40px;
-    background: linear-gradient(to right, #f9fafb, #eef2f7);
+    background: linear-gradient(to right, #f9fafb77, #eef2f793);
     border-radius: 24px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
     width: 100%; /* Makes it responsive */
@@ -249,7 +253,7 @@
 /* maraquee section */
   .job-marquee-container {
     overflow: hidden;
-    background: linear-gradient(to right, #3a73e5, #3a73e585);
+    background-color: #3a73e581;
     padding: 60px 0;
     position: relative;
     border-top: 4px solid #84affb;
@@ -257,7 +261,7 @@
 }
 .job-marquee-container2 {
   overflow: hidden;
-  background: linear-gradient(to right, #3a73e585,#3a73e5);
+    background-color: #3a73e581;
   padding: 60px 0;
   position: relative;
   border-top: 4px solid #84affb;
@@ -386,7 +390,8 @@
 }
 .carousel-container {
   position: relative;
-  width: 80vw;
+  max-width: 80vw;
+  width: 100%;
   height: 300px;
   margin: 120px auto 40px;
   overflow: hidden;
