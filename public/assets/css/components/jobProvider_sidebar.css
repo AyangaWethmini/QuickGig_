@@ -2,6 +2,9 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
 }
+* {
+    box-sizing: border-box;
+  }
 
 
 /* Make icons and labels white when sidebar item is active */
@@ -17,8 +20,8 @@ body {
 }
 
 .sidebar-container {
-    width: 224px;
-    height: 85%; /* Full height of the viewport */
+    width: 254px;
+    height: 100%; /* Full height of the viewport */
     background-color: white;
     display: flex;
     flex-direction: column;
