@@ -23,6 +23,7 @@
       margin: 0;
       padding: 0;
   }
+  
 
   html {
       scroll-behavior: smooth;
@@ -247,6 +248,7 @@
   /* General Navbar Styling */
   /* NAVBAR BASE */
 .navbar {
+  margin: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
