@@ -8,7 +8,7 @@
     <a href="<?php echo ROOT;?>/organization/org_jobListing_send" class="category">Send</a>
     <a href="<?php echo ROOT;?>/organization/org_jobListing_toBeCompleted" class="category">To be completed</a>
     <a href="<?php echo ROOT;?>/organization/org_jobListing_ongoing" class="category">Ongoing</a>
-    <a href="<?php echo ROOT;?>/organization/org_jobListing_completed" class="category">Due</a>
+    <a href="<?php echo ROOT;?>/organization/org_jobListing_completed" class="category">Expired</a>
     <a href="<?php echo ROOT;?>/organization/org_jobListing_done" class="category">Completed</a>
     <a href="<?php echo ROOT;?>/organization/org_jobListing_notDone" class="category">Incompleted</a>
 </div>
