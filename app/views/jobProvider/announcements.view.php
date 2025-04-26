@@ -4,18 +4,16 @@ protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/messages.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/findEmployees.css">
 
 <body>
 
-    <div class="wrapper flex-row">
+    <div class="wrapper flex-row" style="background-color:#FFFFFF;">
         <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
         <div class="admin-container">
-            <div class="admin-announcement-header">
-                <h1>Current Announcements</h1>
+            <div class="header">
+                <div class="heading">Current Announcements</div>
             </div>
-            <br>
-            <hr>
-
             <div class="complaints-container container">
                 <?php if (empty($data['announcements'])): ?>
                     <div class="no-results">
@@ -44,7 +42,7 @@ protectRoute([2]); ?>
             </div>
 
             <?php if (!empty($data['announcements'])): ?>
-                <div class="pagination-container">
+                <div class="pagination-container" style="background-color:#FFFFFF;">
                     <div class="pagination">
                         <!-- Always show Previous button -->
                         <a href="<?= ROOT ?>/jobProvider/announcements?page=<?= max(1, ($data['currentPage'] ?? 1) - 1) ?>"
@@ -121,8 +119,8 @@ protectRoute([2]); ?>
             width: 100%;
             border-radius: 6px;
             background-color: #ffffff;
+            background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            border-left: 4px solid #4e73df;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
@@ -149,7 +147,7 @@ protectRoute([2]); ?>
         }
 
         .the-complaint {
-            font-size: 28px;
+            font-size: 24px;
             line-height: 1.6;
             color: #3a3b45;
             margin-bottom: 10px;
@@ -160,7 +158,7 @@ protectRoute([2]); ?>
             position: absolute;
             bottom: 15px;
             left: 25px;
-            font-size: 18px;
+            font-size: 14px;
             margin-top: auto;
             text-align: left;
             color: #858796;
