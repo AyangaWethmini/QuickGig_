@@ -88,7 +88,7 @@ protectRoute([2]); ?>
                                                     <p class="pt-4 rate"><?= number_format($avgRate, 1) ?></p>
 
                                                 </div>
-                                                <div class="rating-stars">
+                                                <div class="rating-stars"> 
                                                     <?php
                                                     $stars = 5;
                                                     $remaining = $avgRate;

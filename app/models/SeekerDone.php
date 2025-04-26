@@ -22,7 +22,7 @@ class SeekerDone{
     public function getReqAvailableCompleted()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT r.*, 
+        $query = "SELECT r.*, i.accountID,
                          CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -47,7 +47,7 @@ class SeekerDone{
     public function getApplyJobCompleted()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, 
+        $query = "SELECT a.*, i.accountID,
                         CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -75,7 +75,7 @@ class SeekerDone{
 
         if ($result[0]->count > 0) {
             // If taskID is found in req_available, execute the relevant query
-            $query = "SELECT r.*, 
+            $query = "SELECT r.*, i.accountID,
                              CASE 
                                  WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                                  THEN CONCAT(i.fname, ' ', i.lname) 
@@ -90,7 +90,7 @@ class SeekerDone{
             $result = $this->query($query, [$taskID]);
         } else {
             // If taskID is not found in req_available, check if it is in apply_job
-            $query = "SELECT a.*, 
+            $query = "SELECT a.*, i.accountID,
                              CASE 
                                  WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                                  THEN CONCAT(i.fname, ' ', i.lname) 
@@ -111,7 +111,7 @@ class SeekerDone{
     public function searchReqAvailableCompleted($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT r.*, 
+        $query = "SELECT r.*, i.accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 

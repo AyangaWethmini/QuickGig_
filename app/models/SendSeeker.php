@@ -22,7 +22,7 @@ class SendSeeker{
     public function getSendRequests()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, 
+        $query = "SELECT a.*, i.accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 
@@ -57,7 +57,7 @@ class SendSeeker{
     public function searchSendRequests($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT a.*, 
+        $query = "SELECT a.*, i.accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 

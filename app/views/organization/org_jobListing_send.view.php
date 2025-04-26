@@ -45,9 +45,13 @@ protectRoute([3]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($received->pp);
                                         ?>
+                                        <a href="<?= ROOT ?>/organization/org_viewEmployeeProfile/<?= $received->accountID ?>">
                                         <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($received->pp) ?>" alt="Employee Image">
+                                        </a>
                                     <?php else: ?>
+                                        <a href="<?= ROOT ?>/organization/org_viewEmployeeProfile/<?= $received->accountID ?>">
                                         <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -93,8 +97,7 @@ protectRoute([3]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/organization/org_viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="<?= ROOT ?>/organization/org_viewEmployeeProfile/<?= $received->accountID ?>">View Profile</a></li>
                                 </ul>
                             </div>
                         </div>
