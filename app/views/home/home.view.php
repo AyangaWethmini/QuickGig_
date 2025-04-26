@@ -107,7 +107,7 @@
         }
     }
 </style>
-<div class="background-image" style="background-image: url('<?= ROOT?>/assets/images/background.jpg');
+<div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');
 ;">
 
     <div class="home-announcement">
@@ -124,9 +124,9 @@
             <p>No announcements available.</p>
         <?php endif; ?>
     </div>
-    
-    
-    
+
+
+
     <div class="hero-section flex-row" style="margin-top:80px;">
         <div class="job-search">
             <h1 class="typography">Discover more than <br> <span>5000+ Jobs</span></h1>
@@ -136,44 +136,44 @@
             <div class="randowm-section">
                 <p class="hero-text text-grey">
                     Great platform for the job seeker that is looking to <br>earn an extra income
-                </p>    
+                </p>
             </div>
-    
-            
+
+
         </div>
         <div class="hero-img">
             <img src="<?= ROOT ?>/assets/images/hero.png" alt="">
         </div>
-    
+
     </div>
-    
-    
+
+
     <div class="carousel-container">
-      <div class="carousel-slide" id="carousel-slide">
-        <div class="carousel-slide-img" style="background-image: url('<?= ROOT ?>/assets/images/carousel1.jpg');">
-          <div class="carousel-caption">
-            <h2>Unlock Flexibility, Earn on Your Terms</h2>
-            <p>Discover part-time job opportunities that fit your schedule. Whether you're looking for extra income or gaining experience, we've got something for you. Work when it’s convenient for you, and get paid for your time.</p>
-          </div>
+        <div class="carousel-slide" id="carousel-slide">
+            <div class="carousel-slide-img" style="background-image: url('<?= ROOT ?>/assets/images/carousel1.jpg');">
+                <div class="carousel-caption">
+                    <h2>Unlock Flexibility, Earn on Your Terms</h2>
+                    <p>Discover part-time job opportunities that fit your schedule. Whether you're looking for extra income or gaining experience, we've got something for you. Work when it’s convenient for you, and get paid for your time.</p>
+                </div>
+            </div>
+            <div class="carousel-slide-img" style="background-image: url('<?= ROOT ?>/assets/images/carousel2.jpg');">
+                <div class="carousel-caption">
+                    <h2>Your Next Job is Just a Click Away</h2>
+                    <p>Find quick, flexible part-time jobs in your area. With a wide variety of roles, you're just one click away from starting your next opportunity. Join now and explore new ways to earn.</p>
+                </div>
+            </div>
+            <div class="carousel-slide-img" style="background-image: url('<?= ROOT ?>/assets/images/carousel3.jpg');">
+                <div class="carousel-caption">
+                    <h2>Work Smart, Earn More</h2>
+                    <p>With our easy-to-use platform, finding the perfect part-time job is simpler than ever. Build your skills, grow your network, and earn at your own pace. Start today and unlock the potential of part-time work!</p>
+                </div>
+            </div>
         </div>
-        <div class="carousel-slide-img" style="background-image: url('<?= ROOT ?>/assets/images/carousel2.jpg');">
-          <div class="carousel-caption">
-            <h2>Your Next Job is Just a Click Away</h2>
-            <p>Find quick, flexible part-time jobs in your area. With a wide variety of roles, you're just one click away from starting your next opportunity. Join now and explore new ways to earn.</p>
-          </div>
-        </div>
-        <div class="carousel-slide-img" style="background-image: url('<?= ROOT ?>/assets/images/carousel3.jpg');">
-          <div class="carousel-caption">
-            <h2>Work Smart, Earn More</h2>
-            <p>With our easy-to-use platform, finding the perfect part-time job is simpler than ever. Build your skills, grow your network, and earn at your own pace. Start today and unlock the potential of part-time work!</p>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
-      <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
     </div>
-    
-    <div class="featured flex-col" >
+
+    <div class="featured flex-col">
         <div style="display: flex; justify-content:space-between;">
             <p class="typography" style="font-size: 48px;">
                 Featured <span>jobs</span>
@@ -229,27 +229,27 @@
             </div>
         </section>
     </div>
-    
+
     <footer class="footer">
-  <div class="footer-content">
-    <div class="footer-logo-section">
-    <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
-      <p class="footer-text">
-        Great platform for job seekers who<br>
-        are passionate about startups. Find<br>
-        your dream job easier.
-      </p>
-    </div>
+        <div class="footer-content">
+            <div class="footer-logo-section">
+                <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
+                <p class="footer-text">
+                    Great platform for job seekers who<br>
+                    are passionate about startups. Find<br>
+                    your dream job easier.
+                </p>
+            </div>
 
-    <div class="footer-links">
-      <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
-      <a href="<?= ROOT ?>/home/contact">Contact Us</a>
-    </div>
-  </div>
+            <div class="footer-links">
+                <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
+                <a href="<?= ROOT ?>/home/contact">Contact Us</a>
+            </div>
+        </div>
 
-  <hr class="footer-divider">
-  <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
-</footer>
+        <hr class="footer-divider">
+        <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
+    </footer>
 
 </div>
 
@@ -379,47 +379,46 @@ if (
     };
 </script>
 <script>
-let currentSlide = 0;
-const slideContainer = document.getElementById('carousel-slide');
-const slides = slideContainer.children;
-const totalSlides = slides.length;
+    let currentSlide = 0;
+    const slideContainer = document.getElementById('carousel-slide');
+    const slides = slideContainer.children;
+    const totalSlides = slides.length;
 
-// Dynamically set width of container and each slide
-slideContainer.style.width = `${totalSlides * 100}%`;
-for (let slide of slides) {
-    slide.style.width = `${100 / totalSlides}%`;
-}
+    // Dynamically set width of container and each slide
+    slideContainer.style.width = `${totalSlides * 100}%`;
+    for (let slide of slides) {
+        slide.style.width = `${100 / totalSlides}%`;
+    }
 
-// Slide update function
-function updateSlide() {
-    slideContainer.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
-}
+    // Slide update function
+    function updateSlide() {
+        slideContainer.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
+    }
 
-// Move slide by direction (+1 or -1)
-function moveSlide(direction) {
-    currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-    updateSlide();
-    resetAutoSlide();
-}
+    // Move slide by direction (+1 or -1)
+    function moveSlide(direction) {
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        updateSlide();
+        resetAutoSlide();
+    }
 
-// Auto slide every 5 seconds
-let autoSlide = setInterval(() => moveSlide(1), 5000);
+    // Auto slide every 5 seconds
+    let autoSlide = setInterval(() => moveSlide(1), 5000);
 
-function resetAutoSlide() {
-    clearInterval(autoSlide);
-    autoSlide = setInterval(() => moveSlide(1), 5000);
-}
+    function resetAutoSlide() {
+        clearInterval(autoSlide);
+        autoSlide = setInterval(() => moveSlide(1), 5000);
+    }
 
-// Swipe support for mobile devices
-let startX = 0;
-slideContainer.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-});
+    // Swipe support for mobile devices
+    let startX = 0;
+    slideContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
 
-slideContainer.addEventListener('touchend', (e) => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) moveSlide(1);      // swipe left
-    else if (endX - startX > 50) moveSlide(-1); // swipe right
-});
-
+    slideContainer.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) moveSlide(1); // swipe left
+        else if (endX - startX > 50) moveSlide(-1); // swipe right
+    });
 </script>
