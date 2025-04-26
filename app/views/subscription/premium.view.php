@@ -4,8 +4,6 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/premium.css">
 
-<link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/premium.css">
-
 <div class="main-premium" style="background: linear-gradient(180deg, var(--brand-primary) 0%, #f8fbff 100%); height: 100vh; padding: 20px;">
     <div class="header-title">
         <a href="<?= ROOT ?>/home" class="brand-link">
@@ -60,34 +58,5 @@
         ?>
 
 
-        <footer class="footer" style="margin-bottom: auto;">
-            <div class="footer-content">
-                <div class="footer-logo-section">
-                    <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
-                    <p class="footer-text">
-                        Great platform for job seekers who<br>
-                        are passionate about startups. Find<br>
-                        your dream job easier.
-                    </p>
-                </div>
-
-                <div class="footer-links">
-                    <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
-                    <a href="<?= ROOT ?>/home/contact">Contact Us</a>
-                </div>
-            </div>
-
-            <hr class="footer-divider">
-            <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
-        </footer>
+        
 </div>
-<style>
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: black;
-        z-index: 100;
-    }
-</style>
