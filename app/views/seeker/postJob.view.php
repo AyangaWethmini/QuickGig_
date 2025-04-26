@@ -259,7 +259,7 @@ protectRoute([2]); ?>
 
     // Set today's date as the minimum date
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById('availableDate').setAttribute('min', today);
+    document.getElementById('dateInput').setAttribute('min', today);
 
     function submitDate() {
         const selectedDate = document.getElementById('availableDate').value;
