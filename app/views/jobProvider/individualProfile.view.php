@@ -29,8 +29,6 @@ protectRoute([2]); ?>
                                 <?php endif; ?>
 
                             </div>
-
-                            <p>Farm Owner</p><br>
                             <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
                         </div>
                         <button class="edit-profile-btn" onclick="window.location.href='<?= ROOT; ?>/jobProvider/individualEditProfile'">

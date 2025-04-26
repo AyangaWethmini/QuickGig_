@@ -10,6 +10,28 @@
         transition: filter 0.3s ease-in-out;
     }
 
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 30px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 80vw;
+        border-radius: 50px;
+        /* PILL SHAPE */
+        z-index: 1000;
+        background: linear-gradient(to right, #f8f9ff, #e6ecff);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        height: 70px;
+        border: 1px solid #dcdcdc;
+    }
+
     .popup-overlay {
         position: fixed;
         top: 0;
