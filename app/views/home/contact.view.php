@@ -1,53 +1,87 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/home/home.css">
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/user/contactUs.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/contactUs.css">
 
 
 <div class="contact-us">
     <h1>Contact Us</h1>
     <p>If you have any questions or feedback, feel free to reach out!</p>
-    
-    <form action="<?=ROOT?>/home/contact" method="POST">
+
+    <form action="<?= ROOT ?>/home/contact" method="POST">
         <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
         </div>
-        
+
         <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
         </div>
-        
+
         <div class="form-group">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
         </div>
-        
-        <button type="submit" class="btn-accent" >Send Message</button>
+
+        <button type="submit" class="btn-accent">Send Message</button>
 
         <script>
             function sendEmail(event) {
-            event.preventDefault(); // Prevent form submission
+                event.preventDefault(); // Prevent form submission
 
-            const form = event.target.closest('form');
-            const formData = new FormData(form);
+                const form = event.target.closest('form');
+                const formData = new FormData(form);
 
-            fetch('<?=ROOT?>/home/sendEmail', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert(data); // Display server response
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to send email.');
-            });
+                fetch('<?= ROOT ?>/home/sendEmail', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data); // Display server response
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to send email.');
+                    });
             }
         </script>
     </form>
 
+
+
 </div>
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo-section">
+            <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
+            <p class="footer-text">
+                Great platform for job seekers who<br>
+                are passionate about startups. Find<br>
+                your dream job easier.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
+            <a href="<?= ROOT ?>/home/contact">Contact Us</a>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+    <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
+</footer>
+
+<style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: black;
+        z-index: 100;
+    }
+</style>
