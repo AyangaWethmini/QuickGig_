@@ -25,15 +25,19 @@ protectRoute([3]); ?>
                     aria-label="Search"
                     value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
             </form>
-            <br><br>
             <div class="filter-container">
-                <span>Sort by:</span>
-                <select id="sortSelect" onchange="sortContent()">
-                    <option value="recent">Latest</option>
-                    <option value="views">Oldest</option>
-                    <option value="views">Highest rated</option>
-                    <option value="views">Highest jobs done</option>
+                <span>Shift:</span>
+                <select id="shiftSelect" onchange="updateFilters()">
+                    <option value="any">Any</option>
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
                 </select>
+
+                <span>Date:</span>
+                <input type="date" id="datePicker" onchange="updateFilters()">
+
+                <span>Location:</span>
+                <input type="text" id="locationInput" placeholder="Enter location" oninput="updateFilters()">
             </div>
         </div>
 
@@ -278,5 +282,29 @@ protectRoute([3]); ?>
 
     function closeMapModal() {
         document.getElementById('mapModal').style.display = 'none';
+    }
+
+    function updateFilters() {
+        const shiftValue = document.getElementById('shiftSelect').value;
+        const dateValue = document.getElementById('datePicker').value;
+        const locationValue = document.getElementById('locationInput').value;
+        const searchTerm = document.querySelector('.search-bar').value;
+
+        const queryParams = new URLSearchParams({
+            search: searchTerm,
+            shift: shiftValue,
+            date: dateValue,
+            location: locationValue
+        });
+
+        fetch(`<?= ROOT ?>/organization/org_findEmployees?${queryParams.toString()}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('.job-cards-container').innerHTML;
+                document.querySelector('.job-cards-container').innerHTML = newContent;
+            })
+            .catch(error => console.error('Error:', error));
     }
 </script>

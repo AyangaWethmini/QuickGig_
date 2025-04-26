@@ -276,41 +276,44 @@ class Seeker extends Controller
     function findEmployees()
     {
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-        if (!empty($searchTerm)) {
-            $findJobs = $this->findJobModel->searchJobs($searchTerm);
+        $shift = isset($_GET['shift']) ? trim($_GET['shift']) : 'any';
+        $date = isset($_GET['date']) ? trim($_GET['date']) : '';
+        $location = isset($_GET['location']) ? trim($_GET['location']) : '';
+    
+        if (!empty($searchTerm) || $shift !== 'any' || !empty($date) || !empty($location)) {
+            $findJobs = $this->findJobModel->filterJobs($searchTerm, $shift, $date, $location);
         } else {
             $findJobs = $this->findJobModel->getJobs();
         }
-
+    
         foreach ($findJobs as &$job) {
             $sumRate = 0;
             $avgRate = 0;
             $provider = $this->jobModel->getJobProviderById($job->jobID);
             $rating = $this->reviewModel->readMyReview($provider->accountID, 1);
             $userData = $this->accountModel->getUserData($provider->accountID);
-
+    
             if (empty($userData)) {
                 $userData = $this->accountModel->getOrgData($provider->accountID);
             }
-
+    
             $length = count($rating);
             foreach ($rating as $rate) {
                 $sumRate += $rate->rating;
             }
-
+    
             if ($length > 0) {
                 $avgRate = $sumRate / $length;
             }
-
+    
             $job->rating = $avgRate;
             $job->badge = $userData['badge'];
         }
-
+    
         $data = [
-            'findJobs' => $findJobs,
-            'avgRate' => $avgRate
+            'findJobs' => $findJobs
         ];
-
+    
         $this->view('findEmployees', $data);
     }
 

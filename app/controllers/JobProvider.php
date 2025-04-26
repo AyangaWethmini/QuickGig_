@@ -143,45 +143,48 @@ class JobProvider extends Controller
     }
 
     function findEmployees()
-    {
-        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-        if (!empty($searchTerm)) {
-            $findEmployees = $this->findEmpModel->searchEmployees($searchTerm);
-        } else {
-            $findEmployees = $this->findEmpModel->getEmployees();
-            $findEmployees = $this->findEmpModel->getEmployees();
+{
+    $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+    $shift = isset($_GET['shift']) ? trim($_GET['shift']) : 'any';
+    $date = isset($_GET['date']) ? trim($_GET['date']) : '';
+    $location = isset($_GET['location']) ? trim($_GET['location']) : '';
 
-            foreach ($findEmployees as &$employee) {
-                $sumRate = 0;
-                $avgRate = 0;
-
-                $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
-                $userData = $this->accountModel->getUserData($employee->accountID);
-
-                if (empty($userData)) {
-                    $userData = $this->accountModel->getOrgData($employee->accountID);
-                }
-
-                $length = count($rating);
-                foreach ($rating as $rate) {
-                    $sumRate += $rate->rating;
-                }
-
-                if ($length > 0) {
-                    $avgRate = $sumRate / $length;
-                }
-
-                $employee->rating = $avgRate;
-                $employee->badge = $userData['badge'];
-            }
-
-            $data = [
-                'findEmployees' => $findEmployees
-            ];
-
-            $this->view('findEmployees', $data);
-        }
+    if (!empty($searchTerm) || $shift !== 'any' || !empty($date) || !empty($location)) {
+        $findEmployees = $this->findEmpModel->filterEmployees($searchTerm, $shift, $date, $location);
+    } else {
+        $findEmployees = $this->findEmpModel->getEmployees();
     }
+
+    foreach ($findEmployees as &$employee) {
+        $sumRate = 0;
+        $avgRate = 0;
+
+        $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
+        $userData = $this->accountModel->getUserData($employee->accountID);
+
+        if (empty($userData)) {
+            $userData = $this->accountModel->getOrgData($employee->accountID);
+        }
+
+        $length = count($rating);
+        foreach ($rating as $rate) {
+            $sumRate += $rate->rating;
+        }
+
+        if ($length > 0) {
+            $avgRate = $sumRate / $length;
+        }
+
+        $employee->rating = $avgRate;
+        $employee->badge = $userData['badge'];
+    }
+
+    $data = [
+        'findEmployees' => $findEmployees
+    ];
+
+    $this->view('findEmployees', $data);
+}
 
     public function requestJob()
     {
