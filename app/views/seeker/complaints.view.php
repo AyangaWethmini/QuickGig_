@@ -1,39 +1,33 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
 protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/user/complaints.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/complaints.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing_myJobs.css">
+
 
 <div class="wrapper flex-row">
     <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
-    
+
     <div class="main-content-complaints">
         <div class="header">
             <div class="heading">My Complaints</div>
         </div>
-        
-        <div class="search-container">
-            <input type="text" 
-                class="search-bar" 
-                placeholder="Search complaints"
-                aria-label="Search">
-            <br><br>
-            
-        </div>
+
         <div class="complaints-container container">
             <?php if (empty($data['complaints'])): ?>
                 <div class="empty-container">
-                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Complaints" class="empty-icon">
+                    <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Complaints" class="empty-icon">
                     <p class="empty-text">No Complaints Have Been Made Yet</p>
                 </div>
             <?php else: ?>
                 <?php foreach ($data['complaints'] as $complaint): ?>
-                    <div class="complaint container">
+                    <div class="complaint container" style="background: linear-gradient(135deg, #e0f0ff, #f0e8ff);">
                         <div class="complaint-content flex-col">
                             <div class="complaint-details flex-row">
                                 <div class="complaint-text flex-col">
-                                    <div class="the-complaint"><?= htmlspecialchars($complaint->content, ENT_QUOTES) ?></div>
-                                    <div class="text-grey">
+                                    <div class="the-complaint" style="font-size: 20px;"><?= htmlspecialchars($complaint->content, ENT_QUOTES) ?></div>
+                                    <div class="text-grey" style="font-size: 16px;">
                                         <?= htmlspecialchars($complaint->complaintDate . ' | ' . date('h:i:s', strtotime($complaint->complaintTime)), ENT_QUOTES) ?>
                                     </div>
                                 </div>
@@ -52,15 +46,15 @@ protectRoute([2]); ?>
                                 </div>
                             </div>
                             <div class="complaint-actions flex-row">
-                                <button 
-                                    class="btn btn-update <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>" 
-                                    <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?> 
+                                <button
+                                    class="update-jobReq-button btn btn-accent <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>"
+                                    <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?>
                                     onClick="window.location.href='<?= ROOT ?>/seeker/updateComplaint/<?= $complaint->complaintID ?>';">
                                     Update
                                 </button>
-                                <button 
-                                    class="btn btn-delete <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>" 
-                                    <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?> 
+                                <button
+                                    class="delete-jobReq-button btn btn-danger <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>"
+                                    <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?>
                                     onclick="showDeletePopup('<?= htmlspecialchars($complaint->complaintID, ENT_QUOTES) ?>')">
                                     Delete
                                 </button>
@@ -84,19 +78,19 @@ protectRoute([2]); ?>
 <form id="delete-form" method="POST" style="display: none;"></form>
 
 <script>
-function showDeletePopup(complaintID) {
-    const modal = document.getElementById('delete-popup');
-    modal.style.display = 'flex';
+    function showDeletePopup(complaintID) {
+        const modal = document.getElementById('delete-popup');
+        modal.style.display = 'flex';
 
-    document.getElementById('delete-confirm-yes').onclick = function () {
-        const form = document.getElementById('delete-form');
-        form.action = '<?= ROOT ?>/seeker/deleteComplaint/' + complaintID;
-        modal.style.display = 'none';
-        form.submit();
-    };
+        document.getElementById('delete-confirm-yes').onclick = function() {
+            const form = document.getElementById('delete-form');
+            form.action = '<?= ROOT ?>/seeker/deleteComplaint/' + complaintID;
+            modal.style.display = 'none';
+            form.submit();
+        };
 
-    document.getElementById('delete-confirm-no').onclick = function () {
-        modal.style.display = 'none';
-    };
-}
+        document.getElementById('delete-confirm-no').onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
 </script>

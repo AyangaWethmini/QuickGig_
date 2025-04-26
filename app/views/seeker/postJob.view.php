@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/protectedRoute.php'; 
-protectRoute([2]);?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php';
+protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/post_job.css">
@@ -138,16 +138,17 @@ protectRoute([2]);?>
             </div>
             <hr>
             <div class="form-section flex-row container">
-            <div class="container right-container">
-                <p class="title">Add Location</p>
-                <p class="text-grey desc">Add the location where the employee should attend</p>
-            </div>
+                <div class="container right-container">
+                    <p class="title">Add Location</p>
+                    <p class="text-grey desc">Add the location where the employee should attend</p>
+                </div>
 
-            <div class="user-input">
-                <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
-                <p>Or</p>
-                <input type="text" name="location" id="locationInput" placeholder="Type your location here" required>
-            </div></div>
+                <div class="user-input">
+                    <button type="button" class="btn btn-trans" onclick="openMapModal()">Add your Location</button>
+                    <p>Or</p>
+                    <input type="text" name="location" id="locationInput" placeholder="Type your location here" required>
+                </div>
+            </div>
             <hr>
             <div class="post-job-buttons flex-row">
                 <button class="btn btn-accent" type="button" onclick="window.location.href='<?= ROOT ?>/seeker/jobListing_myJobs'">Discard</button>
@@ -171,11 +172,11 @@ protectRoute([2]);?>
             </div>
 
             <div id="mapModal" class="map-modal" style="display:none;">
-                    <div id="map"></div>
-                    <div class="mapBtns">
-                        <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
-                        <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
-                    </div>
+                <div id="map"></div>
+                <div class="mapBtns">
+                    <button type="button" class="mapBtn" onclick="saveLocation()">Save Location</button>
+                    <button type="button" class="mapBtn" onclick="closeMapModal()">Cancel</button>
+                </div>
             </div>
 
             <div id="error-popup"></div>
@@ -189,11 +190,10 @@ protectRoute([2]);?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByhOqNUkNdVh5JDlawmbh-fxmgbVvE2Cg&libraries=places&callback=initMap"></script>
 
 <script>
-
     let map;
     let marker;
     let selectedLocation = '';
-    let mapInitialized = false; 
+    let mapInitialized = false;
 
     function showAddTagPopup(type) {
         const tagContainer = document.getElementById('tags-container');
@@ -277,7 +277,9 @@ protectRoute([2]);?>
         // Initialize Google Places Autocomplete
         autocomplete = new google.maps.places.Autocomplete(locationInput, {
             //types: ['geocode'], // Restrict to geographical locations
-            componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+            componentRestrictions: {
+                country: "lk"
+            } // Restrict to Sri Lanka
         });
 
         // Listen for the place_changed event
@@ -291,7 +293,10 @@ protectRoute([2]);?>
     }
 
     function initMap() {
-        const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; // Default to Colombo
+        const defaultLatLng = {
+            lat: 6.9271,
+            lng: 79.8612
+        }; // Default to Colombo
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: defaultLatLng,
@@ -317,7 +322,10 @@ protectRoute([2]);?>
                 mapInitialized = true;
             } else {
                 google.maps.event.trigger(map, "resize");
-                map.setCenter(marker ? marker.getPosition() : { lat: 6.9271, lng: 79.8612 });
+                map.setCenter(marker ? marker.getPosition() : {
+                    lat: 6.9271,
+                    lng: 79.8612
+                });
             }
         }, 200); // 200ms delay is usually enough
     }
@@ -333,7 +341,9 @@ protectRoute([2]);?>
             lng: parseFloat(selectedLocation.split(',')[1])
         };
 
-        geocoder.geocode({ location: latlng }, function(results, status) {
+        geocoder.geocode({
+            location: latlng
+        }, function(results, status) {
             if (status === 'OK') {
                 if (results[0]) {
                     document.getElementById('locationInput').value = results[0].formatted_address;
@@ -373,30 +383,36 @@ protectRoute([2]);?>
     const popup = document.getElementById("error-popup");
 
     form.addEventListener("submit", function(e) {
-    const description = document.querySelector("textarea[name='description']").value.trim();
-    const salary = document.getElementById("salary-per-hr").value.trim();
+        // Always prevent default first to validate
+        e.preventDefault();
 
-    let errors = [];
+        const description = document.querySelector("textarea[name='description']").value.trim();
+        const salary = document.getElementById("salary-per-hr").value.trim();
 
-    // Validate description
-    if (description === "") {
-        errors.push("Description is required and cannot be just spaces.");
-    }
+        let errors = [];
 
-    // Validate salary
-    if (salary === "") {
-        errors.push("Salary is required.");
-    } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
-        errors.push("Salary must be a valid number (e.g., 500, 500.75).");
-    } else if (salary.length > 8) {
-        errors.push("Salary must not exceed 8 characters in total.");
-    }
+        // Validate description
+        if (!description || description.replace(/\s+/g, '') === '') {
+            errors.push("Description is required and cannot be just spaces.");
+        }
 
-    if (errors.length > 0) {
-        e.preventDefault(); // Stop form submission
-        showPopup(errors.join("<br>"));
-    }
-});
+        // Validate salary
+        if (!salary || salary.replace(/\s+/g, '') === '') {
+            errors.push("Salary is required and cannot be just spaces.");
+        } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
+            errors.push("Salary must be a valid number (e.g., 500, 500.75).");
+        } else if (salary.length > 8) {
+            errors.push("Salary must not exceed 8 characters in total.");
+        }
+
+        if (errors.length > 0) {
+            showPopup(errors.join("<br>"));
+            return false; // Prevent form submission
+        } else {
+            // Submit form only if there are no errors
+            this.submit();
+        }
+    });
 
     function showPopup(message) {
         popup.innerHTML = message;
