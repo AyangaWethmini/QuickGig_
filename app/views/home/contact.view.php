@@ -88,13 +88,3 @@
     <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
 </footer>
 
-<style>
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: black;
-        z-index: 100;
-    }
-</style>
