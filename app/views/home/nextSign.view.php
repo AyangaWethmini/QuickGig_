@@ -98,11 +98,11 @@
                         <input type="text" name="brn" id="brn">
                     </div>
                     <div class="form-field flex-col">
-                        <label for="Phone" class="lbl">Contact Number:</label>
+                        <label for="Phone2" class="lbl">Contact Number:</label>
                         <div class="phone-container">
-                            <select name="countryCode" id="countryCode" class="country-code">
+                            <select name="countryCode2" id="countryCode2" class="country-code">
                             </select>
-                            <input type="text" name="Phone" id="Phone" placeholder="7700000000">
+                            <input type="text" name="Phone2" id="Phone2" placeholder="7700000000">
                         </div>
                     </div>
                 </div>

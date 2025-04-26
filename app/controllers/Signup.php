@@ -163,8 +163,8 @@ class Signup extends Controller
                 // Process organization user data
                 $orgName = trim($_POST['orgName']);
                 $BRN = trim($_POST['brn']);
-                $phoneDig = trim($_POST['Phone']);
-                $code = trim($_POST['countryCode']);
+                $phoneDig = trim($_POST['Phone2']);
+                $code = trim($_POST['countryCode2']);
 
                 if (empty($orgName) || empty($BRN)) {
                     $_SESSION['signup_errors'][] = "Please fill all the fields";
