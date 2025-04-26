@@ -9,7 +9,7 @@
     <h1>Contact Us</h1>
     <p>If you have any questions or feedback, feel free to reach out!</p>
     
-    <form action="<?=ROOT?>/home/contact" method="POST">
+    <form action="<?=ROOT?>/home/sendEmail" method="POST">
         <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
@@ -27,7 +27,20 @@
         
         <button type="submit" class="btn-accent" >Send Message</button>
 
-        <script>
+
+        <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
+
+        <!-- <script>
             function sendEmail(event) {
             event.preventDefault(); // Prevent form submission
 
@@ -47,7 +60,7 @@
                 alert('Failed to send email.');
             });
             }
-        </script>
+        </script> -->
     </form>
 
 </div>

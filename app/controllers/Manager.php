@@ -866,43 +866,29 @@ class Manager extends Controller
         $data = $this->advertisementModel->getAdsToBeReviewed();
         $this->view('adsToReview', ['ads' => $data]);
     }
-
-    public function deleteAnnouncement($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->adminModel->delete($id);
-            $_SESSION['success'] = "Announcement deleted successfully.";
-            header('Location: ' . ROOT . '/manager/announcements');
-            exit;
-        } else {
-            $_SESSION['error'] = "Failed to delete announcement.";
-            header('Location: ' . ROOT . '/manager/announcements');
-            exit;
-        }
-    }
-
-    public function approveAd($adId)
-    {
+    
+public function approveAd($adId) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $isApproved = $this->advertisementModel->approveAd($adId);
             if ($isApproved) {
-                $advId = $_POST['advertiserID'];
-                $advertiserEmail = $this->advertiserModel->getAdvertiserEmailById($advId);
-                if ($advertiserEmail) {
-                    $subject = "Your Advertisement Has Been Approved";
-                    $message = "Dear Advertiser,\n\nYour advertisement has been successfully approved and is now live on our platform.\n\nThank you for choosing our service.\n\nBest regards,\nQuickGig Team";
-                    $headers = "From: no-reply@quickgig.com";
+            $advId = $_POST['advertiserID'];
+            $advertiserEmail = $this->advertiserModel->getAdvertiserEmailById($advId);
+            if ($advertiserEmail) {
+                $subject = "Your Advertisement Has Been Approved";
+                $message = "Dear Advertiser,\n\nYour advertisement has been successfully approved and is now live on our platform.\n\nThank you for choosing our service.\n\nBest regards,\nQuickGig Team";
+                $headers = "From: no-reply@quickgig.com";
 
-                    if (!mail($advertiserEmail['email'], $subject, $message, $headers)) {
-                        error_log("Failed to send email to advertiser: $advertiserEmail");
-                    }
+                if (!mail($advertiserEmail['email'], $subject, $message, $headers)) {
+                error_log("Failed to send email to advertiser: $advertiserEmail");
                 }
-                $_SESSION['success'] = "Advertisement approved successfully.";
+            }
+            $_SESSION['success'] = "Advertisement approved successfully.";
             } else {
-                $_SESSION['error'] = "Failed to approve advertisement.";
+            $_SESSION['error'] = "Failed to approve advertisement.";
             }
             header('Location: ' . ROOT . '/manager/adsToBeReviewed');
             exit;
+        
         } else {
             $_SESSION['error'] = "Failed to approve advertisement.";
             header('Location: ' . ROOT . '/manager/adsToBeReviewed');
@@ -911,8 +897,7 @@ class Manager extends Controller
     }
 
 
-    public function rejectAd($adId)
-    {
+    public function rejectAd($adId) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['advertiserID'])) {
                 $isRejected = $this->advertisementModel->rejectAd($adId);
@@ -944,4 +929,40 @@ class Manager extends Controller
             exit;
         }
     }
+
+
+    public function deleteAnnouncement($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['advertiserID'])) {
+                $isRejected = $this->advertisementModel->rejectAd($adId);
+
+                if ($isRejected) {
+                    $advId = $_POST['advertiserID'];
+                    $advertiserEmail = $this->advertiserModel->getAdvertiserEmailById($advId);
+                    if ($advertiserEmail) {
+                        $subject = "Your Advertisement Has Been Rejected";
+                        $message = "Dear Advertiser,\n\nWe regret to inform you that your advertisement has been rejected. Please note that the payment made for this advertisement is non-refundable.\n\nIf you have any questions or need further clarification, feel free to contact our support team.\n\nBest regards,\nQuickGig Team";
+                        $headers = "From: no-reply@quickgig.com";
+
+                        if (!mail($advertiserEmail['email'], $subject, $message, $headers)) {
+                            error_log("Failed to send email to advertiser: " . $advertiserEmail['email']);
+                        }
+                    }
+                    $_SESSION['success'] = "Advertisement rejected and email sent to the advertiser.";
+                } else {
+                    $_SESSION['error'] = "Failed to reject advertisement.";
+                }
+            } else {
+                $_SESSION['error'] = "Advertiser ID is missing.";
+            }
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        } else {
+            $_SESSION['error'] = "Invalid request method.";
+            header('Location: ' . ROOT . '/manager/adsToBeReviewed');
+            exit;
+        }
+    }
+    
+    
 }
