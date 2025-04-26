@@ -8,10 +8,12 @@
 }
 
 .heading{
-    color: #000000;
-    font-size: 36px;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
+    width: fit-content;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #3b2d7d;
+  white-space: nowrap;
 }
 
 .header {
@@ -34,7 +36,8 @@
     margin: 20px auto;
     max-width: 800px;
     padding: 20px;
-    background-color: #fff;
+    background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
+
 }
 
 .review-card:hover {
