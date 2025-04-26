@@ -90,13 +90,5 @@ class Advertiser
     //     $query = 
     // }
 
-    public function getAdvertiserEmailById($advertiserId)
-    {
-        $query = "SELECT email FROM advertiser WHERE advertiserID = :advertiserID LIMIT 1";
-        $params = ['advertiserID' => $advertiserId];
 
-        $result = $this->query($query, $params);
-
-        return !empty($result) ? json_decode(json_encode($result[0]), true) : false;
-    }
 }
