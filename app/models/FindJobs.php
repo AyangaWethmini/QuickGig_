@@ -94,4 +94,56 @@ class FindJobs {
         return $result ? $result : [];
     }
     
+    public function filterJobs($searchTerm, $shift, $date, $location)
+{
+    $id = $_SESSION['user_id'];
+    $query = 'SELECT j.*, acc.pp,
+                     CASE 
+                         WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
+                         THEN CONCAT(i.fname, " ", i.lname) 
+                         ELSE o.orgName 
+                     END AS name
+              FROM job j 
+              LEFT JOIN individual i ON j.accountID = i.accountID 
+              LEFT JOIN organization o ON j.accountID = o.accountID
+              LEFT JOIN account acc ON j.accountID = acc.accountID
+              WHERE j.accountID != ? 
+              AND j.jobStatus = 1';
+
+    $params = [$id];
+
+    if (!empty($searchTerm)) {
+        $query .= ' AND (
+            LOWER(i.fname) LIKE ? OR
+            LOWER(i.lname) LIKE ? OR
+            LOWER(o.orgName) LIKE ? OR
+            LOWER(j.jobTitle) LIKE ? OR
+            LOWER(j.description) LIKE ? OR
+            LOWER(j.location) LIKE ? OR
+            LOWER(j.categories) LIKE ?
+        )';
+        $searchTerm = '%' . strtolower($searchTerm) . '%';
+        $params = array_merge($params, array_fill(0, 7, $searchTerm));
+    }
+
+    if ($shift !== 'any') {
+        $query .= ' AND j.shift = ?';
+        $params[] = $shift;
+    }
+
+    if (!empty($date)) {
+        $query .= ' AND j.availableDate = ?';
+        $params[] = $date;
+    }
+
+    if (!empty($location)) {
+        $query .= ' AND LOWER(j.location) LIKE ?';
+        $params[] = '%' . strtolower($location) . '%';
+    }
+
+    $query .= ' ORDER BY j.datePosted DESC, j.timePosted DESC';
+
+    $result = $this->query($query, $params);
+    return $result ? $result : [];
+}
 }
