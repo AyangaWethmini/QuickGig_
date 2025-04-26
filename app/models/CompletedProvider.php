@@ -24,6 +24,7 @@ class CompletedProvider
         $id = $_SESSION['user_id'];
         $query = "SELECT 
     a.*, 
+    i.accountID,
     i.fname, 
     i.lname, 
     j.jobTitle, 
@@ -90,7 +91,7 @@ ORDER BY datePosted DESC, timePosted DESC
 
         if ($result[0]->count > 0) {
             // If taskID is found in req_available, execute the relevant query
-            $query = "SELECT r.*, i.fname, i.lname, m.description as title, m.availableID as ja, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location, m.accountID
+            $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.description as title, m.availableID as ja, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location, m.accountID
                     FROM req_available r
                     JOIN makeavailable m ON r.availableID = m.availableID
                     JOIN individual i ON m.accountID = i.accountID
@@ -98,7 +99,7 @@ ORDER BY datePosted DESC, timePosted DESC
             $result = $this->query($query, [$taskID]);
         } else {
             // If taskID is not found in req_available, check if it is in apply_job
-            $query = "SELECT a.*, i.fname, i.lname, j.jobTitle as title, j.jobID ja, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location, i.accountID
+            $query = "SELECT a.*,i.accountID, i.fname, i.lname, j.jobTitle as title, j.jobID ja, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location, i.accountID
                     FROM apply_job a 
                     JOIN job j ON a.jobID = j.jobID
                     JOIN individual i ON a.seekerID = i.accountID
@@ -112,7 +113,7 @@ ORDER BY datePosted DESC, timePosted DESC
     public function searchCompleted($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
+        $query = "SELECT a.*,i.accountID, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
                   JOIN individual i ON a.seekerID = i.accountID
@@ -132,7 +133,7 @@ ORDER BY datePosted DESC, timePosted DESC
     public function searchReqAvailableCompleted($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT r.*, i.fname, i.lname, m.description, m.availableID, acc.pp, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location
+        $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.description, m.availableID, acc.pp, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location
                   FROM req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
                   JOIN individual i ON m.accountID = i.accountID
@@ -151,7 +152,7 @@ ORDER BY datePosted DESC, timePosted DESC
 
     public function filterCompletedByDate($userID, $filterDate)
     {
-        $query = "SELECT a.*, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
+        $query = "SELECT a.*,i.accountID, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
                   FROM apply_job a 
                   JOIN job j ON a.jobID = j.jobID
                   JOIN individual i ON a.seekerID = i.accountID
@@ -165,7 +166,7 @@ ORDER BY datePosted DESC, timePosted DESC
 
     public function filterReqAvailableCompletedByDate($userID, $filterDate)
     {
-        $query = "SELECT r.*, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp, m.description, m.availableID
+        $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp, m.description, m.availableID
                   FROM req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
                   JOIN individual i ON m.accountID = i.accountID
