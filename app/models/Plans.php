@@ -2,21 +2,33 @@
 
 use Stripe\BillingPortal\Session;
 
-class Plans {
+class Plans
+{
     use Database;
 
-    public function getPlans() {
+    public function getPlans()
+    {
         $query = 'SELECT * FROM plan';
         return $this->query($query);
     }
 
-    public function getPlansWithStripe() {
+    public function getPlansWithStripe()
+    {
         $query = 'SELECT plan.*
                   FROM plan WHERE stripe_price_id IS NOT NULL AND stripe_price_id != ""';
         return $this->query($query);
     }
 
-    public function getPlanById($id) {
+    public function getPlanUserCount($planID)
+    {
+        $query = "SELECT COUNT(*) AS total FROM account WHERE planID = :planID";
+        $params = ['planID' => $planID];
+        $result = $this->query($query, $params);
+        return $result[0]->total ?? 0;
+    }
+
+    public function getPlanById($id)
+    {
         $query = "SELECT * FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         $result = $this->query($query, $params);
@@ -24,7 +36,8 @@ class Plans {
     }
 
 
-    public function createPlan($data) {
+    public function createPlan($data)
+    {
         // Validation
         if (
             empty($data['planName']) || strlen(trim($data['planName'])) > 20 ||
@@ -37,14 +50,14 @@ class Plans {
         ) {
             return false;
         }
-    
+
         // Prepare query and parameters
         $query = "INSERT INTO plan (
                       planName, description, price, duration, badge, postLimit, stripe_price_id, currency, recInterval, active
                   ) VALUES (
                       :planName, :description, :price, :duration, :badge, :postLimit, :stripe_price_id, :currency, :recInterval, :active
                   )";
-    
+
         $params = [
             'planName' => $data['planName'],
             'description' => $data['description'],
@@ -57,7 +70,7 @@ class Plans {
             'recInterval' => $data['recInterval'],
             'active' => isset($data['active']) ? 1 : 0
         ];
-    
+
         try {
             return $this->query($query, $params);
         } catch (Exception $e) {
@@ -68,14 +81,16 @@ class Plans {
     }
 
 
-    public function deletePlan($id) {
+    public function deletePlan($id)
+    {
         $query = "DELETE FROM plan WHERE planID = :id";
         $params = ['id' => $id];
         return $this->query($query, $params);
     }
 
-    
-    public function update($id, $data) {
+
+    public function update($id, $data)
+    {
         $query = "UPDATE plan 
                   SET planName = :planName, 
                       description = :description, 
@@ -100,7 +115,8 @@ class Plans {
         return $this->query($query, $params);
     }
 
-    public function getPlansCount(){
+    public function getPlansCount()
+    {
         $query = "SELECT COUNT(*) AS total FROM plan";
         $result = $this->query($query);
         return $result[0]->total ?? 0;
