@@ -22,7 +22,11 @@ class SeekerNotDone{
     public function getReqAvailableCompleted()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT r.*, i.accountID,
+        $query = "SELECT r.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                          CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -47,7 +51,11 @@ class SeekerNotDone{
     public function getApplyJobCompleted()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, i.accountID,
+        $query = "SELECT a.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                         CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -75,7 +83,11 @@ class SeekerNotDone{
 
         if ($result[0]->count > 0) {
             // If taskID is found in req_available, execute the relevant query
-            $query = "SELECT r.*, i.accountID,
+            $query = "SELECT r.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                              CASE 
                                  WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                                  THEN CONCAT(i.fname, ' ', i.lname) 
@@ -90,7 +102,11 @@ class SeekerNotDone{
             $result = $this->query($query, [$taskID]);
         } else {
             // If taskID is not found in req_available, check if it is in apply_job
-            $query = "SELECT a.*, i.accountID,
+            $query = "SELECT a.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                              CASE 
                                  WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                                  THEN CONCAT(i.fname, ' ', i.lname) 
@@ -111,7 +127,11 @@ class SeekerNotDone{
     public function searchReqAvailableCompleted($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT r.*, i.accountID,
+        $query = "SELECT r.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 

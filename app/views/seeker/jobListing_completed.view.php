@@ -23,13 +23,12 @@ protectRoute([2]); ?>
                 <form method="GET" action="<?= ROOT ?>/seeker/jobListing_completed">
                     <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                 </form>
-                <input 
-                type="date" 
-                id="filter-date" 
-                class="filter-btn" 
-                onchange="filterByDate(this.value)" 
-                style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;"
-            />
+                <input
+                    type="date"
+                    id="filter-date"
+                    class="filter-btn"
+                    onchange="filterByDate(this.value)"
+                    style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;" />
             </div>
             <br>
 
@@ -37,9 +36,9 @@ protectRoute([2]); ?>
 
                 <?php if (!empty($data['reqAvailableCompleted'])): ?>
                     <h2>From Requests</h2>
+                    
                     <hr>
                     <?php foreach ($data['reqAvailableCompleted'] as $completed): ?>
-
                         <div class="employee-item">
                             <div class="employee-photo">
                                 <div class="img">
@@ -48,9 +47,14 @@ protectRoute([2]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($completed->pp);
                                         ?>
-                                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $completed->accountID ?>">
+                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        </a>
+
                                     <?php else: ?>
-                                        <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $completed->accountID ?>">
+                                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -70,9 +74,9 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $completed->accountID ?>">View Profile</a></li>
                                     <li><a href="<?= ROOT ?>/seeker/makeComplaint/<?= $completed->reqID ?>">Complain</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/seeker/review/<?= $completed->availableID ?>">Review</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -92,9 +96,13 @@ protectRoute([2]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($completed->pp);
                                         ?>
-                                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $completed->accountID ?>">
+                                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($completed->pp) ?>" alt="Employee Image">
+                                        </a>
                                     <?php else: ?>
-                                        <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $completed->accountID ?>">
+                                            <img src="<?= ROOT ?>/assets/images/default.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -114,10 +122,9 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/seeker/viewEmployeeProfile">View Profile</a></li>
+                                    <li><a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $completed->accountID ?>">View Profile</a></li>
                                     <li><a href="<?= ROOT ?>/seeker/makeComplaint/<?= $completed->applicationID ?>">Complain</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/seeker/review/<?= $completed->jobID ?> ">review</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/seeker/review/<?= $completed->jobID ?> ">Review</a></li>
                                 </ul>
                             </div>
                         </div>

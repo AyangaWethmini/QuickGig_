@@ -47,9 +47,13 @@ protectRoute([2]);?>
                                 $finfo = new finfo(FILEINFO_MIME_TYPE);
                                 $mimeType = $finfo->buffer($ongoing->pp);
                             ?>
+                            <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $ongoing->accountID ?>">
                             <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ongoing->pp) ?>" alt="Employee Image">
+                            </a>
                         <?php else: ?>
+                            <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $ongoing->accountID ?>">
                             <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                            </a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -68,8 +72,7 @@ protectRoute([2]);?>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">View Profile</a></li>
+                        <li><a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $ongoing->accountID ?>">View Profile</a></li>
                     </ul>
                 </div>
             </div>
@@ -89,9 +92,13 @@ protectRoute([2]);?>
                                 $finfo = new finfo(FILEINFO_MIME_TYPE);
                                 $mimeType = $finfo->buffer($ongoing->pp);
                             ?>
+                            <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $ongoing->accountID ?>">
                             <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ongoing->pp) ?>" alt="Employee Image">
+                            </a>
                         <?php else: ?>
+                            <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $ongoing->accountID ?>">
                             <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                            </a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -110,8 +117,7 @@ protectRoute([2]);?>
                 <div class="dropdown">
                     <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">View Profile</a></li>
+                        <li><a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $ongoing->accountID ?>">View Profile</a></li>
                     </ul>
                 </div>
             </div>

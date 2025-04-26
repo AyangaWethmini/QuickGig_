@@ -57,7 +57,11 @@ class SendSeeker{
     public function searchSendRequests($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT a.*, i.accountID,
+        $query = "SELECT a.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 

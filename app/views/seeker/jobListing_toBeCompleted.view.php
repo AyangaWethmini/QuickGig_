@@ -48,9 +48,13 @@ protectRoute([2]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($tbc->pp);
                                         ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $tbc->accountID ?>">
                                         <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($tbc->pp) ?>" alt="Employee Image">
+                                        </a>
                                     <?php else: ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $tbc->accountID ?>">
                                         <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -95,8 +99,7 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="#">View Profile</a></li>
+                                    <li><<a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $tbc->accountID ?>">View Profile</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -116,9 +119,13 @@ protectRoute([2]); ?>
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($tbc->pp);
                                         ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $tbc->accountID ?>">
                                         <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($tbc->pp) ?>" alt="Employee Image">
+                                        </a>
                                     <?php else: ?>
+                                        <a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $tbc->accountID ?>">
                                         <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available" height="200px" width="200px">
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -163,8 +170,7 @@ protectRoute([2]); ?>
                             <div class="dropdown">
                                 <button class="dropdown-toggle"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Message</a></li>
-                                    <li><a href="#">View Profile</a></li>
+                                    <li><a href="<?= ROOT ?>/seeker/viewEmployeeProfile/<?= $tbc->accountID ?>">View Profile</a></li>
                                 </ul>
                             </div>
                         </div>

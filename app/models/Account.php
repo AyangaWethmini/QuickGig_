@@ -93,6 +93,42 @@ class Account
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function findAccountIDByEmail($email)
+    {
+        $sql = "SELECT accountID FROM account WHERE email = :email LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $account = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$account) {
+            return false;
+        }
+
+        $accountID = $account['accountID'];
+
+        // Now check in organization table
+        $sqlOrg = "SELECT accountID FROM organization WHERE accountID = :accountID LIMIT 1";
+        $stmtOrg = $this->db->prepare($sqlOrg);
+        $stmtOrg->execute(['accountID' => $accountID]);
+        $org = $stmtOrg->fetch(PDO::FETCH_ASSOC);
+
+        if ($org) {
+            return $accountID; // Found in organization
+        }
+
+        // Now check in individual table
+        $sqlInd = "SELECT accountID FROM individual WHERE accountID = :accountID LIMIT 1";
+        $stmtInd = $this->db->prepare($sqlInd);
+        $stmtInd->execute(['accountID' => $accountID]);
+        $ind = $stmtInd->fetch(PDO::FETCH_ASSOC);
+
+        if ($ind) {
+            return $accountID; // Found in individual
+        }
+
+        return false;
+    }
+
     public function findByNIC($nic)
     {
         $query = "SELECT * FROM individual WHERE nic = :nic LIMIT 1";
@@ -375,7 +411,8 @@ class Account
         }
     }
 
-    public function updatePlan($accountID, $planID){
+    public function updatePlan($accountID, $planID)
+    {
         $query = "UPDATE account SET planID = :planID WHERE accountID = :accountID";
         $params = [
             'planID' => $this->planID,
@@ -384,7 +421,8 @@ class Account
         return $this->query($query, $params);
     }
 
-    public function getUserName($accountID){
+    public function getUserName($accountID)
+    {
         $query = "SELECT fname, lname FROM individual WHERE accountID = :accountID LIMIT 1";
         $params = ['accountID' => $accountID];
         $result = $this->query($query, $params);
@@ -392,13 +430,15 @@ class Account
         return $result ? $result[0] : null;
     }
 
-    public function incrementCounter($accountID) {
+    public function incrementCounter($accountID)
+    {
         $query = "UPDATE account SET counter = counter + 1 WHERE accountID = :accountID";
         $params = ['accountID' => $accountID];
         return $this->query($query, $params);
     }
 
-    public function getAccountData($accountID){
+    public function getAccountData($accountID)
+    {
         try {
             $sql = "SELECT a.counter, p.postLimit 
                     FROM account a 

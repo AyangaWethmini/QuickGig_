@@ -78,7 +78,7 @@ protectRoute([2]); ?>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?php echo ROOT; ?>/jobProvider/viewEmployeeProfile/<?php echo $completed->seekerID ?>"">View Profile</a></li>
                                     <li><a href="<?php echo ROOT; ?>/jobProvider/makeComplaint/<?php echo $completed->applicationID ?>">Complain</a></li>
-                                    <li><a href="<?php echo ROOT; ?>/jobProvider/review/<?= $completed->jobID ?>">review</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/jobProvider/review/<?= $completed->jobID ?>">Review</a></li>
                                 </ul>
                             </div>
                         </div>

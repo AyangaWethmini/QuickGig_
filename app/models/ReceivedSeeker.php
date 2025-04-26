@@ -22,7 +22,7 @@ class ReceivedSeeker{
     public function getReceivedRequests()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT r.*, i.accountID,
+        $query = "SELECT r.*, 
                          CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -77,7 +77,11 @@ class ReceivedSeeker{
     public function searchReceivedRequests($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT r.*, i.accountID,
+        $query = "SELECT r.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 
