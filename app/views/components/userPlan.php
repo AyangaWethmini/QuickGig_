@@ -37,9 +37,9 @@
                             </div>
                             <hr>
                             <div class="plan-actions flex-row user-plan-actions">
-                            <?php if ($plan->status === 'active' || $plan->status === 'trialing'): ?>
+                            <?php if (($plan->status === 'active' || $plan->status === 'trialing') && $plan->toBeCancelled != 1): ?>
                                 <button class="btn btn-del user-plan-cancel">Cancel Subscription</button>
-                                <?php endif; ?>
+                            <?php endif; ?>
                             </div>
                         </div>
                     <?php else: ?>

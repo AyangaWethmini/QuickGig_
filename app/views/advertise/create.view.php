@@ -26,6 +26,174 @@ require APPROOT . '/views/inc/header.php';
 .d-none {
     display: none;
 }
+
+/* --- Smoother form styling and layout --- */
+.wrapper {
+    background: linear-gradient(180deg, var(--brand-primary) 0%, #f8fbff 100%);
+    min-height: 100vh;
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    
+}
+
+.wrapper h2 {
+    font-size: 32px;
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* --- Title section --- */
+.ad-title .title {
+    font-size: 36px;
+    color: #2d2f48;
+    font-weight: 700;
+}
+
+.text-grey {
+    color: #6c757d;
+    font-size: 18px;
+}
+
+/* --- Section headings --- */
+.section h4 {
+    font-size: 22px;
+    color: #2d2f48;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border-left: 4px solid #4e54c8;
+    padding-left: 10px;
+}
+
+/* --- Input fields and textarea --- */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="date"],
+textarea {
+    background-color: #f9fbfd;
+    border: 1px solid #d1d9e6;
+    border-radius: 8px;
+    padding: 10px 14px !important;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+    border-color: #4e54c8;
+    box-shadow: 0 0 0 4px rgba(78, 84, 200, 0.1);
+}
+
+/* --- Buttons --- */
+.post-ad-btn {
+    background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.post-ad-btn:hover {
+    background: linear-gradient(135deg, #3a3fc5 0%, #757bfd 100%);
+}
+
+/* --- Price Estimate Box --- */
+.price-estimate {
+    background: #edf2fb;
+    border: 1px solid #ccd5e4;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* --- Image Preview --- */
+#preview {
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 10px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* --- Confirmation Modal --- */
+.confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(33, 37, 41, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.confirmation-modal .modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin-bottom: 15px;
+    color: #2d2f48;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: #6c757d;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-secondary {
+    background: #e2e6ea;
+    color: #495057;
+}
+
+.btn-secondary:hover {
+    background: #d0d4d8;
+}
+
+/* --- Responsive Tweaks --- */
+@media screen and (max-width: 768px) {
+    .equal-sections-form {
+        flex-direction: column;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+}
+
 </style>     
 
 
@@ -38,9 +206,15 @@ require APPROOT . '/views/inc/header.php';
 <!-- <link rel="stylesheet" href="<?=ROOT?>/assets/css/advertisement/create.css">  -->
 
 <div class="wrapper flex-row" style="margin-top: 100px;">
+<h2 class="title">Advertise With Us!</h2>
     <div class="main-content">
-        <div class="ad-title flex-row">
-            <h2 class="title">Advertise With Us!</h2>
+        
+        <div class="ad-title flex-col" style="text-align: left;">
+            
+            <p class="text-grey" style="margin-top: 10px; font-size: 20px;">
+            The advertisement rate is LKR 1000 per week. And this payment is not refundable. Please make sure that you have correctly filled all the information.
+            After being reviewed by us, your advertisement will be up on our website, and we will notify you soon.
+            </p>
         </div>
         <hr>
 
@@ -83,11 +257,11 @@ require APPROOT . '/views/inc/header.php';
                             <div class="flex-row" style="gap:30px;">
                                 <div>
                                     <label class="lbl">Start Date</label><br>
-                                    <input type="date" id="startDate" name="startDate" required>
+                                    <input type="date" id="startDate" name="startDate" required min="<?= date('Y-m-d'); ?>">
                                 </div>
                                 <div>
                                     <label class="lbl">End Date</label><br>
-                                    <input type="date" id="endDate" name="endDate" required>
+                                    <input type="date" id="endDate" name="endDate" required min="<?= date('Y-m-d'); ?>">
                                 </div>
                             </div>
                         </div>
@@ -114,6 +288,7 @@ require APPROOT . '/views/inc/header.php';
                                 <span class="visually-hidden">Loading...</span>
                             </div> -->
                         </button>
+                        <!-- <p class="conditions" >This payment is non-refund?/able. Please ensure all details are correct before proceeding.</p> -->
                     </div>
 
                     <!-- Image Preview -->
@@ -185,19 +360,52 @@ document.getElementById('email').addEventListener('blur', function() {
         console.error('Error:', err);
     });
 });
-
 // Handle form submission
 document.getElementById('advertisementForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
+    const estimatedAmount = document.getElementById('estimatedAmount').textContent;
+    const estimatedWeeks = document.getElementById('estimatedWeeks').textContent;
 
+    // Show confirmation popup
+    const modal = document.createElement('div');
+    modal.classList.add('confirmation-modal');
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>Confirm Submission</h3>
+            <p>The estimated price is <strong>${estimatedAmount}</strong> for <strong>${estimatedWeeks}</strong> weeks.</p>
+            <p>Please note that the payment is non-refundable. Do you wish to proceed?</p>
+            <div class="modal-actions">
+                <button id="confirmBtn" class="btn btn-accent">Confirm</button>
+                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Wait for user confirmation
+    const userConfirmed = await new Promise((resolve) => {
+        document.getElementById('confirmBtn').addEventListener('click', () => {
+            modal.remove();
+            resolve(true);
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            modal.remove();
+            resolve(false);
+        });
+    });
+
+    if (!userConfirmed) {
+        return; // Exit if user cancels
+    }
 
     // Show loading state
     submitBtn.disabled = true;
     btnText.textContent = 'Processing...';
-  
 
     try {
         const formData = new FormData(this);
@@ -233,7 +441,6 @@ document.getElementById('advertisementForm').addEventListener('submit', async fu
     } finally {
         submitBtn.disabled = false;
         btnText.textContent = 'Submit Ad';
-
     }
 });
 
@@ -264,9 +471,8 @@ document.getElementById('endDate').addEventListener('change', function() {
         this.value = '';
     }
 
-    if (document.getElementById('status-paid').checked) {
-        calculatePrice();
-    }
+    calculatePrice();
+    
 });
 
 document.getElementById('startDate').addEventListener('change', function() {

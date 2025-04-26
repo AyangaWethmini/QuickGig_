@@ -266,9 +266,8 @@ class Advertisement
     //     return $result[0]->count > 0; // Return true if count is greater than 0
     // }
 
-    public function getAdsToBeReviewed()
-    {
-        $query = "SELECT * FROM advertisement WHERE adStatus = 'inactive' AND onlineAd = 1 ORDER BY createdAt DESC";
+    public function getAdsToBeReviewed() {
+        $query = "SELECT * FROM advertisement WHERE adStatus = 'inactive' AND onlineAd = 1 AND rejected = 0 ORDER BY createdAt DESC";
         $result = $this->query($query);
         return $result ?: [];
     }
@@ -280,10 +279,12 @@ class Advertisement
         return $this->query($query, $params);
     }
 
-    public function rejectAd($adId)
-    {
+    public function rejectAd($adId) {
         $query = "UPDATE advertisement SET rejected = 1 WHERE advertisementID = :adId";
         $params = ['adId' => $adId];
         return $this->query($query, $params);
     }
+    
 }
+
+
