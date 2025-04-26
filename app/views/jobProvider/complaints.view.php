@@ -2,6 +2,7 @@
 <?php require_once APPROOT . '/views/inc/protectedRoute.php';
 protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing_myJobs.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/complaints.css">
 
 <body>
@@ -12,15 +13,6 @@ protectRoute([2]); ?>
             <div class="header">
                 <div class="heading">My Complaints</div>
             </div>
-            
-            <div class="search-container">
-                <input type="text"
-                    class="search-bar"
-                    placeholder="Search complaints"
-                    aria-label="Search">
-                <br><br>
-                
-            </div>
             <div class="complaints-container container">
                 <?php if (empty($data['complaints'])): ?>
                     <div class="empty-container">
@@ -29,12 +21,12 @@ protectRoute([2]); ?>
                     </div>
                 <?php else: ?>
                     <?php foreach ($data['complaints'] as $complaint): ?>
-                        <div class="complaint container">
+                        <div class="complaint container" style="background: linear-gradient(135deg, #e0f0ff, #f0e8ff);">
                             <div class="complaint-content flex-col">
                                 <div class="complaint-details flex-row">
                                     <div class="complaint-text flex-col">
-                                        <div class="the-complaint"><?php echo htmlspecialchars($complaint->content, ENT_QUOTES); ?></div>
-                                        <div class="text-grey">
+                                        <div class="the-complaint" style="font-size: 20px;"><?php echo htmlspecialchars($complaint->content, ENT_QUOTES); ?></div>
+                                        <div class="text-grey" style="font-size: 16px;">
                                             <?php
                                             $formattedTime = date('h:i:s', strtotime($complaint->complaintTime));
                                             echo htmlspecialchars($complaint->complaintDate . ' | ' . $formattedTime, ENT_QUOTES);
@@ -57,13 +49,13 @@ protectRoute([2]); ?>
                                 </div>
                                 <div class="complaint-actions flex-row">
                                     <button
-                                        class="btn btn-update <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>"
+                                        class="update-jobReq-button btn btn-accent <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>"
                                         <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?>
                                         onClick="window.location.href='<?= ROOT ?>/jobProvider/updateComplaint/<?= $complaint->complaintID ?>';">
                                         Update
                                     </button>
                                     <button
-                                        class="btn btn-delete <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>"
+                                        class="delete-jobReq-button btn btn-danger <?= $complaint->complaintStatus != 1 ? 'disabled-btn' : '' ?>"
                                         <?= $complaint->complaintStatus != 1 ? 'disabled' : '' ?>
                                         onclick="showDeletePopup('<?php echo htmlspecialchars($complaint->complaintID, ENT_QUOTES) ?>')">
                                         Delete

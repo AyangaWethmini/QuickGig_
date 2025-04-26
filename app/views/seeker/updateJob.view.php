@@ -99,7 +99,7 @@ protectRoute([2]);?>
                 </div>
                 <div class="user-input flex-col">
                     <label for="availableDate">Date</label>
-                    <input type="date" id="availableDate" name="availableDate" value="<?= htmlspecialchars($availability->availableDate) ?>" required>
+                    <input type="date" id="dateInput" name="availableDate" value="<?= htmlspecialchars($availability->availableDate) ?>" required>
                 </div>
             </div>
             <hr>

@@ -36,6 +36,7 @@ protectRoute([0]);
                                         echo $announcement->announcementDate . ' | ' . $formattedTime;
                                         ?>
                                     </div>
+                                    <div class="the-complaint" style="font-size: 1.8rem;"><?php echo $announcement->random; ?></div>
                                 </div>
                             </div>
                             <div class="complaint-actions flex-row">

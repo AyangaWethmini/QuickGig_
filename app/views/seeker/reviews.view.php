@@ -14,20 +14,12 @@ protectRoute([2]);?>
         <div class="header">
             <div class="heading">Reviews</div>
         </div>
-        <hr>
+        <br>
         <div class="search-container">
             <input type="text" 
                 class="search-bar" 
                 placeholder="Search reviews"
                 aria-label="Search">
-            <br><br>
-            <div class="filter-container">
-                <span>Sort by:</span>
-                <select id="sortSelect" onchange="sortContent()">
-                    <option value="recent">Latest</option>
-                    <option value="views">Oldest</option>
-                </select>
-            </div>
         </div>
         <div class="reviews-container container">
             <?php if (!empty($data)): ?>
