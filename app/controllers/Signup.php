@@ -4,13 +4,12 @@ require_once APPROOT . '/core/Database.php'; // Include the Database trait
 
 class Signup extends Controller
 {
-    use Database;  // Use the Database trait, don't instantiate it.
+    use Database;  
 
     private $model;
 
     public function __construct()
     {
-        // Now you can use the methods from the Database trait, including connect()
         $db = $this->connect();  // Use the connect method from the trait
         $this->model = new Account($db);  // Pass the connection to the Account model
     }

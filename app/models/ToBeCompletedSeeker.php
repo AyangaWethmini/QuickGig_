@@ -22,7 +22,7 @@ class ToBeCompletedSeeker{
     public function getReqAvailableTBC()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT r.*, i.accountID,
+        $query = "SELECT r.*, 
                          CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -52,7 +52,7 @@ class ToBeCompletedSeeker{
     public function getApplyJobTBC()
     {   
         $id = $_SESSION['user_id'];
-        $query = "SELECT a.*, i.accountID,
+        $query = "SELECT a.*, 
                         CASE 
                              WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                              THEN CONCAT(i.fname, ' ', i.lname) 
@@ -80,7 +80,11 @@ class ToBeCompletedSeeker{
     public function searchReqAvailableTBC($userID, $searchTerm)
     {
         $searchTerm = '%' . strtolower($searchTerm) . '%';
-        $query = "SELECT r.*, i.accountID,
+        $query = "SELECT r.*, CASE 
+                                 WHEN i.accountID IS NOT NULL 
+                                 THEN i.accountID 
+                                 ELSE o.accountID
+                             END AS accountID,
                         CASE 
                             WHEN i.fname IS NOT NULL AND i.lname IS NOT NULL 
                             THEN CONCAT(i.fname, ' ', i.lname) 

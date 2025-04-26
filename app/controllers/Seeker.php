@@ -624,11 +624,13 @@ class Seeker extends Controller
         if ($providerById == null) {
             $providerById = $job->getJobProviderByAvailableId($jobId);
         }
-        $revieweeData = $account->getUserData($providerById->accountID);
+        $revieweeData = $account->getUserData($providerById->providerID);
         if ($revieweeData == null) {
-            $revieweeData = $account->getOrgData($providerById->accountID);
-        }
-        $review = $reviewModel->readReviewSpecific($accountID, $providerById->accountID, $jobId, 1);
+            $revieweeData = $account->getOrgData($providerById->providerID);
+            $revieweeData['fname']= $revieweeData['orgName'];
+            $revieweeData['lname'] = '';
+        } 
+        $review = $reviewModel->readReviewSpecific($accountID, $providerById->providerID, $jobId, 1);
         $revieweeData['jobID'] = $jobId;
 
         if (!empty($review)) {

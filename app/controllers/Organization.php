@@ -381,6 +381,8 @@ class Organization extends Controller
         $revieweeData = $account->getUserData($SeekerById->seekerID);
         if ($revieweeData == null) {
             $revieweeData = $account->getOrgData($SeekerById->seekerID);
+            $revieweeData['fname']= $revieweeData['orgName'];
+            $revieweeData['lname'] = '';
         }
         $review = $reviewModel->readReviewSpecific($accountID, $SeekerById->seekerID, $jobId, 2);
         $revieweeData['jobID'] = $jobId;

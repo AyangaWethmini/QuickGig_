@@ -79,6 +79,7 @@ protectRoute([3]); ?>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?= ROOT ?>/organization/org_viewEmployeeProfile/<?= $completed->accountID ?>">View Profile</a></li>
                                     <li><a href="<?php echo ROOT; ?>/organization/makeComplaint/<?php echo $completed->applicationID ?>">Complain</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/organization/review/<?= $completed->jobID ?>">Review</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -129,6 +130,7 @@ protectRoute([3]); ?>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?= ROOT ?>/organization/org_viewEmployeeProfile/<?= $completed->accountID ?>">View Profile</a></li>
                                     <li><a href="<?php echo ROOT; ?>/organization/makeComplaint/<?php echo $completed->reqID ?>">Complain</a></li>
+                                    <li><a href="<?php echo ROOT; ?>/organization/review/<?= $completed->availableID ?>">Review</a></li>
                                 </ul>
                             </div>
                         </div>

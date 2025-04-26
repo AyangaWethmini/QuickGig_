@@ -485,12 +485,15 @@ class JobProvider extends Controller
 
         if ($SeekerById == null) {
             $SeekerById = $job->getJobSeekerByAvailableId($jobId);
+    
         }
 
 
         $revieweeData = $account->getUserData($SeekerById->seekerID);
         if ($revieweeData == null) {
             $revieweeData = $account->getOrgData($SeekerById->seekerID);
+            $revieweeData['fname']= $revieweeData['orgName'];
+            $revieweeData['lname'] = '';
         }
 
         $review = $reviewModel->readReviewSpecific($accountID, $SeekerById->seekerID, $jobId, 2);
@@ -597,7 +600,7 @@ class JobProvider extends Controller
         $this->view('jobListing_myJobs', $data);
     }
 
-    function jobListing_send()
+    function jobListing_send() 
     {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
