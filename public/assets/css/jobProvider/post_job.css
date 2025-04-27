@@ -172,11 +172,13 @@ p.heading{
 
 .main-content{
     margin-left: 250px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .wrapper{
     display: flex;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .btn {

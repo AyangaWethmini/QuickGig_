@@ -12,10 +12,6 @@ protectRoute([3]);?>
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
     <div class="main-content container post-job-form">
-        <p class="heading">
-            Post a Job
-        </p>
-        <hr>
 
         <form id="postJobForm" class="form-section container" action="<?php echo ROOT ?>/organization/job" method="POST">
             <div class="form-section flex-row container">
