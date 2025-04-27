@@ -155,7 +155,7 @@ protectRoute([3]); ?>
     </div>
 </div>
 
-<!-- Confirmation Popup -->
+
 <div id="confirmPopup" class="modal">
     <div class="modal-content">
         <p>Are you sure you want to request for this employee?</p>
@@ -164,14 +164,14 @@ protectRoute([3]); ?>
     </div>
 </div>
 
-<!-- Success Popup -->
+
 <div id="successPopup" class="modal">
     <div class="modal-content">
         <p>Your request has been submitted successfully!</p>
     </div>
 </div>
 
-<!-- Already Applied Popup -->
+
 <div id="alreadyAppliedPopup" class="modal">
     <div class="modal-content">
         <p>You have already requested for this.</p>
@@ -179,7 +179,7 @@ protectRoute([3]); ?>
     </div>
 </div>
 
-<!-- Map Modal -->
+
 <div id="mapModal" class="map-modal" style="display:none;">
     <div id="map"></div>
     <div class="mapBtns">
