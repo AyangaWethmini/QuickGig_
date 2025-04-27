@@ -40,17 +40,16 @@ class FindEmployees {
         $query = "SELECT COUNT(*) as count FROM req_available WHERE providerID = ? AND availableID = ?";
         $result = $this->query($query, [$providerID, $availableID]);
     
-        return $result[0]->count > 0; // Returns true if an application exists
+        return $result[0]->count > 0; 
     }
     
     public function applyForJob($reqID, $providerID, $availableID) {
         if ($this->hasAlreadyApplied($providerID, $availableID)) {
-            return false; // Prevent duplicate applications
+            return false; 
         }
     
-        //$dateApplied = date('Y-m-d');
-        //$timeApplied = date('H:i:s');
-        $reqStatus = 1; // Set to 1 as per requirements
+        
+        $reqStatus = 1; 
     
         $query = "INSERT INTO req_available (reqID, providerID, availableID, reqStatus) 
                   VALUES (?, ?, ?, ?)";

@@ -25,9 +25,9 @@ class Seeker extends Controller
     {
         $_SESSION['current_role'] = 2;
         if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
+            redirect('login'); 
         }
-        // Get user data
+        
 
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
@@ -52,31 +52,24 @@ class Seeker extends Controller
 
     function announcements()
     {
-        // Set items per page
+        
         $limit = 3;
 
-        // Get current page from URL, default to 1
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-        // Calculate offset (start from 0 for first page)
         $start = ($page - 1) * $limit;
 
-        // Get total announcements and paginated announcements
         $totalAnnouncements = $this->adminModel->getTotalAnnouncements();
         $announcements = $this->adminModel->getAnnouncementsPaginated($start, $limit);
 
-        // Calculate total pages
         $totalPages = ceil($totalAnnouncements / $limit);
 
-        // Ensure current page is within valid range
         if ($page > $totalPages && $totalPages > 0) {
             header('Location: ' . ROOT . '/admin/adminannouncement?page=1');
             exit;
         }
 
-        // Debug information (temporarily uncomment to check values)
-        // echo "Page: $page, Start: $start, Limit: $limit, Total: $totalAnnouncements<br>";
-        // print_r($announcements);
+        
 
         $data = [
             'announcements' => $announcements,
@@ -134,10 +127,10 @@ class Seeker extends Controller
 
             error_log("Delete account attempt for ID: " . $accountID);
 
-            // Verify email matches the account
+            
             $userData = $this->accountModel->getUserByID($accountID);
             if ($userData->email !== $email) {
-                // Email doesn't match
+                
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(401);
                     echo json_encode(['success' => false, 'message' => 'Email address does not match your account.']);
@@ -149,9 +142,9 @@ class Seeker extends Controller
                 }
             }
 
-            // Verify password
+           
             if (!password_verify($password, $userData->password)) {
-                // Password incorrect
+                
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(401);
                     echo json_encode(['success' => false, 'message' => 'Incorrect password.']);
@@ -163,9 +156,9 @@ class Seeker extends Controller
                 }
             }
 
-            // Verify confirmation text
+            
             if ($confirmText !== 'Delete my account') {
-                // Confirmation text incorrect
+               
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(400);
                     echo json_encode(['success' => false, 'message' => 'Please type "Delete my account" exactly as shown.']);
@@ -177,13 +170,13 @@ class Seeker extends Controller
                 }
             }
 
-            // All validations passed, proceed with account deletion
+           
             $result = $this->userModel->deleteUserById($accountID);
             error_log("Delete result: " . ($result ? "success" : "failure"));
 
             if ($result) {
-                // Success
-                session_destroy(); // Log out the user
+                
+                session_destroy(); 
 
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     echo json_encode(['success' => true]);
@@ -193,7 +186,7 @@ class Seeker extends Controller
                     exit;
                 }
             } else {
-                // Handle error
+               
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(500);
                     echo json_encode(['success' => false, 'message' => 'Failed to delete account. Please try again.']);
@@ -323,7 +316,7 @@ class Seeker extends Controller
             $jobModel = new FindJobs();
             $seekerID = $_SESSION['user_id'];
             $jobID = $_POST['jobID'];
-            $applicationID = uniqid('APP_'); // Generate a unique application ID
+            $applicationID = uniqid('APP_'); 
 
             $success = $jobModel->applyForJob($applicationID, $seekerID, $jobID);
 
@@ -339,22 +332,17 @@ class Seeker extends Controller
     {
         $accountID = $_SESSION['user_id'];
 
-        // Fetch the counter and postLimit from the database
-        $accountData = $this->accountModel->getAccountData($accountID); // Add this method in the Account model
+        $accountData = $this->accountModel->getAccountData($accountID); 
         $counter = $accountData->counter;
         $postLimit = $accountData->postLimit;
 
-        // Check if the counter exceeds the postLimit
         if ($counter >= $postLimit) {
-            // Set a session variable to show the popup message
             $_SESSION['postLimitExceeded'] = true;
 
-            // Redirect back to the job listing page
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
             exit();
         }
 
-        // Load the post job view if the limit is not exceeded
         $this->view('postJob');
     }
 
@@ -415,12 +403,10 @@ class Seeker extends Controller
             $success = $receivedSeekerModel->acceptRequest($reqID);
 
             if ($success) {
-                // Get the jobID from the application
                 $req = $receivedSeekerModel->getReqByID($reqID);
                 if ($req) {
                     $availableID = $req->availableID;
 
-                    // Update the request status
                     $receivedSeekerModel->updateAvailableStatus($availableID, 2);
 
                     header('Location: ' . ROOT . '/seeker/jobListing_received');
@@ -547,7 +533,6 @@ class Seeker extends Controller
             $title = trim($_POST['title']);
             $description = trim($_POST['description']);
 
-            // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
                 $_SESSION['error'] = 'Title and description cannot be empty.';
                 header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
@@ -573,7 +558,6 @@ class Seeker extends Controller
             $title = trim($_POST['title']);
             $description = trim($_POST['description']);
 
-            // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
                 $_SESSION['error'] = 'Title and description cannot be empty.';
                 header('Location: ' . ROOT . '/jobProvider/editQuestion/' . $id);
@@ -604,7 +588,6 @@ class Seeker extends Controller
     }
 
 
-    //help center done
 
     function reviews()
     {
@@ -1021,13 +1004,11 @@ class Seeker extends Controller
                 'categories' => json_encode($categories)
             ]);
 
-            // Redirect or handle based on success or failure
             if ($isPosted) {
                 $this->accountModel->incrementCounter($accountID);
-                header('Location: ' . ROOT . '/seeker/jobListing_myJobs'); // Replace with the appropriate success page
+                header('Location: ' . ROOT . '/seeker/jobListing_myJobs'); 
                 exit();
             } else {
-                // Handle errors (e.g., log them or show an error message)
                 echo "Failed to post availability. Please try again.";
             }
         }
@@ -1036,10 +1017,8 @@ class Seeker extends Controller
     public function updateAvailability($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-            // Prepare data for updating
             $description = trim($_POST['description']);
             $shift = $_POST['shift'];
             $salary = trim($_POST['salary']);
@@ -1050,7 +1029,6 @@ class Seeker extends Controller
             $location = trim($_POST['location']);
             $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
-            // Update availability in the database
             $this->availabilityModel = $this->model('Available');
             $this->availabilityModel->update($id, [
                 'description' => $description,
@@ -1064,19 +1042,15 @@ class Seeker extends Controller
                 'categories' => json_encode($categories)
             ]);
 
-            // Redirect to the availability page or another appropriate page
             header('Location: ' . ROOT . '/seeker/jobListing_myJobs');
         } else {
-            // Get the current availability details for the given ID
             $this->availabilityModel = $this->model('Available');
             $availability = $this->availabilityModel->getAvailabilityById($id);
 
-            // Pass the current availability data to the view
             $data = [
                 'availability' => $availability
             ];
 
-            // Load the update form view
             $this->view('updateJob', $data);
         }
     }

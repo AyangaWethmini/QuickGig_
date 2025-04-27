@@ -13,7 +13,6 @@ class Complaint
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
     }
 
 
@@ -88,7 +87,6 @@ class Complaint
 
             $result = $this->query($query, $params);
 
-            // Debug logging
             error_log("Query result for complaint ID $complaintId: " . print_r($result, true));
 
             if (!$result) {

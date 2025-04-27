@@ -47,17 +47,16 @@ class FindJobs {
         $query = "SELECT COUNT(*) as count FROM apply_job WHERE seekerID = ? AND jobID = ?";
         $result = $this->query($query, [$seekerID, $jobID]);
     
-        return $result[0]->count > 0; // Returns true if an application exists
+        return $result[0]->count > 0; 
     }
     
     public function applyForJob($applicationID, $seekerID, $jobID) {
         if ($this->hasAlreadyApplied($seekerID, $jobID)) {
-            return false; // Prevent duplicate applications
+            return false; 
         }
     
-        //$dateApplied = date('Y-m-d');
-        //$timeApplied = date('H:i:s');
-        $applicationStatus = 1; // Set to 1 as per requirements
+        
+        $applicationStatus = 1; 
     
         $query = "INSERT INTO apply_job (applicationID, seekerID, jobID, applicationStatus) 
                   VALUES (?, ?, ?, ?)";

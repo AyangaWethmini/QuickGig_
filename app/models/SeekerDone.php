@@ -15,7 +15,6 @@ class SeekerDone{
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
     }
 
 
@@ -43,7 +42,6 @@ class SeekerDone{
                   ORDER BY datePosted DESC, timePosted DESC";
         $result = $this->query($query, [$id]);
         
-        //error_log(print_r($result, true));
         
         return $result ? $result : [];
     }
@@ -77,12 +75,10 @@ class SeekerDone{
 
     public function getEmployerDetails($taskID)
     {
-        // Check if the taskID is in the reqID field of req_available
         $query = "SELECT COUNT(*) as count FROM req_available WHERE reqID = ?";
         $result = $this->query($query, [$taskID]);
 
         if ($result[0]->count > 0) {
-            // If taskID is found in req_available, execute the relevant query
             $query = "SELECT r.*, 
                             CASE 
                                  WHEN i.accountID IS NOT NULL 
@@ -102,7 +98,6 @@ class SeekerDone{
                       WHERE r.reqID = ?";
             $result = $this->query($query, [$taskID]);
         } else {
-            // If taskID is not found in req_available, check if it is in apply_job
             $query = "SELECT a.*, CASE 
                                  WHEN i.accountID IS NOT NULL 
                                  THEN i.accountID 

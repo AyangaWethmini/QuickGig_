@@ -31,12 +31,12 @@ class JobProvider extends Controller
 
     function index()
     {
-        // Ensure user is logged in
+        
         if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
+            redirect('login'); 
         }
         $_SESSION['current_role'] = 1;
-        // Get user data
+        
         $userId = $_SESSION['user_id'];
         $data = $this->accountModel->getUserData($userId);
         $rating = $this->reviewModel->readMyReview($userId, 1);
@@ -208,22 +208,19 @@ class JobProvider extends Controller
     {
         $accountID = $_SESSION['user_id'];
 
-        // Fetch the counter and postLimit from the database
-        $accountData = $this->accountModel->getAccountData($accountID); // Add this method in the Account model
+        
+        $accountData = $this->accountModel->getAccountData($accountID); 
         $counter = $accountData->counter;
         $postLimit = $accountData->postLimit;
 
-        // Check if the counter exceeds the postLimit
+       
         if ($counter >= $postLimit) {
-            // Set a session variable to show the popup message
             $_SESSION['postLimitExceeded'] = true;
 
-            // Redirect back to the job listing page
             header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
             exit();
         }
 
-        // Load the post job view if the limit is not exceeded
         $this->view('postJob');
     }
 
@@ -274,19 +271,15 @@ class JobProvider extends Controller
             $success = $receivedProviderModel->acceptRequest($applicationID);
 
             if ($success) {
-                // Get the jobID from the application
                 $application = $receivedProviderModel->getApplicationByID($applicationID);
                 $jobID = $application->jobID;
 
-                // Count the number of accepted applications for the job
                 $acceptedCount = $receivedProviderModel->countAcceptedApplications($jobID);
 
-                // Get the number of applicants allowed for the job
                 $jobModel = $this->model('Job');
                 $job = $jobModel->getJobById($jobID);
                 $noOfApplicants = $job->noOfApplicants;
 
-                // If the number of accepted applications equals the number of applicants, update the job status
                 if ($acceptedCount >= $noOfApplicants) {
                     $receivedProviderModel->updateJobStatus($jobID, 2);
                 }
@@ -342,7 +335,6 @@ class JobProvider extends Controller
             $avgRate = 0;
         }
 
-        // Pass data as associative array to the view
         $this->view('viewEmployeeProfile', ['data' => $employeeData, 'reviews' => $rating, 'avgRate' => $avgRate]);
     }
 
@@ -358,31 +350,23 @@ class JobProvider extends Controller
     }
     function announcements()
     {
-        // Set items per page
         $limit = 3;
 
-        // Get current page from URL, default to 1
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-        // Calculate offset (start from 0 for first page)
         $start = ($page - 1) * $limit;
 
-        // Get total announcements and paginated announcements
         $totalAnnouncements = $this->adminModel->getTotalAnnouncements();
         $announcements = $this->adminModel->getAnnouncementsPaginated($start, $limit);
 
-        // Calculate total pages
         $totalPages = ceil($totalAnnouncements / $limit);
 
-        // Ensure current page is within valid range
         if ($page > $totalPages && $totalPages > 0) {
             header('Location: ' . ROOT . '/admin/adminannouncement?page=1');
             exit;
         }
 
-        // Debug information (temporarily uncomment to check values)
-        // echo "Page: $page, Start: $start, Limit: $limit, Total: $totalAnnouncements<br>";
-        // print_r($announcements);
+    
 
         $data = [
             'announcements' => $announcements,
@@ -394,7 +378,6 @@ class JobProvider extends Controller
         $this->view('announcements', $data);
     }
 
-    //help center functionalities 
     function helpCenter()
     {
         $data = $this->helpModel->getUserQuestions($_SESSION['user_id']);
@@ -465,7 +448,7 @@ class JobProvider extends Controller
     }
 
 
-    //help center done
+    
 
     function reviews()
     {
@@ -957,13 +940,12 @@ class JobProvider extends Controller
                 'noOfApplicants' => $noOfApplicants,
                 'categories' => json_encode($categories)
             ]);
-            // Redirect or handle based on success or failure
             if ($isPosted) {
                 $this->accountModel->incrementCounter($accountID);
-                header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs'); // Replace with the appropriate success page
+                header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
                 exit();
             } else {
-                // Handle errors (e.g., log them or show an error message)
+                
                 echo "Failed to post job. Please try again.";
             }
         }
@@ -971,10 +953,8 @@ class JobProvider extends Controller
     public function updateJob($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-            // Prepare data for updating
             $description = trim($_POST['description']);
             $shift = $_POST['shift'];
             $salary = trim($_POST['salary']);
@@ -988,7 +968,6 @@ class JobProvider extends Controller
             $noOfApplicants = trim($_POST['noOfApplicants']);
             $categories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
-            // Update availability in the database
             $this->jobModel = $this->model('Job');
             $this->jobModel->update($id, [
                 'description' => $description,
@@ -1005,19 +984,15 @@ class JobProvider extends Controller
                 'categories' => json_encode($categories)
             ]);
 
-            // Redirect to the availability page or another appropriate page
             header('Location: ' . ROOT . '/jobProvider/jobListing_myJobs');
         } else {
-            // Get the current availability details for the given ID
             $this->jobModel = $this->model('Job');
             $job = $this->jobModel->getJobById($id);
 
-            // Pass the current availability data to the view
             $data = [
                 'job' => $job
             ];
 
-            // Load the update form view
             $this->view('updateJob', $data);
         }
     }
@@ -1040,10 +1015,8 @@ class JobProvider extends Controller
 
             error_log("Delete account attempt for ID: " . $accountID);
 
-            // Verify email matches the account
             $userData = $this->accountModel->getUserByID($accountID);
             if ($userData->email !== $email) {
-                // Email doesn't match
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(401);
                     echo json_encode(['success' => false, 'message' => 'Email address does not match your account.']);
@@ -1055,9 +1028,7 @@ class JobProvider extends Controller
                 }
             }
 
-            // Verify password
             if (!password_verify($password, $userData->password)) {
-                // Password incorrect
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(401);
                     echo json_encode(['success' => false, 'message' => 'Incorrect password.']);
@@ -1069,9 +1040,7 @@ class JobProvider extends Controller
                 }
             }
 
-            // Verify confirmation text
             if ($confirmText !== 'Delete my account') {
-                // Confirmation text incorrect
                 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     http_response_code(400);
                     echo json_encode(['success' => false, 'message' => 'Please type "Delete my account" exactly as shown.']);
@@ -1083,7 +1052,6 @@ class JobProvider extends Controller
                 }
             }
 
-            // All validations passed, proceed with account deletion
             $result = $this->userModel->deleteUserById($accountID);
             error_log("Delete result: " . ($result ? "success" : "failure"));
 

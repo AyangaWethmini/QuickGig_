@@ -15,7 +15,6 @@ class ReceivedSeeker{
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
     }
 
 
@@ -44,7 +43,7 @@ class ReceivedSeeker{
                   ORDER BY datePosted DESC, timePosted DESC";
         $result = $this->query($query, [$id]);
         
-        //error_log(print_r($result, true));
+       
         
         return $result ? $result : [];
     }

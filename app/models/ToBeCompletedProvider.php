@@ -15,7 +15,6 @@ class ToBeCompletedProvider{
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
     }
 
     public function getApplyJobTBC()
