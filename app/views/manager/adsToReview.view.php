@@ -40,7 +40,7 @@ protectRoute([1]);
                 $counter = 0;
 
                 if (count($ads) === 0): ?>
-                    <img src="" alt="">
+                    <img src="<?= ROOT ?>/assets/images/no-data.png" alt="no ads recieved" class="no-data-image-ad">
                 <?php else:
                     for ($i = $startIndex; $i < count($ads) && $counter < $adsPerPage; $i++):
                         $ad = $ads[$i];

@@ -68,11 +68,11 @@ protectRoute([1]);
                             <div class="flex-row" style="gap:93px;">
                                 <div>
                                     <label class="lbl">Start Date</label><br>
-                                    <input type="date" id="startDate" name="startDate" required>
+                                    <input type="date" id="startDate" name="startDate" min="<?= date('Y-m-d');?>" required>
                                 </div>
                                 <div>
                                     <label class="lbl">End Date</label><br>
-                                    <input type="date" id="endDate" name="endDate" required>
+                                    <input type="date" id="endDate" name="endDate" min="<?= date('Y-m-d');?>" required>
                                 </div>
                             </div>
                         </div>

@@ -68,11 +68,11 @@ class Subscription extends Controller
         //     exit;
         // }
 
-        if ($userPlan != 1) {
-            $_SESSION['error'] = 'You already have an active plan. Please cancel it before subscribing to a new plan.';
-            header('Location: ' . ROOT . '/subscription/premium');
-            exit;
-        }
+        // if ($userPlan != 1) {
+        //     $_SESSION['error'] = 'You already have an active plan. Please cancel it before subscribing to a new plan.';
+        //     header('Location: ' . ROOT . '/subscription/premium');
+        //     exit;
+        // }
 
         $customerID = $this->accountSubscriptionModel->ensureStripeCustomer($accountID, $email);
 

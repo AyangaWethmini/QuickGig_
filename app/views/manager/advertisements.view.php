@@ -26,58 +26,63 @@ protectRoute([1]);
         <div class="filter flex-row justify-between align-center">
             <div>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing <?= count($advertisements) ?> results</p>
+                <p class="text-grey">Showing <?=$advertisements ? count($advertisements) : '0' ?> results</p>
             </div>
         </div>
 
         <!-- Advertisement Cards -->
         <div class="ads-wrapper">
-            <div class="ads container">
-                <?php 
-                $adsPerPage = 3;
-                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                $startIndex = ($currentPage - 1) * $adsPerPage;
-                $counter = 0;
+    <div class="ads container">
+        <?php 
+        $adsPerPage = 3;
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $startIndex = ($currentPage - 1) * $adsPerPage;
+        $counter = 0;
+        ?>
 
-                for ($i = $startIndex; $i < count($advertisements) && $counter < $adsPerPage; $i++): 
-                    $ad = $advertisements[$i];
-                    $counter++;
-                ?> 
-                <div class="ad-card flex-row">
-                    <div class="image">
-                        <?php if ($ad->img): ?>
-                            <?php 
-                                $finfo = new finfo(FILEINFO_MIME_TYPE);
-                                $mimeType = $finfo->buffer($ad->img);
-                            ?>
-                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad image" style="width: 200px; height: 200px;">
-                        <?php else: ?>
-                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available">
-                        <?php endif; ?>
-                    </div>
-                    <div class="ad-details flex-col">
-                        <p class="adv-title"><strong><?= htmlspecialchars($ad->adTitle) ?></strong></p>
-                        <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                        <p class="description"><?= htmlspecialchars(substr($ad->adDescription, 0, 100)) . '...' ?></p>
-                        <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars(substr($ad->link, 0, 100)) . '...' ?></a></p>
-                        <div class="status">
-                            <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
-                                <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
-                            </span>
-                            <br>
-                            <p class="text-grey">Clicks: <?= htmlspecialchars($ad->clicks) ?> | Views: <?= htmlspecialchars($ad->views) ?></p>
-                        </div>
-                    </div>
-                    <div class="ad-actionbtns flex-col">
-                        <button class="btn btn-accent edit-ad-btn" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
-                        <button class="btn btn-del del-ad-btn" onclick="showConfirmation('Are you sure you want to delete the advertisement?', 
-                                () => submitForm('<?= ROOT ?>/manager/deleteAd/<?= htmlspecialchars($ad->advertisementID) ?>'))">Delete</button>
+        <?php if (empty($advertisements)): ?>
+            <img src="<?= ROOT ?>/assets/images/no-data.png" alt="no-ads" class="no-data-img-ad">
+        <?php else: 
+            for ($i = $startIndex; $i < count($advertisements) && $counter < $adsPerPage; $i++): 
+                $ad = $advertisements[$i];
+                $counter++;
+        ?> 
+            <div class="ad-card flex-row">
+                <div class="image">
+                    <?php if ($ad->img): ?>
+                        <?php 
+                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                        $mimeType = $finfo->buffer($ad->img);
+                        ?>
+                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad image" style="width: 200px; height: 200px;">
+                    <?php else: ?>
+                        <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available">
+                    <?php endif; ?>
+                </div>
+                <div class="ad-details flex-col">
+                    <p class="adv-title"><strong><?= htmlspecialchars($ad->adTitle) ?></strong></p>
+                    <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
+                    <p class="description"><?= htmlspecialchars(substr($ad->adDescription, 0, 100)) . '...' ?></p>
+                    <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars(substr($ad->link, 0, 100)) . '...' ?></a></p>
+                    <div class="status">
+                        <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
+                            <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
+                        </span>
+                        <br>
+                        <p class="text-grey">Clicks: <?= htmlspecialchars($ad->clicks) ?> | Views: <?= htmlspecialchars($ad->views) ?></p>
                     </div>
                 </div>
-                <?php endfor; ?>
+                <div class="ad-actionbtns flex-col">
+                    <button class="btn btn-accent edit-ad-btn" onclick="window.location.href='<?= ROOT ?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
+                    <button class="btn btn-del del-ad-btn" onclick="showConfirmation('Are you sure you want to delete the advertisement?', 
+                            () => submitForm('<?= ROOT ?>/manager/deleteAd/<?= htmlspecialchars($ad->advertisementID) ?>'))">Delete</button>
+                </div>
             </div>
-            
-        </div>
+        <?php endfor; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
 
         <!-- Pagination -->
         <div class="pagination flex-row">
