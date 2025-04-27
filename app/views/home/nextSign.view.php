@@ -144,8 +144,10 @@
         fetch('https://restcountries.com/v3.1/all')
             .then(response => response.json())
             .then(data => {
-
-                const countryCodeSelect = document.getElementById('countryCode');
+                const selects = [
+                    document.getElementById('countryCode'),
+                    document.getElementById('countryCode2')
+                ]; // Get both selects into an array
 
                 // Check if there's data
                 if (!data || data.length === 0) {
@@ -155,33 +157,31 @@
 
                 // Sort countries by name (alphabetically)
                 data.sort((a, b) => {
-                    const nameA = a.name.common.toUpperCase(); // Make the comparison case-insensitive
-                    const nameB = b.name.common.toUpperCase(); // Make the comparison case-insensitive
+                    const nameA = a.name.common.toUpperCase();
+                    const nameB = b.name.common.toUpperCase();
                     if (nameA < nameB) return -1;
                     if (nameA > nameB) return 1;
                     return 0;
                 });
 
-                // Loop through the sorted country data and populate the dropdown with country codes
+                // Loop through the sorted country data and populate BOTH dropdowns
                 data.forEach(country => {
-                    const countryName = country.name.common; // Get the country name
+                    const countryName = country.name.common;
                     let countryCode = '';
 
-                    // Check if the country has a valid 'idd' field and 'suffixes' array
                     if (country.idd && Array.isArray(country.idd.suffixes) && country.idd.suffixes.length > 0) {
-                        countryCode = country.idd.root + country.idd.suffixes[0]; // Get the full country code
+                        countryCode = country.idd.root + country.idd.suffixes[0];
                     }
 
-                    // If country code exists, create an option element
                     if (countryCode) {
-                        const option = document.createElement('option');
-                        option.value = countryCode; // Set the country code (without the + sign)
-                        option.textContent = `${countryCode} (${countryName})`; // Show the country code and name
-                        countryCodeSelect.appendChild(option);
+                        selects.forEach(select => {
+                            const option = document.createElement('option');
+                            option.value = countryCode;
+                            option.textContent = `${countryCode} (${countryName})`;
+                            select.appendChild(option);
+                        });
                     }
                 });
-
-                // Log the updated dropdown options
             })
             .catch(error => {
                 console.error('Error fetching country data:', error);

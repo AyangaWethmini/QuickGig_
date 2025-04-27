@@ -414,6 +414,12 @@ textarea:focus {
     font-style: italic;
 }
 
+.no-data-image-ad{
+    width : 500px;
+    height : 500px;
+    margin-top: 0px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 992px) {
     .main-content {

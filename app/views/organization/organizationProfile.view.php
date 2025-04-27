@@ -10,10 +10,8 @@ protectRoute([3]); ?>
 
 
 <body>
-    <div style="margin-top:80px;">
-        <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
-    </div>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
         <div class="wrapper flex-row">
             <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>

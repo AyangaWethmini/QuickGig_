@@ -32,7 +32,7 @@
             </a>
             <a href="<?php echo ROOT;?>/jobProvider/complaints" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
-                <span class="sidebar-label">complaints</span>
+                <span class="sidebar-label">Complaints</span>
             </a>
             <a href="<?php echo ROOT;?>/jobProvider/userReport" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-regular fa-chart-bar"></i></span>

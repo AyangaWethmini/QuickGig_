@@ -31,6 +31,7 @@ body {
     overflow-y: auto; /* Enable scrolling for long content */
     z-index: 10; /* Ensure it stays above other content */
     transition: transform 0.3s ease-in-out; /* Smooth transition for toggling */
+
 }
 
 .sidebar-items-container{

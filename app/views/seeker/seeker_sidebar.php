@@ -32,7 +32,7 @@
             </a>
             <a href="<?php echo ROOT;?>/seeker/complaints" class="sidebar-item">
                 <span class="sidebar-icon"><i class="fa-solid fa-list-check"></i></span>
-                <span class="sidebar-label">complaints</span>
+                <span class="sidebar-label">Complaints</span>
             </a>
 
             <a href="<?php echo ROOT;?>/seeker/userReport" class="sidebar-item">

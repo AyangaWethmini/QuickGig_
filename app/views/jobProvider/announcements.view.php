@@ -97,7 +97,7 @@ protectRoute([2]); ?>
         }
 
         .admin-announcement-header h1 {
-            font-size: 28px;
+            font-size: 24px;
             margin: 0;
             color: #333;
             font-weight: 600;
@@ -147,7 +147,7 @@ protectRoute([2]); ?>
         }
 
         .the-complaint {
-            font-size: 24px;
+            font-size: 22px;
             line-height: 1.6;
             color: #3a3b45;
             margin-bottom: 10px;
