@@ -140,7 +140,7 @@ class Signup extends Controller
                     header("Location: " . ROOT . "/home/nextSign");
                     exit;
                 }
-                $pattern2 = '/^\d{12}$|^\d{9}v$/';
+                $pattern2 = '/^\d{12}$|^\d{9}[vV]$/i';
 
                 if (!preg_match($pattern2, $nic)) {
                     $_SESSION['signup_errors'][] = "Invalid NIC number format.";
