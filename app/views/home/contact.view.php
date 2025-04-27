@@ -7,6 +7,7 @@
 
 
 <div class="contact-us">
+    <div class="form-card">
     <h1>Contact Us</h1>
     <p>If you have any questions or feedback, feel free to reach out!</p>
 
@@ -27,6 +28,7 @@
         </div>
 
         <button type="submit" class="btn-accent">Send Message</button>
+    </div>
 
 
         <?php

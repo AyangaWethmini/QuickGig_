@@ -5,11 +5,11 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/premium.css">
 
 <div class="main-premium" style="background: linear-gradient(180deg, var(--brand-primary) 0%, #f8fbff 100%); height: 100vh; padding: 20px;">
-    <div class="header-title">
+    <!-- <div class="header-title">
         <a href="<?= ROOT ?>/home" class="brand-link">
             <h1 class="brand-name">QuickGig</h1>
         </a>
-    </div>
+    </div> -->
 
     <main class="container">
 
