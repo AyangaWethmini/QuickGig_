@@ -161,6 +161,7 @@
     cursor: pointer;
     transition: var(--transition);
     border: none;
+    border-radius: 12px;
     font-size: 0.9rem;
     display: inline-flex;
     align-items: center;
@@ -306,7 +307,7 @@ textarea:focus {
     margin-top: 20px;
     padding: 20px 30px;
     border: none;
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -398,6 +399,18 @@ textarea:focus {
     color: #666;
     text-align: center;
     margin-top: 20px;
+}
+
+.edit-ad-btn, .del-ad-btn{
+    border-radius: 10px;
+}
+
+.nothing-recieved {
+    font-size: 1rem;
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
 }
 
 /* Responsive adjustments */

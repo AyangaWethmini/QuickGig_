@@ -69,8 +69,8 @@ protectRoute([1]);
                         </div>
                     </div>
                     <div class="ad-actionbtns flex-col">
-                        <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
-                        <button class="btn btn-del" onclick="showConfirmation('Are you sure you want to delete the advertisement?', 
+                        <button class="btn btn-accent edit-ad-btn" onclick="window.location.href='<?=ROOT?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
+                        <button class="btn btn-del del-ad-btn" onclick="showConfirmation('Are you sure you want to delete the advertisement?', 
                                 () => submitForm('<?= ROOT ?>/manager/deleteAd/<?= htmlspecialchars($ad->advertisementID) ?>'))">Delete</button>
                     </div>
                 </div>

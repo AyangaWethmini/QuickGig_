@@ -45,7 +45,7 @@
                 <?php if (!empty($announcements) && (is_array($announcements) || is_object($announcements))): ?>
                     <?php foreach ($announcements as $announcement): ?>
                         <div class="announcement-card flex-col container">
-                            <h3>Announcement ID: <?= htmlspecialchars($announcement->announcementID) ?></h3>
+                            <!-- <h3>Announcement ID: <?= htmlspecialchars($announcement->announcementID) ?></h3> -->
                             <p><?= htmlspecialchars($announcement->content) ?></p>
                             <button class="btn btn-del del-ann-btn" onclick = "showConfirmation('Are you sure you want to delete the advertisement?', 
                             () => submitForm('<?= ROOT ?>/manager/deleteAnnouncement/<?= htmlspecialchars($announcement->announcementID) ?>'))" >Delete</button>

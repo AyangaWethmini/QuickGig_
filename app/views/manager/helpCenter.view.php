@@ -31,7 +31,7 @@ protectRoute([1]);?>
                             
                             <form method="POST" action ="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>">
                                 <textarea name="reply" placeholder="Send a reply" required></textarea>
-                                <button class="btn btn-accent" type="submit">Reply</button>
+                                <button class="btn btn-accent submit-help-btn" type="submit">Reply</button>
                             </form>
                             
                             <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">
@@ -61,7 +61,7 @@ protectRoute([1]);?>
                 
                 <form method="POST" action="<?= ROOT ?>/manager/reply/<?= $q->helpID ?>" style="margin-top: 10px;">
                 <textarea name="reply" style="background-color: hsla(116, 76%, 87%, 1);" required><?= htmlspecialchars($q->reply) ?></textarea>
-                <button class="btn btn-accent" type="submit">Update Reply</button>
+                <button class="btn btn-accent update-help-btn" type="submit">Update Reply</button>
                 </form>
                 
                 <div class="date-time flex-row text-grey" style="font-size: 12px; gap: 10px;">

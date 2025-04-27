@@ -111,6 +111,11 @@
     background-color: #0056b3;
 }
 
+
+.submit-help-btn .update-help-btn{
+    border-radius: 15px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .wrapper {

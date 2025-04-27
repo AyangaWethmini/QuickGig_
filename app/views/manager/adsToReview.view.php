@@ -26,7 +26,7 @@ protectRoute([1]);
         <div class="filter flex-row justify-between align-center">
             <div>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing <?= count($ads) ?> results</p>
+                <p class="text-grey nothing-recieved">Showing <?= count($ads) ?> results</p>
             </div>
         </div>
 
@@ -39,50 +39,54 @@ protectRoute([1]);
                 $startIndex = ($currentPage - 1) * $adsPerPage;
                 $counter = 0;
 
-                for ($i = $startIndex; $i < count($ads) && $counter < $adsPerPage; $i++):
-                    $ad = $ads[$i];
-                    $counter++;
-                ?>
-                    <div class="ad-card flex-row">
-                        <div class="image">
-                            <?php if ($ad->img): ?>
-                                <?php
-                                $finfo = new finfo(FILEINFO_MIME_TYPE);
-                                $mimeType = $finfo->buffer($ad->img);
-                            ?>
-                            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad image" style="width: 200px; height: 200px;">
-                        <?php else: ?>
-                            <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available">
-                        <?php endif; ?>
-                    </div>
-                    <div class="ad-details flex-col">
-                        <p class="adv-title"><strong><?= htmlspecialchars($ad->adTitle) ?></strong></p>
-                        <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
-                        <p class="description"><?= htmlspecialchars(substr($ad->adDescription, 0, 100)) . '...' ?></p>
-                        <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars(substr($ad->link, 0, 100)) . '...' ?></a></p>
-                        <div class="status">
-                            <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
-                                <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
-                            </span>
-                            <br>
-                            <p class="text-grey">Clicks: <?= htmlspecialchars($ad->clicks) ?> | Views: <?= htmlspecialchars($ad->views) ?></p>
-                        </div>
-                    </div>
-                    <div class="ad-actionbtns flex-col">
-                    <form method="POST" action="<?=ROOT?>/manager/approveAd/<?= htmlspecialchars($ad->advertisementID) ?>">
-    <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
-    <button class="btn" style="background-color: green; width : 150px;" type="submit">Approve</button>
-</form>
+                if (count($ads) === 0): ?>
+                    <p class="text-grey">Nothing to review here.</p>
+                <?php else:
+                    for ($i = $startIndex; $i < count($ads) && $counter < $adsPerPage; $i++):
+                        $ad = $ads[$i];
+                        $counter++;
+                    ?>
+                        <div class="ad-card flex-row">
+                            <div class="image">
+                                <?php if ($ad->img): ?>
+                                    <?php
+                                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                    $mimeType = $finfo->buffer($ad->img);
+                                    ?>
+                                    <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad image" style="width: 200px; height: 200px;">
+                                <?php else: ?>
+                                    <img src="<?=ROOT?>/assets/images/placeholder.jpg" alt="No image available">
+                                <?php endif; ?>
+                            </div>
+                            <div class="ad-details flex-col">
+                                <p class="adv-title"><strong><?= htmlspecialchars($ad->adTitle) ?></strong></p>
+                                <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
+                                <p class="description"><?= htmlspecialchars(substr($ad->adDescription, 0, 100)) . '...' ?></p>
+                                <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars(substr($ad->link, 0, 100)) . '...' ?></a></p>
+                                <div class="status">
+                                    <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
+                                        <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
+                                    </span>
+                                    <br>
+                                    <p class="text-grey">Clicks: <?= htmlspecialchars($ad->clicks) ?> | Views: <?= htmlspecialchars($ad->views) ?></p>
+                                </div>
+                            </div>
+                            <div class="ad-actionbtns flex-col">
+                                <form method="POST" action="<?=ROOT?>/manager/approveAd/<?= htmlspecialchars($ad->advertisementID) ?>">
+                                    <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
+                                    <button class="btn" style="background-color: green; width : 150px;" type="submit">Approve</button>
+                                </form>
 
-<!-- Separate form for reject -->
-<form method="POST" action="<?=ROOT?>/manager/rejectAd/<?= htmlspecialchars($ad->advertisementID) ?>">
-    <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
-    <button class="btn btn-del" type="submit" style="width : 150px;">Reject </button>
-</form>
-                        
-                    </div>
-                </div>
-                <?php endfor; ?>
+                                <!-- Separate form for reject -->
+                                <form method="POST" action="<?=ROOT?>/manager/rejectAd/<?= htmlspecialchars($ad->advertisementID) ?>">
+                                    <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
+                                    <button class="btn btn-del" type="submit" style="width : 150px;">Reject </button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endfor;
+                endif;
+                ?>
             </div>
 
         </div>
