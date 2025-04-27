@@ -4,7 +4,7 @@ require_once APPROOT . '/core/Database.php'; // Include the Database trait
 
 class Signup extends Controller
 {
-    use Database;  
+    use Database;
 
     private $model;
 
@@ -140,6 +140,13 @@ class Signup extends Controller
                     header("Location: " . ROOT . "/home/nextSign");
                     exit;
                 }
+                $pattern2 = '/^\d{12}$|^\d{9}v$/';
+
+                if (!preg_match($pattern2, $nic)) {
+                    $_SESSION['signup_errors'][] = "Invalid NIC number format.";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
+                }
 
 
                 $individualData = [
@@ -181,6 +188,13 @@ class Signup extends Controller
 
                 if (!preg_match($pattern, $phone)) {
                     $_SESSION['signup_errors'][] = "Invalid phone number format.";
+                    header("Location: " . ROOT . "/home/nextSign");
+                    exit;
+                }
+                $pattern2 = '/^\d{3}\/\d{3}\/\d{3}$/';
+
+                if (!preg_match($pattern2, $BRN)) {
+                    $_SESSION['signup_errors'][] = "Invalid BRN number format.";
                     header("Location: " . ROOT . "/home/nextSign");
                     exit;
                 }
