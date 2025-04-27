@@ -296,7 +296,7 @@ protectRoute([1]); ?>
                 </div>
             </div>
 
-            <br><br>
+            <br>
 
             <!-- Report content -->
             <div id="report-content">
@@ -378,7 +378,7 @@ protectRoute([1]); ?>
                         </table>
                     </div>
                     <div>
-                        <br>
+                        
                         <table class="report-table">
                         <caption><h3>User Stats</h3></caption>
                             <thead>
