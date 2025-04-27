@@ -5,9 +5,6 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/aboutUs.css">
 
 <div class="aboutUs--main-container">
-  <div class="header-title">
-    <h1 class="brand-name">QuickGig</h1>
-  </div>
 
   <main class="about-container">
     <section class="about-section">
@@ -41,25 +38,24 @@
     </section>
   </main>
 
-  <footer class="footer" style="background-color: black;">
-    <div class="footer-content">
-      <div class="footer-logo-section">
-        <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
-        <p class="footer-text">
-          Great platform for job seekers who<br>
-          are passionate about startups. Find<br>
-          your dream job easier.
-        </p>
-      </div>
-
-      <div class="footer-links">
-        <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
-        <a href="<?= ROOT ?>/home/contact">Contact Us</a>
-      </div>
+</div>
+<footer class="footer" style="background-color: black;">
+  <div class="footer-content">
+    <div class="footer-logo-section">
+      <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
+      <p class="footer-text">
+        Great platform for job seekers who<br>
+        are passionate about startups. Find<br>
+        your dream job easier.
+      </p>
     </div>
 
-    <hr class="footer-divider">
-    <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
-  </footer>
+    <div class="footer-links">
+      <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
+      <a href="<?= ROOT ?>/home/contact">Contact Us</a>
+    </div>
+  </div>
 
-</div>
+  <hr class="footer-divider">
+  <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
+</footer>

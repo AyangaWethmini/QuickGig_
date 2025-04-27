@@ -9,10 +9,8 @@ protectRoute([2]); ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/reviews.css">
 
 <body>
-<div style="margin-top:80px;">
-    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
-</div>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
+    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
 
         <div class="wrapper flex-row">
                 <div class="profile-container">

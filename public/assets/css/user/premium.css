@@ -1,14 +1,9 @@
 .container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 1200px;
+    font-family: 'Poppins';
+    max-width: 1400px;
     margin: 100px auto;
     padding: 2rem;
 
-}
-
-.main-premium{
-    height: 100vh;
-    
 }
 
 .premium-title {

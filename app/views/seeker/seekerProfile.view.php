@@ -7,14 +7,12 @@ protectRoute([2]); ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/reviews.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing.css">
 
-<div style="margin-top:80px;">
-    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
-</div>
 
 <body>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
         <script src="<?= ROOT ?>/assets/js/jobProvider/individualProfile.js"></script>
         <div class="wrapper flex-row">
+        <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
 
             <div class="profile-container">
                 <div class="profile-header">
