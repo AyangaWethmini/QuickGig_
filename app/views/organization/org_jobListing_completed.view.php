@@ -139,7 +139,7 @@ protectRoute([3]); ?>
                 <?php if (empty($data['applyJobCompleted']) && empty($data['reqAvailableCompleted'])): ?>
                     <div class="empty-container">
                         <img src="<?= ROOT ?>/assets/images/no-data.png" alt="Empty" class="empty-icon">
-                        <p class="empty-text">Nothing Completed</p>
+                        <p class="empty-text">Nothing...</p>
                     </div>
                 <?php endif; ?>
             </div>
