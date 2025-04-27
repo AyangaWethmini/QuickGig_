@@ -57,8 +57,7 @@ protectRoute([2]); ?>
                             <p class="detail-items"><?= htmlspecialchars(($data['linkedIn'] ?? 'No link here')) ?></p><br>
                             <p class="title-items">FaceBook</p>
                             <p class="detail-items"><?= htmlspecialchars(($data['facebook'] ?? 'No link here')) ?></p><br>
-                            <p class="title-items">Website</p>
-                            <p class="detail-items">www.jakegyll.com</p>
+
                         </div>
                     </div>
 

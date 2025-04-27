@@ -35,7 +35,7 @@ protectRoute([3]); ?>
                                     <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
                                 </div>
                                 <button class="edit-profile-btn" onclick="window.location.href='<?= ROOT ?>/organization/organizationEditProfile'">
-                                    Edit Profile
+                                ✏️ Edit Profile
                                 </button>
                             </div>
                         </div>
@@ -54,8 +54,6 @@ protectRoute([3]); ?>
                             <p class="detail-items"><?= htmlspecialchars(($data['linkedIn'] ?? 'No link here')) ?></p><br>
                             <p class="title-items">FaceBook</p>
                             <p class="detail-items"><?= htmlspecialchars(($data['facebook'] ?? 'No link here')) ?></p><br>
-                            <p class="title-items">Website</p>
-                            <p class="detail-items">www.jakegyll.com</p>
                         </div>
                     </div>
                 </div>

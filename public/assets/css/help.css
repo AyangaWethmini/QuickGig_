@@ -1,6 +1,9 @@
+* {
+    box-sizing: border-box;
+  }
 .wrapper {
     flex-grow: 1;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .main-content {

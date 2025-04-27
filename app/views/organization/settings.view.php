@@ -5,7 +5,7 @@ protectRoute([3]); ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/settings.css">
 
 <div class="wrapper flex-row">
-    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
     <div class="main-content-settings">
         <div class="header">

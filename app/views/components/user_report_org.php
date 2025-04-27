@@ -1,7 +1,11 @@
 <!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/report.css"> -->
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     .wrapper {
-        margin-top: 100px;
+        margin-top: 80px;
         display: flex;
         width: 100%;
         min-height: 100vh;
