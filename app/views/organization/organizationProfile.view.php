@@ -11,7 +11,6 @@ protectRoute([3]); ?>
 
 <body>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
-    <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
         <div class="wrapper flex-row">
             <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
