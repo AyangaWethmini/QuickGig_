@@ -57,6 +57,24 @@
         unset($_SESSION['success']);
         ?>
 
-
-        
 </div>
+<footer class="footer" style="background-color: black;">
+    <div class="footer-content">
+        <div class="footer-logo-section">
+            <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="QuickGig Logo" class="footer-logo" />
+            <p class="footer-text">
+                Great platform for job seekers who<br>
+                are passionate about startups. Find<br>
+                your dream job easier.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="<?= ROOT ?>/home/aboutUs">About Us</a>
+            <a href="<?= ROOT ?>/home/contact">Contact Us</a>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+    <p class="copyright">&copy; 2024 QuickGig. All rights reserved.</p>
+</footer>

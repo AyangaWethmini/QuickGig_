@@ -361,6 +361,38 @@
   background-color: #372ad1;
 }
 
+/* NAVBAR USER ROLE */
+
+.nav-links-role {
+  display: flex; /* Use flexbox for centering */
+  font-family: 'Poppins';
+  color: #002366;
+  vertical-align: middle; /* Not needed with flex */
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 16px;
+  margin-right: 8px;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  /* box-shadow: 0 2px 6px rgba(0,0,0,0.07); */
+}
+
+/* .seeker-role {
+  background: linear-gradient(90deg, #4e9af1 0%, #6ed6f7 100%);
+  color: #fff;
+}
+
+.provider-role {
+  background: linear-gradient(90deg, #f1a54e 0%, #f76e6e 100%);
+  color: #fff;
+} */
+
+.nav-links-role i {
+  margin-right: 6px;
+}
+
 /* HAMBURGER MENU */
 .hamburger {
   display: none;

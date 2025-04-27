@@ -96,7 +96,7 @@ protectRoute([2]); ?>
             border-radius: 6px;
             background-color: #ffffff;
             background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 

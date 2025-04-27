@@ -41,6 +41,20 @@ if (isset($_SESSION['pp']) && !empty($_SESSION['pp'])) {
         </a>
       <?php else: ?>
         <div class="flex-row" style="gap: 10px;">
+          <?php
+          $hidden_pages = ['home', 'aboutUs', 'contact', 'premium', 'advertise'];
+          if (!in_array($current_page, $hidden_pages)):
+          ?>
+            <?php if (isset($_SESSION['current_role']) && $_SESSION['user_role'] == 2 && $_SESSION['current_role'] == 1): ?>
+              <span class="nav-links-role provider-role">
+                <i class="fa-solid fa-briefcase"></i> Job Provider
+              </span>
+            <?php elseif (isset($_SESSION['current_role']) && $_SESSION['user_role'] == 2 && $_SESSION['current_role'] == 2): ?>
+              <span class="nav-links-role seeker-role">
+                <i class="fa-solid fa-user"></i> Job Seeker
+              </span>
+            <?php endif; ?>
+          <?php endif; ?>
           <form action="<?= ROOT ?>/login/logout" method="POST" style="display: inline;">
             <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;margin-top: 10px; margin-right: 5px;">Log Out</button>
           </form>
