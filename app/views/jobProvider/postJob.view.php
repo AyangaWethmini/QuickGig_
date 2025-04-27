@@ -12,17 +12,18 @@ protectRoute([2]); ?>
     <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
 
     <div class="main-content container post-job-form">
-        <p class="heading">
+        <!-- <p class="heading">
             Post a Job
         </p>
-        <hr>
+        <hr> -->
 
         <form id="postJobForm" class="form-section container" action="<?php echo ROOT ?>/jobProvider/job" method="POST">
             <div class="form-section flex-row container">
-                <div class="container right-container">
-                    <p class="title">
-                        Basic Information
-                    </p>
+                <div class="container right-container basic-info-section">
+                    <div class="basic-info-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <p class="title">Basic Information</p>
                     <p class="text-grey desc">This information will be displayed publicly</p>
                 </div>
             </div>
