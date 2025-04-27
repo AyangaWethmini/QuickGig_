@@ -19,7 +19,6 @@ protectRoute([3]); ?>
             <hr> <br>
 
             <div class="list-header">
-                <p class="list-header-title">Ongoing List</p>
                 <form method="GET" action="<?= ROOT ?>/organization/org_jobListing_ongoing">
                     <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                 </form>

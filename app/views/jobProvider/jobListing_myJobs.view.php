@@ -22,7 +22,6 @@ $jobs = $jobModel->getJobsByUser($userID);
         </div> <hr> <br>
 
         <div class="list-header">
-            <p class="list-header-title">My Jobs</p>
             <form method="GET" action="<?= ROOT ?>/jobProvider/jobListing_myJobs">
                 <input type="text" name="search" class="search-input" placeholder="Search..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
             </form>
