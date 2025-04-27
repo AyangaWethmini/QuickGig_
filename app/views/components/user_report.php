@@ -1,169 +1,215 @@
 <!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/report.css"> -->
 <style>
-  * {
-    box-sizing: border-box;
-  }
-.wrapper {
-    margin-top: 80px;
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-  
-  .main-content {
-    margin-left: 300px;
-    flex: 1;
-    padding: 20px;
-  }
-  
-  /* Header */
-  .print-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #ddd;
-    padding: 10px 0;
-    margin-bottom: 20px;
-  }
-  
-  .print-header img {
-    height: 40px;
-  }
-  
-  .heading p {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  /* Footer */
-  .print-footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 12px;
-    color: #777;
-  }
-  
-  /* Table styling */
-  .report-table,
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  
-  .report-table th,
-  .report-table td,
-  table th,
-  table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: left;
-  }
-  
-  .report-table thead {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-  
-  /* Section headings */
-  .report-section h4 {
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  /* Print Styles */
-  @media print {
-    body {
-      margin: 0;
-      padding: 0;
-      font-size: 12pt;
-      color: #000;
-      background: #fff;
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-  
-    body * {
-      visibility: hidden;
-    }
-  
-    #print-area,
-    #print-area * {
-      visibility: visible;
-    }
-  
-    #print-area {
-      position: absolute;
-      left: 0;
-      top: 0;
+
+    .wrapper {
+      margin-top: 80px;
+      display: flex;
       width: 100%;
-      padding: 0;
-      margin: 0;
+      min-height: 100vh;
     }
-  
+
+    .main-content {
+      margin-left: 254px;
+      flex: 1;
+      padding: 30px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+
     .print-header {
       display: flex;
       justify-content: space-between;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 10mm;
-      border-bottom: 1px solid #ccc;
-      background: white;
+      align-items: center;
+      border-bottom: 2px solid #eee;
+      padding: 10px 0;
+      margin-bottom: 30px;
     }
-  
+
+    .print-header img {
+      height: 50px;
+    }
+
+    .heading p {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 0;
+      color: #2c3e50;
+    }
+
     .print-footer {
-      display: block;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 10mm;
-      border-top: 1px solid #ccc;
-      background: white;
-      font-size: 10pt;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
     }
-  
-    #report-content {
-      margin-top: 30mm;
-      margin-bottom: 20mm;
-    }
-  
-    .report-table,
+
     table {
-      font-size: 10pt;
-      page-break-inside: auto;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 15px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
-  
-    .report-table th,
-    .report-table td,
-    table th,
-    table td {
-      padding: 6pt;
-      border: 1px solid #999;
+
+    table th, table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
     }
-  
-    h4, tr, td, th {
-      page-break-inside: avoid;
+
+    table thead {
+      background-color: rgba(98, 70, 234, 0.7);
+      font-weight: bold;
+      color: #fff;
     }
-  
-    h4 {
-      page-break-after: avoid;
+
+    table tr:hover {
+      background-color: #f1f1f1;
     }
-  
-    .no-print {
-      display: none !important;
+
+    .sub-head-report{
+      font-size: 20px;
+      font-weight: 600;
+      color: #444;
+      margin-top: 20px !important;
     }
-  }
-  
-  .report-section p{
-    font-size: 16px;
-    margin: 8px 0;
-  }
+
+    .report-section h4 {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #444;
+      border-left: 4px solid var(--brand-primary);
+      padding-left: 10px;
+    }
+
+    .report-section p {
+      font-size: 17px;
+      margin: 10px 0;
+      color: #555;
+      padding-left: 10px;
+    }
+
+    .report-section p strong {
+      color: #333;
+      font-weight: 600;
+    }
+
+    hr {
+      margin: 30px 0;
+      border: 0;
+      border-top: 1px solid #eee;
+    }
+
+    .rpt-print {
+      margin-top: 20px;
+      background-color: var(--brand-primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .rpt-print:hover {
+      background-color: #45a049;
+    }
+
+    /* Updated: Smaller fonts in print */
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+        font-size: 9pt; /* Reduced from 10pt to 9pt */
+        color: #000;
+        background: #fff;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      #print-area, #print-area * {
+        visibility: visible;
+      }
+
+      #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .print-header {
+        display: flex;
+        justify-content: space-between;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 8mm;
+        border-bottom: 1px solid #ccc;
+        background: white;
+      }
+
+      .print-footer {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 8mm;
+        border-top: 1px solid #ccc;
+        background: white;
+        font-size: 9pt; /* Smaller footer font */
+      }
+
+      #report-content {
+        margin-top: 25mm;
+        margin-bottom: 20mm;
+      }
+
+      table {
+        font-size: 8pt; /* Smaller table text */
+        page-break-inside: auto;
+      }
+
+      table th, table td {
+        padding: 4pt; /* Tighter table spacing */
+        border: 1px solid #999;
+      }
+
+      h4, tr, td, th {
+        page-break-inside: avoid;
+      }
+
+      h4 {
+        page-break-after: avoid;
+        font-size: 12pt; /* Smaller heading */
+      }
+
+      p, span, div {
+        font-size: 9pt;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
 
 </style>
 <div class="wrapper">
@@ -194,7 +240,7 @@
                     <div class="report-section">
                         <h4>Task Statistics</h4><br>
                         <div class="posted-jobs-section">
-                        <p>Posted Jobs: <?= htmlspecialchars($postedJobs['count']) ?></p>
+                        <p class="sub-head-report">Posted Jobs: <?= htmlspecialchars($postedJobs['count']) ?></p>
                         
                         <?php if (!empty($postedJobs['jobs'])): ?>
                             <table>
@@ -226,7 +272,7 @@
                         <?php endif; ?>
                           
                     </div>
-                        <p>Tasks Completed(From Applications):</p>
+                        <p class="sub-head-report">Tasks Completed(From Applications):</p>
                         <div class="applied-job-section">
                             <!-- <p>Total Applications: <?= htmlspecialchars(count($appliedJobs['jobs'] ?? [])) ?></p> -->
 
@@ -264,7 +310,7 @@
                             <!-- <p>Rejected: <?= htmlspecialchars($rejectedCount ?? 0) ?></p> -->
                         </div>
 
-                        <p>Tasks Completed(From Requests):</p>
+                        <p class="sub-head-report">Tasks Completed(From Requests):</p>
                         <div class="applied-job-section">
                             <!-- <p>Total Applications: <?= htmlspecialchars(count($appliedJobs['jobs'] ?? [])) ?></p> -->
 
@@ -329,7 +375,7 @@
         </div>
 
         <!-- Print button -->
-        <button class="no-print btn btn-accent" onclick="printDiv()">Download Report</button>
+        <button class="no-print btn btn-accent rpt-print" onclick="printDiv()">Download Report</button>
     </div>
 </div>
 
