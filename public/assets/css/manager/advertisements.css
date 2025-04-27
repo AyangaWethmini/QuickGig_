@@ -1,8 +1,11 @@
 
+* {
+    box-sizing: border-box;
+  }
 .wrapper {
     position: relative;
     width: 100%;
-    margin-top: 100px;
+    margin-top: 80px;
     min-height: calc(100vh - 80px);
 }
 

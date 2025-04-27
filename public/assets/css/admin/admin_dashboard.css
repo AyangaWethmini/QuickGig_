@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+  }
 .admin-dashboard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

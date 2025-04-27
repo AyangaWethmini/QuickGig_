@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box;
+    box-sizing: border-box; 
   }
 .wrapper{
     margin-top: 80px;
@@ -8,6 +8,7 @@
 .main-content-reviews{
     margin-left: 250px;
     width: calc(100% - 250px);
+
 }
 
 .heading{
