@@ -156,26 +156,6 @@ protectRoute([2]); ?>
                 </div>
             </div>
             <hr>
-            <!--<div class="form-section flex-row container">
-                <div class="container right-container">
-                    <p class="title">
-                    Required Skills
-                    </p>
-                    <p class="text-grey desc">Add required skills for the job</p>
-                </div>
-                <div class="user-input flex-col">
-                    <div class="flex-row" style="gap: 20px;">
-                    <div class="btn btn-trans" onclick="addTag('skill')">+ Add Skills</div>
-                    <div class="btn btn-trans" onclick="addTag('language')">+ Add Languages</div>
-                    </div>
-                    <div class="tags-container" id="tags-container">
-                        ---Dynamic tags will appear here ---
-                    </div>
-                </div>
-            </div> 
-            
-            <hr>
-            -->
 
             <div class="form-section flex-row container">
                 <div class="container right-container">
@@ -248,53 +228,6 @@ protectRoute([2]); ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByhOqNUkNdVh5JDlawmbh-fxmgbVvE2Cg&libraries=places&callback=initMap"></script>
 
 <script>
-    /*
-  // Function to populate time dropdowns
-  function populateTimeDropdown(selectElement) {
-    for (let hour = 1; hour <= 12; hour++) {
-      for (let minutes = 0; minutes < 60; minutes += 30) {
-        const time = `${hour}:${String(minutes).padStart(2, '0')}`;
-        const option = document.createElement('option');
-        option.value = time;
-        option.textContent = time;
-        selectElement.appendChild(option);
-      }
-    }
-  }
-
-  // Select elements for start and end times
-  const startTimeSelect = document.getElementById('start-time-select');
-  const endTimeSelect = document.getElementById('end-time-select');
-
-  // Populate both dropdowns
-  populateTimeDropdown(startTimeSelect);
-  populateTimeDropdown(endTimeSelect);
-
-  function addTag(type) {
-        const tagText = prompt(`Enter ${type === 'skill' ? 'Skill' : 'Language'}`);
-        if (tagText) {
-            const tagContainer = document.getElementById('tags-container');
-            
-            // Create tag element
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = tagText;
-            
-            // Add remove button
-            const removeBtn = document.createElement('span');
-            removeBtn.className = 'remove-btn';
-            removeBtn.textContent = '×';
-            removeBtn.onclick = () => tag.remove();
-            
-            // Append remove button to tag
-            tag.appendChild(removeBtn);
-            
-            // Append tag to container
-            tagContainer.appendChild(tag);
-        }
-    }
-        */
-    // Set today's date as the minimum date
 
     let map;
     let marker;
@@ -329,24 +262,24 @@ protectRoute([2]); ?>
     function addTag(tagText) {
         const tagContainer = document.getElementById('tags-container');
 
-        // Create tag element
+        
         const tag = document.createElement('div');
         tag.className = 'tag';
         tag.textContent = tagText;
 
-        // Add remove button
+       
         const removeBtn = document.createElement('span');
         removeBtn.className = 'remove-btn';
         removeBtn.textContent = '×';
         removeBtn.onclick = () => tag.remove();
 
-        // Append remove button to tag
+      
         tag.appendChild(removeBtn);
 
-        // Append tag to container
+       
         tagContainer.appendChild(tag);
 
-        // Create hidden input to store tag value
+      
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'categories[]';
@@ -370,7 +303,7 @@ protectRoute([2]); ?>
         const selectedDate = document.getElementById('availableDate').value;
         if (selectedDate) {
             alert(`You selected: ${selectedDate}`);
-            // Add your submission logic here
+        
         } else {
             alert("Please select a date.");
         }
@@ -379,19 +312,18 @@ protectRoute([2]); ?>
     function initAutocomplete() {
         const locationInput = document.getElementById('locationInput');
 
-        // Initialize Google Places Autocomplete
+        
         autocomplete = new google.maps.places.Autocomplete(locationInput, {
-            //types: ['geocode'], // Restrict to geographical locations
+            
             componentRestrictions: {
                 country: "lk"
-            } // Restrict to Sri Lanka
+            } 
         });
 
-        // Listen for the place_changed event
+      
         autocomplete.addListener('place_changed', () => {
             const place = autocomplete.getPlace();
             if (place.geometry) {
-                // Update the selectedLocation variable with the new coordinates
                 selectedLocation = `${place.geometry.location.lat()},${place.geometry.location.lng()}`;
             }
         });
@@ -401,7 +333,7 @@ protectRoute([2]); ?>
         const defaultLatLng = {
             lat: 6.9271,
             lng: 79.8612
-        }; // Default to Colombo
+        }; 
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: defaultLatLng,
@@ -420,7 +352,6 @@ protectRoute([2]); ?>
         const modal = document.getElementById('mapModal');
         modal.style.display = 'block';
 
-        // Small delay to ensure modal is rendered before initializing/resizing map
         setTimeout(() => {
             if (!mapInitialized) {
                 initMap();
@@ -432,7 +363,7 @@ protectRoute([2]); ?>
                     lng: 79.8612
                 });
             }
-        }, 200); // 200ms delay is usually enough
+        }, 200); 
     }
 
     function closeMapModal() {
@@ -479,10 +410,10 @@ protectRoute([2]); ?>
         selectedLocation = `${latLng.lat()},${latLng.lng()}`;
     }
 
-    document.getElementById('locationInput').value = selectedLocation; // Update the input field with the selected location
-    closeMapModal(); // Close the modal after selecting a location
-    mapInitialized = true; // Set mapInitialized to true after the first initialization
-    document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
+    document.getElementById('locationInput').value = selectedLocation; 
+    closeMapModal(); 
+    mapInitialized = true; 
+    document.getElementById('mapModal').style.display = 'none'; 
 
     const form = document.getElementById("postJobForm");
     const popup = document.getElementById("error-popup");
@@ -494,17 +425,14 @@ protectRoute([2]); ?>
 
         let errors = [];
 
-        // Validate job title
         if (!jobTitle) {
             errors.push("Job Title is required and cannot be just spaces.");
         }
 
-        // Validate description
         if (!description) {
             errors.push("Description is required and cannot be just spaces.");
         }
 
-        // Validate salary
         if (!salary) {
             errors.push("Salary is required.");
         } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
@@ -514,7 +442,7 @@ protectRoute([2]); ?>
         }
 
         if (errors.length > 0) {
-            e.preventDefault(); // Stop form submission
+            e.preventDefault(); 
             showPopup(errors.join("<br>"));
         }
     });
@@ -525,6 +453,6 @@ protectRoute([2]); ?>
 
         setTimeout(() => {
             popup.style.display = "none";
-        }, 3000); // Hide after 3 seconds
+        }, 3000); 
     }
 </script>
