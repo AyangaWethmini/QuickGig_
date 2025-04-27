@@ -13,7 +13,7 @@
     <?php unset($_SESSION['postLimitExceeded']); ?>
 <?php endif; ?>
 <div class="opener bar">
-    <p class="title-name-opener">My Jobs</p>
+    <p class="title-name-opener">Job Listing</p>
     <a href="<?php echo ROOT; ?>/organization/org_postJob" class="post-job-btn">
         + Post a job
     </a>

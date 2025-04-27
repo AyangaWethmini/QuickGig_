@@ -14,7 +14,7 @@
 <?php endif; ?>
 <div>
     <div class="opener bar">
-        <p class="title-name-opener">Availabilities</p>
+        <p class="title-name-opener">Job Listing</p>
         <a href="<?php echo ROOT; ?>/seeker/postJob" class="post-job-btn">
             + Available
         </a>
