@@ -134,12 +134,16 @@
 
     <div class="home-announcement">
         <?php if (!empty($data['announcements']) && isset($data['announcements'][0])): ?>
-            <div class="home-announcement-content">
-                <div class="home-announcement-date">
-                    <?= htmlspecialchars($data['announcements'][0]->announcementDate) ?>
-                </div>
-                <div class="home-announcement-text">
-                    <?= htmlspecialchars($data['announcements'][0]->content) ?>
+            <div class="flex-row" style="margin-left:150px;">
+
+                <img src="<?=ROOT?>/assets/images/alert.png" class="alert-icon">
+                <div class="home-announcement-content">
+                    <div class="home-announcement-date">
+                     <?= htmlspecialchars($data['announcements'][0]->announcementDate) ?> 
+                    </div>
+                    <div class="home-announcement-text">
+                        <?= htmlspecialchars($data['announcements'][0]->content) ?> 
+                    </div>
                 </div>
             </div>
         <?php else: ?>

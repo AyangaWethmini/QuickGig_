@@ -1,5 +1,8 @@
+* {
+    box-sizing: border-box;
+  }
 .wrapper {
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .main-content {

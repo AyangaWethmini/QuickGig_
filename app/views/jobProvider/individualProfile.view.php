@@ -7,15 +7,23 @@ protectRoute([2]); ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/reviews.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing.css">
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/empty.css">
+<script src="<?= ROOT ?>/assets/js/jobProvider/individualProfile.js"></script>
+<?php require APPROOT . '/views/components/navbar.php'; ?>
 
 
 <body>
+<div style="margin-top:80px;">
+    <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+</div>
+
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
-        <script src="<?= ROOT ?>/assets/js/jobProvider/individualProfile.js"></script>
-        <?php require APPROOT . '/views/components/navbar.php'; ?>
+    
+    
+   
 
         <div class="wrapper flex-row">
-            <?php require APPROOT . '/views/jobProvider/jobProvider_sidebar.php'; ?>
+        
+            
             <div class="profile-container">
                 <div class="profile-header">
 
@@ -24,8 +32,8 @@ protectRoute([2]); ?>
                             <img id="profile-preview" class="edit-profile-photo"
                                 src="<?= !empty($data['pp']) ? 'data:image/jpeg;base64,' . base64_encode($data['pp']) : ROOT . '/assets/images/default.jpg' ?>"
                                 alt="Profile Photo">
-
                             <div class="profile-intro-cover">
+                                
                                 <div class="profile-intro">
                                     <div class="flex-row fit-content">
                                         <h2><?= htmlspecialchars(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? '')) ?></h2>

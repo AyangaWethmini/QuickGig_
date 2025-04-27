@@ -1,11 +1,13 @@
-/* Modernize the font */
+* {
+    box-sizing: border-box;
+  }
 body {
     font-family: 'Arial', sans-serif;
 }
 
 .wrapper {
     display: flex;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .make-complain-container {

@@ -4,7 +4,7 @@ protectRoute([1]); ?>
 
 <style>
 .wrapper {
-  margin-top: 100px;
+  margin-top: 80px;
   display: flex;
   width: 100%;
   min-height: 100vh;

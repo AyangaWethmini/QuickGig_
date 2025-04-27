@@ -10,19 +10,23 @@ protectRoute([3]); ?>
 
 
 <body>
+    <div style="margin-top:80px;">
+        <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+    </div>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
 
         <div class="wrapper flex-row">
-            <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+
             <div class="profile-container">
                 <div class="profile-header">
 
 
                     <div class="profile-info" style="background-image: url('<?= ROOT ?>/assets/images/profileBack.jpg');">
                         <div class="profile-overlay">
-                        <img id="profile-preview" class="edit-profile-photo"
+                            <img id="profile-preview" class="edit-profile-photo"
                                 src="<?= !empty($data['pp']) ? 'data:image/jpeg;base64,' . base64_encode($data['pp']) : ROOT . '/assets/images/default.jpg' ?>"
-                                alt="Profile Photo">                            <div class="profile-intro-cover">
+                                alt="Profile Photo">
+                            <div class="profile-intro-cover">
                                 <div class="profile-intro">
                                     <div class="flex-row fit-content">
                                         <h2><?= htmlspecialchars(($data['name'] ?? '')) ?></h2>

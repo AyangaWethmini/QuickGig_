@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/Components/manager_sidebar.css">
+<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/manager_sidebar.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <?php
