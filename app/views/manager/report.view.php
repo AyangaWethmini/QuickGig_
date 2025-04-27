@@ -61,14 +61,14 @@ protectRoute([1]); ?>
   line-height: 120%;
 }
 
-/* Hide print header and footer on screen */
+
 .print-header,
 .print-footer {
   display: none;
 }
 
 @media print {
-  /* Create a print-only container that won't affect screen layout */
+ 
   body.printing {
     margin: 0;
     padding: 0;
@@ -88,7 +88,7 @@ protectRoute([1]); ?>
     z-index: 9999;
   }
 
-  /* Print header styling */
+
   .print-header {
     display: flex;
     position: fixed;
@@ -115,14 +115,14 @@ protectRoute([1]); ?>
     font-size: 10pt;
   }
 
-  /* Adjust report content to avoid header/footer */
+ 
   #report-content {
-    margin-top: 25mm;  /* Space for header */
-    margin-bottom: 15mm; /* Space for footer */
+    margin-top: 25mm; 
+    margin-bottom: 15mm; 
     padding: 0 10mm;
   }
 
-  /* Table styling for print */
+ 
   .report-table {
     width: 100%;
     border-collapse: collapse;
@@ -137,30 +137,29 @@ protectRoute([1]); ?>
     padding: 4pt;
   }
 
-  /* Prevent page breaks inside important elements */
+
   h3, tr {
     page-break-inside: avoid;
   }
 
-  /* Add some space before headings */
   h3 {
     margin-top: 15px;
     margin-bottom: 10px;
     page-break-after: avoid;
   }
 
-  /* Hide non-print elements */
+
   .no-print {
     display: none !important;
   }
   
-  /* Ensure tables don't overflow */
+ 
   table {
     width: 100% !important;
     max-width: 100% !important;
   }
   
-  /* Force page breaks between sections */
+
   .revenue > div {
     page-break-inside: avoid;
     margin-bottom: 10mm;
@@ -198,9 +197,9 @@ protectRoute([1]); ?>
     font-size: 20px;
   }
 
-  /* Modal styling */
+
   .modal {
-    display: none; /* Hidden by default */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
@@ -248,7 +247,6 @@ protectRoute([1]); ?>
 
 
 
-<!-- Include custom CSS -->
 <!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/mgr_commons.css"> -->
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
@@ -410,11 +408,7 @@ protectRoute([1]); ?>
                             </tbody>
                         </table>
                     </div>
-                    <!-- <div>
-                        <h3>Tasks</h3>
-                        <p>Posted: </p>
-                        <p>Completed : </p>
-                    </div> -->
+                    
                 </div>
                     
             </div>
@@ -448,20 +442,20 @@ protectRoute([1]); ?>
 
 <script>
      function printDiv() {
-        // Add printing class to body without changing visible content
+        
         document.body.classList.add('printing');
         
-        // Open print dialog
+       
         window.print();
         
-        // Remove printing class after a short delay
+       
         setTimeout(function() {
             document.body.classList.remove('printing');
         }, 500);
     }
 
 
-    // Modal functionality
+   
     const dateModal = document.getElementById('dateModal');
     const dateRangeDisplay = document.getElementById('dateRange');
 

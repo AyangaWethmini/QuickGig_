@@ -205,7 +205,7 @@
     min-width: 280px;
 }
 
-/* Optional: Make image preview image responsive */
+
 #imagePreview img {
     max-width: 100%;
     height: auto;
@@ -214,7 +214,7 @@
 }
 
 
-/* Layout container */
+
 .equal-sections-form {
     display: flex;
     flex-direction: row;
@@ -225,7 +225,7 @@
 
 }
 
-/* Section base styles */
+
 .section {
     flex: 1;
     min-width: 300px;
@@ -239,7 +239,7 @@
     padding-bottom: 5px;
 }
 
-/* Input and label styles */
+
 .field {
     margin-bottom: 15px;
 }
@@ -272,12 +272,12 @@ textarea:focus {
     border-color: #4a90e2 !important;
 }
 
-/* File input */
+
 .custom-file-input {
     margin-top: 8px;
 }
 
-/* Radio buttons */
+
 .radio-btns {
     margin-top: 10px;
 }
@@ -287,7 +287,7 @@ textarea:focus {
     color: #333;
 }
 
-/* Image Preview */
+
 .image-preview {
     text-align: center;
 }
@@ -306,7 +306,7 @@ textarea:focus {
     display: none;
 }
 
-/* Button styling */
+
 .post-ad-btn {
     margin-top: 20px;
     padding: 10px 30px;
@@ -420,7 +420,7 @@ textarea:focus {
     margin-top: 0px;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 992px) {
     .main-content {
         width: 100%;

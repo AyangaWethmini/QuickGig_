@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/ads.css">
 
-<!-- Add this new CSS for the popup -->
+
 <style>
     .ad-popup {
         position: fixed;
-        bottom: -400px; /* Start hidden below viewport */
+        bottom: -400px;
         left: 0;
         right: 0;
         max-width: 800px;
@@ -19,7 +19,7 @@
     }
     
     .ad-popup.show {
-        bottom: 0; /* Show at bottom of viewport */
+        bottom: 0;
     }
     
     .popup-close {
@@ -41,7 +41,7 @@
         position: relative;
     }
     
-    /* Override some styles for popup layout */
+   
     .popup-content .promo-item-box {
         width: 100%;
         margin: 0;
@@ -52,14 +52,14 @@
     }
 </style>
 
-<!-- Popup container (initially hidden) -->
+
 <div class="ad-popup" id="adPopup">
     <button class="popup-close" onclick="closePopup()">&times;</button>
     <div class="popup-content">
 
 
     heloooooooo
-        <!-- Single ad will be shown here -->
+      
         <div class="promo-item-box" id="popupAdContainer">
             <!-- Ad content will be inserted here by JavaScript -->
         </div>

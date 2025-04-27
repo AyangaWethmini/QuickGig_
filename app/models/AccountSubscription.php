@@ -225,7 +225,6 @@ class AccountSubscription extends Account {
 
     public function cancelSubscription($subscriptionID, $accountID) {
         try {
-            // First check if subscription exists and belongs to this account
             $query = "SELECT * FROM subscriptions 
                       WHERE stripe_subscription_id = :subscription_id 
                       AND accountID = :accountID LIMIT 1";
@@ -240,7 +239,7 @@ class AccountSubscription extends Account {
                 return false;
             }
     
-            // Cancel with Stripe
+    
             $result = $this->stripeService->cancelSubscription($subscriptionID);
             
             if (!$result) {
@@ -248,7 +247,6 @@ class AccountSubscription extends Account {
                 return false;
             }
     
-            // Update local database - set toBeCancelled to 1 and status to active (Stripe will cancel at period end)
             $updateQuery = "UPDATE subscriptions 
                             SET status = 'active', 
                                 toBeCancelled = 1,
@@ -291,7 +289,6 @@ class AccountSubscription extends Account {
 
     public function markForCancellation($subscriptionID, $accountID) {
         try {
-            // Verify subscription belongs to account
             $query = "SELECT * FROM subscriptions 
                       WHERE stripe_subscription_id = :subscription_id 
                       AND accountID = :accountID LIMIT 1";
@@ -306,7 +303,6 @@ class AccountSubscription extends Account {
                 return false;
             }
     
-            // Cancel with Stripe (sets cancel_at_period_end=true)
             $stripeResult = $this->stripeService->cancelSubscription($subscriptionID);
             
             if (!$stripeResult) {
@@ -314,7 +310,6 @@ class AccountSubscription extends Account {
                 return false;
             }
     
-            // Update local database (set toBeCancelled=1)
             $query = "UPDATE subscriptions 
                       SET toBeCancelled = 1,
                           updated_at = NOW() 

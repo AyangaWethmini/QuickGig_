@@ -25,26 +25,7 @@ protectRoute([1]);
         <div class="ad-form flex-col">
             <div class="update-ad-form" id="update-ad">
                 <form action="<?=ROOT?>/manager/updateAdvertisement/<?= $data['ad']->advertisementID ?>" method="POST" enctype="multipart/form-data" class="equal-sections-form">
-                    <!-- Advertiser Details
-                    <div class="advertiser_details section">
-                        <h4>Advertiser Details</h4>
-                        <div class="field">
-                            <label class="lbl">Advertiser Name</label><br>
-                            <input type="text" id="advertiserName" name="advertiserName" value="<?= htmlspecialchars($data['ad']->advertiserName) ?>" required>
-                        </div>
-
-                        <div class="field">
-                            <label class="lbl">Contact Number</label><br>
-                            <input type="text" id="contact" name="contact" value="<?= htmlspecialchars($data['ad']->contact) ?>" required>
-                        </div>
-
-                        <div class="field">
-                            <label class="lbl">Email</label><br>
-                            <input type="email" id="email" name="email" value="<?= htmlspecialchars($data['ad']->email) ?>" required>
-                        </div>
-                    </div> -->
-
-                    <!-- Advertisement Details -->
+                   
                     <div class="advertisement-details section">
                         <h4>Advertisement Details</h4>
 

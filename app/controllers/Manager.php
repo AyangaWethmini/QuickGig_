@@ -53,7 +53,7 @@ class Manager extends Controller
         }
 
 
-        // print_r($extractedData); // Debugging line
+        
         $response = [
             'adCount' => $this->managerDashboardModel->adsPosted($startDate, $endDate),
             'subCount' => $this->managerDashboardModel->getSubscribersCount($startDate, $endDate),
@@ -73,7 +73,7 @@ class Manager extends Controller
         ];
 
 
-        // print_r($response); // Debugging line
+       
 
 
 
@@ -82,83 +82,6 @@ class Manager extends Controller
 
 
 
-
-    //backup code for the dashboard function
-    // public function index()
-    // {
-    //     // Current period (default or from POST)
-    //     $startDate = isset($_POST['startDate']) ? $_POST['startDate'] . ' 00:00:00' : date('Y-m-01 00:00:00');
-    //     $endDate = isset($_POST['endDate']) ? $_POST['endDate'] . ' 23:59:59' : date('Y-m-d 23:59:59');
-
-    //     // Calculate last month's period
-    //     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
-    //     $lastMonthEnd = date('Y-m-t 23:59:59', strtotime('-1 month'));
-
-    //     // Get current period data
-    //     $currentSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($startDate, $endDate);
-    //     $currentExtractedData = [];
-
-    //     if (is_array($currentSubscriptionData)) {
-    //         $currentExtractedData = array_map(function($item) {
-    //             return [
-    //                 'planName' => $item->planName,
-    //                 'subscriptionCount' => $item->subscription_count
-    //             ];
-    //         }, $currentSubscriptionData);
-    //     }
-
-    //     // Get last month's data
-    //     $lastMonthSubscriptionData = $this->systemReportModel->getSubscriptionRevenue($lastMonthStart, $lastMonthEnd);
-    //     $lastMonthExtractedData = [];
-
-    //     if (is_array($lastMonthSubscriptionData)) {
-    //         $lastMonthExtractedData = array_map(function($item) {
-    //             return [
-    //                 'planName' => $item->planName,
-    //                 'subscriptionCount' => $item->subscription_count
-    //             ];
-    //         }, $lastMonthSubscriptionData);
-    //     }
-
-    //     // Prepare response
-    //     $response = [
-    //         // Current period data
-    //         'current' => [
-    //             'adCount' => $this->managerDashboardModel->adsPosted($startDate, $endDate),
-    //             'subCount' => $this->managerDashboardModel->getSubscribersCount($startDate, $endDate),
-    //             'planCount' => $this->managerDashboardModel->getPlanCount(),
-    //             'revenue' => [
-    //                 'totalEarnings' => isset($currentSubscriptionData[0]->total_earning) ? $currentSubscriptionData[0]->total_earning : 0,
-    //                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($startDate, $endDate)['totalRevenue']
-    //             ],
-    //             'adViews' => $this->managerDashboardModel->getTotalAdViews($startDate, $endDate),
-    //             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($startDate, $endDate),
-    //             'subscriptionData' => $currentExtractedData,
-    //         ],
-
-    //         // Last month's data
-    //         'lastMonth' => [
-    //             'adCount' => $this->managerDashboardModel->adsPosted($lastMonthStart, $lastMonthEnd),
-    //             'subCount' => $this->managerDashboardModel->getSubscribersCount($lastMonthStart, $lastMonthEnd),
-    //             'revenue' => [
-    //                 'totalEarnings' => isset($lastMonthSubscriptionData[0]->total_earning) ? $lastMonthSubscriptionData[0]->total_earning : 0,
-    //                 'totalRevenue' => $this->systemReportModel->getAdsRevenue($lastMonthStart, $lastMonthEnd)['totalRevenue']
-    //             ],
-    //             'adViews' => $this->managerDashboardModel->getTotalAdViews($lastMonthStart, $lastMonthEnd),
-    //             'adClicks' => $this->managerDashboardModel->getTotalAdClicks($lastMonthStart, $lastMonthEnd),
-    //             'subscriptionData' => $lastMonthExtractedData,
-    //         ],
-
-    //         // Common data
-    //         'startDate' => $startDate,
-    //         'endDate' => $endDate,
-    //         'lastMonthStart' => $lastMonthStart,
-    //         'lastMonthEnd' => $lastMonthEnd,
-    //         'mgrName' => $this->managerModel->getManagerName($_SESSION['user_id']),
-    //     ];
-
-    //     $this->view('dashboard', $response);
-    // }
 
     public function profile()
     {
@@ -202,7 +125,7 @@ class Manager extends Controller
     public function plans()
     {
         $data = $this->planModel->getPlans();
-        // $subs = $this->accountSubscriptionModel->getActiveSubscriptions();
+       
         $this->view('plans', ['plans' => $data]);
     }
 
@@ -213,7 +136,7 @@ class Manager extends Controller
 
     public function advertisements()
     {
-        // $advertisers = $this->advertiserModel->getAdvertisers();
+       
         $data = $this->advertisementModel->getAdvertisements();
         $this->view('advertisements', ['advertisements' => $data]);
     }
@@ -281,10 +204,10 @@ class Manager extends Controller
             exit;
         }
 
-        // Generate a unique advertisement ID
+       
         $advertisementID = uniqid("AD", true);
 
-        // Form validation
+       
         $requiredFields = [
             'advertiserName',
             'contact',
@@ -303,7 +226,7 @@ class Manager extends Controller
             exit;
         }
 
-        // Validate that start date is earlier than end date
+       
         if (isset($_POST['startDate'], $_POST['endDate'])) {
             $startDate = strtotime($_POST['startDate']);
             $endDate = strtotime($_POST['endDate']);
@@ -328,15 +251,15 @@ class Manager extends Controller
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
-        // 
+        
         $contact = trim($_POST['contact']);
         if (!preg_match('/^07\d{8}$/', $contact)) {
-            // Validate contact number format (e.g., 07XXXXXXXX)
+            
             $_SESSION['error'] = "Invalid contact number. It must be in the format 07XXXXXXXX.";
             header('Location: ' . ROOT . '/manager/createAd');
             exit;
         }
-        // Clean input data
+       
         $advertiserName = trim($_POST['advertiserName']);
         $contact = trim($_POST['contact']);
         $email = trim($_POST['email']);
@@ -344,7 +267,7 @@ class Manager extends Controller
         $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
 
-        // If advertiser does not exist, create a new advertiser
+        
         if (!$advertiserId) {
             $newAdvertiserData = [
                 'advertiserID' => $advertiserId,
@@ -357,7 +280,7 @@ class Manager extends Controller
 
             $advertiserId = $this->advertiserModel->isAdvertiserExist($email);
 
-            // Verify if the advertiser was successfully created
+           
             if (!$advertiserId) {
                 error_log("Failed to create new advertiser. Email: " . $email);
                 $_SESSION['error'] = "Failed to create new advertiser.";
@@ -366,7 +289,7 @@ class Manager extends Controller
             }
         }
 
-        // Image handling - add more detailed error checking
+      
         $imageData = null;
         if ($_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -394,7 +317,7 @@ class Manager extends Controller
             }
         }
 
-        // Prepare advertisement data
+    
         $advertisementData = [
             'advertisementID' => $advertisementID,
             'advertiserID' => $advertiserId,
@@ -407,7 +330,7 @@ class Manager extends Controller
             'adStatus' => ($_POST['adStatus'] == 1) ? 'active' : 'inactive'
         ];
 
-        // Create advertisement with error handling
+        
         try {
             $result = $this->advertisementModel->createAdvertisement($advertisementData);
 
@@ -447,18 +370,18 @@ class Manager extends Controller
                 echo json_encode(['error' => 'No advertiser found with this email.']);
             }
         } else {
-            http_response_code(405); // Method Not Allowed
+            http_response_code(405); 
             echo json_encode(['error' => 'Invalid request method.']);
             exit;
         }
     }
 
 
-    // update advertisement
+    
     public function updateAdvertisement($id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Validate required fields
+           
             $requiredFields = ['adTitle', 'adDescription', 'link', 'startDate', 'endDate'];
             foreach ($requiredFields as $field) {
                 if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
@@ -468,7 +391,7 @@ class Manager extends Controller
                 }
             }
 
-            // Validate dates
+           
 
 
             $adTitle = trim($_POST['adTitle']);
@@ -478,7 +401,6 @@ class Manager extends Controller
             $endDate = trim($_POST['endDate']);
             $adStatus = isset($_POST['adStatus']) && $_POST['adStatus'] === 'active' ? 1 : 0;
 
-            // Prepare update data
             $updateData = [
                 'adTitle' => $adTitle,
                 'adDescription' => $adDescription,
@@ -488,7 +410,7 @@ class Manager extends Controller
                 'adStatus' => $adStatus
             ];
 
-            // Handle image upload if provided
+            
             if (isset($_FILES['adImage']) && $_FILES['adImage']['error'] === UPLOAD_ERR_OK) {
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
                 $fileType = mime_content_type($_FILES['adImage']['tmp_name']) ?: $_FILES['adImage']['type'];
@@ -515,14 +437,14 @@ class Manager extends Controller
 
                 $updateData['img'] = $imageData;
             } else {
-                // Retain existing image if no new image is uploaded
+                
                 $existingAd = $this->advertisementModel->getAdById($id);
                 if ($existingAd && isset($existingAd->img)) {
                     $updateData['img'] = $existingAd->img;
                 }
             }
 
-            // Update advertisement in the database
+            
             try {
                 $this->advertisementModel->update($id, $updateData);
                 $_SESSION['success'] = "Advertisement updated successfully.";
@@ -566,12 +488,12 @@ class Manager extends Controller
 
     public function deleteAD($id)
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Check for POST request
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
             $this->advertisementModel->delete($id);
             header('Location: ' . ROOT . '/manager/advertisements');
             $_SESSION['success'] = "Advertisement deleted successfully.";
         } else {
-            // Handle the case where the request method is not POST
+            
             header('Location: ' . ROOT . '/manager/advertisements');
             $_SESSION['error'] = "Failed to delete advertisement.";
         }
@@ -596,13 +518,13 @@ class Manager extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            // Clear any existing session errors
+            
             unset($_SESSION['error']);
             unset($_SESSION['success']);
 
             $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit', 'currency', 'recInterval'];
 
-            // Validate required fields
+           
             foreach ($requiredFields as $field) {
                 if (!array_key_exists($field, $_POST) || trim($_POST[$field]) === '') {
                     $_SESSION['error'] = "The field '" . $field . "' is required.";
@@ -611,7 +533,7 @@ class Manager extends Controller
                 }
             }
 
-            // Validate numeric fields
+           
             if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
                 $_SESSION['error'] = "Duration, price, and post limit must be numeric.";
                 header('Location: ' . ROOT . '/manager/plans');
@@ -624,14 +546,14 @@ class Manager extends Controller
                 exit;
             }
 
-            // Validate currency
+            
             if (strlen(trim($_POST['currency'])) !== 3) {
                 $_SESSION['error'] = "Currency must be a 3-letter code.";
                 header('Location: ' . ROOT . '/manager/plans');
                 exit;
             }
 
-            // Additional string length checks
+            
             if (strlen(trim($_POST['planName'])) > 20) {
                 $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
                 header('Location: ' . ROOT . '/manager/plans');
@@ -644,7 +566,7 @@ class Manager extends Controller
                 exit;
             }
 
-            // Prepare sanitized data
+            
             $data = [
                 'planName' => trim($_POST['planName']),
                 'description' => trim($_POST['description']),
@@ -679,10 +601,10 @@ class Manager extends Controller
         exit;
     }
 
-    // delete plan
+    
     public function deletePlan($id)
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Check for POST request
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
             if (!$this->planModel->deletePlan($id)) {
                 $_SESSION['error'] = "This plan cannot be deleleted as it has active subscribers.";
             } else {
@@ -690,7 +612,7 @@ class Manager extends Controller
             }
             header('Location: ' . ROOT . '/manager/plans');
         } else {
-            // Handle the case where the request method is not POST
+            
             header('Location: ' . ROOT . '/manager/plans');
         }
     }
@@ -705,11 +627,11 @@ class Manager extends Controller
     public function updatePlan($id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Clear any existing session errors
+            
             unset($_SESSION['error']);
             unset($_SESSION['success']);
 
-            // Validation: Ensure required fields are present and not empty
+            
             $requiredFields = ['planName', 'description', 'duration', 'price', 'postLimit'];
             foreach ($requiredFields as $field) {
                 if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
@@ -730,14 +652,14 @@ class Manager extends Controller
                 $updateData['stripe_price_id'] = null;
             }
 
-            // Validate numeric fields
+            
             if (!is_numeric($_POST['duration']) || !is_numeric($_POST['price']) || !is_numeric($_POST['postLimit'])) {
                 $_SESSION['error'] = "Duration, price, and post limit must be numeric.";
                 header('Location: ' . ROOT . '/manager/updatePlanForm.' . $id);
                 exit;
             }
 
-            // Validate string length for plan name and description
+            
             if (strlen(trim($_POST['planName'])) > 20) {
                 $_SESSION['error'] = "Plan name must be 20 characters or fewer.";
                 header('Location: ' . ROOT . '/manager/updatePlanForm' . $id);
@@ -750,7 +672,7 @@ class Manager extends Controller
                 exit;
             }
 
-            // Prepare update data
+            
             $updateData = [
                 'planName' => trim($_POST['planName']),
                 'description' => trim($_POST['description']),
@@ -761,7 +683,7 @@ class Manager extends Controller
                 'active' => isset($_POST['active']) ? 1 : 0
             ];
 
-            // Attempt to update the plan
+           
             try {
                 $result = $this->planModel->update($id, $updateData);
                 if ($result) {
@@ -778,7 +700,6 @@ class Manager extends Controller
             exit;
         }
 
-        // Redirect if not a POST request
         header('Location: ' . ROOT . '/manager/plans');
         exit;
     }
@@ -789,7 +710,7 @@ class Manager extends Controller
     public function reply($id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation: Ensure reply is not empty
+           
             if (empty(trim($_POST['reply']))) {
                 $_SESSION['error'] = "Reply cannot be empty.";
                 header('Location: ' . ROOT . '/manager/helpCenter');
@@ -813,7 +734,7 @@ class Manager extends Controller
         }
     }
 
-    //announcements
+
     public function createAnnouncements($data)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -837,19 +758,19 @@ class Manager extends Controller
 
     public function getDashboardData()
     {
-        // Get the start and end date from the POST request
+       
         $data = json_decode(file_get_contents('php://input'), true);
         $startDate = $data['startDate'];
         $endDate = $data['endDate'];
 
-        // Fetch data from your database using the functions
+       
         $adCount = $this->advertisementModel->getAdsCountDateRange($startDate, $endDate);
         $adRev = $this->advertisementModel->getAdRev($startDate, $endDate);
         $subRevData = $this->accountSubscriptionModel->getSubRev($startDate, $endDate);
         $planCount = $this->planModel->getPlansCount();
         $manager = $this->managerModel->getManagerName($_SESSION['accountID']);
 
-        // Prepare the response data
+       
         $response = [
             'success' => true,
             'adCount' => $adCount,
@@ -860,7 +781,7 @@ class Manager extends Controller
             'managerName' => $manager ? $manager->fname : 'Manager'
         ];
 
-        // Return data as a JSON response
+        
         echo json_encode($response);
     }
 

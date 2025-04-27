@@ -9,7 +9,7 @@ protectRoute([1]); ?>
     
     <div class="main-content">
         <div class="plans-section">
-            <!-- Header Section -->
+            
             <div class="plan-header flex-row">
                 <br>
                 <h2> Active Subscriptions </h2>
@@ -18,14 +18,13 @@ protectRoute([1]); ?>
 
             
         <div class="all-subscriptions">
-            <!-- <p>Here , some changes has to be  done!</p> -->
-            <!-- <h2>Subscribers</h2> -->
+            
     
             <?php if (isset($subs) && is_array($subs)): ?>
             <table class="subscribers-table">
                 <thead>
                 <tr>
-                    <!-- <th>Subscriber ID</th> -->
+                   
                     <th>Account ID</th>
                     <th>Subscription ID</th>
                     <th>Current Period Start</th>
@@ -35,7 +34,6 @@ protectRoute([1]); ?>
                 <tbody>
                 <?php foreach ($subs as $subscriber): ?>
                     <tr>
-                    <!-- <td><?= htmlspecialchars($subscriber->id) ?></td> -->
                     <td><?= htmlspecialchars($subscriber->accountID) ?></td>
                     <td><?= htmlspecialchars($subscriber->stripe_subscription_id) ?></td>
                     <td><?= htmlspecialchars($subscriber->current_period_start) ?></td>

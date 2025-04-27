@@ -11,7 +11,7 @@ protectRoute([1]); ?>
 
     <div class="main-content">
         <div class="plans-section">
-            <!-- Header Section -->
+            
             <div class="plan-header flex-row">
                 <br>
                 <h2>Subscription Plans</h2>
@@ -103,11 +103,10 @@ protectRoute([1]); ?>
                             </label>
                         </div>
 
-                        <button type="submit" class="btn btn-accent" name="createPlan">Create Plan</button>
+                        <button type="submit" class="btn btn-accent plan-submit" name="createPlan">Create Plan</button>
                     </form>
                 </div>
 
-                <!-- Display Plans Section -->
                 <div class="all-plans flex-col container">
                     <?php if (is_array($plans) || is_object($plans)): ?>
                         <?php foreach ($plans as $plan): ?>
@@ -121,8 +120,8 @@ protectRoute([1]); ?>
                                     <li>Duration: <?= htmlspecialchars($plan->duration) ?> months</li>
                                 </ul>
                                 <div class="sub-btns flex-row" style="gap: 30px;">
-                                    <button class="btn btn-accent" onclick="window.location.href='<?= ROOT ?>/manager/updatePlanForm/<?= $plan->planID ?>'">Edit Plan</button>
-                                    <button class="btn btn-del" onclick="showConfirmation('Are you sure you want to delete the Plan?', 
+                                    <button class="btn btn-accent plan-edit" onclick="window.location.href='<?= ROOT ?>/manager/updatePlanForm/<?= $plan->planID ?>'">Edit Plan</button>
+                                    <button class="btn btn-del plan-del" onclick="showConfirmation('Are you sure you want to delete the Plan?', 
                                 () => submitForm('<?= ROOT ?>/manager/deletePlan/<?= htmlspecialchars($plan->planID) ?>'))">Delete Plan</button>
                                 </div>
                             </div>
@@ -149,28 +148,7 @@ protectRoute([1]); ?>
 </div>
 
 <script>
-    // function deletePlan(planId) {
-    //     if (confirm('Are you sure you want to delete this Plan?')) {
-    //         fetch(`<?= ROOT ?>/manager/deletePlan/${planId}`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             }
-    //         })
-    //         .then(response => {
-    //             if (response.ok) {
-    //                 alert('Plan deleted successfully');
-    //                 window.location.reload();
-    //             } else {
-    //                 alert('An error occurred');
-    //             }
-    //         });
-    //     }
-    // }
-
-
-
-    //frontend validation 
+       
     document.getElementById('createPlanForm').addEventListener('submit', function(e) {
         const planName = document.getElementById('planName').value.trim();
         const price = document.getElementById('price').value.trim();
@@ -179,42 +157,42 @@ protectRoute([1]); ?>
         const description = document.getElementById('description').value.trim();
         const stripePriceId = document.getElementById('stripe_price_id').value.trim();
 
-        // Validate Plan Name
+    
         if (planName === '' || planName.length > 20) {
             alert('Plan Name is required and must not exceed 20 characters.');
             e.preventDefault();
             return;
         }
 
-        // Validate Price
+      
         if (price === '' || isNaN(price) || parseFloat(price) <= 0) {
             alert('Price is required and must be a positive number.');
             e.preventDefault();
             return;
         }
 
-        // Validate Number of Posts
+     
         if (posts === '' || isNaN(posts) || parseInt(posts) <= 0) {
             alert('Number of posts is required and must be a positive integer.');
             e.preventDefault();
             return;
         }
 
-        // Validate Duration
+     
         if (duration === '' || isNaN(duration) || parseInt(duration) <= 0) {
             alert('Duration is required and must be a positive integer.');
             e.preventDefault();
             return;
         }
 
-        // Validate Description
+     
         if (description === '' || description.length > 1000) {
             alert('Description is required and must not exceed 1000 characters.');
             e.preventDefault();
             return;
         }
 
-        // Validate Stripe Price ID (optional)
+        
         if (stripePriceId !== '' && (stripePriceId.length > 50 || !/^price_[a-zA-Z0-9]+$/.test(stripePriceId))) {
             alert('Stripe Price ID must not exceed 50 characters and must match the format "price_xxxxxxxx".');
             e.preventDefault();

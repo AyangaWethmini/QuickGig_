@@ -1,4 +1,3 @@
-/* ===== Layout Structure ===== */
 * {
     box-sizing: border-box;
   }
@@ -24,7 +23,7 @@
     padding: 20px 0;
 }
 
-/* ===== Form Section ===== */
+
 .create-announcement-form {
     margin-top: 40px;
     padding: 30px;
@@ -93,7 +92,7 @@
     background-color: #372ebf;
 }
 
-/* ===== Announcements List ===== */
+
 .announcements {
     flex: 1;
     min-width: 0;
@@ -170,9 +169,7 @@
     padding: 5px;
     border-radius: 15px !important;
 }
-/* ===== Improved Responsive Design ===== */
 
-/* Medium devices (tablets, 1024px and down) */
 @media screen and (max-width: 1024px) {
     .wrapper {
         flex-direction: column;
@@ -200,7 +197,7 @@
     }
 }
 
-/* Small devices (large phones, 768px and down) */
+
 @media screen and (max-width: 768px) {
     .wrapper {
         margin-top: 80px;
@@ -232,7 +229,7 @@
     }
 }
 
-/* Extra small devices (phones, 480px and down) */
+
 @media screen and (max-width: 480px) {
     .wrapper {
         margin-top: 60px;

@@ -1,4 +1,3 @@
-<!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/report.css"> -->
 <style>
     * {
         box-sizing: border-box;
@@ -18,7 +17,7 @@
         padding: 20px;
     }
 
-    /* Header */
+
     .print-header {
         display: flex;
         justify-content: space-between;
@@ -38,7 +37,7 @@
         margin: 0;
     }
 
-    /* Footer */
+  
     .print-footer {
         text-align: center;
         margin-top: 40px;
@@ -46,7 +45,7 @@
         color: #777;
     }
 
-    /* Table styling */
+ 
     .report-table,
     table {
         width: 100%;
@@ -69,7 +68,7 @@
         font-weight: bold;
     }
 
-    /* Section headings */
+  
     .report-section h4 {
         margin-top: 20px;
         font-size: 18px;
@@ -77,7 +76,7 @@
         color: #333;
     }
 
-    /* Print Styles */
+ 
     @media print {
         body {
             margin: 0;
@@ -172,7 +171,7 @@
 <div class="wrapper">
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
         <div id="print-area">
-            <!-- Print header -->
+            
             <div class="print-header container flex-row">
                 <div class="header-img">
                     <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="Logo" height="40">
@@ -183,7 +182,7 @@
             </div>
             <br>
 
-            <!-- Report content -->
+           
             <div id="report-content">
                 <div>
                     <div class="report-section">
@@ -306,14 +305,7 @@
                         </div>
                     </div>
                     <hr>
-                    <!-- <div class="report-section">
-                        <h4>Payment Statistics</h4><br>
-                        <p>Total Earnings:</p>
-                        <p>Total Spent:</p>
-                        <p>Pending Payments:</p> -->
-                    <!-- <p>History:</p> -->
-                    <!-- </div> -->
-                    <!-- <hr> -->
+                    
                     <div class="report-section">
                         <h4>Performance</h4><br>
                         <p>Rating: <?= htmlspecialchars($averageRating ?? 'N/A') ?></p>
@@ -325,13 +317,13 @@
                 </div>
             </div>
 
-            <!-- Print footer -->
+            
             <div class="print-footer">
                 Generated on <?= date("Y-m-d H:i"); ?>
             </div>
         </div>
 
-        <!-- Print button -->
+       
         <button class="no-print btn btn-accent" onclick="printDiv()">Download Report</button>
     </div>
 </div>

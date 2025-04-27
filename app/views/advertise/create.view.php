@@ -27,7 +27,7 @@ require APPROOT . '/views/inc/header.php';
         display: none;
     }
 
-    /* --- Smoother form styling and layout --- */
+   
     .wrapper {
         background: linear-gradient(180deg, var(--brand-primary) 0%, #f8fbff 100%);
         min-height: 100vh;
@@ -54,7 +54,7 @@ require APPROOT . '/views/inc/header.php';
         margin-bottom: 20px;
     }
 
-    /* --- Title section --- */
+  
     .ad-title .title {
         font-size: 36px;
         color: #2d2f48;
@@ -66,7 +66,6 @@ require APPROOT . '/views/inc/header.php';
         font-size: 18px;
     }
 
-    /* --- Section headings --- */
     .section h4 {
         font-size: 22px;
         color: #2d2f48;
@@ -76,7 +75,6 @@ require APPROOT . '/views/inc/header.php';
         padding-left: 10px;
     }
 
-    /* --- Input fields and textarea --- */
     input[type="text"],
     input[type="email"],
     input[type="url"],
@@ -99,7 +97,7 @@ require APPROOT . '/views/inc/header.php';
         box-shadow: 0 0 0 4px rgba(78, 84, 200, 0.1);
     }
 
-    /* --- Buttons --- */
+  
     .post-ad-btn {
         background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
         border: none;
@@ -115,7 +113,7 @@ require APPROOT . '/views/inc/header.php';
         background: linear-gradient(135deg, #3a3fc5 0%, #757bfd 100%);
     }
 
-    /* --- Price Estimate Box --- */
+ 
     .price-estimate {
         background: #edf2fb;
         border: 1px solid #ccd5e4;
@@ -126,7 +124,7 @@ require APPROOT . '/views/inc/header.php';
         color: #333;
     }
 
-    /* --- Image Preview --- */
+
     #preview {
         max-width: 100%;
         max-height: 300px;
@@ -136,7 +134,7 @@ require APPROOT . '/views/inc/header.php';
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    /* --- Confirmation Modal --- */
+ 
     .confirmation-modal {
         position: fixed;
         top: 0;
@@ -203,7 +201,7 @@ require APPROOT . '/views/inc/header.php';
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
 
-<!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/advertisement/create.css">  -->
+
 
 <div class="wrapper flex-row" style="margin-bottom: 80px; margin-top: 80px;">
     <h2 class="title" style="font-family: 'Poppins';">Advertise With Us!</h2>
@@ -221,7 +219,7 @@ require APPROOT . '/views/inc/header.php';
         <div class="ad-form flex-col">
             <div class="create-ad-form" id="create-ad">
                 <form id="advertisementForm" class="equal-sections-form">
-                    <!-- Advertiser Details -->
+                    
                     <div class="advertiser_details section">
                         <h4>Advertiser Details</h4>
                         <div class="field">
@@ -238,7 +236,7 @@ require APPROOT . '/views/inc/header.php';
                         </div>
                     </div>
 
-                    <!-- Advertisement Details -->
+                    
                     <div class="advertisement-details section">
                         <h4>Advertisement Details</h4>
                         <div class="field">
@@ -291,7 +289,7 @@ require APPROOT . '/views/inc/header.php';
                         <!-- <p class="conditions" >This payment is non-refund?/able. Please ensure all details are correct before proceeding.</p> -->
                     </div>
 
-                    <!-- Image Preview -->
+                 
                     <div class="image-preview section">
                         <h4>Image Preview</h4>
                         <div id="imagePreview">
@@ -341,7 +339,7 @@ require APPROOT . '/views/inc/header.php';
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    // Preview image functionality
+    
     function previewImage(input) {
         const preview = document.getElementById('preview');
         if (input.files && input.files[0]) {

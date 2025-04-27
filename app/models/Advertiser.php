@@ -26,7 +26,7 @@ class Advertiser
                   VALUES (:advertiserID, :advertiserName, :contact, :email)";
 
         if (empty($data['advertiserID'])) {
-            $data['advertiserID'] = uniqid(); // Generate a unique ID if not provided
+            $data['advertiserID'] = uniqid(); 
         }
 
         $params = [
@@ -38,7 +38,7 @@ class Advertiser
 
         try {
             $this->query($query, $params);
-            return $data['advertiserID']; // Return the unique advertiser ID
+            return $data['advertiserID'];
         } catch (PDOException $e) {
             error_log("Failed to create advertiser: " . $e->getMessage());
             return false;
@@ -46,7 +46,7 @@ class Advertiser
     }
 
 
-    // Checks if the advertiser exists and if yes returns the ID; if not, returns false
+    
     public function isAdvertiserExist($email)
     {
         try {
@@ -86,9 +86,7 @@ class Advertiser
     }
 
 
-    // public function checkForActiveAds(){
-    //     $query = 
-    // }
+
 
 
 }

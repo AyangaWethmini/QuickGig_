@@ -14,7 +14,7 @@
   background-color: #ffffff;
   }
   
-  /* Header */
+
   .print-header {
   display: flex;
   justify-content: space-between;
@@ -29,33 +29,33 @@
   }
   
   .heading p {
-  font-size: 26px; /* Increased from 24px */
+  font-size: 26px;
   font-weight: bold;
   margin: 0;
   }
   
-  /* Footer */
+ 
   .print-footer {
   text-align: center;
   margin-top: 40px;
-  font-size: 14px; /* Increased from 12px */
+  font-size: 14px;
   color: #777;
   }
   
-  /* Table styling */
+
   .report-table,
   table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  font-size: 16px; /* Increased from 14px */
+  font-size: 16px; 
   }
   
   .report-table th,
   .report-table td,
   table th,
   table td {
-  padding: 12px; /* Increased from 10px */
+  padding: 12px; 
   border: 1px solid #ccc;
   text-align: left;
   }
@@ -65,20 +65,20 @@
   font-weight: bold;
   }
   
-  /* Section headings */
+
   .report-section h4 {
   margin-top: 20px;
-  font-size: 20px; /* Increased from 18px */
+  font-size: 20px; 
   font-weight: 600;
   color: #333;
   }
   
-  /* Print Styles */
+  
   @media print {
   body {
     margin: 0;
     padding: 0;
-    font-size: 14pt; /* Increased from 12pt */
+    font-size: 14pt;
     color: #000;
     background: #fff;
   }
@@ -121,7 +121,7 @@
     padding: 10mm;
     border-top: 1px solid #ccc;
     background: white;
-    font-size: 12pt; /* Increased from 10pt */
+    font-size: 12pt;
   }
   
   #report-content {
@@ -131,7 +131,7 @@
   
   .report-table,
   table {
-    font-size: 12pt; /* Increased from 10pt */
+    font-size: 12pt;
     page-break-inside: auto;
   }
   
@@ -139,7 +139,7 @@
   .report-table td,
   table th,
   table td {
-    padding: 8pt; /* Increased from 6pt */
+    padding: 8pt; 
     border: 1px solid #999;
   }
   

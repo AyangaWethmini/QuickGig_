@@ -17,9 +17,9 @@
     font-size: 20px;
   }
 
-  /* Modal styling */
+ 
   .modal {
-    display: none; /* Hidden by default */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;

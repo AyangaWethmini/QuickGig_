@@ -43,7 +43,6 @@
 <div class="status-container">
     <h2>Sorry to See You Go <i class="fa-solid fa-heart-broken" style="color: red"></i></h2>
     <p>We're sad to see you cancel your subscription. You will lose access to premium features at the end of your billing period.</p>
-    <!-- <a href="<?php echo ROOT; ?>/feedback" class="btn btn-del">Give Feedback</a> -->
     <a href="<?php echo ROOT; ?>/home" class="btn btn-del" style="background: #007bff; margin-top: 10px;">Return to Home</a>
 </div>
 

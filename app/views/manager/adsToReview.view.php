@@ -15,14 +15,12 @@ protectRoute([1]);
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container">
-        <!-- Header Section -->
+        
         <div class="header flex-row justify-between align-center">
             <h2>Advertisements To Review</h2>
-            <!-- <button class="btn btn-accent" onclick="window.location.href='<?= ROOT ?>/manager/createAd'"> + Post Advertisement</button> -->
         </div>
         <hr>
 
-        <!-- Filter Section -->
         <div class="filter flex-row justify-between align-center">
             <div>
                 <h3>All Ads</h3>
@@ -30,7 +28,6 @@ protectRoute([1]);
             </div>
         </div>
 
-        <!-- Advertisement Cards -->
         <div class="ads-wrapper">
             <div class="ads container">
                 <?php
@@ -77,7 +74,6 @@ protectRoute([1]);
                                     <button class="btn" style="background-color: green; width : 150px;" type="submit">Approve</button>
                                 </form>
 
-                                <!-- Separate form for reject -->
                                 <form method="POST" action="<?=ROOT?>/manager/rejectAd/<?= htmlspecialchars($ad->advertisementID) ?>">
                                     <input type="hidden" name="advertiserID" value="<?= htmlspecialchars((string)$ad->advertiserID) ?>">
                                     <button class="btn btn-del" type="submit" style="width : 150px;">Reject </button>

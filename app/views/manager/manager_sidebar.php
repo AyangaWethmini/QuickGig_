@@ -4,13 +4,13 @@
 <?php
 $current = $_SERVER['REQUEST_URI'];
 
-// Advertisement section logic
+
 $adsActive = strpos($current, '/manager/advertisements') !== false;
 $advrsActive = strpos($current, '/manager/advertisers') !== false;
 $revActive = strpos($current, '/manager/adsToBeReviewed') !== false;
 $isAdsParentActive = $adsActive || $advrsActive || $revActive;
 
-// Plans section logic
+
 $plansActive = strpos($current, '/manager/plans') !== false;
 $subsActive = strpos($current, '/manager/subscriptions') !== false;
 $isPlansParentActive = $plansActive || $subsActive;
@@ -101,14 +101,13 @@ $isPlansParentActive = $plansActive || $subsActive;
     }
 
     function toggleSubMenu(element) {
-        // Only toggle if sidebar is expanded on mobile
+       
         if (window.innerWidth > 768 || document.querySelector('.sidebar-container').classList.contains('expanded')) {
             const submenu = element.nextElementSibling;
             submenu.style.display = submenu.style.display === "block" ? "none" : "block";
         }
     }
 
-    // Add tooltip data attributes to all sidebar items
     document.addEventListener('DOMContentLoaded', function() {
         const items = document.querySelectorAll('.sidebar-item:not(.sub-item)');
         items.forEach(item => {

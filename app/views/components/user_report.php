@@ -1,4 +1,3 @@
-<!-- <link rel="stylesheet" href="<?= ROOT ?>/assets/css/user/report.css"> -->
 <style>
     * {
       box-sizing: border-box;
@@ -127,12 +126,11 @@
       background-color: #45a049;
     }
 
-    /* Updated: Smaller fonts in print */
     @media print {
       body {
         margin: 0;
         padding: 0;
-        font-size: 9pt; /* Reduced from 10pt to 9pt */
+        font-size: 9pt; 
         color: #000;
         background: #fff;
       }
@@ -175,7 +173,7 @@
         padding: 8mm;
         border-top: 1px solid #ccc;
         background: white;
-        font-size: 9pt; /* Smaller footer font */
+        font-size: 9pt; 
       }
 
       #report-content {
@@ -184,12 +182,12 @@
       }
 
       table {
-        font-size: 8pt; /* Smaller table text */
+        font-size: 8pt;
         page-break-inside: auto;
       }
 
       table th, table td {
-        padding: 4pt; /* Tighter table spacing */
+        padding: 4pt;
         border: 1px solid #999;
       }
 
@@ -199,7 +197,7 @@
 
       h4 {
         page-break-after: avoid;
-        font-size: 12pt; /* Smaller heading */
+        font-size: 12pt; 
       }
 
       p, span, div {
@@ -215,7 +213,7 @@
 <div class="wrapper">
     <div class="main-content" style="overflow-y: auto; max-height: 100vh;">
         <div id="print-area">
-            <!-- Print header -->
+            
             <div class="print-header container flex-row">
                 <div class="header-img">
                     <img src="<?= ROOT ?>/assets/images/QuickGiglLogo.png" alt="Logo" height="40">
@@ -226,7 +224,7 @@
             </div>
             <br>
 
-            <!-- Report content -->
+            
             <div id="report-content">
                 <div>
                     <div class="report-section">
@@ -246,7 +244,7 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <!-- <th>Job ID</th> -->
+                                        
                                         <th>Job Title</th>
                                         <th>Date Posted</th>
                                         <th>Description</th>
@@ -349,14 +347,7 @@
                         </div>
                     </div>
                     <hr>
-                    <!-- <div class="report-section">
-                        <h4>Payment Statistics</h4><br>
-                        <p>Total Earnings:</p>
-                        <p>Total Spent:</p>
-                        <p>Pending Payments:</p> -->
-                        <!-- <p>History:</p> -->
-                    <!-- </div> -->
-                    <!-- <hr> -->
+                    
                     <div class="report-section">
                         <h4>Performance</h4><br>
                         <p>Rating: <?= htmlspecialchars($averageRating ?? 'N/A') ?></p>
@@ -368,13 +359,13 @@
                 </div>
             </div>
 
-            <!-- Print footer -->
+            
             <div class="print-footer">
                 Generated on <?= date("Y-m-d H:i"); ?>
             </div>
         </div>
 
-        <!-- Print button -->
+    
         <button class="no-print btn btn-accent rpt-print" onclick="printDiv()">Download Report</button>
     </div>
 </div>

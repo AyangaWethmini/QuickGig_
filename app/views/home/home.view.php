@@ -279,9 +279,7 @@
 
 </div>
 
-<script>
-    console.log(<?php echo json_encode($data['advertisements'][0]); ?>);
-</script>
+
 
 <?php
 
@@ -296,7 +294,7 @@ if (
     $currentTime = time();
     $timeDifference = $currentTime - $lastAdTime;
 
-    // Show the ad only if 20 minutes have passed since the last ad
+    
     if ($timeDifference >= 1200) {
         $_SESSION['last_ad_time'] = $currentTime;
         $ad = $data['advertisements'][0] ?? null;
@@ -313,7 +311,7 @@ if (
                         <p><?php htmlspecialchars($ad->adTitle); ?></p>
                     </a>
                     <script>
-                        // Record ad view on page load
+                       
                         recordAdView(<?= $ad->advertisementId ?>);
                     </script>
                 <?php else: ?>
@@ -327,7 +325,7 @@ if (
             </div>
         </div>
         <script>
-            // Ensure ad view is recorded each time the ad is shown
+            
             recordAdView(<?= $ad->advertisementId ?>);
         </script>
 <?php
@@ -345,7 +343,7 @@ if (
     function recordAdClick(event, adId, adLink) {
         event.preventDefault();
 
-        // Send AJAX request to record click
+        
         fetch(`<?php echo ROOT ?>/manager/click/${adId}`, {
                 method: 'POST',
                 headers: {
@@ -354,7 +352,7 @@ if (
             })
             .then(response => response.json())
             .then(data => {
-                // After recording the click, redirect to the ad's link
+                
                 if (adLink) {
                     window.open(adLink, '_blank');
                 }
