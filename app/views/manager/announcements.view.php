@@ -47,9 +47,10 @@
                         <div class="announcement-card flex-col container">
                             <!-- <h3>Announcement ID: <?= htmlspecialchars($announcement->announcementID) ?></h3> -->
                             <p><?= htmlspecialchars($announcement->content) ?></p>
+                            <div class="date-time"><?= htmlspecialchars($announcement->announcementDate) ?> at <?= htmlspecialchars($announcement->announcementTime) ?></div>
                             <button class="btn btn-del del-ann-btn" onclick = "showConfirmation('Are you sure you want to delete the advertisement?', 
                             () => submitForm('<?= ROOT ?>/manager/deleteAnnouncement/<?= htmlspecialchars($announcement->announcementID) ?>'))" >Delete</button>
-                            <div class="date-time"><?= htmlspecialchars($announcement->announcementDate) ?> @ <?= htmlspecialchars($announcement->announcementTime) ?></div>
+                            
                             
                         </div>
                     <?php endforeach; ?>

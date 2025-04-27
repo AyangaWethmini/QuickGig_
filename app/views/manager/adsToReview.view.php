@@ -40,7 +40,7 @@ protectRoute([1]);
                 $counter = 0;
 
                 if (count($ads) === 0): ?>
-                    <p class="text-grey">Nothing to review here.</p>
+                    <img src="" alt="">
                 <?php else:
                     for ($i = $startIndex; $i < count($ads) && $counter < $adsPerPage; $i++):
                         $ad = $ads[$i];
