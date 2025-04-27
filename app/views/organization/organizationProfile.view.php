@@ -10,6 +10,9 @@ protectRoute([3]); ?>
 
 
 <body>
+    <div style="margin-top:80px;">
+        <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+    </div>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
 
         <div class="wrapper flex-row">
@@ -35,7 +38,7 @@ protectRoute([3]); ?>
                                     <p><?= htmlspecialchars(($data['city'] ?? '') . ',' . ($data['district'] ?? '')) ?></p>
                                 </div>
                                 <button class="edit-profile-btn" onclick="window.location.href='<?= ROOT ?>/organization/organizationEditProfile'">
-                                ✏️ Edit Profile
+                                    ✏️ Edit Profile
                                 </button>
                             </div>
                         </div>

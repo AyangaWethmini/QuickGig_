@@ -621,6 +621,10 @@ class Seeker extends Controller
 
         $accountID = $_SESSION['user_id'];
         $providerById = $job->getJobProviderById($jobId);
+        if( $providerById != null) {
+            $providerById->providerID = $providerById->accountID;
+        }
+
         if ($providerById == null) {
             $providerById = $job->getJobProviderByAvailableId($jobId);
         }
