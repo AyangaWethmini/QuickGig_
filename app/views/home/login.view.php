@@ -70,7 +70,7 @@
             </div>
             <div style="margin-left: 10px;">
 
-                <p class="text-white styled login" style="font-size: 13px;">
+                <p class="text-white styled login" style="font-size: 13px;color:white;">
                     Don't have an account?
                     <a href="<?php echo ROOT; ?>/home/signup" style="color: #00bfff; font-weight: bold;">Sign Up</a>
                 </p>
