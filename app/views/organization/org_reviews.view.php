@@ -15,12 +15,7 @@ protectRoute([3]);?>
             <div class="heading">Reviews</div>
         </div>
         <br>
-        <div class="search-container">
-            <input type="text"
-                class="search-bar"
-                placeholder="Search reviews"
-                aria-label="Search">
-        </div>
+        
         <div class="reviews-container container">
             <?php if (!empty($data)): ?>
                 <?php foreach ($data as $review): ?>

@@ -22,7 +22,7 @@
 
 .plan-card {
     background-color: #fff;
-    height: 600px;
+    height: 420px;
     border-radius: 1rem;
     padding: 2rem;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
@@ -54,7 +54,7 @@
 
 .plan-features li {
     font-size: 16px;
-    margin-bottom: 2.6rem;
+    margin-bottom: 1rem;
     padding-left: 1.5rem;
     position: relative;
     line-height: 1.4;
@@ -70,7 +70,7 @@
 
 .plan-button {
     padding: 0.75rem 1.5rem;
-    margin-top: 110px;
+    margin-top: 50px;
     font-size: 18px;
     background-color: #6366f1;
     color: white;

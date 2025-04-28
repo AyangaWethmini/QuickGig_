@@ -310,3 +310,12 @@ textarea {
     font-weight: bold;
     border-bottom: 2px solid var(--brand-primary);
 }
+
+.empty-q {
+    color: grey;
+    text-align: center;
+    font-size: 28px;
+    margin: 50px auto;
+    padding: 10px;
+}
+

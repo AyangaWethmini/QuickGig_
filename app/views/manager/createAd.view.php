@@ -9,7 +9,7 @@ protectRoute([1]);
 
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<div class="wrapper flex-row" style="margin-top: 100px;">
+<div class="wrapper flex-row" style="margin-top: 80px;">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content">
@@ -161,9 +161,6 @@ document.getElementById('email').addEventListener('blur', function() {
         console.error('Error:', err);    
     });
 });
-
-
-
 
 
 
