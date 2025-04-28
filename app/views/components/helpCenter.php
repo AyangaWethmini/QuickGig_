@@ -135,7 +135,7 @@
                             <br>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>No unreplied questions!</p>
+                        <p class="empty-q">No unreplied questions!</p>
                     <?php endif; ?>
 
                 </div>
@@ -172,7 +172,7 @@
                             <br>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>No replied questions!</p>
+                        <p class="empty-q">No replied questions!</p>
 
                     <?php endif; ?>
                 </div>

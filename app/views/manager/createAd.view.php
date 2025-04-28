@@ -164,9 +164,6 @@ document.getElementById('email').addEventListener('blur', function() {
 
 
 
-
-
-
 document.querySelector('form').addEventListener('submit', function(event) {
     let isValid = true;
     const email = document.getElementById('email').value.trim();
