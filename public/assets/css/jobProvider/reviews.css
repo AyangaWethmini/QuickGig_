@@ -103,3 +103,40 @@
 .btn-delete:hover{
     background-color: #a00f0f;
 }
+.rating-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    background: #f9f9f9;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    width: fit-content;
+}
+
+.rating-filter-form label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+.rating-filter-form select {
+    padding: 8px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.rating-filter-form select:hover {
+    border-color: #888;
+}
+
+.rating-filter-form select:focus {
+    outline: none;
+    border-color: #4A90E2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
