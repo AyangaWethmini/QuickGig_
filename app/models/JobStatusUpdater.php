@@ -9,15 +9,12 @@ class JobStatusUpdater {
         $currentDate = $currentDateTime->format('Y-m-d');
         $currentTime = $currentDateTime->format('H:i:s');
 
-        // Update req_available statuses
         $this->updateReqAvailableStatuses($currentDate, $currentTime);
 
-        // Update apply_job statuses
         $this->updateApplyJobStatuses($currentDate, $currentTime);
     }
 
     private function updateReqAvailableStatuses($currentDate, $currentTime) {
-        // Update to status 3 if current time is between timeFrom and timeTo
         $query = "UPDATE req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
                   SET r.reqStatus = 3
@@ -26,7 +23,6 @@ class JobStatusUpdater {
                   AND r.reqStatus = 2";
         $this->query($query, ['currentDate' => $currentDate, 'currentTime' => $currentTime]);
 
-        // Update to status 4 if current time is past timeTo
         $query = "UPDATE req_available r
                   JOIN makeavailable m ON r.availableID = m.availableID
                   SET r.reqStatus = 4
@@ -37,7 +33,6 @@ class JobStatusUpdater {
     }
 
     private function updateApplyJobStatuses($currentDate, $currentTime) {
-        // Update to status 3 if current time is between timeFrom and timeTo
         $query = "UPDATE apply_job a
                   JOIN job j ON a.jobID = j.jobID
                   SET a.applicationStatus = 3
@@ -46,7 +41,6 @@ class JobStatusUpdater {
                   AND a.applicationStatus = 2";
         $this->query($query, ['currentDate' => $currentDate, 'currentTime' => $currentTime]);
 
-        // Update to status 4 if current time is past timeTo
         $query = "UPDATE apply_job a
                   JOIN job j ON a.jobID = j.jobID
                   SET a.applicationStatus = 4

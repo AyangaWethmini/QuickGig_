@@ -30,39 +30,29 @@ class ManagerModel {
         return $result ? $result[0] : null;
     }
 
-    // public function getManagerEmail($managerID){
-    //     $query = "SELECT email FROM account WHERE accountID = (SELECT accountID FROM manager WHERE managerID = :managerID)";
-    //     $params = [
-    //         ':managerID' => $managerID
-    //     ];
-    //     $result = $this->query($query, $params);
-    //     return $result ? $result[0]->email : null;
-    // }
 
 
     public function createManager($accountID, $gender, $nic, $fname, $lname, $phone) {
-        // Validate NIC
-        // Validate NIC
+        
         if (!preg_match('/^(\d{9}[VXvx]|\d{12})$/', $nic)) {
             $_SESSION['error'] = "Invalid NIC format. Please try again!";
             return false;
         }
 
-        // Validate phone number
+     
         if (!preg_match('/^07\d{8}$/', $phone)) {
             $_SESSION['error'] = "Invalid phone number format. Please use the format 07XXXXXXXX.";
             return false;
         }
 
-        // Generate custom manager ID
-        //function generateCustomID($db, $table, $prefix, $idColumn = 'id') - blueprint of the function
+        
         $managerID = generateCustomID('manager', 'MGR', 'managerID');
         if (!$managerID) {
             $_SESSION['error'] = "Failed to generate manager ID.";
             return false;
         }
     
-        // Insert manager data
+
         $query = "INSERT INTO manager (managerID, accountID, gender, nic, fname, lname, phone)
                   VALUES (:managerID, :accountID, :gender, :nic, :fname, :lname, :phone)";
         
@@ -80,7 +70,6 @@ class ManagerModel {
     }
 
     public function deleteManager($managerID) {
-        // Delete manager data
         $query = "UPDATE  manager SET active = 0 WHERE managerID = :managerID";
         $params = [
             ':managerID' => $managerID
@@ -89,7 +78,6 @@ class ManagerModel {
     }
 
     public function getManagerID($accountID) {
-        // Get manager ID
         $query = "SELECT managerID FROM manager WHERE accountID = :accountID";
         $params = [
             ':accountID' => $accountID

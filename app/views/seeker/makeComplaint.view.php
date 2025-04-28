@@ -36,17 +36,15 @@ protectRoute([2]); ?>
 </div>
 
 <script>
-    // Add event listener to validate the form before submission
     document.getElementById('complainForm').addEventListener('submit', function(event) {
         const complainInfo = document.getElementById('complainInfo').value.trim();
         const errorMsg = document.getElementById('error-msg');
 
-        // Check if the complainInfo is empty or only contains spaces
         if (!complainInfo) {
             errorMsg.style.display = 'block';
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault(); 
         } else {
-            errorMsg.style.display = 'none'; // Hide error message
+            errorMsg.style.display = 'none'; 
         }
     });
 </script>

@@ -15,14 +15,14 @@ protectRoute([1]);
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container">
-        <!-- Header Section -->
+        
         <div class="header flex-row justify-between align-center">
             <h2>Current Advertisements</h2>
             <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/createAd'"> + Post Advertisement</button>
         </div>
         <hr>
 
-        <!-- Filter Section -->
+        
         <div class="filter flex-row justify-between align-center">
             <div>
                 <h3>All Ads</h3>
@@ -30,7 +30,7 @@ protectRoute([1]);
             </div>
         </div>
 
-        <!-- Advertisement Cards -->
+       
         <div class="ads-wrapper">
     <div class="ads container">
         <?php 

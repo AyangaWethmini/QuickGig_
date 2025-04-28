@@ -8,7 +8,7 @@ class SystemReport {
         // $this->db = new Database; // PDO instanc
     }
 
-    //for sub revenue
+   
     public function getSubscriptionRevenue($startDate=null, $endDate=null) {
         try {
             $query = "SELECT p.planID, p.planName, p.price, p.duration, p.currency, 
@@ -42,9 +42,7 @@ class SystemReport {
     }
 
 
-    //for ads revenue
-    //my logic fro this - depending on the start date  and end date i get the ceil vaue of the active weeks of ads, then calculate revenue,
-    //possible improvements - align with business weeks
+    
     public function getAdsRevenue($startDate = null, $endDate = null){
         try {
     
@@ -53,7 +51,7 @@ class SystemReport {
                 $params = [];
             }
             
-            // Get all ads that were active during the period
+           
             $query = "SELECT advertisementID, adTitle, startDate, endDate, views, clicks FROM advertisement WHERE (startDate <= :endDate AND endDate >= :startDate)
             AND deleted = 0";
         
@@ -65,21 +63,21 @@ class SystemReport {
     
             $result = $this->query($query, $params);
     
-            $ads = $result ?: []; // Default to an empty array if no results
+            $ads = $result ?: []; 
             $totalRevenue = 0;
             $results = [];
-            $weeklyRate = 1000; // Initialize with a default value
+            $weeklyRate = 1000; 
     
             foreach ($ads as $ad) {
-                // Calculate the number of days the ad was active
+                
                 $start = strtotime($ad->startDate);
                 $end = strtotime($ad->endDate);
-                $daysActive = ($end - $start) / (60 * 60 * 24) + 1; // +1 to include both days
+                $daysActive = ($end - $start) / (60 * 60 * 24) + 1; 
                 
-                // Calculate number of weeks (rounded up)
+                
                 $weeksActive = ceil($daysActive / 7);
                 
-                // Simple pricing: 1000LKR per week
+            
                 $get_rates = $this->getAdRates();
     
                 if(!$get_rates) {

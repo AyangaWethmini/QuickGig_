@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <!-- Alert Boxes -->
+        
         <?php
             include_once APPROOT . '/views/components/alertBox.php';
             if (isset($_SESSION['error'])) {

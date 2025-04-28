@@ -43,27 +43,7 @@
         unset($_SESSION['success']);
         ?>
 
-        <!-- <script>
-            function sendEmail(event) {
-                event.preventDefault(); // Prevent form submission
-
-                const form = event.target.closest('form');
-                const formData = new FormData(form);
-
-                fetch('<?= ROOT ?>/home/sendEmail', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        alert(data); // Display server response
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to send email.');
-                    });
-            }
-        </script> -->
+        
     </form>
 
 

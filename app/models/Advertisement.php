@@ -23,14 +23,13 @@ class Advertisement
                 'advertiserID' => $data['advertiserID'] ?? null,
                 'adTitle' => $data['adTitle'] ?? '',
                 'adDescription' => $data['adDescription'] ?? '',
-                'adImage' => $data['adImage'] ?? null, // Consider storing image path instead of binary data
+                'adImage' => $data['adImage'] ?? null,
                 'link' => $data['link'] ?? '',
                 'startDate' => $data['startDate'] ?? date('Y-m-d'),
                 'endDate' => $data['endDate'] ?? date('Y-m-d', strtotime('+1 month')),
                 'adStatus' => $data['adStatus'] ?? 'inactive'
             ];
 
-            // Validate required fields
             if (empty($params['advertisementID']) || empty($params['advertiserID']) || empty($params['adTitle'])) {
                 throw new Exception("Required fields are missing");
             }
@@ -38,7 +37,6 @@ class Advertisement
             $result = $this->query($query, $params);
 
             if (!$result) {
-                // Get the specific database error if available
                 throw new Exception("Database error: " . ($errorInfo ?? 'Unknown error'));
             }
 
@@ -158,7 +156,7 @@ class Advertisement
     {
         $query = "UPDATE advertisement SET views = views + 1 WHERE advertisementID = :adId";
         $params = ['adId' => $adId];
-        $this->query($query, $params); // No return needed
+        $this->query($query, $params); 
     }
 
 
@@ -183,7 +181,7 @@ class Advertisement
 
     public function getAdvertisementsPaginated($start, $limit)
     {
-        // Cast parameters to integers to ensure proper SQL syntax
+      
         $start = (int)$start;
         $limit = (int)$limit;
 
@@ -213,7 +211,7 @@ class Advertisement
                 'link' => $data['link'],
                 'startDate' => $data['startDate'],
                 'endDate' => $data['endDate'],
-                'adStatus' => 'inactive',  // Default ad status
+                'adStatus' => 'inactive', 
                 'amount' => $data['amount'],
                 'paymentStatus' => 'pending',
                 'onlineAd' => 1
@@ -256,15 +254,8 @@ class Advertisement
         LIMIT 1;";
         $params = ['adId' => $adId];
         $result = $this->query($query, $params);
-        return $result[0] ?? null; // Return the first row or null if no result
+        return $result[0] ?? null; 
     }
-
-    // public function isAdExists($adId) {
-    //     $query = "SELECT COUNT(*) as count FROM advertisement WHERE advertisementID = :adId AND deleted = 0";
-    //     $params = ['adId' => $adId];
-    //     $result = $this->query($query, $params);
-    //     return $result[0]->count > 0; // Return true if count is greater than 0
-    // }
 
     public function getAdsToBeReviewed() {
         $query = "SELECT * FROM advertisement WHERE adStatus = 'inactive' AND onlineAd = 1 AND rejected = 0 ORDER BY createdAt DESC";

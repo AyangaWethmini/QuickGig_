@@ -8,7 +8,7 @@ protectRoute([1]);?>
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
     
     <div class="main-content">
-        <!-- Header Section -->
+      
         <div class="plan-header flex-row">
             <br>
             <h2>Update Subscription Plan</h2>

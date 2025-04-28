@@ -223,24 +223,24 @@ protectRoute([2]); ?>
     function addTag(tagText) {
         const tagContainer = document.getElementById('tags-container');
 
-        // Create tag element
+       
         const tag = document.createElement('div');
         tag.className = 'tag';
         tag.textContent = tagText;
 
-        // Add remove button
+        
         const removeBtn = document.createElement('span');
         removeBtn.className = 'remove-btn';
         removeBtn.textContent = '×';
         removeBtn.onclick = () => tag.remove();
 
-        // Append remove button to tag
+       
         tag.appendChild(removeBtn);
 
-        // Append tag to container
+        
         tagContainer.appendChild(tag);
 
-        // Create hidden input to store tag value
+       
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'categories[]';
@@ -257,7 +257,7 @@ protectRoute([2]); ?>
         };
     }
 
-    // Set today's date as the minimum date
+    
     const today = new Date().toISOString().split("T")[0];
     document.getElementById('dateInput').setAttribute('min', today);
 
@@ -265,7 +265,7 @@ protectRoute([2]); ?>
         const selectedDate = document.getElementById('availableDate').value;
         if (selectedDate) {
             alert(`You selected: ${selectedDate}`);
-            // Add your submission logic here
+           
         } else {
             alert("Please select a date.");
         }
@@ -274,19 +274,19 @@ protectRoute([2]); ?>
     function initAutocomplete() {
         const locationInput = document.getElementById('locationInput');
 
-        // Initialize Google Places Autocomplete
+       
         autocomplete = new google.maps.places.Autocomplete(locationInput, {
-            //types: ['geocode'], // Restrict to geographical locations
+           
             componentRestrictions: {
                 country: "lk"
-            } // Restrict to Sri Lanka
+            } 
         });
 
-        // Listen for the place_changed event
+        
         autocomplete.addListener('place_changed', () => {
             const place = autocomplete.getPlace();
             if (place.geometry) {
-                // Update the selectedLocation variable with the new coordinates
+                
                 selectedLocation = `${place.geometry.location.lat()},${place.geometry.location.lng()}`;
             }
         });
@@ -296,7 +296,7 @@ protectRoute([2]); ?>
         const defaultLatLng = {
             lat: 6.9271,
             lng: 79.8612
-        }; // Default to Colombo
+        }; 
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: defaultLatLng,
@@ -315,7 +315,7 @@ protectRoute([2]); ?>
         const modal = document.getElementById('mapModal');
         modal.style.display = 'block';
 
-        // Small delay to ensure modal is rendered before initializing/resizing map
+       
         setTimeout(() => {
             if (!mapInitialized) {
                 initMap();
@@ -327,7 +327,7 @@ protectRoute([2]); ?>
                     lng: 79.8612
                 });
             }
-        }, 200); // 200ms delay is usually enough
+        }, 200); 
     }
 
     function closeMapModal() {
@@ -348,10 +348,10 @@ protectRoute([2]); ?>
                 if (results[0]) {
                     document.getElementById('locationInput').value = results[0].formatted_address;
                 } else {
-                    document.getElementById('locationInput').value = selectedLocation; // fallback
+                    document.getElementById('locationInput').value = selectedLocation; 
                 }
             } else {
-                document.getElementById('locationInput').value = selectedLocation; // fallback
+                document.getElementById('locationInput').value = selectedLocation; 
             }
 
             closeMapModal();
@@ -374,16 +374,16 @@ protectRoute([2]); ?>
         selectedLocation = `${latLng.lat()},${latLng.lng()}`;
     }
 
-    document.getElementById('locationInput').value = selectedLocation; // Update the input field with the selected location
-    closeMapModal(); // Close the modal after selecting a location
-    mapInitialized = true; // Set mapInitialized to true after the first initialization
-    document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
+    document.getElementById('locationInput').value = selectedLocation; 
+    closeMapModal(); 
+    mapInitialized = true; 
+    document.getElementById('mapModal').style.display = 'none'; 
 
     const form = document.getElementById("postJobForm");
     const popup = document.getElementById("error-popup");
 
     form.addEventListener("submit", function(e) {
-        // Always prevent default first to validate
+        
         e.preventDefault();
 
         const description = document.querySelector("textarea[name='description']").value.trim();
@@ -391,12 +391,12 @@ protectRoute([2]); ?>
 
         let errors = [];
 
-        // Validate description
+     
         if (!description || description.replace(/\s+/g, '') === '') {
             errors.push("Description is required and cannot be just spaces.");
         }
 
-        // Validate salary
+      
         if (!salary || salary.replace(/\s+/g, '') === '') {
             errors.push("Salary is required and cannot be just spaces.");
         } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
@@ -407,9 +407,9 @@ protectRoute([2]); ?>
 
         if (errors.length > 0) {
             showPopup(errors.join("<br>"));
-            return false; // Prevent form submission
+            return false; 
         } else {
-            // Submit form only if there are no errors
+            
             this.submit();
         }
     });
@@ -420,6 +420,6 @@ protectRoute([2]); ?>
 
         setTimeout(() => {
             popup.style.display = "none";
-        }, 3000); // Hide after 3 seconds
+        }, 3000); 
     }
 </script>

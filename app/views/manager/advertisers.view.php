@@ -15,10 +15,9 @@ protectRoute([1]);
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container">
-        <!-- Header Section -->
+        
         <div class="header flex-row justify-between align-center">
             <h2>Advertisers</h2>
-            <!-- <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/createAd'"> + Post Advertisement</button> -->
              
         </div>
         <hr>
@@ -40,12 +39,7 @@ protectRoute([1]);
                                         <td><?= htmlspecialchars($advertiser->advertiserName) ?></td>
                                         <td><?= htmlspecialchars($advertiser->email) ?></td>
                                         <td><?= htmlspecialchars($advertiser->contact) ?></td>
-                                        <!-- <td>
-                                           <form action="<?= ROOT ?>/manager/deleteAdvertiser" method="POST">
-                                                <input type="hidden" name="id" value="<?= $advertiser->id ?>">
-                                                <button type="submit" class="btn btn-del">Delete</button>
-                                </form>
-                                        </td> -->
+                                        
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -54,8 +48,6 @@ protectRoute([1]);
 
         
 
-        <!-- Pagination -->
-        <!-- <div class="pagination flex-row">
             <?php
             $totalPages = ceil(count($advertisements) / $adsPerPage);
             if ($currentPage > 1): ?>

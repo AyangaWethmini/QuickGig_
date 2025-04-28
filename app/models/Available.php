@@ -54,7 +54,6 @@ class Available
     return $this->query($query, $params);
 }
     public function update($id, $data) {
-        // Corrected SQL query to match parameter names and remove the extra comma
         $query = "UPDATE makeavailable 
                   SET description = :description, 
                       location = :location, 
@@ -67,7 +66,6 @@ class Available
                       categories = :categories
                   WHERE availableID = :id";
     
-        // Updated parameters to match the query fields
         $params = [
             'id' => $id, 
             'description' => $data['description'],
@@ -81,7 +79,6 @@ class Available
             'categories' => $data['categories']
         ];
     
-        // Execute the query and return the result
         return $this->query($query, $params);
     }
     

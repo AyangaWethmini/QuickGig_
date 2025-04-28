@@ -57,14 +57,14 @@
   line-height: 120%;
 }
 
-/* Hide print header and footer on screen */
+
 .print-header,
 .print-footer {
   display: none;
 }
 
 @media print {
-  /* Reset body margins for printing */
+ 
   body {
     margin: 0;
     padding: 0;
@@ -73,7 +73,7 @@
     font-size: 12pt;
   }
 
-  /* Hide everything except print area */
+  
   body * {
     visibility: hidden;
   }
@@ -83,7 +83,7 @@
     visibility: visible;
   }
 
-  /* Position print area properly */
+ 
   #print-area {
     position: absolute;
     left: 0;
@@ -93,7 +93,6 @@
     margin: 0;
   }
 
-  /* Show and position print header/footer */
   .print-header {
     display: block;
     position: fixed;
@@ -118,13 +117,13 @@
     font-size: 10pt;
   }
 
-  /* Adjust report content to avoid header/footer */
+ 
   #report-content {
-    margin-top: 30mm;  /* Space for header */
-    margin-bottom: 20mm; /* Space for footer */
+    margin-top: 30mm;
+    margin-bottom: 20mm;
   }
 
-  /* Table styling for print */
+  
   .report-table {
     width: 100%;
     border-collapse: collapse;
@@ -146,18 +145,20 @@
     display: table-footer-group;
   }
 
-  /* Prevent page breaks inside important elements */
+  
   h3, tr, td, th {
     page-break-inside: avoid;
   }
 
-  /* Avoid page breaks right after headings */
+ 
   h3 {
     page-break-after: avoid;
   }
 
-  /* Hide non-print elements */
+  
   .no-print {
     display: none !important;
   }
 }
+
+

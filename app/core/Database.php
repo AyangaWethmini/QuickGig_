@@ -3,7 +3,6 @@
 trait Database
 {
 
-    // Change connect method to protected
     protected function connect()
     {
         $string = "mysql:hostname=" . DBHOST . ";dbname=" . DBNAME;
@@ -14,23 +13,23 @@ trait Database
     public function query($query, $data = [])
     {
         try {
-            $con = $this->connect(); // Connect to the database
+            $con = $this->connect(); 
             $stm = $con->prepare($query);
 
-            // Execute the query
+           
             $check = $stm->execute($data);
 
-            // Check if query was a SELECT statement
+            
             if ($stm->columnCount() > 0) {
-                // Return fetched results as objects
+               
                 $result = $stm->fetchAll(PDO::FETCH_OBJ);
-                return $result ?: false; // Return results if available, otherwise false
+                return $result ?: false; 
             }
 
-            // For non-SELECT queries, return true if execution was successful
+           
             return $check;
         } catch (PDOException $e) {
-            // Log or handle database errors
+           
             error_log('Database Query Error: ' . $e->getMessage());
             return false;
         }

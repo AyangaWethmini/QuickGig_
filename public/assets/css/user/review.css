@@ -1,4 +1,3 @@
-/* Main layout */
 * {
     box-sizing: border-box;
   }
@@ -9,7 +8,7 @@
     margin-top: 80px;
 }
 
-/* Review section */
+
 .review-section {
     flex: 1;
     background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
@@ -30,7 +29,7 @@
     padding-bottom: 6px;
 }
 
-/* Review form styling */
+
 .review-form {
     display: flex;
     flex-direction: column;
@@ -73,7 +72,6 @@
     border-color: #007bff;
 }
 
-/* Submit button */
 .btn-submit-review {
     padding: 14px 20px;
     font-size: 16px;
@@ -91,7 +89,7 @@
     box-shadow: 0 4px 8px rgba(0,123,255,0.4);
 }
 
-/* Existing reviews section (if you add later) */
+
 .existing-reviews {
     margin-top: 40px;
 }
@@ -140,7 +138,7 @@
     color: #ffc107;
     transition: color 0.2s;
 }
-/* User info section above form */
+
 .review-user-info {
     display: flex;
     flex-direction: column;
@@ -229,7 +227,7 @@
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
-/* Mobile responsive */
+
 @media (max-width: 768px) {
     .wrapper {
         flex-direction: column;

@@ -12,10 +12,6 @@ protectRoute([3]);?>
     <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
     <div class="main-content container post-job-form">
-        <p class="heading">
-            Post a Job
-        </p>
-        <hr>
 
         <form id="postJobForm" class="form-section container" action="<?php echo ROOT ?>/organization/job" method="POST">
             <div class="form-section flex-row container">
@@ -258,24 +254,24 @@ protectRoute([3]);?>
     function addTag(tagText) {
         const tagContainer = document.getElementById('tags-container');
 
-        // Create tag element
+    
         const tag = document.createElement('div');
         tag.className = 'tag';
         tag.textContent = tagText;
 
-        // Add remove button
+    
         const removeBtn = document.createElement('span');
         removeBtn.className = 'remove-btn';
         removeBtn.textContent = '×';
         removeBtn.onclick = () => tag.remove();
 
-        // Append remove button to tag
+       
         tag.appendChild(removeBtn);
 
-        // Append tag to container
+       
         tagContainer.appendChild(tag);
 
-        // Create hidden input to store tag value
+      
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'categories[]';
@@ -299,7 +295,6 @@ protectRoute([3]);?>
         const selectedDate = document.getElementById('availableDate').value;
         if (selectedDate) {
             alert(`You selected: ${selectedDate}`);
-            // Add your submission logic here
         } else {
             alert("Please select a date.");
         }
@@ -308,24 +303,22 @@ protectRoute([3]);?>
     function initAutocomplete() {
         const locationInput = document.getElementById('locationInput');
 
-        // Initialize Google Places Autocomplete
+       
         autocomplete = new google.maps.places.Autocomplete(locationInput, {
-            //types: ['geocode'], // Restrict to geographical locations
-            componentRestrictions: { country: "lk" } // Restrict to Sri Lanka
+            
+            componentRestrictions: { country: "lk" } 
         });
 
-        // Listen for the place_changed event
         autocomplete.addListener('place_changed', () => {
             const place = autocomplete.getPlace();
             if (place.geometry) {
-                // Update the selectedLocation variable with the new coordinates
                 selectedLocation = `${place.geometry.location.lat()},${place.geometry.location.lng()}`;
             }
         });
     }
 
     function initMap() {
-        const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; // Default to Colombo
+        const defaultLatLng = { lat: 6.9271, lng: 79.8612 }; 
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: defaultLatLng,
@@ -344,7 +337,6 @@ protectRoute([3]);?>
         const modal = document.getElementById('mapModal');
         modal.style.display = 'block';
 
-        // Small delay to ensure modal is rendered before initializing/resizing map
         setTimeout(() => {
             if (!mapInitialized) {
                 initMap();
@@ -353,7 +345,7 @@ protectRoute([3]);?>
                 google.maps.event.trigger(map, "resize");
                 map.setCenter(marker ? marker.getPosition() : { lat: 6.9271, lng: 79.8612 });
             }
-        }, 200); // 200ms delay is usually enough
+        }, 200); 
     }
 
     function closeMapModal() {
@@ -372,10 +364,10 @@ protectRoute([3]);?>
                 if (results[0]) {
                     document.getElementById('locationInput').value = results[0].formatted_address;
                 } else {
-                    document.getElementById('locationInput').value = selectedLocation; // fallback
+                    document.getElementById('locationInput').value = selectedLocation;
                 }
             } else {
-                document.getElementById('locationInput').value = selectedLocation; // fallback
+                document.getElementById('locationInput').value = selectedLocation; 
             }
 
             closeMapModal();
@@ -398,10 +390,10 @@ protectRoute([3]);?>
     selectedLocation = `${latLng.lat()},${latLng.lng()}`;
 }
 
-    document.getElementById('locationInput').value = selectedLocation; // Update the input field with the selected location
-    closeMapModal(); // Close the modal after selecting a location
-    mapInitialized = true; // Set mapInitialized to true after the first initialization
-    document.getElementById('mapModal').style.display = 'none'; // Hide the modal after saving the location
+    document.getElementById('locationInput').value = selectedLocation; 
+    closeMapModal(); 
+    mapInitialized = true; 
+    document.getElementById('mapModal').style.display = 'none'; 
 
     const form = document.getElementById("postJobForm");
     const popup = document.getElementById("error-popup");
@@ -413,17 +405,17 @@ protectRoute([3]);?>
 
         let errors = [];
 
-        // Validate job title
+     
         if (!jobTitle) {
             errors.push("Job Title is required and cannot be just spaces.");
         }
 
-        // Validate description
+       
         if (!description) {
             errors.push("Description is required and cannot be just spaces.");
         }
 
-        // Validate salary
+     
         if (!salary) {
             errors.push("Salary is required.");
         } else if (!/^\d+(\.\d{1,2})?$/.test(salary)) {
@@ -433,7 +425,7 @@ protectRoute([3]);?>
         }
 
         if (errors.length > 0) {
-            e.preventDefault(); // Stop form submission
+            e.preventDefault(); 
             showPopup(errors.join("<br>"));
         }
     });
@@ -444,7 +436,7 @@ protectRoute([3]);?>
 
         setTimeout(() => {
             popup.style.display = "none";
-        }, 3000); // Hide after 3 seconds
+        }, 3000); 
     }
 
 </script>

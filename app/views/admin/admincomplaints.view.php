@@ -207,7 +207,6 @@ protectRoute([0]); ?>
     let complaintToDelete = null;
 
     function dismissComplaint(complaintId = null) {
-        // Store the complaint ID to be dismissed
         complaintToDelete = complaintId || currentComplaintId;
 
         if (!complaintToDelete) {
@@ -215,7 +214,6 @@ protectRoute([0]); ?>
             return;
         }
 
-        // Show the confirmation popup
         document.getElementById('dismissConfirmPopup').style.display = 'block';
     }
 
@@ -237,16 +235,15 @@ protectRoute([0]); ?>
                 },
                 body: JSON.stringify({
                     id: complaintToDelete,
-                    status: 2 // 2 for dismissed
+                    status: 2
                 })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Close both popups if they're open
                     closePopup();
                     closeDismissPopup();
-                    location.reload(); // Reload to update the lists
+                    location.reload();
                 } else {
                     alert('Failed to update complaint status.');
                 }
@@ -261,7 +258,6 @@ protectRoute([0]); ?>
         dismissComplaint();
     }
 
-    // Close popup when clicking outside
     window.onclick = function(event) {
         const popup = document.getElementById('complaintPopup');
         const dismissPopup = document.getElementById('dismissConfirmPopup');
@@ -275,7 +271,6 @@ protectRoute([0]); ?>
 </script>
 
 <style>
-    /* Main title styling */
     .complaints-title {
         font-size: 3rem;
         font-weight: bold;
@@ -283,7 +278,6 @@ protectRoute([0]); ?>
         margin-bottom: 25px;
     }
 
-    /* Enhanced complaint section */
     .complaints-section {
         padding: 25px;
         border-radius: 15px;
@@ -298,7 +292,6 @@ protectRoute([0]); ?>
         border-bottom: 2px solid #e9ecef;
     }
 
-    /* Scroll area styling */
     .complaints-scroll {
         padding-right: 15px;
     }
@@ -321,7 +314,6 @@ protectRoute([0]); ?>
         background: #372ebf;
     }
 
-    /* Enhanced complaint box styling */
     .enhanced-complaint {
         width: 95% !important;
         margin: 0 auto 20px auto;
@@ -353,7 +345,6 @@ protectRoute([0]); ?>
         font-style: italic;
     }
 
-    /* Button styling */
     .dismiss-btn {
         font-size: 1rem;
         padding: 8px 15px;
@@ -372,7 +363,6 @@ protectRoute([0]); ?>
         box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
     }
 
-    /* No complaints message */
     .no-complaints {
         font-size: 1.2rem;
         padding: 30px;
@@ -382,7 +372,6 @@ protectRoute([0]); ?>
         color: #6c757d;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 1200px) {
         .complaints-grid {
             gap: 30px;

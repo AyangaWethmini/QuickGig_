@@ -167,7 +167,6 @@ protectRoute([2]); ?>
     </div>
 </div>
 
-<!-- Confirmation Popup -->
 <div id="confirmPopup" class="modal">
     <div class="modal-content">
         <p>Are you sure you want to request this job?</p>
@@ -176,14 +175,12 @@ protectRoute([2]); ?>
     </div>
 </div>
 
-<!-- Success Popup -->
 <div id="successPopup" class="modal">
     <div class="modal-content">
         <p>Your request has been submitted successfully!</p>
     </div>
 </div>
 
-<!-- Already Applied Popup -->
 <div id="alreadyAppliedPopup" class="modal">
     <div class="modal-content">
         <p>You have already applied for this job.</p>
@@ -262,7 +259,7 @@ protectRoute([2]); ?>
         const modal = document.getElementById('mapModal');
         modal.style.display = 'block';
 
-        // Initialize map
+        
         setTimeout(() => {
             if (!map) {
                 map = new google.maps.Map(document.getElementById("map"), {
@@ -270,7 +267,7 @@ protectRoute([2]); ?>
                     center: {
                         lat: 6.9271,
                         lng: 79.8612
-                    }, // Default to Colombo
+                    }, 
                 });
             }
 
@@ -291,7 +288,7 @@ protectRoute([2]); ?>
                     alert("Geocode was not successful for the following reason: " + status);
                 }
             });
-        }, 200); // Delay to ensure modal is rendered
+        }, 200);
     }
 
     function closeMapModal() {

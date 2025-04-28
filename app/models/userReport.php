@@ -7,7 +7,7 @@ class userReport
 
     public function __construct()
     {
-        // Assuming session is already started elsewhere in your application
+    
         $this->accountID = $_SESSION['user_id'] ?? null;
         if (!$this->accountID) {
             throw new Exception("User not logged in.");
@@ -16,7 +16,7 @@ class userReport
     }
 
 
-    //User account details
+
     public function getUserDetails($accountID)
     {
         $query = 'SELECT a.accountID, a.email, p.planName, i.fname, i.lname 
@@ -39,7 +39,6 @@ class userReport
         return $this->query($query, $params);
     }
 
-    //job details
     public function getAppliedJobs($accountID)
     {
         $queryJobs = "SELECT aj.applicationID, j.jobTitle, aj.dateApplied
@@ -123,7 +122,7 @@ class userReport
         $query = "SELECT AVG(rating) AS averageRating FROM review WHERE revieweeID = :accountID";
         $params = ['accountID' => $accountID];
         $result = $this->query($query, $params);
-        return round($result[0]->averageRating ?? 0, 2); // Rounded to 2 decimal places
+        return round($result[0]->averageRating ?? 0, 2);
     }
 
     public function getComplaintsCount($accountID)

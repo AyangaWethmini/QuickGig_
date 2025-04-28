@@ -38,7 +38,7 @@ class Plans
 
     public function createPlan($data)
     {
-        // Validation
+        
         if (
             empty($data['planName']) || strlen(trim($data['planName'])) > 20 ||
             empty($data['description']) || strlen(trim($data['description'])) > 1000 ||
@@ -51,7 +51,7 @@ class Plans
             return false;
         }
 
-        // Prepare query and parameters
+      
         $query = "INSERT INTO plan (
                       planName, description, price, duration, badge, postLimit, stripe_price_id, currency, recInterval, active
                   ) VALUES (
@@ -74,7 +74,6 @@ class Plans
         try {
             return $this->query($query, $params);
         } catch (Exception $e) {
-            // Log the error for debugging
             error_log("Error creating plan: " . $e->getMessage());
             return false;
         }

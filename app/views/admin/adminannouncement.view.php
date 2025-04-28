@@ -51,13 +51,11 @@ protectRoute([0]);
         </div>
         <div class="pagination-container">
             <div class="pagination">
-                <!-- Always show Previous button -->
                 <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= max(1, ($data['currentPage'] ?? 1) - 1) ?>"
                     class="page-link <?= ($data['currentPage'] ?? 1) <= 1 ? 'disabled' : '' ?>">
                     &laquo;
                 </a>
 
-                <!-- Always show page numbers -->
                 <?php for ($i = 1; $i <= max(1, $data['totalPages'] ?? 1); $i++): ?>
                     <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= $i ?>"
                         class="page-link <?= $i == ($data['currentPage'] ?? 1) ? 'active' : '' ?>">
@@ -65,7 +63,6 @@ protectRoute([0]);
                     </a>
                 <?php endfor; ?>
 
-                <!-- Always show Next button -->
                 <a href="<?= ROOT ?>/admin/adminannouncement?page=<?= min($data['totalPages'] ?? 1, ($data['currentPage'] ?? 1) + 1) ?>"
                     class="page-link <?= ($data['currentPage'] ?? 1) >= ($data['totalPages'] ?? 1) ? 'disabled' : '' ?>">
                     &raquo;

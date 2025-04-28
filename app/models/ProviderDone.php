@@ -52,12 +52,10 @@ class ProviderDone{
 
     public function getEmployeeDetails($taskID)
     {
-        // Check if the taskID is in the reqID field of req_available
         $query = "SELECT COUNT(*) as count FROM req_available WHERE reqID = ?";
         $result = $this->query($query, [$taskID]);
 
         if ($result[0]->count > 0) {
-            // If taskID is found in req_available, execute the relevant query
             $query = "SELECT r.*,i.accountID, i.fname, i.lname, m.description as title, m.availableID as ja, m.availableDate, m.timeFrom, m.timeTo, m.salary, m.currency, m.location, m.accountID
                     FROM req_available r
                     JOIN makeavailable m ON r.availableID = m.availableID
@@ -65,7 +63,6 @@ class ProviderDone{
                     WHERE r.reqID = ?";
             $result = $this->query($query, [$taskID]);
         } else {
-            // If taskID is not found in req_available, check if it is in apply_job
             $query = "SELECT a.*, i.accountID,i.fname, i.lname, j.jobTitle as title, j.jobID ja, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location, i.accountID
                     FROM apply_job a 
                     JOIN job j ON a.jobID = j.jobID

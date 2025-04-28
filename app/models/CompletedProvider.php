@@ -36,12 +36,12 @@ class CompletedProvider
     j.salary, 
     j.currency, 
     j.location,
-    p.badge  -- added badge
+    p.badge  
 FROM apply_job a 
 JOIN job j ON a.jobID = j.jobID
 JOIN individual i ON a.seekerID = i.accountID
 JOIN account acc ON a.seekerID = acc.accountID
-JOIN plan p ON acc.planID = p.planID -- new join here
+JOIN plan p ON acc.planID = p.planID 
 WHERE j.accountID = ? 
 AND a.applicationStatus = 4
 ORDER BY datePosted DESC, timePosted DESC
@@ -68,12 +68,12 @@ ORDER BY datePosted DESC, timePosted DESC
     m.salary, 
     m.currency, 
     m.location,
-    p.badge  -- getting badge from plan
+    p.badge  
 FROM req_available r
 JOIN makeavailable m ON r.availableID = m.availableID
 JOIN individual i ON m.accountID = i.accountID
 JOIN account acc ON i.accountID = acc.accountID
-JOIN plan p ON acc.planID = p.planID  -- this new join
+JOIN plan p ON acc.planID = p.planID 
 WHERE r.providerID = ?
 AND r.reqStatus = 4
 ORDER BY datePosted DESC, timePosted DESC

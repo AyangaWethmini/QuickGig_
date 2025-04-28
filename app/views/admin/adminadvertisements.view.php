@@ -80,18 +80,14 @@ protectRoute([0]); ?>
                     &laquo;
                 </a>
 
-                <!-- Page numbers - limited to 3 visible pages -->
                 <?php
                 $totalPages = max(1, $data['totalPages']);
                 $currentPage = $data['currentPage'];
 
-                // Calculate which pages to show (max 3)
                 if ($totalPages <= 3) {
-                    // If 3 or fewer pages, show all
                     $startPage = 1;
                     $endPage = $totalPages;
                 } else {
-                    // Show 3 pages centered around current page when possible
                     if ($currentPage <= 2) {
                         $startPage = 1;
                         $endPage = 3;
@@ -104,7 +100,6 @@ protectRoute([0]); ?>
                     }
                 }
 
-                // Generate the page links
                 for ($i = $startPage; $i <= $endPage; $i++):
                 ?>
                     <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= $i ?>"
@@ -113,7 +108,6 @@ protectRoute([0]); ?>
                     </a>
                 <?php endfor; ?>
 
-                <!-- Next button -->
                 <a href="<?= ROOT ?>/admin/adminadvertisements?page=<?= min($data['totalPages'], $data['currentPage'] + 1) ?>"
                     class="page-link <?= $data['currentPage'] >= $data['totalPages'] ? 'disabled' : '' ?>">
                     &raquo;

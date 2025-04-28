@@ -1,6 +1,6 @@
 .contact-us {
     width: 100%;
-    min-height: calc(100vh - 100px); /* Adjust height to account for the footer */
+    min-height: calc(100vh - 100px); 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -98,9 +98,9 @@ button[type="submit"]:active {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Footer adjustments */
+
 .footer {
-    position: relative; /* Changed from fixed to relative */
+    position: relative; 
     
 }
 

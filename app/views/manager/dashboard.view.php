@@ -27,7 +27,7 @@ protectRoute([1]); ?>
                         <i class="fas fa-calendar-alt calendar-icon"></i>
                     </div>
 
-                    <!-- Date range modal -->
+                    
                     <div id="dateModal" class="modal">
                         <div class="modal-content">
                             <h3>Select Date Range</h3>
@@ -83,19 +83,11 @@ protectRoute([1]); ?>
             </div>
         </div>
 
-                <!-- <?php if (isset($_SESSION['email'])): ?>
-                    <a href="mailto:<?= htmlspecialchars($_SESSION['email']); ?>" class="email">Check Emails</a>
-                <?php else: ?>
-                    <a href="https://mail.google.com/" class="email">Check Emails</a>
-                <?php endif; ?> -->
+                
             </div>
         </div>
 
-        <!-- <div class="section-revenue">
-            <div class="chart-overview container flex-row">
-                <canvas id="rev-chart" style="width: 700px; max-width:700px"></canvas>
-            </div>
-        </div> -->
+      
 
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
@@ -117,7 +109,7 @@ protectRoute([1]); ?>
 </div>
 
 <script>
-    // Modal functionality
+    
     const dateModal = document.getElementById('dateModal');
     const dateRangeDisplay = document.getElementById('dateRange');
 
@@ -131,7 +123,7 @@ protectRoute([1]); ?>
 
     
 
-    // Bar chart for clicks and views
+    
     document.addEventListener("DOMContentLoaded", function () {
     renderAdMetricsChart();
     renderRevenueChart();
@@ -255,7 +247,7 @@ function renderSubscriptionChart() {
                     }
                 },
                 y: {
-                    suggestedMin: 0, // Ensures the y-axis starts at 0
+                    suggestedMin: 0, 
                     title: {
                         display: true,
                         text: 'Count'

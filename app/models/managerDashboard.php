@@ -10,7 +10,7 @@ class ManagerDashboard {
     public function getPlanCount($startDate = null, $endDate = null) {
     $query = "SELECT COUNT(*) as plan_count FROM plan WHERE active = 1";
     $result = $this->query($query);
-    return $result[0]->plan_count ?? 0; // Return the count directly
+    return $result[0]->plan_count ?? 0; 
 }
 
 public function getSubscribersCount($startDate = null, $endDate = null) {
@@ -26,7 +26,7 @@ public function getSubscribersCount($startDate = null, $endDate = null) {
     }
 
     $result = $this->query($query, $params);
-    return $result[0]->subscriber_count ?? 0; // Return the count directly
+    return $result[0]->subscriber_count ?? 0; 
 }
 
 public function adsPosted($startDate = null, $endDate = null) {
@@ -41,10 +41,9 @@ public function adsPosted($startDate = null, $endDate = null) {
         ];
     }
 
-    //SELECT COUNT(*) as ads_count FROM advertisement WHERE createdAt >= '2025-04-01 00:00:00' AND createdAt <='2025-04-30 23:59:59';
 
     $result = $this->query($query, $params);
-    return $result[0]->ads_count ?? 0; // Return the count directly
+    return $result[0]->ads_count ?? 0; 
 }
 
     public function getTotalAdClicks($startDate = null, $endDate = null) {
@@ -60,7 +59,7 @@ public function adsPosted($startDate = null, $endDate = null) {
         }
 
         $result = $this->query($query, $params);
-        return $result[0]->total_clicks ?? 0; // Return the count directly
+        return $result[0]->total_clicks ?? 0; 
 
     }
 
@@ -77,7 +76,7 @@ public function adsPosted($startDate = null, $endDate = null) {
         }
 
         $result = $this->query($query, $params);
-        return $result[0]->total_views ?? 0; // Return the count directly
+        return $result[0]->total_views ?? 0; 
 
     }
 

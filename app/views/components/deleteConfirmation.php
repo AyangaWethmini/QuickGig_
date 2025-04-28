@@ -1,4 +1,3 @@
-<!-- components/confirmation_modal.php -->
 <style>
     .confirmation-modal {
         display: none;
@@ -69,23 +68,22 @@
 <form id="confirmation-form" method="POST" style="display: none;"></form>
 
 <script>
-    // Store the current callback function
+    
     let currentConfirmCallback = null;
 
     function showConfirmation(message, confirmCallback, cancelCallback = null) {
         const modal = document.getElementById('confirmation-modal');
         const messageElement = document.getElementById('confirmation-message');
 
-        // Set the message
         messageElement.textContent = message;
 
-        // Store the callback
+     
         currentConfirmCallback = confirmCallback;
 
-        // Show the modal
+       
         modal.style.display = 'flex';
 
-        // Setup confirm button
+     
         document.getElementById('confirmation-confirm').onclick = function() {
             modal.style.display = 'none';
             if (currentConfirmCallback) {
@@ -93,7 +91,6 @@
             }
         };
 
-        // Setup cancel button
         document.getElementById('confirmation-cancel').onclick = function() {
             modal.style.display = 'none';
             if (cancelCallback) {
@@ -107,12 +104,12 @@
         form.action = action;
         form.method = method;
 
-        // Clear previous inputs
+      
         while (form.firstChild) {
             form.removeChild(form.firstChild);
         }
 
-        // Add CSRF token if needed (example for Laravel)
+      
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
         if (csrfToken) {
             const csrfInput = document.createElement('input');
@@ -122,7 +119,6 @@
             form.appendChild(csrfInput);
         }
 
-        // Add any additional data
         for (const [key, value] of Object.entries(data)) {
             const input = document.createElement('input');
             input.type = 'hidden';
