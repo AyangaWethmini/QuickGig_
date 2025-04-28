@@ -155,7 +155,7 @@ protectRoute([3]); ?>
                                         <p>Title: <?= htmlspecialchars($review->jobTitle) ?></p>
                                         <p>JobID: <?= htmlspecialchars($review->jobID) ?></p>
                                         <div style="display:flex;flex-direction:column; gap:20px">
-                                            <div class="rating">
+                                            <div class="Avgrating">
                                                 <span>
                                                     <?php for ($i = 0; $i < 5; $i++): ?>
                                                         <i class="fa fa-star <?= $i < $review->rating ? 'star-active' : 'star-inactive' ?> mx-1"></i>

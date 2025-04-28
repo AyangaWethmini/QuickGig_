@@ -13,7 +13,7 @@ protectRoute([3]); ?>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
 
         <div class="wrapper flex-row">
-        <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
+            <?php require APPROOT . '/views/jobProvider/organization_sidebar.php'; ?>
 
             <div class="profile-container">
                 <div class="profile-header">
@@ -150,6 +150,7 @@ protectRoute([3]); ?>
                             </div>
                         </div>
                     </div>
+
                     <div class="reviews-section">
 
                         <?php if (!empty($reviews) && is_array($reviews)): ?>
@@ -166,7 +167,7 @@ protectRoute([3]); ?>
                                             <p>Title: <?= htmlspecialchars($review->jobTitle) ?></p>
                                             <p>JobID: <?= htmlspecialchars($review->jobID) ?></p>
                                             <div style="display:flex;flex-direction:column; gap:20px">
-                                                <div class="rating">
+                                                <div class="Avgrating" >
                                                     <span>
                                                         <?php for ($i = 0; $i < 5; $i++): ?>
                                                             <i class="fa fa-star <?= $i < $review->rating ? 'star-active' : 'star-inactive' ?> mx-1"></i>

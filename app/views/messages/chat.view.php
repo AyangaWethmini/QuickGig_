@@ -4,6 +4,8 @@ protectRoute([2,3]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/messages/chat.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/empty.css">
+
 
 <body>
 
