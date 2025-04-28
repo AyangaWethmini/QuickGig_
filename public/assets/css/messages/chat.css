@@ -97,23 +97,3 @@
 }
 
 /* No messages styling */
-.no-messages-container {
-    text-align: center;
-    margin-top: 180px;
-}
-
-.no-messages-icon {
-    width: 420px;
-    height: auto;
-    opacity: 0.8;
-    margin-bottom: 20px;
-}
-
-.no-messages-container p {
-    font-size: 22px;
-    font-weight: 500;
-    color: #009cc7;
-}
-.error-msg-tika{
-    margin-left: 654px;
-}
