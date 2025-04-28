@@ -48,22 +48,8 @@ protectRoute([1]);
 
         
 
-            <?php
-            $totalPages = ceil(count($advertisements) / $adsPerPage);
-            if ($currentPage > 1): ?>
-                <a href="?page=<?= $currentPage - 1 ?>" class="btn btn-trans">Previous</a>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="?page=<?= $i ?>" class="btn <?= $i === $currentPage ? 'btn-accent' : 'btn-trans' ?>">
-                    <?= $i ?>
-                </a>
-            <?php endfor; ?>
-
-            <?php if ($currentPage < $totalPages): ?>
-                <a href="?page=<?= $currentPage + 1 ?>" class="btn btn-trans">Next</a>
-            <?php endif; ?>
-        </div> -->
+            
+        </div> 
 
         
         <!-- Error Message -->
