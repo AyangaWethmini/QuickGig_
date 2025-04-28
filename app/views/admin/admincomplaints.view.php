@@ -8,7 +8,6 @@ protectRoute([0]); ?>
     <?php require APPROOT . '/views/components/admin_sidebar.php'; ?>
     <div class="admin-container">
         <div class="complaints-grid">
-            <!-- Pending Complaints Section -->
             <div class="complaints-section">
                 <h2>Pending Complaints</h2>
                 <div class="complaints-scroll">
@@ -40,7 +39,6 @@ protectRoute([0]); ?>
                 </div>
             </div>
 
-            <!-- Reviewed Complaints Section -->
             <div class="complaints-section">
                 <h2>Reviewed Complaints</h2>
                 <div class="complaints-scroll">
@@ -74,7 +72,6 @@ protectRoute([0]); ?>
             </div>
         </div>
 
-        <!-- Complaint Popup -->
         <div id="complaintPopup" class="popup">
             <div class="popup-content">
                 <span class="close-popup" onclick="closePopup()">&times;</span>
@@ -87,7 +84,6 @@ protectRoute([0]); ?>
             </div>
         </div>
 
-        <!-- Dismiss Confirmation Popup -->
         <div id="dismissConfirmPopup" class="popup">
             <div class="popup-content">
                 <span class="close-popup" onclick="closeDismissPopup()">&times;</span>
@@ -106,17 +102,14 @@ protectRoute([0]); ?>
 
 <script>
     function showTab(tabName) {
-        // Hide all tab contents
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
 
-        // Remove active class from all buttons
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
 
-        // Show selected tab content and activate button
         document.getElementById(tabName + '-complaints').classList.add('active');
         event.currentTarget.classList.add('active');
     }
@@ -142,7 +135,6 @@ protectRoute([0]); ?>
                     throw new Error('Incomplete complaint data');
                 }
 
-                // Safely access nested properties
                 const complaintData = {
                     content: data.complaint.content || 'No content available',
                     complainantEmail: data.complainant.email || 'No email available',

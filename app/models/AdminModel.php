@@ -43,13 +43,12 @@ class AdminModel
         $result = $this->query($query);
 
         if (is_array($result) && isset($result[0]->jobcount)) {
-            return $result[0]->jobcount; // Access the 'jobcount' property from the first object
+            return $result[0]->jobcount;
         }
 
-        return 0; // Return 0 if no rows match or query fails
+        return 0;
     }
 
-    /* ADMIN DASHBOARD */
     public function getCountByRoleID($roleID)
     {
         $query = "SELECT COUNT(*) AS count FROM account_role WHERE roleID = :roleID";
@@ -134,7 +133,7 @@ class AdminModel
         $result = $this->query($query);
 
         if (is_array($result) && isset($result[0]->count)) {
-            return $result[0]->count; // Access the 'count' property from the first object
+            return $result[0]->count;
         }
 
         return 0;

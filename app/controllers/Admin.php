@@ -103,11 +103,9 @@ class Admin extends Controller
                 die('Account ID is missing');
             }
 
-            // Debugging
             echo "Account ID to delete: $accountID";
 
             if ($this->userModel->deleteUserById($accountID)) {
-                // echo "User deleted successfully";
                 header('Location: ' . ROOT . '/admin/adminmanageusers');
                 exit;
             } else {
@@ -169,7 +167,7 @@ class Admin extends Controller
 
     function updateAnnouncement($announcementID)
     {
-        echo "Checkpoint 1: Function start"; // Add at the start of the function
+        echo "Checkpoint 1: Function start";
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Checkpoint 2: Inside POST check"; // Add after the POST check
@@ -258,9 +256,7 @@ class Admin extends Controller
                 empty($data['content_error'])
             ) {
                 $adminID = $_SESSION['user_id'];
-                // Insert into the database using the model
                 if ($this->adminModel->createAnnouncement($data, $adminID)) {
-                    // Redirect to announcements page
                     header('Location: ' . ROOT . '/admin/adminannouncement');
                     exit;
                 } else {
@@ -296,7 +292,6 @@ class Admin extends Controller
 
         $totalComplaints = $this->complaintModel->getComplaintsCount();
 
-        // Pass the counts to the view
         $data = [
             'totalIndividuals' => $totalIndividuals,
             'totalOrganizations' => $totalOrganizations,
@@ -310,7 +305,6 @@ class Admin extends Controller
     }
 
 
-    /*COMPLAINTS*/
     function admincomplaints()
     {
 
@@ -326,12 +320,10 @@ class Admin extends Controller
     public function updateComplaintStatus()
     {
         try {
-            // Check if it's a POST request
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 throw new Exception('Invalid request method');
             }
 
-            // Get the JSON data from the request
             $jsonData = file_get_contents('php://input');
             $data = json_decode($jsonData);
 
@@ -389,24 +381,19 @@ class Admin extends Controller
     public function getComplaintDetails($complaintId)
     {
         try {
-            // Debug logging
             error_log("Received complaint ID: " . $complaintId);
 
-            // Get complaint details
             $complaint = $this->complaintModel->getComplaintById($complaintId);
 
-            // Debug logging
             error_log("Complaint data: " . print_r($complaint, true));
 
             if (!$complaint) {
                 throw new Exception('Complaint not found');
             }
 
-            // Get user details
             $complainant = $this->accountModel->getUserByID($complaint->complainantID);
             $complainee = $this->accountModel->getUserByID($complaint->complaineeID);
 
-            // Debug logging
             error_log("Complainant data: " . print_r($complainant, true));
             error_log("Complainee data: " . print_r($complainee, true));
 
@@ -414,7 +401,6 @@ class Admin extends Controller
                 throw new Exception('User details not found');
             }
 
-            // Prepare response data
             $response = [
                 'complaint' => [
                     'complaintID' => $complaint->complaintID,
@@ -431,20 +417,15 @@ class Admin extends Controller
                 ]
             ];
 
-            // Set proper headers
             header('Content-Type: application/json');
 
-            // Debug logging
             error_log("Sending response: " . json_encode($response));
 
-            // Send response
             echo json_encode($response);
             exit;
         } catch (Exception $e) {
-            // Log the error
             error_log("Error in getComplaintDetails: " . $e->getMessage());
 
-            // Send error response
             header('Content-Type: application/json');
             http_response_code(404);
             echo json_encode(['error' => $e->getMessage()]);
@@ -452,10 +433,8 @@ class Admin extends Controller
         }
     }
 
-    // Add this new method to the Admin controller class
     public function searchUsers()
     {
-        // Check if the request is AJAX
         if (!isset($_GET['term'])) {
             echo json_encode([]);
             return;
@@ -463,10 +442,8 @@ class Admin extends Controller
 
         $searchTerm = trim($_GET['term']);
 
-        // Call the model to search for users
         $users = $this->adminModel->searchUsersByEmail($searchTerm);
 
-        // Return JSON response
         header('Content-Type: application/json');
         echo json_encode($users);
     }
