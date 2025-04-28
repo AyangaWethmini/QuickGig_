@@ -6,7 +6,7 @@ protectRoute([1]); ?>
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/manager/plan.css">
 <?php include APPROOT . '/views/components/navbar.php'; ?>
 
-<div class="wrapper flex-row" style="margin-top: 100px;">
+<div class="wrapper flex-row" style="margin-top: 80px;">
     <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content">
