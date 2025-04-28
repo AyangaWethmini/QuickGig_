@@ -240,12 +240,7 @@ class Organization extends Controller
 
     function userReport()
     {
-        // Check if user is logged in
-        // if (!isset($_SESSION['user_id'])) {
-        //     // Redirect to login or handle unauthorized access
-        //     header('Location: /login');
-        //     exit();
-        // }
+        
 
         $userID = $_SESSION['user_id'];
 
@@ -256,15 +251,13 @@ class Organization extends Controller
             $requestedJobs = $this->providerDoneModel->getReqAvailableCompleted();
             $requestedJobs1 = $this->seekerDoneModel->getReqAvailableCompleted();
             $postedJobs = $this->userReportModel->getPostedJobs($userID);
-            // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
-            // $totalSpent = $this->userReportModel->getTotalSpent($userID);
+            
             $reviewsGivenCount = $this->userReportModel->getReviewsGivenCount($userID);
             $reviewsReceivedCount = $this->userReportModel->getReviewsReceivedCount($userID);
             $averageRating = $this->userReportModel->getAverageRating($userID);
             $complaintsMadeCount = $this->userReportModel->getComplaintsMadeCount($userID);
             $complaintsReceivedCount = $this->userReportModel->getComplaintsReceivedCount($userID);
-            // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
-            // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
+            
 
 
             $data = [
@@ -282,7 +275,7 @@ class Organization extends Controller
             ];;
             $this->view('report', $data);
         } catch (Exception $e) {
-            // Log the error and show a user-friendly message
+            
             error_log("Error in userReport: " . $e->getMessage());
             $this->view('error', ['message' => 'Failed to generate report']);
         }
@@ -293,19 +286,70 @@ class Organization extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $userId = $_SESSION['user_id'];
 
-            $data = [
-                'orgName' => trim($_POST['orgName']),
-                'email' => trim($_POST['email']),
-                'phone' => trim($_POST['phone']),
-                'district' => trim($_POST['district']),
-                'addressLine1' => trim($_POST['addressLine1']),
-                'addressLine2' => trim($_POST['addressLine2']),
-                'city' => trim($_POST['city']),
-                'linkedIn' => trim($_POST['linkedIn']),
-                'facebook' => trim($_POST['facebook']),
-                'bio' => trim($_POST['bio']),
-                'pp' => null
-            ];
+
+            $_SESSION['signup_errors'] = []; 
+
+        $userId = $_SESSION['user_id'];
+
+        $orgName = trim($_POST['orgName']);
+        $phoneDig = trim($_POST['Phone']);
+        $countryCode = trim($_POST['countryCode']);
+        $phone = $countryCode . ' ' . $phoneDig;
+        $district = trim($_POST['district']);
+        $addressLine1 = trim($_POST['addressLine1']);
+        $addressLine2 = trim($_POST['addressLine2']);
+        $city = trim($_POST['city']);
+        $linkedIn = trim($_POST['linkedIn']);
+        $facebook = trim($_POST['facebook']);
+        $bio = trim($_POST['bio']);
+
+        $pattern = '/^\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{3,4}[\s\-]?\d{3,4}$/';
+        // Validate phone
+        if (!empty($phone) && !preg_match($pattern, $phone)) {
+            $_SESSION['signup_errors'][] = "Invalid phone number format.";
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
+            exit;
+        }
+
+        // Validate LinkedIn
+        if (!empty($linkedIn) && !filter_var($linkedIn, FILTER_VALIDATE_URL)) {
+            $_SESSION['signup_errors'][] = "Invalid LinkedIn URL.";
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
+            exit;
+        }
+
+        // Validate Facebook
+        if (!empty($facebook) && !filter_var($facebook, FILTER_VALIDATE_URL)) {
+            $_SESSION['signup_errors'][] = "Invalid Facebook URL.";
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
+            exit;
+        }
+
+        // Validate Bio
+        if (!empty($bio) && strlen($bio) > 1000) {
+            $_SESSION['signup_errors'][] = "Bio can't exceed 1000 characters.";
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
+            exit;
+        }
+
+        // Check if there are any errors
+        if (!empty($_SESSION['signup_errors'])) {
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
+            exit;
+        }
+
+        $data = [
+            'orgName' => $orgName,
+            'phone' => $phone,
+            'district' => $district,
+            'addressLine1' => $addressLine1,
+            'addressLine2' => $addressLine2,
+            'city' => $city,
+            'linkedIn' => $linkedIn,
+            'facebook' => $facebook,
+            'bio' => $bio,
+            'pp' => null
+        ];
 
 
             if (!empty($_FILES['pp']['tmp_name'])) {
@@ -316,7 +360,10 @@ class Organization extends Controller
             if ($this->accountModel->updateOrgData($userId, $data)) {
                 redirect('organization/organizationProfile'); 
             } else {
-                die("Something went wrong. Please try again.");
+                $_SESSION['signup_errors'][] = "Failed to Update. Something went wrong.";
+
+                header("Location: " . ROOT . "/organization/organizationEditProfile");
+                exit;
             }
         }
     }
@@ -760,6 +807,14 @@ class Organization extends Controller
         }
         $userID = $_SESSION['user_id'];
         $data = $this->accountModel->getOrgData($userID);
+        if (!empty($data['phone'])) {
+            $phoneParts = explode(' ', $data['phone'], 2); // explode only once
+            $data['countryCode'] = $phoneParts[0] ?? '';
+            $data['phoneDig'] = $phoneParts[1] ?? '';
+        } else {
+            $data['countryCode'] = '';
+            $data['phoneDig'] = '';
+        }
 
         $this->view('organizationEditProfile', $data);
     }

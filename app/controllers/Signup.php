@@ -147,6 +147,7 @@ class Signup extends Controller
                     header("Location: " . ROOT . "/home/nextSign");
                     exit;
                 }
+                
 
 
                 $individualData = [

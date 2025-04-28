@@ -55,9 +55,17 @@ if (isset($_SESSION['pp']) && !empty($_SESSION['pp'])) {
               </span>
             <?php endif; ?>
           <?php endif; ?>
-          <form action="<?= ROOT ?>/login/logout" method="POST" style="display: inline;">
-            <button type="submit" class="sign-up-btn" style="background-color:#ff0f0f;margin-top: 10px; margin-right: 5px;">Log Out</button>
-          </form>
+          <button id="logout-btn" type="button" class="sign-up-btn" onclick="showLogoutConfirmation()" style="background-color:#ff0f0f;margin-top: 10px; margin-right: 5px;">
+            Log Out
+          </button>
+
+          <div id="logout-confirmation" style="display:none; margin-top: 10px; gap: 10px;">
+            <form action="<?= ROOT ?>/login/logout" method="POST" style="display: inline;">
+              <button type="submit" class="sign-up-btn" style="background-color:#28a745;">Confirm</button>
+            </form>
+            <button type="button" class="sign-up-btn" onclick="hideLogoutConfirmation()" style="background-color:#007bff;">Stay</button>
+          </div>
+
           <a href="<?php echo $path; ?>">
             <button class="profile-btn" style="background-image: url('<?= $profilePic; ?>');"></button>
           </a>
@@ -72,6 +80,22 @@ if (isset($_SESSION['pp']) && !empty($_SESSION['pp'])) {
     mobileMenu.classList.toggle('active');
   }
 </script>
+<script>
+function showLogoutConfirmation() {
+  const confirmationBox = document.getElementById('logout-confirmation');
+  const logoutBtn = document.getElementById('logout-btn');
+  confirmationBox.style.display = 'flex';
+  logoutBtn.style.display = 'none'; // Hide the Log Out button
+}
+
+function hideLogoutConfirmation() {
+  const confirmationBox = document.getElementById('logout-confirmation');
+  const logoutBtn = document.getElementById('logout-btn');
+  confirmationBox.style.display = 'none';
+  logoutBtn.style.display = 'inline-block'; // Show the Log Out button again
+}
+</script>
+
 
 <?php
 function allocatePathBasedOnRole()
@@ -87,7 +111,7 @@ function allocatePathBasedOnRole()
       case 1:
         return ROOT . "/manager/dashboard";
       case 2:
-        return ROOT . "/jobProvider/jobListing_received";
+        return ROOT . "/jobProvider/individualProfile";
       case 3:
         return ROOT . "/organization/organizationProfile";
       default:

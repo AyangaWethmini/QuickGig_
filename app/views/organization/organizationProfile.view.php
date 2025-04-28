@@ -73,7 +73,7 @@ protectRoute([3]); ?>
                                         <div class="col-md-4 d-flex flex-row">
                                             <div class="col-md-4 d-flex flex-column">
                                                 <div class="rating-box">
-                                                    <p class="pt-4"><?= number_format($avgRate, 1) ?></p>
+                                                    <p class="pt-4 rate"><?= number_format($avgRate, 1) ?></p>
 
                                                 </div>
                                                 <div class="rating-stars">
@@ -155,7 +155,7 @@ protectRoute([3]); ?>
                                         <p>Title: <?= htmlspecialchars($review->jobTitle) ?></p>
                                         <p>JobID: <?= htmlspecialchars($review->jobID) ?></p>
                                         <div style="display:flex;flex-direction:column; gap:20px">
-                                            <div class="rating">
+                                            <div class="Avgrating">
                                                 <span>
                                                     <?php for ($i = 0; $i < 5; $i++): ?>
                                                         <i class="fa fa-star <?= $i < $review->rating ? 'star-active' : 'star-inactive' ?> mx-1"></i>
