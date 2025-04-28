@@ -94,97 +94,157 @@ class JobProvider extends Controller
         }
     }
     public function individualEditProfile()
-    {
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            redirect('login'); // Redirect to login if not authenticated
-        }
-
-        // Get user data
-        $userId = $_SESSION['user_id'];
-        $data = $this->accountModel->getUserData($userId);
-
-        // Load the view and pass user data
-        $this->view('individualEditProfile', $data);
+{
+    // Ensure user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        redirect('login'); // Redirect to login if not authenticated
     }
+
+    // Get user data
+    $userId = $_SESSION['user_id'];
+    $data = $this->accountModel->getUserData($userId);
+
+    if (!empty($data['phone'])) {
+        $phoneParts = explode(' ', $data['phone'], 2); // explode only once
+        $data['countryCode'] = $phoneParts[0] ?? '';
+        $data['phoneDig'] = $phoneParts[1] ?? '';
+    } else {
+        $data['countryCode'] = '';
+        $data['phoneDig'] = '';
+    }
+
+    // Load the view and pass user data
+    $this->view('individualEditProfile', $data);
+}
+
     public function updateProfile()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $userId = $_SESSION['user_id'];
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_SESSION['signup_errors'] = []; 
 
-            $data = [
-                'fname' => trim($_POST['fname']),
-                'lname' => trim($_POST['lname']),
-                'email' => trim($_POST['email']),
-                'phone' => trim($_POST['phone']),
-                'district' => trim($_POST['district']),
-                'addressLine1' => trim($_POST['addressLine1']),
-                'addressLine2' => trim($_POST['addressLine2']),
-                'city' => trim($_POST['city']),
-                'linkedIn' => trim($_POST['linkedIn']),
-                'facebook' => trim($_POST['facebook']),
-                'bio' => trim($_POST['bio']),
-                'pp' => null
-            ];
+        $userId = $_SESSION['user_id'];
 
+        $fname = trim($_POST['fname']);
+        $lname = trim($_POST['lname']);
+        $phoneDig = trim($_POST['Phone']);
+        $countryCode = trim($_POST['countryCode']);
+        $phone = $countryCode . ' ' . $phoneDig;
+        $district = trim($_POST['district']);
+        $addressLine1 = trim($_POST['addressLine1']);
+        $addressLine2 = trim($_POST['addressLine2']);
+        $city = trim($_POST['city']);
+        $linkedIn = trim($_POST['linkedIn']);
+        $facebook = trim($_POST['facebook']);
+        $bio = trim($_POST['bio']);
 
-            // Handle profile picture upload
-            if (!empty($_FILES['pp']['tmp_name'])) {
-                $imageData = file_get_contents($_FILES['pp']['tmp_name']);
-                $data['pp'] = $imageData;
-                $_SESSION['pp'] = $imageData;
+        $pattern = '/^\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{3,4}[\s\-]?\d{3,4}$/';
+        // Validate phone
+        if (!empty($phone) && !preg_match($pattern, $phone)) {
+            $_SESSION['signup_errors'][] = "Invalid phone number format.";
+        }
+
+        // Validate LinkedIn
+        if (!empty($linkedIn) && !filter_var($linkedIn, FILTER_VALIDATE_URL)) {
+            $_SESSION['signup_errors'][] = "Invalid LinkedIn URL.";
+        }
+
+        // Validate Facebook
+        if (!empty($facebook) && !filter_var($facebook, FILTER_VALIDATE_URL)) {
+            $_SESSION['signup_errors'][] = "Invalid Facebook URL.";
+        }
+
+        // Validate Bio
+        if (!empty($bio) && strlen($bio) > 1000) {
+            $_SESSION['signup_errors'][] = "Bio can't exceed 1000 characters.";
+        }
+
+        // Check if there are any errors
+        if (!empty($_SESSION['signup_errors'])) {
+            header("Location: " . ROOT . "/jobProvider/individualEditProfile");
+            exit;
+        }
+
+        // All validations passed - proceed
+        $data = [
+            'fname' => $fname,
+            'lname' => $lname,
+            'phone' => $phone,
+            'district' => $district,
+            'addressLine1' => $addressLine1,
+            'addressLine2' => $addressLine2,
+            'city' => $city,
+            'linkedIn' => $linkedIn,
+            'facebook' => $facebook,
+            'bio' => $bio,
+            'pp' => null
+        ];
+
+        // Handle profile picture upload
+        if (!empty($_FILES['pp']['tmp_name'])) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+            if (!in_array($_FILES['pp']['type'], $allowedTypes)) {
+                $_SESSION['signup_errors'][] = "Profile picture must be JPG or PNG.";
+                header("Location: " . ROOT . "/jobProvider/individualEditProfile");
+                exit;
             }
-            if ($this->accountModel->updateUserData($userId, $data)) {
-                redirect('JobProvider/individualProfile'); // Reload page with updated data
-            } else {
-                die("Something went wrong. Please try again.");
-            }
+
+            $imageData = file_get_contents($_FILES['pp']['tmp_name']);
+            $data['pp'] = $imageData;
+            $_SESSION['pp'] = $imageData;
+        }
+
+        if ($this->accountModel->updateUserData($userId, $data)) {
+            redirect('JobProvider/individualProfile'); // success
+        } else {
+            die("Something went wrong. Please try again.");
         }
     }
+}
 
     function findEmployees()
-{
-    $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-    $shift = isset($_GET['shift']) ? trim($_GET['shift']) : 'any';
-    $date = isset($_GET['date']) ? trim($_GET['date']) : '';
-    $location = isset($_GET['location']) ? trim($_GET['location']) : '';
+    {
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $shift = isset($_GET['shift']) ? trim($_GET['shift']) : 'any';
+        $date = isset($_GET['date']) ? trim($_GET['date']) : '';
+        $location = isset($_GET['location']) ? trim($_GET['location']) : '';
 
-    if (!empty($searchTerm) || $shift !== 'any' || !empty($date) || !empty($location)) {
-        $findEmployees = $this->findEmpModel->filterEmployees($searchTerm, $shift, $date, $location);
-    } else {
-        $findEmployees = $this->findEmpModel->getEmployees();
+        if (!empty($searchTerm) || $shift !== 'any' || !empty($date) || !empty($location)) {
+            $findEmployees = $this->findEmpModel->filterEmployees($searchTerm, $shift, $date, $location);
+        } else {
+            $findEmployees = $this->findEmpModel->getEmployees();
+        }
+
+        foreach ($findEmployees as &$employee) {
+            $sumRate = 0;
+            $avgRate = 0;
+
+            $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
+            $userData = $this->accountModel->getUserData($employee->accountID);
+
+            if (empty($userData)) {
+                $userData = $this->accountModel->getOrgData($employee->accountID);
+            }
+
+            $length = count($rating);
+            foreach ($rating as $rate) {
+                $sumRate += $rate->rating;
+            }
+
+            if ($length > 0) {
+                $avgRate = $sumRate / $length;
+            }
+
+            $employee->rating = $avgRate;
+            $employee->badge = $userData['badge'];
+        }
+
+        $data = [
+            'findEmployees' => $findEmployees
+        ];
+
+        $this->view('findEmployees', $data);
     }
-
-    foreach ($findEmployees as &$employee) {
-        $sumRate = 0;
-        $avgRate = 0;
-
-        $rating = $this->reviewModel->readMyReview($employee->accountID, 2); // roleID = 2
-        $userData = $this->accountModel->getUserData($employee->accountID);
-
-        if (empty($userData)) {
-            $userData = $this->accountModel->getOrgData($employee->accountID);
-        }
-
-        $length = count($rating);
-        foreach ($rating as $rate) {
-            $sumRate += $rate->rating;
-        }
-
-        if ($length > 0) {
-            $avgRate = $sumRate / $length;
-        }
-
-        $employee->rating = $avgRate;
-        $employee->badge = $userData['badge'];
-    }
-
-    $data = [
-        'findEmployees' => $findEmployees
-    ];
-
-    $this->view('findEmployees', $data);
-}
 
     public function requestJob()
     {
@@ -485,14 +545,13 @@ class JobProvider extends Controller
 
         if ($SeekerById == null) {
             $SeekerById = $job->getJobSeekerByAvailableId($jobId);
-    
         }
 
 
         $revieweeData = $account->getUserData($SeekerById->seekerID);
         if ($revieweeData == null) {
             $revieweeData = $account->getOrgData($SeekerById->seekerID);
-            $revieweeData['fname']= $revieweeData['orgName'];
+            $revieweeData['fname'] = $revieweeData['orgName'];
             $revieweeData['lname'] = '';
         }
 
@@ -600,7 +659,7 @@ class JobProvider extends Controller
         $this->view('jobListing_myJobs', $data);
     }
 
-    function jobListing_send() 
+    function jobListing_send()
     {
         $userID = $_SESSION['user_id'];
         $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -787,7 +846,7 @@ class JobProvider extends Controller
     }
 
     function jobListing_done()
-    { 
+    {
         $this->jobStatusUpdater->updateJobStatuses();
         $completedProvider = $this->model('ProviderDone');
         $userID = $_SESSION['user_id'];

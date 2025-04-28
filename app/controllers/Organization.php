@@ -299,19 +299,70 @@ class Organization extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $userId = $_SESSION['user_id'];
 
-            $data = [
-                'orgName' => trim($_POST['orgName']),
-                'email' => trim($_POST['email']),
-                'phone' => trim($_POST['phone']),
-                'district' => trim($_POST['district']),
-                'addressLine1' => trim($_POST['addressLine1']),
-                'addressLine2' => trim($_POST['addressLine2']),
-                'city' => trim($_POST['city']),
-                'linkedIn' => trim($_POST['linkedIn']),
-                'facebook' => trim($_POST['facebook']),
-                'bio' => trim($_POST['bio']),
-                'pp' => null
-            ];
+
+            $_SESSION['signup_errors'] = []; 
+
+        $userId = $_SESSION['user_id'];
+
+        $orgName = trim($_POST['orgName']);
+        $phoneDig = trim($_POST['Phone']);
+        $countryCode = trim($_POST['countryCode']);
+        $phone = $countryCode . ' ' . $phoneDig;
+        $district = trim($_POST['district']);
+        $addressLine1 = trim($_POST['addressLine1']);
+        $addressLine2 = trim($_POST['addressLine2']);
+        $city = trim($_POST['city']);
+        $linkedIn = trim($_POST['linkedIn']);
+        $facebook = trim($_POST['facebook']);
+        $bio = trim($_POST['bio']);
+
+        $pattern = '/^\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{3,4}[\s\-]?\d{3,4}$/';
+        // Validate phone
+        if (!empty($phone) && !preg_match($pattern, $phone)) {
+            $_SESSION['signup_errors'][] = "Invalid phone number format.";
+            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            exit;
+        }
+
+        // Validate LinkedIn
+        if (!empty($linkedIn) && !filter_var($linkedIn, FILTER_VALIDATE_URL)) {
+            $_SESSION['signup_errors'][] = "Invalid LinkedIn URL.";
+            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            exit;
+        }
+
+        // Validate Facebook
+        if (!empty($facebook) && !filter_var($facebook, FILTER_VALIDATE_URL)) {
+            $_SESSION['signup_errors'][] = "Invalid Facebook URL.";
+            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            exit;
+        }
+
+        // Validate Bio
+        if (!empty($bio) && strlen($bio) > 1000) {
+            $_SESSION['signup_errors'][] = "Bio can't exceed 1000 characters.";
+            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            exit;
+        }
+
+        // Check if there are any errors
+        if (!empty($_SESSION['signup_errors'])) {
+            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            exit;
+        }
+
+        $data = [
+            'orgName' => $orgName,
+            'phone' => $phone,
+            'district' => $district,
+            'addressLine1' => $addressLine1,
+            'addressLine2' => $addressLine2,
+            'city' => $city,
+            'linkedIn' => $linkedIn,
+            'facebook' => $facebook,
+            'bio' => $bio,
+            'pp' => null
+        ];
 
 
             // Handle profile picture upload
@@ -323,7 +374,10 @@ class Organization extends Controller
             if ($this->accountModel->updateOrgData($userId, $data)) {
                 redirect('organization/organizationProfile'); // Reload page with updated data
             } else {
-                die("Something went wrong. Please try again.");
+                $_SESSION['signup_errors'][] = "Failed to Update. Something went wrong.";
+
+                header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+                exit;
             }
         }
     }
@@ -770,6 +824,14 @@ class Organization extends Controller
         }
         $userID = $_SESSION['user_id'];
         $data = $this->accountModel->getOrgData($userID);
+        if (!empty($data['phone'])) {
+            $phoneParts = explode(' ', $data['phone'], 2); // explode only once
+            $data['countryCode'] = $phoneParts[0] ?? '';
+            $data['phoneDig'] = $phoneParts[1] ?? '';
+        } else {
+            $data['countryCode'] = '';
+            $data['phoneDig'] = '';
+        }
 
         $this->view('organizationEditProfile', $data);
     }

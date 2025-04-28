@@ -12,7 +12,7 @@ protectRoute([3]); ?>
             <div class="editprofile-section 1">
                 <div class="section1-left">
                     <h2>Profile Photo</h2>
-                    <p>This image will be shown publicly as your
+                    <p style="color:white;">This image will be shown publicly as your
                         profile picture, it will help recruiters recognize you!</p>
                 </div>
 
@@ -38,28 +38,17 @@ protectRoute([3]); ?>
                     <input type="text" name="orgName" class="custom-input part2" placeholder="Farming Company" value="<?= htmlspecialchars(($data['orgName'] ?? '')) ?>"><br><br>
 
                     <label><strong>Location</strong></label><br>
-                    <input type="text" name="addressLine1" class="custom-input part3" placeholder="Manchester, UK" value="<?= htmlspecialchars(($data['addressLine1'] ?? '')) ?>"><br><br>
-                    <input type="text" name="addressLine2" class="custom-input part3" placeholder="Manchester, UK" value="<?= htmlspecialchars(($data['addressLine2'] ?? '')) ?>"><br><br>
-                    <input type="text" name="city" class="custom-input part3" placeholder="Manchester, UK" value="<?= htmlspecialchars(($data['city'] ?? '')) ?>"><br><br>
-                </div>
-            </div>
-            <br>
-            <hr><br>
-
-            <div class="editprofile-section 3">
-                <div class="section2-left">
-                    <h2>Additional Details</h2>
-                </div>
-
-                <div class="section2-right">
-                    <label><strong>Email</strong></label><br>
-                    <input type="text" name="email" class="custom-input part1" placeholder="jakegyll@gmail.com" value="<?= htmlspecialchars(($data['email'] ?? '')) ?>"><br><br>
-
-                    <label><strong>Phone</strong></label><br>
-                    <input type="text" name="phone" class="custom-input part2" placeholder="+44 1245 572 135" value="<?= htmlspecialchars(($data['phone'] ?? '')) ?>"><br><br>
-
+                    <input type="text" name="addressLine1" class="custom-input part3" placeholder="Address Line 1" value="<?= htmlspecialchars(($data['addressLine1'] ?? '')) ?>"><br><br>
+                    <input type="text" name="addressLine2" class="custom-input part3" placeholder="Address Line 2" value="<?= htmlspecialchars(($data['addressLine2'] ?? '')) ?>"><br><br>
+                    <input type="text" name="city" class="custom-input part3" placeholder="City" value="<?= htmlspecialchars(($data['city'] ?? '')) ?>"><br><br>
                     <label><strong>District</strong></label><br>
-                    <input type="text" name="district" class="custom-input part3" placeholder="Male/Female" value="<?= htmlspecialchars(($data['district'] ?? '')) ?>"><br><br>
+                    <input type="text" name="district" class="custom-input part3" placeholder="District" value="<?= htmlspecialchars(($data['district'] ?? '')) ?>"><br><br>
+                    <div class="phone-container">
+                        <select name="countryCode" id="countryCode2" class="country-code">
+                            <option value="<?= htmlspecialchars($data['countryCode'] ?? '') ?>" selected><?= htmlspecialchars($data['countryCode'] ?? 'Select your country code') ?></option>
+                        </select>
+                        <input type="text" name="Phone" id="Phone2" placeholder="7700000000" value="<?= htmlspecialchars(($data['phoneDig'] ?? '')) ?>">
+                    </div>
                 </div>
             </div>
             <br>
@@ -76,9 +65,6 @@ protectRoute([3]); ?>
 
                     <label><strong>FaceBook</strong></label><br>
                     <input type="text" name="facebook" class="custom-input part2" placeholder="facebook.com/jakegyll" value="<?= htmlspecialchars(($data['facebook'] ?? '')) ?>"><br><br>
-
-                    <label><strong>Website</strong></label><br>
-                    <input type="text" class="custom-input part3" placeholder="www.jakegyll.com"><br><br>
                 </div>
             </div>
             <br>
@@ -123,4 +109,48 @@ protectRoute([3]); ?>
         charCountDisplay.textContent = length + " / 1000 characters";
     });
 </script>
+<script>
+    // Fetch country codes and fill the select dropdown
+    fetch('https://restcountries.com/v3.1/all')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('countryCode2');
+
+            if (!select) {
+                console.error('countryCode2 select element not found');
+                return;
+            }
+
+            // Sort countries alphabetically
+            data.sort((a, b) => {
+                const nameA = a.name.common.toUpperCase();
+                const nameB = b.name.common.toUpperCase();
+                return nameA.localeCompare(nameB);
+            });
+
+            // Loop and add options
+            data.forEach(country => {
+                const countryName = country.name.common;
+                let countryCode = '';
+
+                if (country.idd && Array.isArray(country.idd.suffixes) && country.idd.suffixes.length > 0) {
+                    countryCode = country.idd.root + country.idd.suffixes[0];
+                }
+
+                if (countryCode) {
+                    const option = document.createElement('option');
+                    option.value = countryCode;
+                    option.textContent = `${countryCode} (${countryName})`;
+                    select.appendChild(option);
+                }
+            });
+
+            // OPTIONAL: Set default selected country code to Sri Lanka (+94)
+            select.value = '+94';
+        })
+        .catch(error => {
+            console.error('Error fetching country data:', error);
+        });
+</script>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>
