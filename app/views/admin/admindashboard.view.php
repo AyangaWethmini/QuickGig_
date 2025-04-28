@@ -17,7 +17,7 @@ protectRoute([0]); ?>
                     <i class="fas fa-user-tie"></i>
                 </div>
                 <div class="card-content">
-                    <h2>Total Job Seekers</h2>
+                    <h2>Total Individuals</h2>
                     <p><?php echo $data['totalIndividuals']; ?></p>
                 </div>
             </div>
