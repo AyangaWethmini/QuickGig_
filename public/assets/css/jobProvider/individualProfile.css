@@ -21,7 +21,7 @@
     box-sizing: border-box;
     position: relative;
     z-index: 1;
-    isolation: isolate; 
+    isolation: isolate;
   }
   
 .wrapper {

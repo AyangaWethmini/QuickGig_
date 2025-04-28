@@ -74,7 +74,7 @@ protectRoute([3]);?>
             <?php else: ?>
                 <div class="empty-container">
                     <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
-                    <p class="empty-text">No Received Applications Found</p>
+                    <p class="empty-text">No Reviews Found</p>
                 </div>
             <?php endif; ?>
         </div>

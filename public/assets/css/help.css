@@ -4,6 +4,7 @@
 .wrapper {
     flex-grow: 1;
     margin-top: 80px;
+    font-family: poppins, sans-serif;
 }
 
 .main-content {
@@ -198,6 +199,7 @@ textarea {
 .send-msg button{
     padding: 10px 20px;
     margin-top: 20px;
+    border-radius: 10px;
 }
 
 
