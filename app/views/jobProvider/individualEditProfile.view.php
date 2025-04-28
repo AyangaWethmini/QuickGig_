@@ -120,7 +120,6 @@ protectRoute([2]); ?>
     });
 </script>
 <script>
-    // Fetch country codes and fill the select dropdown
     fetch('https://restcountries.com/v3.1/all')
         .then(response => response.json())
         .then(data => {
@@ -131,14 +130,12 @@ protectRoute([2]); ?>
                 return;
             }
 
-            // Sort countries alphabetically
             data.sort((a, b) => {
                 const nameA = a.name.common.toUpperCase();
                 const nameB = b.name.common.toUpperCase();
                 return nameA.localeCompare(nameB);
             });
 
-            // Loop and add options
             data.forEach(country => {
                 const countryName = country.name.common;
                 let countryCode = '';
@@ -155,7 +152,6 @@ protectRoute([2]); ?>
                 }
             });
 
-            // OPTIONAL: Set default selected country code to Sri Lanka (+94)
             select.value = '+94';
         })
         .catch(error => {

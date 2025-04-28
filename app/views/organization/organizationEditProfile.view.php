@@ -27,6 +27,15 @@ protectRoute([3]); ?>
             </div>
             <br>
             <hr><br>
+            <?php if (isset($_SESSION['signup_errors']) && !empty($_SESSION['signup_errors'])): ?>
+                <div class="error-messages">
+                    <?php foreach ($_SESSION['signup_errors'] as $error): ?>
+                        <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
+                </div>
+                <?php unset($_SESSION['signup_errors']); ?>
+            <?php endif; ?>
+
 
             <div class="editprofile-section 2">
                 <div class="section2-left">

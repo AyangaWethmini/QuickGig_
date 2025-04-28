@@ -95,17 +95,15 @@ class JobProvider extends Controller
     }
     public function individualEditProfile()
 {
-    // Ensure user is logged in
     if (!isset($_SESSION['user_id'])) {
-        redirect('login'); // Redirect to login if not authenticated
+        redirect('login'); 
     }
 
-    // Get user data
     $userId = $_SESSION['user_id'];
     $data = $this->accountModel->getUserData($userId);
 
     if (!empty($data['phone'])) {
-        $phoneParts = explode(' ', $data['phone'], 2); // explode only once
+        $phoneParts = explode(' ', $data['phone'], 2); 
         $data['countryCode'] = $phoneParts[0] ?? '';
         $data['phoneDig'] = $phoneParts[1] ?? '';
     } else {
@@ -113,7 +111,6 @@ class JobProvider extends Controller
         $data['phoneDig'] = '';
     }
 
-    // Load the view and pass user data
     $this->view('individualEditProfile', $data);
 }
 
@@ -138,33 +135,27 @@ class JobProvider extends Controller
         $bio = trim($_POST['bio']);
 
         $pattern = '/^\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{3,4}[\s\-]?\d{3,4}$/';
-        // Validate phone
         if (!empty($phone) && !preg_match($pattern, $phone)) {
             $_SESSION['signup_errors'][] = "Invalid phone number format.";
         }
 
-        // Validate LinkedIn
         if (!empty($linkedIn) && !filter_var($linkedIn, FILTER_VALIDATE_URL)) {
             $_SESSION['signup_errors'][] = "Invalid LinkedIn URL.";
         }
 
-        // Validate Facebook
         if (!empty($facebook) && !filter_var($facebook, FILTER_VALIDATE_URL)) {
             $_SESSION['signup_errors'][] = "Invalid Facebook URL.";
         }
 
-        // Validate Bio
         if (!empty($bio) && strlen($bio) > 1000) {
             $_SESSION['signup_errors'][] = "Bio can't exceed 1000 characters.";
         }
 
-        // Check if there are any errors
         if (!empty($_SESSION['signup_errors'])) {
             header("Location: " . ROOT . "/jobProvider/individualEditProfile");
             exit;
         }
 
-        // All validations passed - proceed
         $data = [
             'fname' => $fname,
             'lname' => $lname,
@@ -179,7 +170,6 @@ class JobProvider extends Controller
             'pp' => null
         ];
 
-        // Handle profile picture upload
         if (!empty($_FILES['pp']['tmp_name'])) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
@@ -197,7 +187,9 @@ class JobProvider extends Controller
         if ($this->accountModel->updateUserData($userId, $data)) {
             redirect('JobProvider/individualProfile'); // success
         } else {
-            die("Something went wrong. Please try again.");
+            $_SESSION['signup_errors'][] = "Failed to update. Something went Wrong";
+            header("Location: " . ROOT . "/jobProvider/individualEditProfile");
+            exit;
         }
     }
 }

@@ -314,34 +314,34 @@ class Organization extends Controller
         // Validate phone
         if (!empty($phone) && !preg_match($pattern, $phone)) {
             $_SESSION['signup_errors'][] = "Invalid phone number format.";
-            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
             exit;
         }
 
         // Validate LinkedIn
         if (!empty($linkedIn) && !filter_var($linkedIn, FILTER_VALIDATE_URL)) {
             $_SESSION['signup_errors'][] = "Invalid LinkedIn URL.";
-            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
             exit;
         }
 
         // Validate Facebook
         if (!empty($facebook) && !filter_var($facebook, FILTER_VALIDATE_URL)) {
             $_SESSION['signup_errors'][] = "Invalid Facebook URL.";
-            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
             exit;
         }
 
         // Validate Bio
         if (!empty($bio) && strlen($bio) > 1000) {
             $_SESSION['signup_errors'][] = "Bio can't exceed 1000 characters.";
-            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
             exit;
         }
 
         // Check if there are any errors
         if (!empty($_SESSION['signup_errors'])) {
-            header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+            header("Location: " . ROOT . "/organization/organizationEditProfile");
             exit;
         }
 
@@ -369,7 +369,7 @@ class Organization extends Controller
             } else {
                 $_SESSION['signup_errors'][] = "Failed to Update. Something went wrong.";
 
-                header("Location: " . ROOT . "/organization/oorganizationEditProfile");
+                header("Location: " . ROOT . "/organization/organizationEditProfile");
                 exit;
             }
         }
