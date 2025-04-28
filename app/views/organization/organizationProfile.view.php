@@ -73,7 +73,7 @@ protectRoute([3]); ?>
                                         <div class="col-md-4 d-flex flex-row">
                                             <div class="col-md-4 d-flex flex-column">
                                                 <div class="rating-box">
-                                                    <p class="pt-4"><?= number_format($avgRate, 1) ?></p>
+                                                    <p class="pt-4 rate"><?= number_format($avgRate, 1) ?></p>
 
                                                 </div>
                                                 <div class="rating-stars">
