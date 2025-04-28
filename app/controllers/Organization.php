@@ -240,12 +240,7 @@ class Organization extends Controller
 
     function userReport()
     {
-        // Check if user is logged in
-        // if (!isset($_SESSION['user_id'])) {
-        //     // Redirect to login or handle unauthorized access
-        //     header('Location: /login');
-        //     exit();
-        // }
+        
 
         $userID = $_SESSION['user_id'];
 
@@ -256,15 +251,13 @@ class Organization extends Controller
             $requestedJobs = $this->providerDoneModel->getReqAvailableCompleted();
             $requestedJobs1 = $this->seekerDoneModel->getReqAvailableCompleted();
             $postedJobs = $this->userReportModel->getPostedJobs($userID);
-            // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
-            // $totalSpent = $this->userReportModel->getTotalSpent($userID);
+            
             $reviewsGivenCount = $this->userReportModel->getReviewsGivenCount($userID);
             $reviewsReceivedCount = $this->userReportModel->getReviewsReceivedCount($userID);
             $averageRating = $this->userReportModel->getAverageRating($userID);
             $complaintsMadeCount = $this->userReportModel->getComplaintsMadeCount($userID);
             $complaintsReceivedCount = $this->userReportModel->getComplaintsReceivedCount($userID);
-            // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
-            // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
+            
 
 
             $data = [
@@ -282,7 +275,7 @@ class Organization extends Controller
             ];;
             $this->view('report', $data);
         } catch (Exception $e) {
-            // Log the error and show a user-friendly message
+            
             error_log("Error in userReport: " . $e->getMessage());
             $this->view('error', ['message' => 'Failed to generate report']);
         }
