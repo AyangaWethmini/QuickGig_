@@ -82,13 +82,10 @@ protectRoute([0]); ?>
     </div>
 </div>
 
-<!-- Add Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- Add Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // User Distribution Chart
     const userCtx = document.getElementById('userChart').getContext('2d');
     new Chart(userCtx, {
         type: 'doughnut',
@@ -122,7 +119,6 @@ protectRoute([0]); ?>
         }
     });
 
-    // Activity Chart
     const activityCtx = document.getElementById('activityChart').getContext('2d');
     new Chart(activityCtx, {
         type: 'bar',
