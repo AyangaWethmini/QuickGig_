@@ -42,7 +42,6 @@ protectRoute([2]); ?>
                                 <div class="img">
                                     <?php if ($received->pp): ?>
                                         <?php
-                                        // Get the mime type from the first few bytes of the BLOB
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($received->pp);
                                         ?>

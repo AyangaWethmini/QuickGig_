@@ -1,5 +1,4 @@
 <?php
-// models/Complaint.php
 
 class Available
 {
@@ -21,7 +20,6 @@ class Available
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
     }
 
     public function getJobsByUser($userID)

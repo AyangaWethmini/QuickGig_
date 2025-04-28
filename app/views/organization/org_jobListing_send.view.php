@@ -174,7 +174,6 @@ protectRoute([3]); ?>
     function filterByDate(selectedDate) {
         if (!selectedDate) return;
 
-        // Fetch filtered sent requests
         fetch(`<?= ROOT ?>/organization/org_jobListing_send?filterDate=${encodeURIComponent(selectedDate)}`)
             .then(response => response.text())
             .then(html => {

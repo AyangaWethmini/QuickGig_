@@ -3,8 +3,8 @@
 protectRoute([2]);?>
 <?php require APPROOT . '/views/components/navbar.php'; 
 $userID = $_SESSION['user_id'];
-$availableModel = $this->model('Available'); // Get the Available model
-$jobs = $availableModel->getJobsByUser($userID); // Fetch all available jobs
+$availableModel = $this->model('Available'); 
+$jobs = $availableModel->getJobsByUser($userID); 
 ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/jobProvider/jobListing_myJobs.css">

@@ -5,7 +5,6 @@ class SystemReport {
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instanc
     }
 
    

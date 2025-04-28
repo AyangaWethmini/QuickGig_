@@ -384,10 +384,10 @@ protectRoute([2]); ?>
                 if (results[0]) {
                     document.getElementById('locationInput').value = results[0].formatted_address;
                 } else {
-                    document.getElementById('locationInput').value = selectedLocation; // fallback
+                    document.getElementById('locationInput').value = selectedLocation; 
                 }
             } else {
-                document.getElementById('locationInput').value = selectedLocation; // fallback
+                document.getElementById('locationInput').value = selectedLocation; 
             }
 
             closeMapModal();

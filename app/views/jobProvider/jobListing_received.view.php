@@ -40,7 +40,7 @@ protectRoute([2]); ?>
                                 <div class="img">
                                     <?php if ($received->pp): ?>
                                         <?php
-                                        // Get the mime type from the first few bytes of the BLOB
+                                        
                                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                                         $mimeType = $finfo->buffer($received->pp);
                                         ?>
@@ -109,7 +109,7 @@ protectRoute([2]); ?>
                 <?php endif; ?>
             </div>
 
-            <!-- Confirmation Popup -->
+        
             <div id="confirmPopup" class="popup hidden">
                 <div class="popup-content">
                     <p id="confirmMessage">Are you sure you want to proceed?</p>

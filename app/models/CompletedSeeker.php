@@ -15,7 +15,6 @@ class CompletedSeeker{
 
     public function __construct()
     {
-        // $this->db = new Database; // PDO instance
     }
 
 

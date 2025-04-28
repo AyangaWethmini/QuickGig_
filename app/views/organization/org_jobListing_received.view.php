@@ -106,7 +106,6 @@ protectRoute([3]);?>
             <?php endif; ?>
         </div>
 
-        <!-- Confirmation Popup -->
         <div id="confirmPopup" class="popup hidden">
             <div class="popup-content">
                 <p id="confirmMessage">Are you sure you want to proceed?</p>

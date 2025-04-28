@@ -232,7 +232,6 @@ protectRoute([3]);?>
 
     let map;
     let marker;
-    //let selectedLocation = '';
     let mapInitialized = false; 
 
     function showAddTagPopup(type) {

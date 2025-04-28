@@ -99,15 +99,7 @@ protectRoute([3]);?>
 
         </div>
 
-        <!--<div class="menu-overlay hidden">
-            <div class="menu">
-            <ul>
-                <li>View Profile</li>
-                <li>Edit Details</li>
-                <li>Delete Record</li>
-            </ul>
-            </div>
-        </div> -->
+        
 
     </div>
 </body>
