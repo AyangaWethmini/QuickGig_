@@ -443,7 +443,6 @@ class JobProvider extends Controller
             $title = trim($_POST['title']);
             $description = trim($_POST['description']);
 
-            // Ensure none of the fields are empty
             if (empty($title) || empty($description)) {
                 $_SESSION['error'] = 'Title and description cannot be empty.';
                 header('Location: ' . ROOT . '/jobProvider/helpCenter?error=empty_fields');
@@ -542,12 +541,7 @@ class JobProvider extends Controller
 
     function userReport()
     {
-        // Check if user is logged in
-        // if (!isset($_SESSION['user_id'])) {
-        //     // Redirect to login or handle unauthorized access
-        //     header('Location: /login');
-        //     exit();
-        // }
+        
 
         $userID = $_SESSION['user_id'];
 
@@ -558,15 +552,13 @@ class JobProvider extends Controller
             $requestedJobs = $this->providerDoneModel->getReqAvailableCompleted();
             $requestedJobs1 = $this->seekerDoneModel->getReqAvailableCompleted();
             $postedJobs = $this->userReportModel->getPostedJobs($userID);
-            // $totalEarnings = $this->userReportModel->getTotalEarnings($userID);
-            // $totalSpent = $this->userReportModel->getTotalSpent($userID);
+            
             $reviewsGivenCount = $this->userReportModel->getReviewsGivenCount($userID);
             $reviewsReceivedCount = $this->userReportModel->getReviewsReceivedCount($userID);
             $averageRating = $this->userReportModel->getAverageRating($userID);
             $complaintsMadeCount = $this->userReportModel->getComplaintsMadeCount($userID);
             $complaintsReceivedCount = $this->userReportModel->getComplaintsReceivedCount($userID);
-            // $completedTasks = $this->userReportModel->getCompletedTasks($userID);
-            // $ongoingTasks = $this->userReportModel->getOngoingTasks($userID);
+            
 
 
             $data = [
@@ -1137,19 +1129,15 @@ class JobProvider extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $accountID = $_SESSION['user_id'];
 
-            // Check if the confirmation was sent
             if (isset($_POST['confirm']) && $_POST['confirm'] === 'true') {
-                // Log attempt for debugging
                 error_log("Attempting to deactivate account ID: " . $accountID);
 
                 try {
-                    // Try the model method first
                     $success = false;
                     if (method_exists($this->userModel, 'deactivateUserById')) {
                         $success = $this->userModel->deactivateUserById($accountID);
                     }
 
-                    // If model method fails or doesn't exist, try direct database query
                     if (!$success) {
                         $db = new Database();
                         $query = "UPDATE account SET activationCode = 0 WHERE accountID = :accountID";
@@ -1158,7 +1146,6 @@ class JobProvider extends Controller
                         error_log("Direct DB deactivation result: " . ($success ? "success" : "failed"));
                     }
 
-                    // For AJAX requests
                     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                         if ($success) {
                             echo json_encode(['success' => true]);
@@ -1168,7 +1155,6 @@ class JobProvider extends Controller
                         }
                         exit;
                     } else {
-                        // For non-AJAX requests
                         if ($success) {
                             session_destroy();
                             header('Location: ' . ROOT . '/');
@@ -1193,7 +1179,6 @@ class JobProvider extends Controller
             }
         }
 
-        // If not a POST request or confirmation not provided, redirect
         header('Location: ' . ROOT . '/jobProvider/settings');
         exit;
     }

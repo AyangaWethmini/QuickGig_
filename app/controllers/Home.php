@@ -3,7 +3,7 @@
 class Home extends Controller
 {
 	protected $viewPath = "../app/views/home/";
-	protected $planModel; //temporary for testig, needto move into a ad controller
+	protected $planModel; 
 	protected $adModel;
 
 	public function __construct()
