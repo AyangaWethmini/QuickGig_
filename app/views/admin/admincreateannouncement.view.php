@@ -17,7 +17,6 @@ protectRoute([0]); ?>
             <form action="<?php echo ROOT; ?>/admin/admincreateannouncement" method="post" class="announcement-form">
 
                 <div class="form-container">
-                    <!-- Announcement Date -->
                     <div class="form-group">
                         <label for="announcementDate" class="form-label">Announcement Date</label>
                         <input
@@ -29,7 +28,6 @@ protectRoute([0]); ?>
                         <span class="form-invalid"><?php echo $data['announcementDate_error'] ?? ''; ?></span>
                     </div>
 
-                    <!-- Announcement Time -->
                     <div class="form-group">
                         <label for="announcementTime" class="form-label">Announcement Time</label>
                         <input
@@ -41,7 +39,6 @@ protectRoute([0]); ?>
                         <span class="form-invalid"><?php echo $data['announcementTime_error'] ?? ''; ?></span>
                     </div>
 
-                    <!-- Description -->
                     <div class="form-group">
                         <label for="body" class="form-label">Description</label>
                         <textarea
@@ -54,7 +51,6 @@ protectRoute([0]); ?>
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="button-container">
                     <button class="post-button">Post Announcement</button>
                 </div>
