@@ -10,10 +10,11 @@ protectRoute([2]); ?>
 
 <body>
     <div class="background-image" style="background-image: url('<?= ROOT ?>/assets/images/background.jpg');">
-    <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
+
 
         <div class="wrapper flex-row">
-                <div class="profile-container">
+            <?php require APPROOT . '/views/seeker/seeker_sidebar.php'; ?>
+            <div class="profile-container">
                 <div class="profile-header">
                     <div class="profile-info" style="background-image: url('<?= ROOT ?>/assets/images/profileBack.jpg');">
                         <div class="profile-overlay">

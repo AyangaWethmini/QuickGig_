@@ -4,7 +4,7 @@ protectRoute([2]); ?>
 <?php require APPROOT . '/views/components/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?= ROOT ?>/assets/css/JobProvider/reviews.css">
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/components/empty.css">
+<link rel="stylesheet" href="<?= ROOT ?>/assets/css/components/empty.css">
 
 
 <div class="wrapper flex-row">
@@ -15,12 +15,26 @@ protectRoute([2]); ?>
             <div class="heading">Reviews</div>
         </div>
         <br>
-        <div class="search-container">
-            <input type="text"
-                class="search-bar"
-                placeholder="Search reviews"
-                aria-label="Search">
-        </div>
+        <?php
+        if (isset($_GET['rating']) && $_GET['rating'] !== '') {
+            $selectedRating = (int)$_GET['rating'];
+            $data = array_filter($data, function ($review) use ($selectedRating) {
+                return $review->rating == $selectedRating;
+            });
+        }
+        ?>
+        <form method="GET" class="rating-filter-form" style="margin-bottom: 20px;">
+            <label for="rating">Filter by Rating:</label>
+            <select name="rating" id="rating" onchange="this.form.submit()">
+                <option value="">All</option>
+                <option value="5" <?= isset($_GET['rating']) && $_GET['rating'] == 5 ? 'selected' : '' ?>>5 Stars</option>
+                <option value="4" <?= isset($_GET['rating']) && $_GET['rating'] == 4 ? 'selected' : '' ?>>4 Stars</option>
+                <option value="3" <?= isset($_GET['rating']) && $_GET['rating'] == 3 ? 'selected' : '' ?>>3 Stars</option>
+                <option value="2" <?= isset($_GET['rating']) && $_GET['rating'] == 2 ? 'selected' : '' ?>>2 Stars</option>
+                <option value="1" <?= isset($_GET['rating']) && $_GET['rating'] == 1 ? 'selected' : '' ?>>1 Star</option>
+            </select>
+        </form>
+
         <div class="reviews-container container">
             <?php if (!empty($data)): ?>
                 <?php foreach ($data as $review): ?>
@@ -67,14 +81,14 @@ protectRoute([2]); ?>
                         </div>
                         <div class="complaint-actions flex-row">
                             <button class="btn-update" onClick="window.location.href='<?= ROOT ?>/jobProvider/review/<?= $review->jobID ?>';">Update</button>
-                            <button class="btn-delete" onclick="confirmDelete(<?php echo $review->reviewID?>)">Delete</button>
+                            <button class="btn-delete" onclick="confirmDelete(<?php echo $review->reviewID ?>)">Delete</button>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="empty-container">
-                    <img src="<?=ROOT?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
-                    <p class="empty-text">No Received Applications Found</p>
+                    <img src="<?= ROOT ?>/assets/images/no-data.png" alt="No Employees" class="empty-icon">
+                    <p class="empty-text">No Reviews Found</p>
                 </div>
             <?php endif; ?>
         </div>

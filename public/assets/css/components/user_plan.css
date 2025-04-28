@@ -5,6 +5,7 @@
     margin-top: 80px;
     width: 100%;
     position: relative;
+    font-family: poppins, sans-serif;
 }
 
 .main-content {
@@ -113,6 +114,7 @@
     width: 100%;
     max-width: 250px;
     text-align: center;
+    border-radius: 10px;
 }
 
 .user-plan-cancel {

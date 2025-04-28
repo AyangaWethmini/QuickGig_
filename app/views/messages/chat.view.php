@@ -22,8 +22,7 @@ protectRoute([2,3]); ?>
                 require APPROOT . '/views/jobProvider/organization_sidebar.php';
             }
         ?>
-       
-        <?php if (empty($data['conversations'])): ?>
+       <?php if (empty($data['conversations'])): ?>
             <div class="no-messages-container">
                 <img src="<?= ROOT ?>/assets/images/no-messages.png" alt="No Messages" class="no-messages-icon">
                 <p>No messages or chats yet!</p>
@@ -45,7 +44,7 @@ protectRoute([2,3]); ?>
             </div>
         <?php endif; ?>
 
-
+        
 
     </div>
 
