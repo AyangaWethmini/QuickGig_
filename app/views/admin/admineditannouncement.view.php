@@ -16,7 +16,6 @@ protectRoute([0]); ?>
             </div>
             <form action="<?php echo ROOT; ?>/admin/updateAnnouncement/<?php echo $data['announcementID']; ?>" method="post" class="announcement-form">
                 <div class="form-container">
-                    <!-- Hidden Field for Announcement ID -->
                     <input
                         type="hidden"
                         name="announcementID"
@@ -69,11 +68,9 @@ protectRoute([0]); ?>
 </div>
 
 <script>
-    // Set today's date as the minimum date
     const today = new Date().toISOString().split("T")[0];
     document.getElementById('announcementDate').setAttribute('min', today);
 
-    // Prevent selecting past dates
     document.getElementById('announcementDate').addEventListener('change', function() {
         const selectedDate = new Date(this.value);
         const today = new Date();

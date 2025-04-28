@@ -14,7 +14,6 @@
             </div>
         </div>
         <div id="search-results" class="complaints-container container" style="display: none;">
-            <!-- Search results will be displayed here -->
         </div>
         <div id="normal-results" class="complaints-container container">
             <?php if (empty($data['users'])): ?>
@@ -61,13 +60,11 @@
         </div>
         <div id="pagination-container" class="pagination-container">
             <div class="pagination">
-                <!-- Always show Previous button -->
                 <a href="<?= ROOT ?>/admin/adminmanageusers?page=<?= max(1, $data['currentPage'] - 1) ?>"
                     class="page-link <?= $data['currentPage'] <= 1 ? 'disabled' : '' ?>">
                     &laquo;
                 </a>
 
-                <!-- Always show page numbers -->
                 <?php for ($i = 1; $i <= max(1, $data['totalPages']); $i++): ?>
                     <a href="<?= ROOT ?>/admin/adminmanageusers?page=<?= $i ?>"
                         class="page-link <?= $i == $data['currentPage'] ? 'active' : '' ?>">
@@ -75,7 +72,6 @@
                     </a>
                 <?php endfor; ?>
 
-                <!-- Always show Next button -->
                 <a href="<?= ROOT ?>/admin/adminmanageusers?page=<?= min($data['totalPages'], $data['currentPage'] + 1) ?>"
                     class="page-link <?= $data['currentPage'] >= $data['totalPages'] ? 'disabled' : '' ?>">
                     &raquo;
@@ -89,7 +85,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
 <div id="delete-confirmation" class="modal" style="display: none;">
     <div class="modal-content">
         <p>Are you sure you want to delete this user? This action is irreversible.</p>
@@ -101,13 +96,11 @@
 <form id="delete-form" method="POST" style="display: none;"></form>
 
 <script>
-    // User search functionality
     const searchInput = document.getElementById('userSearchInput');
     const normalResults = document.getElementById('normal-results');
     const searchResults = document.getElementById('search-results');
     const paginationContainer = document.getElementById('pagination-container');
 
-    // Add event listener for Enter key on search input
     searchInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             searchUsers();
@@ -122,13 +115,11 @@
             return;
         }
 
-        // Show the loading state
         searchResults.innerHTML = '<div class="loading">Searching...</div>';
         searchResults.style.display = 'block';
         normalResults.style.display = 'none';
         paginationContainer.style.display = 'none';
 
-        // Make an AJAX call to search across all users
         fetch(`<?= ROOT ?>/admin/searchUsers?term=${encodeURIComponent(searchTerm)}`)
             .then(response => {
                 if (!response.ok) {
@@ -144,7 +135,6 @@
                     return;
                 }
 
-                // Create and append user elements
                 data.forEach(user => {
                     if (user.roleID != 0 && user.roleID != 1) { // Exclude admin users
                         const userDiv = document.createElement('div');
@@ -214,7 +204,6 @@
         };
     }
 
-    // Close the modal when clicking outside of it
     window.onclick = function(event) {
         var modal = document.getElementById('delete-confirmation');
         if (event.target == modal) {

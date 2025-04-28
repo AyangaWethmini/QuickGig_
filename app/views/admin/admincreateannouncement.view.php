@@ -64,7 +64,6 @@ protectRoute([0]); ?>
 </div>
 
 <style>
-    /* Layout Styles */
     .admin-container {
         padding: 20px;
     }
@@ -176,19 +175,17 @@ protectRoute([0]); ?>
 </style>
 
 <script>
-    // Set today's date as the minimum date
     const today = new Date().toISOString().split("T")[0];
     document.getElementById('announcementDate').setAttribute('min', today);
 
-    // Prevent selecting past dates
     document.getElementById('announcementDate').addEventListener('change', function() {
         const selectedDate = new Date(this.value);
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time part to compare dates only
+        today.setHours(0, 0, 0, 0);
 
         if (selectedDate < today) {
             alert("Cannot select a past date. Please select today or a future date.");
-            this.value = today.toISOString().split("T")[0]; // Reset to today's date
+            this.value = today.toISOString().split("T")[0];
         }
     });
 </script>
