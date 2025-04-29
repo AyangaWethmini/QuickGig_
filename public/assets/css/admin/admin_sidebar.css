@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+  }
 .admin_sidebar{
     background-color: rgb(173, 173, 243);
     width: 300px;
@@ -41,6 +44,7 @@
 
 /* LAYOUT */
 .admin-layout {
+    margin-top: 80px;
     display: flex;
     height: 100vh; /* Full height of the viewport */
 }

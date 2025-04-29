@@ -1,121 +1,129 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
+<?php 
+require APPROOT . '/views/inc/header.php'; 
+require_once APPROOT . '/views/inc/protectedRoute.php'; 
+protectRoute([1]); 
+?>
+
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/manager.css">
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/manager/advertisements.css"> 
 
+<?php include APPROOT . '/views/components/navbar.php'; ?>
+
+<?php include APPROOT . '/views/components/deleteConfirmation.php'; ?>
+
 <div class="wrapper flex-row">
-    <div id="sidebar" style="width: 224px; height : 100vh; background-color : var(--brand-lavender)">
-    
-    </div>
+    <?php require APPROOT . '/views/manager/manager_sidebar.php'; ?>
 
     <div class="main-content container">
-        <div class="header flex-row">
-            <h3>Current Advertisements</h3>
-            <button class="btn btn-accent" onclick="showForm()"> + Post Advertisement</button>
+        
+        <div class="header flex-row justify-between align-center">
+            <h2>Current Advertisements</h2>
+            <button class="btn btn-accent" onclick="window.location.href='<?=ROOT?>/manager/createAd'"> + Post Advertisement</button>
         </div>
         <hr>
+
         
-        <div class="search-container">
-            <input type="text" 
-                class="search-bar" 
-                placeholder="Search advertisements"
-                aria-label="Search">
-        </div>
-
-        <div class="filter flex-row">
-            <span>
+        <div class="filter flex-row justify-between align-center">
+            <div>
                 <h3>All Ads</h3>
-                <p class="text-grey">Showing 73 results</p>
-            </span>
-
-            <div class="filter-container">
-                <span>Sort by:</span>
-                <select id="sortSelect" onchange="sortContent()">
-                    <option value="recent">Most recent</option>
-                    <option value="views">Highest views</option>
-                </select>
-                <button id="gridButton" onclick="toggleView()">☰</button>
-                </div>
+                <p class="text-grey">Showing <?=$advertisements ? count($advertisements) : '0' ?> results</p>
+            </div>
         </div>
 
-        <div class="create-ad-form from container hidden"  id="create-ad">
-        <div class="title flex-row">
-        <i class="fa-solid fa-arrow-left"></i> <p class="title">Create Ad</p>
-        </div>
+       
+        <div class="ads-wrapper">
+    <div class="ads container">
+        <?php 
+        $adsPerPage = 3;
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $startIndex = ($currentPage - 1) * $adsPerPage;
+        $counter = 0;
+        ?>
 
-            <form action="post">
-                <div class="form-field">
-                    <lable class="lbl">Name</lable><br>
-                    <input type="text" for="name">
+        <?php if (empty($advertisements)): ?>
+            <img src="<?= ROOT ?>/assets/images/no-data.png" alt="no-ads" class="no-data-img-ad">
+        <?php else: 
+            for ($i = $startIndex; $i < count($advertisements) && $counter < $adsPerPage; $i++): 
+                $ad = $advertisements[$i];
+                $counter++;
+        ?> 
+            <div class="ad-card flex-row">
+                <div class="image">
+                    <?php if ($ad->img): ?>
+                        <?php 
+                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                        $mimeType = $finfo->buffer($ad->img);
+                        ?>
+                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($ad->img) ?>" alt="Ad image" style="width: 200px; height: 200px;">
+                    <?php else: ?>
+                        <img src="<?= ROOT ?>/assets/images/placeholder.jpg" alt="No image available">
+                    <?php endif; ?>
                 </div>
-                <div class="form-field">
-                    <lable class="lbl">Advertiser</lable><br>
-                    <input type="text" for="name">
+                <div class="ad-details flex-col">
+                    <p class="adv-title"><strong><?= htmlspecialchars($ad->adTitle) ?></strong></p>
+                    <p class="advertiser">Advertiser ID: <?= htmlspecialchars($ad->advertiserID) ?></p>
+                    <p class="description"><?= htmlspecialchars(substr($ad->adDescription, 0, 100)) . '...' ?></p>
+                    <p class="contact">Link: <a href="<?= htmlspecialchars($ad->link) ?>"><?= htmlspecialchars(substr($ad->link, 0, 100)) . '...' ?></a></p>
+                    <div class="status">
+                        <span class="badge <?= $ad->adStatus == 'active' ? 'active' : 'inactive' ?>">
+                            <?= $ad->adStatus == 'active' ? 'Active' : 'Inactive' ?>
+                        </span>
+                        <br>
+                        <p class="text-grey">Clicks: <?= htmlspecialchars($ad->clicks) ?> | Views: <?= htmlspecialchars($ad->views) ?></p>
+                    </div>
                 </div>
-                <div class="form-field">
-                    <lable class="lbl">Advertiser contact no.</lable><br>
-                    <input type="text" for="name">
+                <div class="ad-actionbtns flex-col">
+                    <button class="btn btn-accent edit-ad-btn" onclick="window.location.href='<?= ROOT ?>/manager/updateAd/<?= htmlspecialchars($ad->advertisementID) ?>'">Edit</button>
+                    <button class="btn btn-del del-ad-btn" onclick="showConfirmation('Are you sure you want to delete the advertisement?', 
+                            () => submitForm('<?= ROOT ?>/manager/deleteAd/<?= htmlspecialchars($ad->advertisementID) ?>'))">Delete</button>
                 </div>
-                <div class="form-field">
-                    <lable class="lbl">Description</lable><br>
-                    <textarea id="description" name="description" rows="6" ></textarea>
-                </div>
-                <div class="form-field">
-                    <lable class="lbl">Category</lable><br>
-                    <input type="text" for="name">
-                </div>
-                <div class="form-field">
-                    <lable class="lbl">Expiry date</lable><br>
-                    <input type="text" for="name">
-                </div>
-                <div class="form-field">
-                    <lable class="lbl">Tages</lable><br>
-                    <input type="text" for="name">
-                </div>
-                <div class="form-field radio-btns">
-                    <input type="radio" name="paid"><label for="paid">Paid</label>
-                    <input type="radio" name="pending"><label for="pending">Pending</label>
-                </div>
-                <div class="links flex-col">
-                <div class="form-field img-link">
-                    <a href="#">Add Image</a>
-                </div>
-                <button class="btn btn-accent" onclick="postAd()">Post Ad</button>
-                </div>
-            </form>
-        </div>
+            </div>
+        <?php endfor; ?>
+        <?php endif; ?>
     </div>
-
 </div>
 
-<script>
 
-const form = document.getElementById("create-ad");
-const body = document.querySelector("body");
+        <!-- Pagination -->
+        <div class="pagination flex-row">
+            <?php
+            $totalPages = ceil(count($advertisements) / $adsPerPage);
+            if ($currentPage > 1): ?>
+                <a href="?page=<?= $currentPage - 1 ?>" class="btn btn-trans">Previous</a>
+            <?php endif; ?>
 
-    function showForm() {
-        const bg = document.querySelector(".wrapper");
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?= $i ?>" class="btn <?= $i === $currentPage ? 'btn-accent' : 'btn-trans' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($currentPage < $totalPages): ?>
+                <a href="?page=<?= $currentPage + 1 ?>" class="btn btn-trans">Next</a>
+            <?php endif; ?>
+        </div>
+
         
-        if (form.classList.contains("hidden")) {
-            form.classList.remove("hidden");
-            setTimeout(() => {
-                form.classList.add("show");
-            }, 50); 
-            body.classList.add("overlay");
+
+        <!-- Error Message -->
+        <?php
+            include_once APPROOT . '/views/components/alertBox.php';
+            if (isset($_SESSION['error'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['error']) . '", "error");</script>';
+            }
+            if (isset($_SESSION['success'])) {
+                echo '<script>showAlert("' . htmlspecialchars($_SESSION['success']) . '", "success");</script>';
+            }
+            unset($_SESSION['error']);
+            unset($_SESSION['success']);
+        ?>
+
+
+
+        
             
-        } else {
-            form.classList.remove("show");
-            form.classList.add("hidden");
-        }
-    }
+    </div>
 
-    function postAd(){
-        form.classList.remove("show");
-        setTimeout(() => {
-            form.classList.add("hidden");
-        }, 500);
-    }
-
-    
-
-</script>
+   
+</div>
 

@@ -1,30 +1,47 @@
-.opener {
+.opener,
+.opener-available {
     display: flex;
     flex-direction: row;
-    margin-top: 30px;
-    margin-left: 30px;
-  }
-  
-  .title-name {
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px;
+}
+
+.title-name-opener {
+    width: fit-content;
     font-size: 36px;
     font-weight: bold;
-  }
-  
-  .post-job-btn {
-    background-color: #4640DE;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #3b2d7d;
+    white-space: nowrap;
+}
+
+.post-job-btn {
+    background: linear-gradient(135deg, #6a5acd, #7b68ee);
     color: white;
     font-weight: bold;
-    border: 1px solid gray;
-    border-radius: 0;
+    border: none;
+    border-radius: 8px;
     padding: 10px 20px;
     cursor: pointer;
     font-size: large;
-    margin-left: 146vh;
-  }
-  
-  .post-job-btn:hover {
-    background-color: #3430bd;
-  }
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(106, 90, 205, 0.2);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.post-job-btn:hover {
+    background: linear-gradient(135deg, #5b4acb, #6f52e3);
+    transform: translateY(-2px);
+}
+
+/* Optional: Ad box styling */
+.ad-image {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
   
   .expressionNselect-dates {
     display: flex;
@@ -53,3 +70,4 @@
   .select-dates-btn:hover {
     background-color: #D6DDEB;
   }
+  

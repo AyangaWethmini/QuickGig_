@@ -1,104 +1,268 @@
+/* General Layout */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
     margin: 0;
     padding: 0;
 }
 
+/* Main Wrapper */  
 .wrapper {
     display: flex;
-    margin-top: 100px;
+    justify-content: space-between;
+    background-color: #3049734a;
+    margin-top: 80px;
+    width: 100%;
 }
 
+/* Edit Profile Container */
 .user-editprofile {
-    margin-left: 224px;
-    padding: 30px;
-    width: calc(100% - 224px);
+    background: linear-gradient(145deg, #ffffff, #f1f6fd);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px; /* Set a max-width to prevent it from stretching too much */
+    padding: 40px;
+    margin-left: 400px;
+    margin-top: 80px;
 }
 
-.editprofile-section {
-    display: flex;
-    flex-wrap: wrap;
+/* Section Title */
+h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #3e5c77;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
 }
 
-/* SECTION 1 */
-
-.section1-left {
-    flex: 1;
-    padding: 20px;
+/* Labels */
+label {
+    font-size: 16px;
+    color: #6c79f4;
+    margin-bottom: 8px;
+    display: inline-block;
+    font-weight: bold;
 }
 
-.section1-right {
-    flex: 2;
-    padding: 20px;
-}
-
-/* SECTION 2 */
-
-.section2-left {
-    flex: 1;
-    padding: 20px;
-}
-
-.section2-right {
-    flex: 2;
-    padding: 20px;
-}
-
+/* Custom Inputs */
 .custom-input {
     width: 100%;
-    padding: 10px; 
-    border: 1px solid #ccc; 
-    box-sizing: border-box; 
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    background-color: #f9f9fb;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #4c4e58;
+    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.custom-input.part1{
-    width: 75%; 
+.custom-input:focus {
+    border-color: #6c79f4;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(108, 121, 244, 0.2);
 }
 
-.custom-input.part2{
-    width: 50%; 
+.custom-input::placeholder {
+    color: #aaa;
+}
+.custom-input-area {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    background-color: #f9f9fb;
+    font-size: 16px;
+    color: #4c4e58;
+    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.custom-input.part3{
-    width: 50%; 
+.custom-input-area:focus {
+    border-color: #6c79f4;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(108, 121, 244, 0.2);
 }
 
-.custom-input.part4{
-    height: fit-content;
+.custom-input-area::placeholder {
+    color: #aaa;
 }
 
-.form-btn.edit-profile{
-    width: 200px;
+/* Textarea */
+textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    background-color: #f9f9fb;
+    font-size: 16px;
+    color: #4c4e58;
+    height: 180px;
+    resize: none;
+    transition: border-color 0.3s, background-color 0.3s;
 }
 
-.edit-profile-btnsection {
-    text-align:  right;
-    padding-bottom: 20px;
+textarea:focus {
+    border-color: #6c79f4;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(108, 121, 244, 0.2);
 }
 
-.edit-profile-photo{
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+/* Character Count */
+#char-count {
+    font-size: 13px;
+    color: #888;
+    margin-top: 5px;
 }
 
-.edit-profile-btn{
-    background-color: white;
-    color:  #4640DE;
-    font-weight: bold;
-    border: 1px solid gray;
-    border-radius: 0;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-left: 30%;
+/* Button Section */
+.editprofile-btnsection {
+    text-align: center;
 }
 
-.edit-profile-btn:hover{
-    background-color: #3430bd;
+.edit-profile-btn {
+    background-color: #6c79f4;
     color: white;
+    font-size: 18px;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 10px rgba(108, 121, 244, 0.1);
 }
 
-.edit-profile-description{
-    padding-left: 30px;
+.edit-profile-btn:hover {
+    background-color: #5a6ef5;
+    transform: translateY(-2px);
+}
+
+.edit-profile-btn:active {
+    background-color: #4a5de8;
+}
+
+/* Profile Picture Upload */
+.profile-upload-label {
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.profile-upload-label img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid #6c79f4;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-upload-label:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(108, 121, 244, 0.3);
+}
+
+/* Section Separators */
+.editprofile-section hr {
+    border: 0;
+    border-top: 1px solid #e1e1e1;
+    margin: 20px 0;
+}
+.phone-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.error-messages {
+    background-color: #ffe6e6;
+    color: #d10000;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+.country-code {
+    width: 25%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.country-code:focus {
+    outline: none;
+    border-color: #6c79f4; /* Highlight with the main theme color on focus */
+}
+
+#Phone2 {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+        border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+#Phone2:focus {
+    outline: none;
+    border-color: #6c79f4; 
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(108, 121, 244, 0.2);
+}
+
+.phone-container input[type="text"] {
+    color: #333;
+    font-weight: 500;
+}
+
+.phone-container select {
+    color: #333;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-editprofile {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .profile-upload-label img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .edit-profile-btn {
+        width: 100%;
+        padding: 14px 20px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    label {
+        font-size: 14px;
+    }
 }

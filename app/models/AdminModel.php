@@ -1,5 +1,5 @@
 <?php
-
+// models/Admin.php
 
 class AdminModel
 {
@@ -14,7 +14,7 @@ class AdminModel
 
     public function __construct()
     {
-        
+        // $this->db = new Database; // PDO instance
     }
 
     public function getTotalAnnouncements()
@@ -26,13 +26,13 @@ class AdminModel
 
     public function getAnnouncementsPaginated($start, $limit)
     {
-        
+        // Cast parameters to integers to ensure proper SQL syntax
         $start = (int)$start;
         $limit = (int)$limit;
 
         $query = "SELECT * FROM announcement 
                   ORDER BY announcementDate DESC, announcementTime DESC 
-                  LIMIT $start, $limit";  
+                  LIMIT $start, $limit";  // Use direct integers instead of parameters
 
         $result = $this->query($query);
         return $result ?: [];
@@ -43,33 +43,33 @@ class AdminModel
         $query = 'SELECT COUNT(*) AS jobcount FROM job';
         $result = $this->query($query);
 
-        
+        // Ensure the result is an array and has at least one element
         if (is_array($result) && isset($result[0]->jobcount)) {
-            return $result[0]->jobcount;
+            return $result[0]->jobcount; // Access the 'jobcount' property from the first object
         }
 
-        return 0; 
+        return 0; // Return 0 if no rows match or query fails
     }
 
-    
+    /* ADMIN DASHBOARD */
     public function getCountByRoleID($roleID)
     {
         $query = "SELECT COUNT(*) AS count FROM account_role WHERE roleID = :roleID";
 
-        
+        // Parameters for the query
         $params = [
             'roleID' => $roleID
         ];
 
-    
-        $result = $this->query($query, $params); 
+        // Execute the query
+        $result = $this->query($query, $params); // Returns an array of objects or false
 
-    
+        // Handle the result
         if (is_array($result) && isset($result[0]->count)) {
-            return $result[0]->count; 
+            return $result[0]->count; // Access the 'count' property from the first object
         }
 
-        return 0; 
+        return 0; // Return 0 if no rows match or query fails
     }
 
     public function getAnnouncements()
@@ -78,47 +78,23 @@ class AdminModel
         return $this->query($query);
     }
 
-    public function getAnnouncementsFiltered($anDate = null){
-        try{
-            if($anDate){
-                $query = "SELECT * FROM announcement WHERE announcementDate = :anDate";
-                $params = [
-                    ':announcementDate' => $anDate,
-                ];
-
-                $result = $this->query($query, $params);
-                return $result;
-            }else{
-                $query = "SELECT * FROM announcement ORDER BY announcementDate DESC, announcementTime DESC";
-                $result = $this->query($query);
-                return $result;
-            }
-            
-        }catch (Exception $e) {
-            error_log("Error calculating ad revenue: " . $e->getMessage());
-            return false;
-        }
-        
-    }
-
-    
+    // Properties representing the columns in the account table
     public function createAnnouncement($data, $adminId)
     {
-        
-        $query = "INSERT INTO announcement (announcementID, announcementDate, announcementTime, title, content, adminID) 
-                  VALUES (:announcementID, :announcementDate, :announcementTime, :content, :title, :adminID)";
+        // Include adminID as a fixed value (1)
+        $query = "INSERT INTO announcement (announcementID, announcementDate, announcementTime, content, adminID) 
+                  VALUES (:announcementID, :announcementDate, :announcementTime, :content, :adminID)";
 
-        
+        // Adding adminID to the params array with a fixed value of 1
         $params = [
             'announcementID' => NULL,
             'announcementDate' => $data['announcementDate'],
             'announcementTime' => $data['announcementTime'],
-            'title' => $data['title'],
             'content' => $data['content'],
             'adminID' => $adminId,
         ];
 
-        
+        // Execute the query
         return $this->query($query, $params);
     }
 
@@ -132,7 +108,10 @@ class AdminModel
 
         $result = $this->query($query, $params);
 
-        
+        // Debug the query result
+        // var_dump($result);
+        // exit;
+
         return $result ? $result[0] : false;
     }
 
@@ -163,18 +142,19 @@ class AdminModel
         return $this->query($query, $params);
     }
 
-    public function getCount($adDate)
+    public function getCount()
     {
-        $query = "SELECT COUNT(*) AS count FROM announcement WHERE advertisementDate = :adDate";
+        $query = "SELECT COUNT(*) AS count FROM announcement";
         $result = $this->query($query);
 
-        
+        // Ensure the result is an array and has at least one element
         if (is_array($result) && isset($result[0]->count)) {
-            return $result[0]->count; 
+            return $result[0]->count; // Access the 'count' property from the first object
         }
 
-        return 0;
+        return 0; // Return 0 if no rows match or query fails
     }
+
     public function searchUsersByEmail($searchTerm)
     {
         $query = "SELECT a.*, ar.roleID, a.activationCode 

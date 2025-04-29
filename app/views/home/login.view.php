@@ -1,62 +1,120 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/protectedRoute.php'; ?>
 
 <link rel="stylesheet" href="<?php echo ROOT; ?>/assets/css/home/login.css">
-<?php include APPROOT . '/views/components/navbar.php'; ?>
 
+ 
+<div class="login-login flex-row">
 
-<div class="signin-signup flex-row">
-
-    <div class="image">
-            <img src="<?=ROOT?>/assets/images/home.png" alt="man holding files" class="img">
-
-            <div class="stat container flex-col">
-                <img src="<?=ROOT?>/assets/icons/chart.svg" alt="stats image" width="56px" height="40px">
-                <h4>100k+</h4>
-                <p>People got hired</p>
-            </div>
-
-            <div class="testamonial container">
-                <img src="<?=ROOT?>/assets/images/profile.png" alt="profile picture" class="profile">
-                <div class="card">
-                    <h5>Adam Slander</h5>
-                    <h5>Lead Engineer at Canva</h5>
-                    <div class=" flex-row">
-                    <p class="quote">"</p>
-                    <p class="comment">“Great platform for the job seeker that searching for new career heights.”</p>
-                    </div>
-
+    <div class="carousel">
+        <div class="slides">
+            <div class="slide active" style="background-image: url('<?= ROOT ?>/assets/images/logincarousel1.jpg');">
+                <div class="overlay">
+                    <h2>Welcome Back!</h2>
+                    <p>Explore job opportunities that match your skills.</p>
                 </div>
-            </div>  
+            </div>
+            <div class="slide" style="background-image: url('<?= ROOT ?>/assets/images/logincarousel2.jpg');">
+                <div class="overlay">
+                    <h2>Flexible Hours</h2>
+                    <p>Choose when and where you want to work.</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('<?= ROOT ?>/assets/images/logincarousel3.jpg');">
+                <div class="overlay">
+                    <h2>Build Your Career</h2>
+                    <p>Gain experience while you study. Get ahead.</p>
+                </div>
+            </div>
         </div>
+        <div class="dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
 
     <div class="form-section">
-    <div class="login-form">
-        <div class="flex-col">
-        <h3 style="color: var(--color-white); margin-top: 40px;">Get more oppertunities</h3>
-        <form action="<?php echo ROOT; ?>/login/verify" method="POST" class="form-body">
-            <div class="form-field">
-                <label for="email" class="lbl" style="color: var(--color-white);">Email : </label><br>
-                <input type="text" name="email" placeholder="Enter Email">
-            </div>
+        <div class="login-form">
+            <a href="<?php echo ROOT; ?>/home" class="back-button">
+                <
+            </a>
+            <div class="flex-col">
+                <h3 class="heading">WELLCOME BACK!</h3>
+                <form action="<?php echo ROOT; ?>/login/verify" method="POST" class="form-body">
+                    <!-- Display errors -->
+                    <?php if (isset($_SESSION['login_errors']) && !empty($_SESSION['login_errors'])): ?>
+                        <div class="error-messages">
+                            <?php foreach ($_SESSION['login_errors'] as $error): ?>
+                                <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php unset($_SESSION['login_errors']); ?>
+                    <?php endif; ?>
 
-            <div class="form-field">
-                <label for="password" class="lbl" style="color: var(--color-white);">Password :</label><br>
-                <input type="password" name="password" placeholder="Enter password"> <!----add the width to css file -->
+                    <div class="form-field">
+                        <label for="email" class="lbl">Email : </label><br>
+                        <input type="text" name="email" placeholder="Enter Email">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password" class="lbl">Password :</label><br>
+                        <div class="password-wrapper">
+                            <input type="password" name="password" id="password" placeholder="Enter password" onpaste="return false" oncopy="return false" oncut="return false">
+                            <button type="button" id="togglePassword">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-accent login-btn" type="submit">Log In</button>
             </div>
-            <p class="text-white rem flex-row" style="gap: 10px;">Remember me<input type="checkbox"></p>
-            
-            
-            <button class="btn btn-accent signup-btn" type = "submit" >Log In</button>
-        </div>
             <div style="margin-left: 10px;">
-                
-                <p class="text-white styled login" style="font-size: 13px;">Already have an account ? <a href="#">login</a></p>
-                <p class="text-white styled login" style="font-size: 13px;">By clicking 'Continue', you acknowledge that you have read and accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+
+                <p class="text-white styled login" style="font-size: 13px;">
+                    Don't have an account?
+                    <a href="<?php echo ROOT; ?>/home/signup" style="color: #00bfff; font-weight: bold;">Sign Up</a>
+                </p>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
-    </div> 
 
 </div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('password');
+        const isPassword = passwordField.type === 'password';
+        passwordField.type = isPassword ? 'text' : 'password';
+        // Change the button text/icon
+        this.textContent = isPassword ? '🙈' : '👁️';
+    });
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+            dots[i].classList.toggle('active', i === index);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+
+    setInterval(nextSlide, 5000); // change slide every 5 seconds
+
+    showSlide(currentSlide); // initialize
+</script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

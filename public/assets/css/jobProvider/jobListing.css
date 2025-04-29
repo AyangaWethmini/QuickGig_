@@ -1,10 +1,13 @@
+* {
+  box-sizing: border-box;
+}
 body {
   font-family: Arial, sans-serif;
   background-color: #ffffff;
 }
 .wrapper {
   display: flex;
-  margin-top: 100px;
+  margin-top: 80px;
 }
 
 .inclusion-container {
@@ -19,43 +22,67 @@ hr {
 .list-header {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  margin-top: 40px;
-  margin-left: 30px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 30px;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #f9f9f9, #e6e6e6);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.list-header-title {
-  font-size: 24px;
-  font-weight: bold;
+.list-header form {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin-right: 20px;
 }
 
 .search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
   font-size: 16px;
-  width: 400px;
-  color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
-.search-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 18px;
-  color: #ccc;
-  cursor: pointer;
+.search-input:focus {
+  border-color: #3b2d7d;
+  box-shadow: 0 4px 8px rgba(59, 45, 125, 0.2);
 }
 
 .filter-btn {
-  background-color: #ffffff;
-  color: #25324B;
-  border: 1px solid #D6DDEB;
-  border-radius: 0;
-  padding: 10px 20px;
-  cursor: pointer;
+  padding: 12px 15px;
   font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  cursor: pointer;
+  appearance: none;
 }
 
 .filter-btn:hover {
-  background-color: #D6DDEB;
+  background-color: #f0f0f0;
+  border-color: #3b2d7d;
+  box-shadow: 0 4px 8px rgba(59, 45, 125, 0.2);
+}
+
+.filter-btn:focus {
+  border-color: #3b2d7d;
+  box-shadow: 0 4px 8px rgba(59, 45, 125, 0.2);
+}
+
+.filter-btn::-webkit-calendar-picker-indicator {
+  color: #3b2d7d;
+  cursor: pointer;
 }
 
 .employee-list {
@@ -72,10 +99,10 @@ hr {
   align-items: center;
   padding: 20px;
   border: 1px solid #D6DDEB;
-  border-radius: 8px;
-  background-color: #ffffff;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .employee-item:hover {
@@ -293,6 +320,11 @@ a {
   border-radius: 50%;
   margin-right: 10px;
   animation: blink 1s infinite;
+}
+.star-img {
+  width: 30px;
+  height: 30px;
+  margin: 0 2px;
 }
 
 @keyframes blink {

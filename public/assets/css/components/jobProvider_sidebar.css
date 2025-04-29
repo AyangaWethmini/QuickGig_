@@ -1,17 +1,38 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    
+}
+* {
+    box-sizing: border-box;
+  }
+
+
+/* Make icons and labels white when sidebar item is active */
+.sidebar-item.active .sidebar-icon,
+.sidebar-item.active .sidebar-label {
+    color: white;
+}
+
+/* to style active sidebar */
+.sidebar-item.active {
+    background-color: #6c79f4;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-container {
-    width: 224px;
-    height: 100vh;
+    width: 254px;
+    height: 100%; /* Full height of the viewport */
     background-color: white;
     display: flex;
     flex-direction: column;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     position: fixed;
+    overflow-y: auto; /* Enable scrolling for long content */
+    z-index: 10; /* Ensure it stays above other content */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for toggling */
+
 }
 
 .sidebar-items-container{
@@ -21,6 +42,7 @@ body {
 .sidebar-item {
     display: flex;
     align-items: center;
+    text-decoration: none;
     padding: 15px;
     margin-bottom: 10px;
     background-color: #ffffff;
@@ -31,7 +53,7 @@ body {
 }
 
 .sidebar-item:hover {
-    background-color: #E9EBFD;
+    background-color: #b3bbff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -41,13 +63,29 @@ body {
 }
 
 .sidebar-icon {
-    font-size: 20px;
+    font-size: 18px;
     margin-right: 15px;
     color: #333;
 }
 
 .sidebar-label {
-    font-size: 1rem;
+    font-size: 18px;
     font-weight: 600;
-    color: #7C8493;
+    color: #867c93;
+}
+
+@media (max-width: 768px) {
+    .sidebar-container {
+        width: 25%; /* Full width for smaller screens */
+        height: auto; /* Adjust height */
+        position: relative; /* Allow it to flow with the page */
+    }
+
+    .sidebar-item {
+        justify-content: center; /* Center items for smaller screens */
+    }
+}
+
+.sidebar-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Edge: hide scrollbar */
 }

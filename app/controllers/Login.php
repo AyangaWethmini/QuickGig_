@@ -23,6 +23,8 @@ class Login extends Controller
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
 
+            $_SESSION['login_errors'] = [];
+
             // Validate inputs
             if (empty($email) || empty($password)) {
                 $_SESSION['login_errors'][] = "Email and password are required.";
@@ -32,29 +34,47 @@ class Login extends Controller
 
             // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Invalid email format.";
+                $_SESSION['login_errors'][] = "Invalid Email Format.";
+                header("Location: " . ROOT . "/home/login");
                 return false;
+            }
+
+            $domain = substr(strrchr($email, "@"), 1);
+
+            // Check if the domain has valid DNS records
+            if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
+                $_SESSION['login_errors'][] = "Invalid Email Format.";
+                header("Location: " . ROOT . "/home/login");
+                exit;
             }
 
             $user = $this->model->findByEmail($email);
             $userRole = $this->model->findRole($user['accountID']);
 
 
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user && password_verify($password, $user['password']) && $user['activationCode'] == true) {
                 // Login successful
                 $_SESSION['user_id'] = $user['accountID']; // Store user ID in the session
                 $_SESSION['user_email'] = $user['email']; // Store user email in the session
-                $_SESSION['user_role'] = $userRole['roleID']; 
-                $_SESSION['user_logged_in'] = true; // Store user email in the session
-                header("Location: " . ROOT . "/home");
+                $_SESSION['pp'] = $user['pp'];
+                $_SESSION['user_role'] = $userRole['roleID'];
+                $_SESSION['user_logged_in'] = true; 
+                $_SESSION['current_role'] = 1;
+                $_SESSION['plan_id'] = $user['planID'];
+                if($_SESSION['user_role'] == 0){
+                    header("Location: " . ROOT . "/admin/admindashboard");
+                }else if($_SESSION['user_role'] == 1){
+                    header("Location: " . ROOT . "/manager/dashboard");
+                }else if($_SESSION['user_role'] > 1){
+                    header("Location: " . ROOT . "/home");
+                }
                 exit;
-            }else {
+            } else {
                 // Login failed
                 $_SESSION['login_errors'][] = "Invalid email or password.";
                 header("Location: " . ROOT . "/home/login");
                 exit;
             }
-
         }
     }
     public function logout()

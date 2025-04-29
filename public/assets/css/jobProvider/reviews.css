@@ -1,5 +1,8 @@
+* {
+    box-sizing: border-box; 
+  }
 .wrapper{
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .main-content-reviews{
@@ -8,10 +11,12 @@
 }
 
 .heading{
-    color: #000000;
-    font-size: 24px;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
+    width: fit-content;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #3b2d7d;
+  white-space: nowrap;
 }
 
 .header {
@@ -34,7 +39,8 @@
     margin: 20px auto;
     max-width: 800px;
     padding: 20px;
-    background-color: #fff;
+    background: linear-gradient(135deg, #e0f0ff, #f0e8ff);
+
 }
 
 .review-card:hover {
@@ -57,12 +63,80 @@
     margin-left: 20px;
 }
 
-.rating .fa-star {
+
+ .star-active {
+    margin-top: 5PX;
     color: gold;
+}
+ .star-inactive{
+    margin-top: 5PX;
+    color: rgb(187, 187, 187);
 }
 
 .review-text {
-    margin-top: 10px;
-    font-size: 16px;
+    margin-top: 5px;
+    font-size: 18px;
     color: #25324B;
+}
+.btn-update{
+    background-color: #4640DE;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.btn-delete{
+    background-color: #c11b1b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.btn-update:hover{
+    background-color: #3430bd;
+}
+
+.btn-delete:hover{
+    background-color: #a00f0f;
+}
+.rating-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    background: #f9f9f9;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    width: fit-content;
+}
+
+.rating-filter-form label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+.rating-filter-form select {
+    padding: 8px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.rating-filter-form select:hover {
+    border-color: #888;
+}
+
+.rating-filter-form select:focus {
+    outline: none;
+    border-color: #4A90E2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }

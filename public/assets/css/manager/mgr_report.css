@@ -1,0 +1,164 @@
+
+.wrapper {
+  margin-top: 80px;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.main-content {
+  margin-left: 300px;
+  flex: 1;
+  padding: 20px;
+  background-color: aqua;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+.report-table thead th {
+  background-color: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.report-table tbody td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.report-table tfoot td {
+  font-weight: bold;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: right;
+}
+
+.header {
+  margin: 20px;
+  padding: 10px;
+}
+
+.header h2 {
+  color: var(--Neutrals-100, #25324B);
+  font-family: Epilogue;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+
+.print-header,
+.print-footer {
+  display: none;
+}
+
+@media print {
+ 
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: black;
+    font-size: 12pt;
+  }
+
+  
+  body * {
+    visibility: hidden;
+  }
+
+  #print-area, 
+  #print-area * {
+    visibility: visible;
+  }
+
+ 
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .print-header {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10mm;
+    border-bottom: 1px solid #ccc;
+    background: white;
+  }
+
+  .print-footer {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10mm;
+    border-top: 1px solid #ccc;
+    background: white;
+    text-align: center;
+    font-size: 10pt;
+  }
+
+ 
+  #report-content {
+    margin-top: 30mm;
+    margin-bottom: 20mm;
+  }
+
+  
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    page-break-inside: auto;
+  }
+
+  .report-table th, 
+  .report-table td {
+    border: 1px solid #ddd;
+    padding: 4pt;
+  }
+
+  .report-table thead {
+    display: table-header-group;
+  }
+
+  .report-table tfoot {
+    display: table-footer-group;
+  }
+
+  
+  h3, tr, td, th {
+    page-break-inside: avoid;
+  }
+
+ 
+  h3 {
+    page-break-after: avoid;
+  }
+
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+

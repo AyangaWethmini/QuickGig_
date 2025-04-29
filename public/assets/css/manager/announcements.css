@@ -1,0 +1,268 @@
+* {
+    box-sizing: border-box;
+  }
+.wrapper {
+    margin-top: 80px;
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 100px);
+}   
+
+.main-content {
+    margin-left: 300px;
+    padding: 20px;
+    flex: 1;
+    width: calc(100% - 240px);
+}
+
+.ann-container {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: flex-start;
+    padding: 20px 0;
+}
+
+
+.create-announcement-form {
+    margin-top: 40px;
+    padding: 30px;
+    width: 450px;
+    position: sticky;
+    top: 120px;
+}
+
+.create-announcement-form h3 {
+    font-size: 24px; 
+    color: #25324B;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 16px; 
+    font-weight: 500;
+}
+
+.create-announcement-form input,
+.create-announcement-form textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px !important; 
+    background-color: #f9fafb;
+    transition: all 0.3s ease;
+}
+
+.create-announcement-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.create-announcement-form input:focus,
+.create-announcement-form textarea:focus {
+    border-color: #4640DE;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(70, 64, 222, 0.1);
+}
+
+.create-announcement-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4640DE;
+    color: white;
+    font-weight: 600;
+    font-size: 18px; 
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.create-announcement-form button:hover {
+    background-color: #372ebf;
+}
+
+
+.announcements {
+    flex: 1;
+    min-width: 0;
+}
+
+.announcements .filter {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.announcements .filter h3 {
+    font-size: 22px;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.announcements .filter p {
+    font-size: 16px; 
+    color: #64748b;
+}
+
+.announcement-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+}
+
+.announcement-card:last-child {
+    margin-bottom: 0;
+}
+
+.announcement-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    border-color: #c7d2fe;
+}
+
+.announcement-card h3 {
+    font-size: 20px;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.announcement-card p {
+    font-size: 18px !important;
+    color: #475569;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.announcement-card .date-time {
+    font-size: 15px; 
+    color: #7f8a99;
+    font-style: italic;
+}
+
+.no-announcements {
+    color: #64748b;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 18px; 
+}
+
+.del-ann-btn {
+    height: 35px;
+    width: 100px;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 15px !important;
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .ann-container {
+        flex-direction: column;
+        gap: 24px;
+        padding: 0;
+    }
+
+    .create-announcement-form {
+        width: 100%;
+        position: static;
+        top: auto;
+        padding: 24px;
+    }
+
+    .announcements {
+        width: 100%;
+    }
+
+    .announcement-card {
+        padding: 18px;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        margin-top: 80px;
+        padding: 0 10px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px 0;
+    }
+
+    .create-announcement-form h3,
+    .announcements .filter h3 {
+        font-size: 20px;
+    }
+
+    .announcement-card h3 {
+        font-size: 18px;
+    }
+
+    .announcement-card p {
+        font-size: 16px;
+    }
+
+    .del-ann-btn {
+        width: 90px;
+        font-size: 14px;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    .wrapper {
+        margin-top: 60px;
+    }
+
+    .create-announcement-form {
+        padding: 20px;
+    }
+
+    .announcement-card {
+        padding: 16px;
+    }
+
+    .ann-container {
+        gap: 16px;
+    }
+
+    .create-announcement-form h3,
+    .announcements .filter h3 {
+        font-size: 18px;
+    }
+
+    .announcement-card h3 {
+        font-size: 16px;
+    }
+
+    .announcement-card p {
+        font-size: 15px;
+    }
+
+    .del-ann-btn {
+        width: 80px;
+        height: 32px;
+        font-size: 13px;
+    }
+}

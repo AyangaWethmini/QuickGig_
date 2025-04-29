@@ -1,0 +1,110 @@
+.contact-us {
+    width: 100%;
+    min-height: calc(100vh - 100px); 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(180deg, var(--brand-primary) 0%, #f8fbff 100%);
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-card{
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    opacity: 0.9;
+}
+
+.contact-us h1 {
+    text-align: center;
+    color: #3b2d7d;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.contact-us p {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3b2d7d;
+    box-shadow: 0 4px 8px rgba(59, 45, 125, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    padding: 12px 20px;
+    color: #fff;
+    background-color: var(--brand-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"]:hover {
+    background-color: #2a1f5c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.footer {
+    position: relative; 
+    
+}
+
+.footer-content {
+    padding: 20px;
+    text-align: center;
+}
