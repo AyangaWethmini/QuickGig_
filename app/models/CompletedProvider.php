@@ -186,4 +186,33 @@ ORDER BY datePosted DESC, timePosted DESC
         $query = "UPDATE req_available SET reqStatus = ? WHERE reqID = ?";
         return $this->query($query, [$status, $reqID]);
     }
+
+
+    public function filterCompletedByDateRange($userID, $dateFrom, $dateTo)
+    {
+        $query = "SELECT a.*, i.accountID, i.fname, i.lname, j.jobTitle, j.jobID, acc.pp, j.availableDate, j.timeFrom, j.timeTo, j.salary, j.currency, j.location
+                FROM apply_job a 
+                JOIN job j ON a.jobID = j.jobID
+                JOIN individual i ON a.seekerID = i.accountID
+                JOIN account acc ON a.seekerID = acc.accountID
+                WHERE j.accountID = ? 
+                AND a.applicationStatus = 4
+                AND j.availableDate BETWEEN ? AND ?
+                ORDER BY datePosted DESC, timePosted DESC";
+        return $this->query($query, [$userID, $dateFrom, $dateTo]);
+    }
+
+    public function filterReqAvailableCompletedByDateRange($userID, $dateFrom, $dateTo)
+    {
+        $query = "SELECT r.*, i.accountID, i.fname, i.lname, m.timeFrom, m.timeTo, m.availableDate, m.salary, m.currency, m.location, acc.pp, m.description, m.availableID
+                FROM req_available r
+                JOIN makeavailable m ON r.availableID = m.availableID
+                JOIN individual i ON m.accountID = i.accountID
+                JOIN account acc ON m.accountID = acc.accountID
+                WHERE r.providerID = ? 
+                AND r.reqStatus = 4
+                AND m.availableDate BETWEEN ? AND ?
+                ORDER BY m.availableDate DESC, m.timeFrom DESC";
+        return $this->query($query, [$userID, $dateFrom, $dateTo]);
+    }
 }

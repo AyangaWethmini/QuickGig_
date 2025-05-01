@@ -28,6 +28,11 @@ protectRoute([2]); ?>
                     class="filter-btn"
                     onchange="filterByDate(this.value)"
                     style="appearance: none; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; cursor: pointer; font-size: 16px;" />
+          <!--  <form method="GET" action="<?= ROOT ?>/jobProvider/jobListing_completed">
+                <input type="date" name="filterDateFrom" class="filter-btn" value="<?= isset($_GET['filterDateFrom']) ? htmlspecialchars($_GET['filterDateFrom']) : '' ?>">
+                <input type="date" name="filterDateTo" class="filter-btn" value="<?= isset($_GET['filterDateTo']) ? htmlspecialchars($_GET['filterDateTo']) : '' ?>">
+                <button type="submit" class="filter-btn">Filter</button> 
+            </form>-->
             </div>
             <br>
 
