@@ -39,5 +39,5 @@ Built **from scratch** (no frameworks) with:
 
 1. **Clone Repository**  
    ```bash
-   git clone [[https://github.com/your-username/quickgig_1_0.git](https://github.com/AyangaWethmini/QuickGig_/new/quickgig_1_0)](https://github.com/AyangaWethmini/QuickGig_/new/quickgig_1_0)
+   git clone https://github.com/AyangaWethmini/QuickGig_/quickgig_1_0
    cd quickgig_1_0
